@@ -19,22 +19,17 @@ const introLines = [
   "[WARNING] Intrusion detected in sector 7G",
   "Deploying counter-measures...",
   "Overriding security protocols...",
-  "      ___",
-  "   .-'   '-.",
-  "  /         \\",
-  "  |  O   O  |",
-  "  |    _    |",
-  "  \\  '-'-'  /",
-  "   '-.   .-'",
-  "      '--'",
-  "SYSTEM COMPROMISED.",
-  "Access Granted.",
-  "Welcome back, Administrator D4vide106."
+  "Bypassing node A-14...",
+  "Bypassing node B-99...",
+  "Bypassing node C-12...",
+  "Decrypting mainframe...",
+  "SYSTEM COMPROMISED."
 ];
 
 export default function HackerIntro() {
   const [lines, setLines] = useState<string[]>([]);
   const [currentLineIdx, setCurrentLineIdx] = useState(0);
+  const [showAccessGranted, setShowAccessGranted] = useState(false);
   const [finished, setFinished] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -47,21 +42,18 @@ export default function HackerIntro() {
   }, []);
 
   useEffect(() => {
-    if (finished) return;
+    if (finished || showAccessGranted) return;
 
     if (currentLineIdx < introLines.length) {
       const line = introLines[currentLineIdx];
       
-      // Calculate delay to make the whole sequence ~7.5 seconds
-      // Total lines = 27. Average delay = 7500 / 27 = ~270ms. 
-      // We'll make ASCII art faster, and other lines a bit slower.
       let delay = 250;
-      if (line.includes("0x") || line.includes("___") || line.includes("|") || line.includes("\\") || line.includes("/")) {
-        delay = 40; // Super fast for hashes and ASCII
-      } else if (line.includes("Access Granted") || line.includes("Welcome back")) {
-        delay = 800; // Pause for dramatic effect
+      if (line.includes("0x") || line.includes("node") || line.includes("Decrypting mainframe")) {
+        delay = 50; // Super fast for hashes and nodes
+      } else if (line.includes("SYSTEM COMPROMISED")) {
+        delay = 500; // Pause for dramatic effect
       } else {
-        delay = 150 + Math.random() * 200; 
+        delay = 100 + Math.random() * 150; 
       }
       
       const timer = setTimeout(() => {
@@ -71,22 +63,23 @@ export default function HackerIntro() {
       
       return () => clearTimeout(timer);
     } else {
-      // Finished all lines, wait 1.5s then fade out
-      const finishTimer = setTimeout(() => {
-        setFinished(true);
-      }, 1500);
-      return () => clearTimeout(finishTimer);
+      // Trigger Access Granted popup!
+      const accessTimer = setTimeout(() => {
+        setShowAccessGranted(true);
+        
+        // After 2 seconds of showing Access Granted, finish the intro
+        setTimeout(() => {
+          setFinished(true);
+        }, 2000);
+      }, 300);
+      return () => clearTimeout(accessTimer);
     }
-  }, [currentLineIdx, finished]);
+  }, [currentLineIdx, finished, showAccessGranted]);
 
   if (finished) return null;
 
   return (
     <div className={styles.introContainer}>
-      {/* 
-        Using a fast typing / hacker sound effect from a public sound library. 
-        Note: Autoplay might be blocked by browser. 
-      */}
       <audio 
         ref={audioRef}
         src="https://actions.google.com/sounds/v1/foley/typing_on_a_typewriter.ogg" 
@@ -98,17 +91,23 @@ export default function HackerIntro() {
         {lines.map((line, i) => (
           <div key={i} className={
             line.includes("WARNING") || line.includes("COMPROMISED") ? styles.warnLine :
-            line.includes("Granted") || line.includes("Welcome back") ? styles.successLine :
             line.includes("0x") ? styles.hashLine :
-            line.includes("___") || line.includes("|") || line.includes("\\") || line.includes("/") || line.includes("'-") ? styles.asciiLine :
             styles.normalLine
           }>
-            {/* Preserve spaces for ASCII art */}
-            <pre style={{ margin: 0, fontFamily: 'inherit' }}>{line}</pre>
+            {line}
           </div>
         ))}
-        <span className={styles.cursor}>_</span>
+        {!showAccessGranted && <span className={styles.cursor}>_</span>}
       </div>
+
+      {showAccessGranted && (
+        <>
+          <div className={styles.overlayDarken}></div>
+          <div className={styles.accessPopup}>
+            ACCESS GRANTED
+          </div>
+        </>
+      )}
     </div>
   );
 }
