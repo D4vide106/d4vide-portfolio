@@ -292,17 +292,21 @@
 
 /* Modrinth Card Layout */
 .modrinthCard {
-  background-color: var(--surface-color);
+  background: var(--surface-color);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 1.2rem;
-  width: 450px; /* Fixed width to scroll nicely */
+  border-radius: 16px;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: transform 0.2s, border-color 0.2s;
+  width: 400px;
+  min-width: 400px;
+  transition: all 0.3s ease;
   text-decoration: none;
-  flex-shrink: 0;
+  color: var(--text-color);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   cursor: pointer;
 }
 

@@ -19,7 +19,7 @@ const CF_SLUGS = [
 ];
 
 // Known projects that are also on GameJolt and Itch.io
-const MULTIPLATFORM_SLUGS = ["structural-beyond", "sdob", "project-boss-rpg", "structural-beyond-sbd"];
+const MULTIPLATFORM_SLUGS = ["structural-beyond", "structural-beyond-sbd", "sdob"];
 
 export default function Projects({ dict }: { dict: any }) {
   const { data: modrinthProjects } = useSWR(

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, PT_Serif } from "next/font/google";
+import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -7,9 +7,8 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const ptSerif = PT_Serif({
-  weight: ["400", "700"],
-  variable: "--font-serif",
+const outfit = Outfit({
+  variable: "--font-serif", // Keep the same variable name so we don't break CSS elsewhere
   subsets: ["latin"],
 });
 
@@ -25,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${ptSerif.variable}`}>
+      <body className={`${inter.variable} ${outfit.variable}`}>
         {children}
       </body>
     </html>
