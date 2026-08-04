@@ -146,19 +146,33 @@
   text-transform: capitalize;
 }
 
+.cardFooter {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
 .statsRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
-  font-size: 0.85rem;
   color: #8b949e;
 }
 
 .statItem {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.5rem;
+}
+
+.statIcon {
+  color: #8b949e;
+}
+
+.statValue {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #c9d1d9;
 }
 
 .readMore {
@@ -166,9 +180,11 @@
   align-items: center;
   gap: 0.5rem;
   color: #ffffff;
+  font-family: var(--font-serif);
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 1.1rem;
   transition: color 0.2s ease;
+  align-self: flex-start;
 }
 
 .readMore:hover {

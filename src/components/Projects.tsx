@@ -8,7 +8,9 @@ import styles from "./Projects.module.css";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-const CF_PROJECTS = [
+// Known CurseForge slugs. 
+// Some are on Modrinth as well, some are CF exclusive.
+const CF_SLUGS = [
   "project-boss-rpg",
   "project-horror",
   "structural-beyond",
@@ -16,36 +18,102 @@ const CF_PROJECTS = [
 ];
 
 export default function Projects({ dict }: { dict: any }) {
+  // Fetch Modrinth projects
   const { data: modrinthProjects } = useSWR(
     "https://api.modrinth.com/v2/user/D4vide106/projects",
     fetcher
   );
 
-  const [cfDownloads, setCfDownloads] = useState<Record<string, number>>({});
+  const [cfData, setCfData] = useState<Record<string, any>>({});
+  const [loadingCF, setLoadingCF] = useState(true);
 
   useEffect(() => {
     async function fetchCF() {
-      const downloadsMap: Record<string, number> = {};
-      for (const slug of CF_PROJECTS) {
+      const dataMap: Record<string, any> = {};
+      for (const slug of CF_SLUGS) {
+        // Try all types since we don't know exactly what type each CF project is via CFWidget
         for (const type of ["modpacks", "mc-mods", "texture-packs"]) {
           try {
             const res = await fetch(`https://api.cfwidget.com/minecraft/${type}/${slug}`);
             if (res.ok) {
               const data = await res.json();
-              if (data.downloads?.total) {
-                downloadsMap[slug] = data.downloads.total;
-                break;
+              if (data.id) {
+                dataMap[slug] = data;
+                break; // Found it
               }
             }
           } catch (e) {}
         }
       }
-      setCfDownloads(downloadsMap);
+      setCfData(dataMap);
+      setLoadingCF(false);
     }
     fetchCF();
   }, []);
 
-  const projects = modrinthProjects || [];
+  // Merge projects
+  const mergedProjects: any[] = [];
+  const handledCFSlugs = new Set();
+
+  if (modrinthProjects) {
+    modrinthProjects.forEach((mp: any) => {
+      // Find matching CF project if it exists. 
+      // Typically, CF slug might match Modrinth slug, or we can just try to match title/slug.
+      // For D4vide106, 'project-boss-rpg' on CF is 'project-boss-rpg-forge-br' on Modrinth sometimes. 
+      // We will match by best effort. For simplicity, we just use the slug or assume known mapping.
+      
+      let cfTotal = 0;
+      let hasCF = false;
+
+      // Try to find matching CF data
+      const cfMatch = cfData[mp.slug] || Object.values(cfData).find((cf: any) => cf.title === mp.title || mp.title.includes(cf.name));
+      
+      if (cfMatch) {
+        cfTotal = cfMatch.downloads?.total || 0;
+        hasCF = true;
+        
+        // Find which slug this was to mark as handled
+        const slugKey = Object.keys(cfData).find(key => cfData[key] === cfMatch);
+        if (slugKey) handledCFSlugs.add(slugKey);
+      }
+
+      mergedProjects.push({
+        id: mp.id,
+        title: mp.title,
+        description: mp.description,
+        icon_url: mp.icon_url,
+        project_type: mp.project_type,
+        categories: mp.categories || [],
+        downloads: mp.downloads + cfTotal,
+        updated: mp.updated,
+        modrinthUrl: `https://modrinth.com/${mp.project_type}/${mp.slug}`,
+        cfUrl: cfMatch?.urls?.curseforge,
+        hasModrinth: true,
+        hasCF: hasCF
+      });
+    });
+  }
+
+  // Add CF only projects
+  Object.keys(cfData).forEach(slug => {
+    if (!handledCFSlugs.has(slug)) {
+      const cf = cfData[slug];
+      mergedProjects.push({
+        id: cf.id,
+        title: cf.title || cf.name,
+        description: cf.summary || "CurseForge Project",
+        icon_url: cf.thumbnail,
+        project_type: cf.type === "Modpacks" ? "modpack" : cf.type === "Mods" ? "mod" : "resourcepack",
+        categories: cf.categories ? cf.categories.map((c: any) => c.name || c) : [],
+        downloads: cf.downloads?.total || 0,
+        updated: cf.created_at, // CFWidget API doesn't always provide accurate updated_at on root, fallback to created
+        modrinthUrl: null,
+        cfUrl: cf.urls?.curseforge || cf.urls?.project,
+        hasModrinth: false,
+        hasCF: true
+      });
+    }
+  });
 
   const getCategoryIcon = (type: string) => {
     switch(type) {
@@ -64,10 +132,9 @@ export default function Projects({ dict }: { dict: any }) {
         </h2>
         
         <div className={styles.grid}>
-          {projects.map((project: any) => {
-            const cfTotal = cfDownloads[project.slug] || 0;
-            const totalProjDownloads = project.downloads + cfTotal;
+          {mergedProjects.map((project: any) => {
             const projectType = project.project_type || "mod";
+            const mainLink = project.modrinthUrl || project.cfUrl;
 
             return (
               <div key={project.id} className={styles.card}>
@@ -80,8 +147,8 @@ export default function Projects({ dict }: { dict: any }) {
                     )}
                   </div>
                   <div className={styles.platforms}>
-                    {cfTotal > 0 && <SiCurseforge size={16} title="CurseForge" />}
-                    <SiModrinth size={16} title="Modrinth" />
+                    {project.hasModrinth && <SiModrinth size={18} color="#1bd96a" title="Modrinth" />}
+                    {project.hasCF && <SiCurseforge size={18} color="#f16436" title="CurseForge" />}
                   </div>
                 </div>
                 
@@ -94,28 +161,32 @@ export default function Projects({ dict }: { dict: any }) {
                   <span className={styles.typeBadge}>
                     {getCategoryIcon(projectType)} {projectType.toUpperCase()}
                   </span>
-                  {project.categories && project.categories.map((cat: string) => (
+                  {project.categories.slice(0, 3).map((cat: string) => (
                     <span key={cat} className={styles.tagBadge}>{cat}</span>
                   ))}
                 </div>
                 
-                <div className={styles.statsRow}>
-                  <div className={styles.statItem} title={`Modrinth: ${project.downloads} | CurseForge: ${cfTotal}`}>
-                    <FiDownload /> {totalProjDownloads.toLocaleString()}
+                <div className={styles.cardFooter}>
+                  <div className={styles.statsRow}>
+                    <div className={styles.statItem}>
+                      <FiDownload className={styles.statIcon} /> 
+                      <span className={styles.statValue}>{project.downloads.toLocaleString()}</span>
+                    </div>
+                    <div className={styles.statItem}>
+                      <FiClock className={styles.statIcon} /> 
+                      <span className={styles.statValue}>{project.updated ? new Date(project.updated).toLocaleDateString() : "N/A"}</span>
+                    </div>
                   </div>
-                  <div className={styles.statItem}>
-                    <FiClock /> {project.updated ? new Date(project.updated).toLocaleDateString() : "N/A"}
-                  </div>
+                  
+                  <a 
+                    href={mainLink}
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className={styles.readMore}
+                  >
+                    {dict.viewProject || "View Project"} <FiExternalLink />
+                  </a>
                 </div>
-                
-                <a 
-                  href={`https://modrinth.com/${projectType}/${project.slug}`}
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className={styles.readMore}
-                >
-                  {dict.viewProject} <FiExternalLink />
-                </a>
               </div>
             );
           })}
