@@ -1,20 +1,21 @@
 import type { Metadata } from "next";
-import { Inter, Outfit } from "next/font/google";
+import { Plus_Jakarta_Sans, Jua } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
+const plusJakarta = Plus_Jakarta_Sans({ 
   subsets: ["latin"],
+  variable: '--font-sans',
 });
 
-const outfit = Outfit({
-  variable: "--font-serif", // Keep the same variable name so we don't break CSS elsewhere
+const jua = Jua({ 
+  weight: '400',
   subsets: ["latin"],
+  variable: '--font-jua',
 });
 
 export const metadata: Metadata = {
-  title: "D4vide106 | Portfolio",
-  description: "Portfolio of D4vide106 AKA Davide",
+  title: "_D4vide106_ Portfolio",
+  description: "Minecraft Mod Developer and Content Creator",
 };
 
 export default function RootLayout({
@@ -24,9 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${outfit.variable}`}>
-        {children}
-      </body>
+      <body className={`${plusJakarta.variable} ${jua.variable} font-sans`}>{children}</body>
     </html>
   );
 }

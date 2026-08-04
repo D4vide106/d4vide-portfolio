@@ -1,0 +1,99 @@
+.terminalContainer {
+  position: fixed;
+  width: 500px;
+  height: 300px;
+  background-color: #0c0c0c;
+  border: 1px solid #333;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 1000;
+  font-family: 'Consolas', 'Courier New', monospace;
+  opacity: 0.95;
+}
+
+.terminalHeader {
+  height: 32px;
+  background-color: #1e1e1e;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  cursor: grab;
+  user-select: none;
+  border-bottom: 1px solid #333;
+}
+
+.terminalHeader:active {
+  cursor: grabbing;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #ccc;
+  font-size: 12px;
+}
+
+.termIcon {
+  color: #0078d7; /* Classic powershell icon blue */
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+}
+
+.controlBtn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ccc;
+  background: transparent;
+  border: none;
+  transition: background 0.2s;
+}
+
+.controlBtn:hover {
+  background: #333;
+}
+
+.closeBtn:hover {
+  background: #e81123;
+  color: white;
+}
+
+.terminalBody {
+  padding: 12px;
+  flex: 1;
+  color: #cccccc;
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-y: auto;
+}
+
+.terminalLine {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.cursor {
+  animation: blink 1s step-end infinite;
+  color: #ccc;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@media (max-width: 600px) {
+  .terminalContainer {
+    display: none; /* Hide on very small screens to prevent overlap issues */
+  }
+}
