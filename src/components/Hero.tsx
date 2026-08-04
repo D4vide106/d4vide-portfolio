@@ -1,4 +1,4 @@
-import { SiCurseforge, SiModrinth, SiYoutube, SiDiscord, SiGithub } from "react-icons/si";
+import { SiCurseforge, SiModrinth, SiYoutube, SiDiscord, SiGithub, SiTiktok, SiGamejolt, SiItchdotio } from "react-icons/si";
 import { FiCode, FiTerminal, FiLayout } from "react-icons/fi";
 import { DiJava, DiJavascript1, DiReact } from "react-icons/di";
 import styles from "./Hero.module.css";
@@ -48,19 +48,28 @@ export default function Hero({ dict, aboutDict }: { dict: any, aboutDict: any })
             </p>
 
             <div className={styles.socials}>
-              <a href="https://modrinth.com/user/D4vide106" target="_blank" rel="noreferrer" className={styles.socialBtn} style={{"--hover-color": "#1bd96a"} as any}>
+              <a href="https://modrinth.com/user/D4vide106" target="_blank" rel="noreferrer" className={styles.socialBtn} style={{"--hover-color": "#1bd96a"} as any} title="Modrinth">
                 <SiModrinth size={22} />
               </a>
-              <a href="https://www.curseforge.com/members/d4vide106/projects" target="_blank" rel="noreferrer" className={styles.socialBtn} style={{"--hover-color": "#f16436"} as any}>
+              <a href="https://www.curseforge.com/members/d4vide106/projects" target="_blank" rel="noreferrer" className={styles.socialBtn} style={{"--hover-color": "#f16436"} as any} title="CurseForge">
                 <SiCurseforge size={22} />
               </a>
-              <a href="https://youtube.com/@d4vide106" target="_blank" rel="noreferrer" className={styles.socialBtn} style={{"--hover-color": "#ff0000"} as any}>
+              <a href="https://youtube.com/@d4vide106" target="_blank" rel="noreferrer" className={styles.socialBtn} style={{"--hover-color": "#ff0000"} as any} title="YouTube">
                 <SiYoutube size={22} />
               </a>
-              <a href="https://discord.gg/7T3u9a9" target="_blank" rel="noreferrer" className={styles.socialBtn} style={{"--hover-color": "#5865F2"} as any}>
+              <a href="https://tiktok.com/@d4vide106" target="_blank" rel="noreferrer" className={styles.socialBtn} style={{"--hover-color": "#ff0050"} as any} title="TikTok">
+                <SiTiktok size={22} />
+              </a>
+              <a href="https://d4vide106.itch.io" target="_blank" rel="noreferrer" className={styles.socialBtn} style={{"--hover-color": "#fa5c5c"} as any} title="Itch.io">
+                <SiItchdotio size={22} />
+              </a>
+              <a href="https://gamejolt.com/@D4vide106" target="_blank" rel="noreferrer" className={styles.socialBtn} style={{"--hover-color": "#ccff00"} as any} title="GameJolt">
+                <SiGamejolt size={22} />
+              </a>
+              <a href="https://discord.gg/7T3u9a9" target="_blank" rel="noreferrer" className={styles.socialBtn} style={{"--hover-color": "#5865F2"} as any} title="Discord">
                 <SiDiscord size={22} />
               </a>
-              <a href="https://github.com/D4vide106" target="_blank" rel="noreferrer" className={styles.socialBtn} style={{"--hover-color": "#ffffff"} as any}>
+              <a href="https://github.com/D4vide106" target="_blank" rel="noreferrer" className={styles.socialBtn} style={{"--hover-color": "#ffffff"} as any} title="GitHub">
                 <SiGithub size={22} />
               </a>
             </div>
