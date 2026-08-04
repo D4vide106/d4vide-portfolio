@@ -154,6 +154,137 @@
   animation-play-state: paused;
 }
 
+/* Modal Popup */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.modalContent {
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 600px;
+  padding: 2rem;
+  position: relative;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.3s ease;
+}
+
+.modalCloseBtn {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  color: #8b949e;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.modalCloseBtn:hover {
+  color: var(--text-color);
+}
+
+.modalHeader {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1.5rem;
+}
+
+.modalLogoWrapper {
+  width: 80px;
+  height: 80px;
+  border-radius: 16px;
+  overflow: hidden;
+  background-color: var(--bg-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.modalLogo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modalTitleArea h2 {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.modalTitleArea p {
+  color: #8b949e;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.modalLinks h3 {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: #8b949e;
+}
+
+.platformButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.platformBtn {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.platformBtn:hover {
+  background-color: var(--btn-bg);
+  border-color: var(--btn-color);
+  transform: translateY(-2px);
+}
+
+.platformBtn svg {
+  color: var(--btn-color);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 @keyframes scroll {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
@@ -172,6 +303,7 @@
   transition: transform 0.2s, border-color 0.2s;
   text-decoration: none;
   flex-shrink: 0;
+  cursor: pointer;
 }
 
 .modrinthCard:hover {

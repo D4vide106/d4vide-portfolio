@@ -19,7 +19,7 @@ const CF_SLUGS = [
 ];
 
 // Known projects that are also on GameJolt and Itch.io
-const MULTIPLATFORM_SLUGS = ["structural-beyond", "spiral-dungeon-of-babel", "project-boss-rpg-forge-br"];
+const MULTIPLATFORM_SLUGS = ["structural-beyond", "sdob", "project-boss-rpg", "structural-beyond-sbd"];
 
 export default function Projects({ dict }: { dict: any }) {
   const { data: modrinthProjects } = useSWR(
@@ -28,9 +28,11 @@ export default function Projects({ dict }: { dict: any }) {
   );
 
   const [cfData, setCfData] = useState<Record<string, any>>({});
+  const [loadingCF, setLoadingCF] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("downloads");
   const [filterType, setFilterType] = useState("All");
+  const [selectedProject, setSelectedProject] = useState<any>(null);
 
   useEffect(() => {
     async function fetchCF() {
@@ -50,6 +52,7 @@ export default function Projects({ dict }: { dict: any }) {
         }
       }
       setCfData(dataMap);
+      setLoadingCF(false);
     }
     fetchCF();
   }, []);
@@ -151,10 +154,9 @@ export default function Projects({ dict }: { dict: any }) {
 
   const renderCard = (project: any, index: number) => {
     const projectType = project.project_type || "mod";
-    const mainLink = project.modrinthUrl || project.cfUrl;
     
     return (
-      <a href={mainLink} target="_blank" rel="noopener noreferrer" key={`${project.id}-${index}`} className={styles.modrinthCard}>
+      <div onClick={() => setSelectedProject(project)} key={`${project.id}-${index}`} className={styles.modrinthCard}>
         <div className={styles.cardHeader}>
           <div className={styles.logoWrapper}>
             {project.icon_url ? (
@@ -197,7 +199,7 @@ export default function Projects({ dict }: { dict: any }) {
             {project.isMultiplatform && <SiGamejolt size={16} color="#ccff00" title="GameJolt" />}
           </div>
         </div>
-      </a>
+      </div>
     );
   };
 
@@ -261,6 +263,55 @@ export default function Projects({ dict }: { dict: any }) {
           </div>
         </div>
       </div>
+
+      {/* Modal Popup */}
+      {selectedProject && (
+        <div className={styles.modalOverlay} onClick={() => setSelectedProject(null)}>
+          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <button className={styles.modalCloseBtn} onClick={() => setSelectedProject(null)}>×</button>
+            
+            <div className={styles.modalHeader}>
+              <div className={styles.modalLogoWrapper}>
+                {selectedProject.icon_url ? (
+                  <img src={selectedProject.icon_url} alt={selectedProject.title} className={styles.modalLogo} />
+                ) : (
+                  <div className={styles.projectLogoPlaceholder}>{getCategoryIcon(selectedProject.project_type)}</div>
+                )}
+              </div>
+              <div className={styles.modalTitleArea}>
+                <h2>{selectedProject.title}</h2>
+                <p>{selectedProject.description}</p>
+              </div>
+            </div>
+
+            <div className={styles.modalLinks}>
+              <h3>Available Platforms</h3>
+              <div className={styles.platformButtons}>
+                {selectedProject.hasModrinth && (
+                  <a href={selectedProject.modrinthUrl} target="_blank" rel="noreferrer" className={styles.platformBtn} style={{ "--btn-color": "#1bd96a", "--btn-bg": "rgba(27, 217, 106, 0.1)" } as any}>
+                    <SiModrinth size={24} /> Download on Modrinth
+                  </a>
+                )}
+                {selectedProject.hasCF && (
+                  <a href={selectedProject.cfUrl} target="_blank" rel="noreferrer" className={styles.platformBtn} style={{ "--btn-color": "#f16436", "--btn-bg": "rgba(241, 100, 54, 0.1)" } as any}>
+                    <SiCurseforge size={24} /> Download on CurseForge
+                  </a>
+                )}
+                {selectedProject.isMultiplatform && (
+                  <a href={`https://d4vide106.itch.io/${selectedProject.slug}`} target="_blank" rel="noreferrer" className={styles.platformBtn} style={{ "--btn-color": "#fa5c5c", "--btn-bg": "rgba(250, 92, 92, 0.1)" } as any}>
+                    <SiItchdotio size={24} /> View on Itch.io
+                  </a>
+                )}
+                {selectedProject.isMultiplatform && (
+                  <a href="https://gamejolt.com/@D4vide106/games" target="_blank" rel="noreferrer" className={styles.platformBtn} style={{ "--btn-color": "#ccff00", "--btn-bg": "rgba(204, 255, 0, 0.1)" } as any}>
+                    <SiGamejolt size={24} /> View on GameJolt
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
