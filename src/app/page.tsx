@@ -1,15 +1,10 @@
-import NavigationPopup from "@/components/NavigationPopup";
-import Hero from "@/components/Hero";
-import Projects from "@/components/Projects";
-import Footer from "@/components/Footer";
+"use client";
+import { useEffect } from "react";
 
 export default function Home() {
-  return (
-    <main>
-      <NavigationPopup />
-      <Hero />
-      <Projects />
-      <Footer />
-    </main>
-  );
+  useEffect(() => {
+    window.location.replace("/d4vide-portfolio/en");
+  }, []);
+  
+  return null;
 }

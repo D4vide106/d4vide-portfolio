@@ -1,0 +1,31 @@
+{
+  "nav": {
+    "home": "Home",
+    "projects": "Progetti Minecraft",
+    "journey": "Percorso Informatico",
+    "about": "Chi Sono"
+  },
+  "hero": {
+    "greeting": "Ciao, sono",
+    "role": "Content Creator & Specialista Minecraft",
+    "scroll": "Scorri Giù"
+  },
+  "journey": {
+    "title": "Il mio",
+    "highlight": "Percorso Informatico",
+    "scripting": "Scripting & Automazione",
+    "scriptingDesc": "Creazione di script custom per automatizzare processi e ottimizzare i server Minecraft.",
+    "networking": "Networking di Rete",
+    "networkingDesc": "Configurazione di reti, BungeeCord e gestione di infrastrutture server Linux.",
+    "development": "Sviluppo Web",
+    "developmentDesc": "Sviluppo di tool personalizzati e siti web moderni come questo utilizzando Next.js e React."
+  },
+  "projects": {
+    "title": "I miei",
+    "highlight": "Progetti",
+    "viewProject": "Vedi Progetto"
+  },
+  "footer": {
+    "rights": "Tutti i diritti riservati."
+  }
+}

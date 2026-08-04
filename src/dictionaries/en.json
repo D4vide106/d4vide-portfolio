@@ -1,0 +1,31 @@
+{
+  "nav": {
+    "home": "Home",
+    "projects": "Minecraft Projects",
+    "journey": "IT Journey",
+    "about": "About Me"
+  },
+  "hero": {
+    "greeting": "Hi, I'm",
+    "role": "Content Creator & Minecraft Specialist",
+    "scroll": "Scroll Down"
+  },
+  "journey": {
+    "title": "My",
+    "highlight": "IT Journey",
+    "scripting": "Scripting & Automation",
+    "scriptingDesc": "Creating custom scripts to automate workflows and optimize Minecraft servers.",
+    "networking": "Server Networking",
+    "networkingDesc": "Configuring networks, BungeeCord, and managing Linux infrastructure.",
+    "development": "Web Development",
+    "developmentDesc": "Building custom tools and websites like this one using Next.js and React."
+  },
+  "projects": {
+    "title": "My",
+    "highlight": "Projects",
+    "viewProject": "View Project"
+  },
+  "footer": {
+    "rights": "All rights reserved."
+  }
+}

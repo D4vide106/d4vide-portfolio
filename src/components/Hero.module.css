@@ -35,12 +35,16 @@
   animation: pulse 4s infinite alternate;
 }
 
-.profileImage {
+.placeholderImage {
+  width: 180px;
+  height: 180px;
   border-radius: 50%;
-  object-fit: cover;
   border: 4px solid var(--border-color);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-  background: var(--surface-color); /* Fallback */
+  background: var(--surface-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .title {
@@ -57,10 +61,10 @@
 }
 
 .name {
-  font-size: 4rem;
+  font-size: 4.5rem;
   font-weight: 800;
   letter-spacing: -0.05em;
-  background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+  background: linear-gradient(135deg, #fff 0%, #60a5fa 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

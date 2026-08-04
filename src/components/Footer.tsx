@@ -1,6 +1,7 @@
+import { Play, Gamepad2, MessageCircle, GitBranch } from "lucide-react";
 import styles from "./Footer.module.css";
 
-export default function Footer() {
+export default function Footer({ dict }: { dict: any }) {
   return (
     <footer className={styles.footer}>
       <div className={styles.container}>
@@ -10,21 +11,21 @@ export default function Footer() {
         
         <div className={styles.socials}>
           <a href="#" className={styles.socialLink} aria-label="YouTube">
-            YT
+            <Play size={20} />
           </a>
           <a href="#" className={styles.socialLink} aria-label="Twitch">
-            TW
+            <Gamepad2 size={20} />
           </a>
           <a href="#" className={styles.socialLink} aria-label="Discord">
-            DS
+            <MessageCircle size={20} />
           </a>
           <a href="#" className={styles.socialLink} aria-label="GitHub">
-            GH
+            <GitBranch size={20} />
           </a>
         </div>
         
         <p className={styles.copyright}>
-          &copy; {new Date().getFullYear()} Davide (D4vide106). All rights reserved.
+          &copy; {new Date().getFullYear()} D4vide106. {dict.rights}
         </p>
       </div>
     </footer>

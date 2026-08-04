@@ -49,7 +49,7 @@
   position: fixed;
   top: 1.5rem;
   left: 1.5rem;
-  width: 280px;
+  width: 300px;
   padding: 5rem 2rem 2rem;
   border-radius: 1rem;
   z-index: 90;
@@ -65,6 +65,26 @@
   pointer-events: auto;
 }
 
+.langSwitch {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.langBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-color);
+  font-size: 1rem;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.langBtn:hover {
+  color: var(--accent-color);
+}
+
 .menuList {
   list-style: none;
   display: flex;
@@ -73,12 +93,14 @@
 }
 
 .menuList li {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   font-weight: 500;
 }
 
 .menuList a {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   transition: color 0.2s ease, transform 0.2s ease;
 }
 
@@ -90,8 +112,8 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
   z-index: 80;
   animation: fadeIn 0.3s ease;
 }
