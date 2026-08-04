@@ -53,10 +53,18 @@ export default function HackerIntro() {
     if (hasRun.current) return;
     hasRun.current = true;
 
+    // Preload SFX
+    const errSound = new Audio("https://actions.google.com/sounds/v1/alarms/dosimeter_alarm.ogg");
+    errSound.volume = 0.6;
+    const okSound = new Audio("https://actions.google.com/sounds/v1/science_fiction/power_up.ogg");
+    okSound.volume = 0.7;
+
     async function runSequence() {
       for (const line of introLines) {
         if (line === "[TRIGGER_UNAUTH]") {
           setShowUnauthorized(true);
+          errSound.currentTime = 0;
+          errSound.play().catch(() => {});
           await sleep(800);
           setShowUnauthorized(false);
           setLines(prev => [...prev, "[WARNING] ACCESS DENIED."]);
@@ -78,6 +86,7 @@ export default function HackerIntro() {
 
       // Finish sequence
       await sleep(300);
+      okSound.play().catch(() => {});
       setShowAccessGranted(true);
       await sleep(2500);
       

@@ -390,10 +390,22 @@ export default function Projects({ dict }: { dict: any }) {
         <div className={styles.cardHeader}>
           <div className={styles.logoWrapper}>
             {project.icon_url ? (
-              <img src={project.icon_url} alt={project.title} className={styles.projectLogo} />
-            ) : (
-              <div className={styles.projectLogoPlaceholder}>{getCategoryIcon(projectType)}</div>
-            )}
+              <img 
+                src={project.icon_url} 
+                alt={project.title} 
+                className={styles.projectLogo} 
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.parentElement?.querySelector(`.${styles.projectLogoPlaceholder}`)?.removeAttribute("hidden");
+                }}
+              />
+            ) : null}
+            <div 
+              className={styles.projectLogoPlaceholder} 
+              hidden={!!project.icon_url}
+            >
+              {getCategoryIcon(projectType)}
+            </div>
           </div>
           
           <div className={styles.titleArea}>
@@ -503,10 +515,22 @@ export default function Projects({ dict }: { dict: any }) {
             <div className={styles.modalHeader}>
               <div className={styles.modalLogoWrapper}>
                 {selectedProject.icon_url ? (
-                  <img src={selectedProject.icon_url} alt={selectedProject.title} className={styles.modalLogo} />
-                ) : (
-                  <div className={styles.projectLogoPlaceholder}>{getCategoryIcon(selectedProject.project_type)}</div>
-                )}
+                  <img 
+                    src={selectedProject.icon_url} 
+                    alt={selectedProject.title} 
+                    className={styles.modalLogo} 
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                      e.currentTarget.parentElement?.querySelector(`.${styles.projectLogoPlaceholder}`)?.removeAttribute("hidden");
+                    }}
+                  />
+                ) : null}
+                <div 
+                  className={styles.projectLogoPlaceholder}
+                  hidden={!!selectedProject.icon_url}
+                >
+                  {getCategoryIcon(selectedProject.project_type)}
+                </div>
               </div>
               <div className={styles.modalTitleArea}>
                 <h2>{selectedProject.title}</h2>
