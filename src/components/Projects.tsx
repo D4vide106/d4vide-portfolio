@@ -23,7 +23,42 @@ const CF_SLUGS = [
 ];
 
 // Known projects that are also on GameJolt and Itch.io
-const MULTIPLATFORM_SLUGS = ["structural-beyond", "structural-beyond-sbd", "sdob"];
+const MULTIPLATFORM_SLUGS = ["structural-beyond", "structural-beyond-sbd", "sdob", "kart-deadline", "spiral-dungeon-of-babel"];
+
+const CUSTOM_PROJECTS = [
+  {
+    id: "kart-deadline",
+    title: "Kart Deadline",
+    slug: "kart-deadline",
+    description: "A fast-paced kart racing game available on GameJolt and Itch.io.",
+    icon_url: "", // Can be filled later
+    project_type: "game",
+    categories: ["Game", "Racing"],
+    downloads: 150, // Static estimate
+    updated: new Date().toISOString(),
+    modrinthUrl: null,
+    cfUrl: null,
+    hasModrinth: false,
+    hasCF: false,
+    isMultiplatform: true
+  },
+  {
+    id: "sdob",
+    title: "Spiral Dungeon of Babel",
+    slug: "spiral-dungeon-of-babel",
+    description: "A dungeon crawler game on GameJolt and Itch.io.",
+    icon_url: "",
+    project_type: "game",
+    categories: ["Game", "RPG"],
+    downloads: 500,
+    updated: new Date().toISOString(),
+    modrinthUrl: null,
+    cfUrl: null,
+    hasModrinth: false,
+    hasCF: false,
+    isMultiplatform: true
+  }
+];
 
 export default function Projects({ dict }: { dict: any }) {
   const { data: modrinthProjects } = useSWR(
@@ -127,6 +162,16 @@ export default function Projects({ dict }: { dict: any }) {
 
     let filtered = list.filter(p => p.title.toLowerCase().includes(searchQuery.toLowerCase()) || p.description.toLowerCase().includes(searchQuery.toLowerCase()));
     
+    // Add custom projects
+    CUSTOM_PROJECTS.forEach(cp => {
+      // Avoid duplicates if they somehow loaded from Modrinth/CF
+      if (!filtered.find((p: any) => p.slug === cp.slug || p.title === cp.title)) {
+        if (cp.title.toLowerCase().includes(searchQuery.toLowerCase()) || cp.description.toLowerCase().includes(searchQuery.toLowerCase())) {
+          filtered.push(cp);
+        }
+      }
+    });
+
     if (filterType !== "All") {
       filtered = filtered.filter(p => {
         const type = filterType.toLowerCase();
@@ -222,13 +267,13 @@ export default function Projects({ dict }: { dict: any }) {
         
         <div className={styles.controlsBar}>
           <div className={styles.filtersGroup}>
-            {["All", "Mod", "Modpack", "Datapack", "Resourcepack", "Bedrock / Addon"].map(type => (
+            {["All", "Mod", "Modpack", "Datapack", "Resourcepack", "Bedrock / Addon", "Game"].map(type => (
               <button 
                 key={type}
                 className={`${styles.filterBtn} ${filterType === type ? styles.activeFilter : ""}`}
                 onClick={() => setFilterType(type)}
               >
-                {type === "All" ? "All" : `${type}s`.replace("Addons", "Addon")}
+                {type === "All" ? "All" : `${type}s`.replace("Addons", "Addon").replace("Games", "Games")}
               </button>
             ))}
           </div>

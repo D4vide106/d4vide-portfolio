@@ -119,6 +119,11 @@
   transition: border-color 0.3s;
 }
 
+.sortSelect option {
+  background-color: var(--bg-color);
+  color: #c9d1d9;
+}
+
 .sortSelect:focus {
   border-color: var(--accent-color);
 }
@@ -250,11 +255,11 @@
   color: #8b949e;
   font-size: 0.95rem;
   line-height: 1.4;
-  font-family: var(--font-mono);
+  font-family: inherit;
 }
 
 .modalLinks h3 {
-  font-family: var(--font-mono);
+  font-family: var(--font-heading);
   font-size: 1.2rem;
   margin-bottom: 1rem;
   color: #8b949e;
@@ -324,7 +329,7 @@
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  font-family: var(--font-mono);
+  font-family: inherit;
 }
 
 .modrinthCard::before {
@@ -389,9 +394,9 @@
 }
 
 .cardTitle {
-  font-family: var(--font-mono);
-  font-size: 1.3rem;
-  font-weight: 700;
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 400;
   color: #ffffff;
   margin: 0;
   line-height: 1.2;

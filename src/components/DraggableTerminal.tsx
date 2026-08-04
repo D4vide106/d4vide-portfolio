@@ -2,34 +2,32 @@
 import { useState, useEffect, useRef } from "react";
 import styles from "./DraggableTerminal.module.css";
 import { FiTerminal, FiX, FiMinus, FiSquare } from "react-icons/fi";
+import { SiDiscord, SiGithub, SiYoutube } from "react-icons/si";
 
 const terminalText = [
-  "C:\\Users\\D4vide106> whoami",
-  "d4vide106",
+  "C:\\Users\\D4vide106> ./fetch_system_status.sh",
+  "Status: ONLINE 🟢",
+  "Uptime: 99.99%",
   "",
-  "C:\\Users\\D4vide106> ./fetch_skills.sh",
-  "Loading skills...",
-  "-> Java [100%]",
-  "-> Scripting [100%]",
-  "-> React [90%]",
-  "-> Modding [100%]",
+  "C:\\Users\\D4vide106> ./list_links.sh",
+  "Available Quick Links:",
+  "1. [GitHub] -> https://github.com/D4vide106",
+  "2. [YouTube] -> https://youtube.com/@d4vide106",
+  "3. [Discord] -> https://discord.gg/7T3u9a9",
   "",
   "C:\\Users\\D4vide106> _"
 ];
 
 export default function DraggableTerminal() {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [position, setPosition] = useState({ x: 20, y: 100 });
   const [isDragging, setIsDragging] = useState(false);
   const dragStartPos = useRef({ x: 0, y: 0 });
   const [typedLines, setTypedLines] = useState<string[]>([]);
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
+  const terminalRef = useRef<HTMLDivElement>(null);
 
-  // Center it initially after mount
-  useEffect(() => {
-    setPosition({ x: window.innerWidth / 2 - 250, y: window.innerHeight / 2 - 150 });
-  }, []);
-
+  // Initial animation logic
   useEffect(() => {
     if (currentLineIndex >= terminalText.length) return;
 
@@ -45,13 +43,13 @@ export default function DraggableTerminal() {
           newLines[currentLineIndex] = line.slice(0, currentCharIndex + 1);
           return newLines;
         });
-      }, Math.random() * 30 + 10);
+      }, Math.random() * 20 + 5);
       return () => clearTimeout(timeout);
     } else {
       const timeout = setTimeout(() => {
         setCurrentLineIndex(prev => prev + 1);
         setCurrentCharIndex(0);
-      }, line === "" ? 200 : 500);
+      }, line === "" ? 100 : 300);
       return () => clearTimeout(timeout);
     }
   }, [currentLineIndex, currentCharIndex]);
@@ -65,11 +63,18 @@ export default function DraggableTerminal() {
   };
 
   const handleMouseMove = (e: MouseEvent) => {
-    if (isDragging) {
-      setPosition({
-        x: e.clientX - dragStartPos.current.x,
-        y: e.clientY - dragStartPos.current.y
-      });
+    if (isDragging && terminalRef.current) {
+      const terminalWidth = terminalRef.current.offsetWidth;
+      const terminalHeight = terminalRef.current.offsetHeight;
+      
+      let newX = e.clientX - dragStartPos.current.x;
+      let newY = e.clientY - dragStartPos.current.y;
+      
+      // Boundaries
+      newX = Math.max(0, Math.min(newX, window.innerWidth - terminalWidth));
+      newY = Math.max(0, Math.min(newY, window.innerHeight - terminalHeight));
+      
+      setPosition({ x: newX, y: newY });
     }
   };
 
@@ -91,8 +96,22 @@ export default function DraggableTerminal() {
     };
   }, [isDragging]);
 
+  const renderLine = (line: string, i: number) => {
+    if (line.includes("[GitHub]")) {
+      return <span>1. [<a href="https://github.com/D4vide106" target="_blank" rel="noreferrer" style={{color: '#0ea5e9'}}>GitHub</a>] - <SiGithub style={{display: 'inline', verticalAlign: 'middle'}}/></span>;
+    }
+    if (line.includes("[YouTube]")) {
+      return <span>2. [<a href="https://youtube.com/@d4vide106" target="_blank" rel="noreferrer" style={{color: '#0ea5e9'}}>YouTube</a>] - <SiYoutube style={{display: 'inline', verticalAlign: 'middle'}} color="#ff0000"/></span>;
+    }
+    if (line.includes("[Discord]")) {
+      return <span>3. [<a href="https://discord.gg/7T3u9a9" target="_blank" rel="noreferrer" style={{color: '#0ea5e9'}}>Discord</a>] - <SiDiscord style={{display: 'inline', verticalAlign: 'middle'}} color="#5865F2"/></span>;
+    }
+    return line;
+  };
+
   return (
     <div 
+      ref={terminalRef}
       className={styles.terminalContainer} 
       style={{ left: `${position.x}px`, top: `${position.y}px` }}
     >
@@ -102,7 +121,7 @@ export default function DraggableTerminal() {
       >
         <div className={styles.headerLeft}>
           <FiTerminal className={styles.termIcon} />
-          <span>Windows PowerShell</span>
+          <span>Windows PowerShell - Control Center</span>
         </div>
         <div className={styles.headerRight}>
           <button className={styles.controlBtn}><FiMinus /></button>
@@ -113,7 +132,7 @@ export default function DraggableTerminal() {
       <div className={styles.terminalBody}>
         {typedLines.map((line, i) => (
           <div key={i} className={styles.terminalLine}>
-            {line}
+            {renderLine(line, i)}
             {i === currentLineIndex && <span className={styles.cursor}>█</span>}
           </div>
         ))}
