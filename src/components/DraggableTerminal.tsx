@@ -43,7 +43,7 @@ export default function DraggableTerminal() {
           newLines[currentLineIndex] = line.slice(0, currentCharIndex + 1);
           return newLines;
         });
-      }, Math.random() * 20 + 5);
+      }, Math.random() * 30 + 30);
       return () => clearTimeout(timeout);
     } else {
       const timeout = setTimeout(() => {
@@ -97,6 +97,7 @@ export default function DraggableTerminal() {
   }, [isDragging]);
 
   const renderLine = (line: string, i: number) => {
+    if (!line) return <span key={i}></span>;
     if (line.includes("[GitHub]")) {
       return <span>1. [<a href="https://github.com/D4vide106" target="_blank" rel="noreferrer" style={{color: '#0ea5e9'}}>GitHub</a>] - <SiGithub style={{display: 'inline', verticalAlign: 'middle'}}/></span>;
     }

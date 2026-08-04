@@ -58,12 +58,13 @@ export default function HackerIntro() {
       if (line === "[TRIGGER_UNAUTH]") {
         setShowUnauthorized(true);
         // Show red popup for 800ms, then hide and proceed
-        const unauthTimer = setTimeout(() => {
+        setTimeout(() => {
           setShowUnauthorized(false);
           setCurrentLineIdx(prev => prev + 1);
           setLines(prev => [...prev, "[WARNING] ACCESS DENIED."]);
         }, 800);
-        return () => clearTimeout(unauthTimer);
+        // Do not return a cleanup function here, otherwise the timer gets canceled immediately when state changes!
+        return;
       }
       
       let delay = 250;
@@ -88,6 +89,7 @@ export default function HackerIntro() {
         
         // After 2.5 seconds of showing Access Granted, finish the intro
         setTimeout(() => {
+          if (audioRef.current) audioRef.current.pause();
           setFinished(true);
         }, 2500);
       }, 300);
@@ -109,6 +111,7 @@ export default function HackerIntro() {
       <div className={styles.terminalWindow}>
         {lines.map((line, i) => (
           <div key={i} className={
+            !line ? styles.normalLine :
             line.includes("WARNING") || line.includes("COMPROMISED") || line.includes("DENIED") ? styles.warnLine :
             line.includes("0x") ? styles.hashLine :
             styles.normalLine
