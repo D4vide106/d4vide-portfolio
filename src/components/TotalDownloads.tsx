@@ -12,7 +12,9 @@ const CF_SLUGS = [
   "bosstweak-3d",
   "project-the-rpg-reborn",
   "project-gunparty",
-  "project-realistic-rpg"
+  "project-realistic-rpg",
+  "pmaintanceuniversal",
+  "kart-deadline"
 ];
 
 export default function TotalDownloads() {

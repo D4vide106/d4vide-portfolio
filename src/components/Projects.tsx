@@ -17,7 +17,9 @@ const CF_SLUGS = [
   "bosstweak-3d",
   "project-the-rpg-reborn",
   "project-gunparty",
-  "project-realistic-rpg"
+  "project-realistic-rpg",
+  "pmaintanceuniversal",
+  "kart-deadline"
 ];
 
 // Known projects that are also on GameJolt and Itch.io
@@ -132,9 +134,12 @@ export default function Projects({ dict }: { dict: any }) {
           return p.categories.some((c: string) => c.toLowerCase().includes("datapack")) || p.title.toLowerCase().includes("datapack");
         }
         if (type === "resourcepack") {
-          return p.project_type === "resourcepack";
+          return p.project_type === "resourcepack" || p.categories.some((c: string) => c.toLowerCase().includes("resource pack"));
         }
-        return p.project_type === type;
+        if (type === "bedrock / addon") {
+          return p.categories.some((c: string) => c.toLowerCase().includes("addon") || c.toLowerCase().includes("bedrock")) || p.title.toLowerCase().includes("bedrock") || p.title.toLowerCase().includes("addon");
+        }
+        return p.project_type === type || p.categories.some((c: string) => c.toLowerCase() === type);
       });
     }
 
@@ -155,6 +160,7 @@ export default function Projects({ dict }: { dict: any }) {
       case "modpack": return <FaCubes />;
       case "plugin": return <FaServer />;
       case "datapack": return <FaCode />;
+      case "bedrock / addon": return <FaCube />;
       default: return <FaCube />;
     }
   };
@@ -216,13 +222,13 @@ export default function Projects({ dict }: { dict: any }) {
         
         <div className={styles.controlsBar}>
           <div className={styles.filtersGroup}>
-            {["All", "Mod", "Modpack", "Datapack", "Resourcepack"].map(type => (
+            {["All", "Mod", "Modpack", "Datapack", "Resourcepack", "Bedrock / Addon"].map(type => (
               <button 
                 key={type}
                 className={`${styles.filterBtn} ${filterType === type ? styles.activeFilter : ""}`}
                 onClick={() => setFilterType(type)}
               >
-                {type === "All" ? "All" : `${type}s`}
+                {type === "All" ? "All" : `${type}s`.replace("Addons", "Addon")}
               </button>
             ))}
           </div>

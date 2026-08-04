@@ -1,0 +1,83 @@
+.introContainer {
+  position: fixed;
+  inset: 0;
+  background-color: #020617; /* Solid deep blue slate */
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Consolas', 'Courier New', monospace;
+  animation: fadeOut 1s ease 2s forwards; /* Fades out if unmounted, but we rely on React state mainly */
+}
+
+/* We override the fadeOut animation on container itself to keep it visible while hacking */
+.introContainer {
+  animation: none;
+}
+
+.startBtn {
+  background: transparent;
+  color: #0ea5e9;
+  border: 1px solid #0ea5e9;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  font-family: 'Consolas', 'Courier New', monospace;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-radius: 8px;
+  transition: all 0.3s;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  box-shadow: 0 0 20px rgba(14, 165, 233, 0.2);
+}
+
+.startBtn:hover {
+  background: #0ea5e9;
+  color: #020617;
+  box-shadow: 0 0 30px rgba(14, 165, 233, 0.6);
+}
+
+.terminalWindow {
+  width: 100%;
+  max-width: 800px;
+  height: 80%;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  overflow-y: hidden;
+}
+
+.normalLine {
+  color: #0ea5e9;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.warnLine {
+  color: #ef4444; /* Red for warning */
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.successLine {
+  color: #22c55e; /* Green for success */
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.cursor {
+  color: #0ea5e9;
+  animation: blink 1s step-end infinite;
+  font-size: 1.2rem;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}

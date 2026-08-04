@@ -1,17 +1,18 @@
 :root {
-  /* Deep Premium Dark Mode (InfinitySmart) */
-  --bg-color: #0d0b14; 
+  /* Deep Premium Dark Mode (Blue Theme) */
+  --bg-color: #050b14; 
   --text-color: #e2e8f0;
-  --accent-color: #7c3aed; /* Purple 600 */
-  --accent-hover: #9333ea; /* Purple 500 */
-  --accent-pink: #db2777;
+  --accent-color: #0078d7; /* Blue 600 */
+  --accent-hover: #38bdf8; /* Light Blue */
+  --accent-pink: #0ea5e9; /* Secondary Blue (Cyan) */
   
   /* Glassmorphism Variables */
-  --surface-color: rgba(26, 22, 37, 0.8);
+  --surface-color: rgba(10, 20, 35, 0.8);
   --border-color: rgba(255, 255, 255, 0.1);
   
   --font-family: var(--font-sans), system-ui, sans-serif;
   --font-heading: var(--font-jua), sans-serif;
+  --font-mono: 'Consolas', 'Courier New', Courier, monospace;
 }
 
 * {
@@ -26,8 +27,8 @@ body {
   overflow-x: hidden;
   background-color: var(--bg-color);
   background-image: 
-    radial-gradient(ellipse at 80% 50%, rgba(124, 58, 237, 0.15) 0%, transparent 50%),
-    radial-gradient(ellipse at 20% 0%, rgba(219, 39, 119, 0.1) 0%, transparent 40%);
+    radial-gradient(ellipse at 80% 50%, rgba(0, 120, 215, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 20% 0%, rgba(14, 165, 233, 0.1) 0%, transparent 40%);
   background-attachment: fixed;
   color: var(--text-color);
   font-family: var(--font-family);
@@ -65,7 +66,7 @@ button {
 }
 
 .text-gradient {
-  background: linear-gradient(to right, #7c3aed, #db2777);
+  background: linear-gradient(to right, var(--accent-color), var(--accent-pink));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

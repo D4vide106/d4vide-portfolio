@@ -4,6 +4,7 @@ import Hero from "@/components/Hero";
 import Projects from "@/components/Projects";
 import Footer from "@/components/Footer";
 import DraggableTerminal from "@/components/DraggableTerminal";
+import HackerIntro from "@/components/HackerIntro";
 
 export function generateStaticParams() {
   return [{ lang: "en" }, { lang: "it" }];
@@ -19,6 +20,7 @@ export default async function LangHome({
 
   return (
     <main>
+      <HackerIntro />
       <DraggableTerminal />
       <TopBar dict={dict.nav} currentLang={lang} />
       <Hero dict={dict.hero} aboutDict={dict.aboutSection} />

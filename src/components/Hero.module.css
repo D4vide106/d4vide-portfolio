@@ -16,11 +16,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('https://i.imgur.com/0IyftNK.jpeg');
-  background-size: cover;
-  background-position: center;
-  filter: blur(8px);
-  transform: scale(1.1);
+  background: radial-gradient(circle at center, #0078d733 0%, transparent 60%);
   z-index: 1;
 }
 
