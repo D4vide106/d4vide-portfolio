@@ -81,19 +81,31 @@ export default function Projects({ dict }: { dict: any }) {
         modrinthProjects.forEach((p: any) => allSlugs.add(p.slug));
       }
 
+      const slugTypeMap: Record<string, string> = {
+        "pmaintanceuniversal": "mc-addons",
+        "project-boss-rpg": "mc-mods",
+        "project-horror": "mc-mods",
+        "structural-beyond": "mc-mods",
+        "bosstweak-3d": "mc-mods",
+        "project-the-rpg-reborn": "mc-mods",
+        "project-gunparty": "mc-mods",
+        "project-realistic-rpg": "mc-mods"
+      };
+
       for (const slug of Array.from(allSlugs)) {
-        for (const type of ["modpacks", "mc-mods", "texture-packs", "customization", "mc-addons"]) {
-          try {
-            const res = await fetch(`https://api.cfwidget.com/minecraft/${type}/${slug}`);
-            if (res.ok) {
-              const data = await res.json();
-              if (data.id) {
-                dataMap[slug] = data;
-                break;
-              }
+        // If it's a known multiplatform game, skip CF check completely
+        if (["kart-deadline", "spiral-dungeon-of-babel", "sdob"].includes(slug)) continue;
+        
+        const type = slugTypeMap[slug] || "mc-mods"; // Fallback to mc-mods
+        try {
+          const res = await fetch(`https://api.cfwidget.com/minecraft/${type}/${slug}`);
+          if (res.ok) {
+            const data = await res.json();
+            if (data.id) {
+              dataMap[slug] = data;
             }
-          } catch (e) {}
-        }
+          }
+        } catch (e) {}
       }
       setCfData(dataMap);
       setLoadingCF(false);

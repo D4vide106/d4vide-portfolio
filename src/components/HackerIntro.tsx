@@ -89,7 +89,7 @@ export default function HackerIntro() {
       */}
       <audio 
         ref={audioRef}
-        src="https://www.soundjay.com/mechanical/sounds/typewriter-1.mp3" 
+        src="https://actions.google.com/sounds/v1/foley/typing_on_a_typewriter.ogg" 
         loop
         autoPlay 
       />
