@@ -10,15 +10,17 @@
     "role": "Content Creator & Minecraft Specialist",
     "scroll": "Scroll Down"
   },
-  "journey": {
-    "title": "My",
-    "highlight": "IT Journey",
-    "scripting": "Scripting & Automation",
-    "scriptingDesc": "Creating custom scripts to automate workflows and optimize Minecraft servers.",
-    "networking": "Server Networking",
-    "networkingDesc": "Configuring networks, BungeeCord, and managing Linux infrastructure.",
-    "development": "Web Development",
-    "developmentDesc": "Building custom tools and websites like this one using Next.js and React."
+  "aboutSection": {
+    "aboutTitle": "Who the hell am I?",
+    "aboutStats": {
+      "bornIn": "Born in",
+      "livingIn": "Living in",
+      "age": "Age",
+      "gender": "Gender"
+    },
+    "aboutDesc1": "I am many things, but of those most likely relevant to you - a Minecraft mod developer and content creator.",
+    "aboutDesc2": "I have a particular passion for creating immersive RPG experiences, structures, and tools. Most of my experience involves pushing the boundaries of what is possible within the game.",
+    "aboutDesc3": "These days you can find me tending to my Discord server, where I chat about all things human, as well as announce new developments in my projects. You can also check out my videos on my YouTube channel where I occasionally post updates and gameplay!"
   },
   "projects": {
     "title": "My",

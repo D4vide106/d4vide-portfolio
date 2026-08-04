@@ -1,11 +1,12 @@
 :root {
-  --bg-color: #030712;
-  --text-color: #f8fafc;
+  --bg-color: #0d1117;
+  --text-color: #c9d1d9;
   --accent-color: #3b82f6;
   --accent-hover: #60a5fa;
-  --surface-color: rgba(15, 23, 42, 0.75);
-  --border-color: rgba(59, 130, 246, 0.15);
-  --font-family: var(--font-geist-sans), system-ui, sans-serif;
+  --surface-color: #161b22;
+  --border-color: #30363d;
+  --font-family: var(--font-inter), system-ui, sans-serif;
+  --font-serif: var(--font-serif), Georgia, serif;
 }
 
 * {

@@ -1,7 +1,7 @@
 import { getDictionary } from "../dictionaries";
 import NavigationPopup from "@/components/NavigationPopup";
 import Hero from "@/components/Hero";
-import Journey from "@/components/Journey";
+import About from "@/components/About";
 import Projects from "@/components/Projects";
 import Footer from "@/components/Footer";
 
@@ -21,7 +21,7 @@ export default async function LangHome({
     <main>
       <NavigationPopup dict={dict.nav} currentLang={lang} />
       <Hero dict={dict.hero} />
-      <Journey dict={dict.journey} />
+      <About dict={dict.aboutSection} />
       <Projects dict={dict.projects} />
       <Footer dict={dict.footer} />
     </main>
