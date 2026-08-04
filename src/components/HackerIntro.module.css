@@ -7,42 +7,12 @@
   align-items: center;
   justify-content: center;
   font-family: 'Consolas', 'Courier New', monospace;
-  animation: fadeOut 1s ease 2s forwards; /* Fades out if unmounted, but we rely on React state mainly */
-}
-
-/* We override the fadeOut animation on container itself to keep it visible while hacking */
-.introContainer {
-  animation: none;
-}
-
-.startBtn {
-  background: transparent;
-  color: #0ea5e9;
-  border: 1px solid #0ea5e9;
-  padding: 1rem 2rem;
-  font-size: 1.2rem;
-  font-family: 'Consolas', 'Courier New', monospace;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  border-radius: 8px;
-  transition: all 0.3s;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  box-shadow: 0 0 20px rgba(14, 165, 233, 0.2);
-}
-
-.startBtn:hover {
-  background: #0ea5e9;
-  color: #020617;
-  box-shadow: 0 0 30px rgba(14, 165, 233, 0.6);
 }
 
 .terminalWindow {
   width: 100%;
-  max-width: 800px;
-  height: 80%;
+  max-width: 900px;
+  height: 90%;
   padding: 2rem;
   display: flex;
   flex-direction: column;
@@ -53,13 +23,28 @@
 
 .normalLine {
   color: #0ea5e9;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.2rem;
   font-size: 1.1rem;
+}
+
+.hashLine {
+  color: #38bdf8;
+  margin-bottom: 0.1rem;
+  font-size: 0.95rem;
+  opacity: 0.8;
+}
+
+.asciiLine {
+  color: #22c55e;
+  margin-bottom: 0rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  line-height: 1.1;
 }
 
 .warnLine {
   color: #ef4444; /* Red for warning */
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.3rem;
   font-size: 1.1rem;
   font-weight: bold;
 }
