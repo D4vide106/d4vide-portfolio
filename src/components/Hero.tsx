@@ -1,7 +1,8 @@
 import { SiCurseforge, SiModrinth, SiYoutube, SiDiscord, SiGithub, SiTiktok, SiGamejolt, SiItchdotio } from "react-icons/si";
-import { FiCode, FiTerminal, FiLayout } from "react-icons/fi";
+import { FiCode, FiTerminal, FiLayout, FiYoutube } from "react-icons/fi";
 import { DiJava, DiJavascript1, DiReact } from "react-icons/di";
 import styles from "./Hero.module.css";
+import TotalDownloads from "./TotalDownloads";
 
 export default function Hero({ dict, aboutDict }: { dict: any, aboutDict: any }) {
   const skills = [
@@ -47,6 +48,8 @@ export default function Hero({ dict, aboutDict }: { dict: any, aboutDict: any })
               {aboutDict.aboutDesc2 || "I have a particular passion for creating immersive RPG experiences."}
             </p>
 
+            <TotalDownloads />
+
             <div className={styles.socials}>
               <a href="https://modrinth.com/user/D4vide106" target="_blank" rel="noreferrer" className={styles.socialBtn} style={{"--hover-color": "#1bd96a"} as any} title="Modrinth">
                 <SiModrinth size={22} />
@@ -86,6 +89,21 @@ export default function Hero({ dict, aboutDict }: { dict: any, aboutDict: any })
                 <span className={styles.skillName}>{skill.name}</span>
               </div>
             ))}
+          </div>
+          
+          <div className={styles.youtubeBanner}>
+            <div className={styles.ytBannerContent}>
+              <div className={styles.ytIconWrapper}>
+                <FiYoutube className={styles.ytIcon} />
+              </div>
+              <div className={styles.ytText}>
+                <h4>Subscribe to my YouTube Channel</h4>
+                <p>Check out my latest videos, tutorials, and showcases!</p>
+              </div>
+            </div>
+            <a href="https://www.youtube.com/@d4vide106" target="_blank" rel="noreferrer" className={styles.ytButton}>
+              Visit Channel
+            </a>
           </div>
         </div>
 

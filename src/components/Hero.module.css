@@ -196,3 +196,85 @@
   color: #c9d1d9;
   font-weight: 600;
 }
+
+/* YouTube Banner */
+.youtubeBanner {
+  margin-top: 3rem;
+  width: 100%;
+  background: linear-gradient(135deg, rgba(255, 0, 0, 0.1) 0%, rgba(200, 0, 0, 0.02) 100%);
+  border: 1px solid rgba(255, 0, 0, 0.2);
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.youtubeBanner:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 0, 0, 0.4);
+}
+
+@media (min-width: 600px) {
+  .youtubeBanner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.ytBannerContent {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ytIconWrapper {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #ff0000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+}
+
+.ytIcon {
+  color: white;
+  font-size: 1.5rem;
+}
+
+.ytText h4 {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  margin: 0 0 0.25rem 0;
+  color: #ffffff;
+}
+
+.ytText p {
+  margin: 0;
+  color: #8b949e;
+  font-size: 0.9rem;
+}
+
+.ytButton {
+  background-color: #ff0000;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.ytButton:hover {
+  background-color: #cc0000;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 0, 0, 0.3);
+}
