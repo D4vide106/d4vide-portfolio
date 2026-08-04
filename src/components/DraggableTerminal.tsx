@@ -72,7 +72,7 @@ export default function DraggableTerminal() {
       
       // Boundaries
       newX = Math.max(0, Math.min(newX, window.innerWidth - terminalWidth));
-      newY = Math.max(0, Math.min(newY, window.innerHeight - terminalHeight));
+      newY = Math.max(80, Math.min(newY, window.innerHeight - terminalHeight));
       
       setPosition({ x: newX, y: newY });
     }

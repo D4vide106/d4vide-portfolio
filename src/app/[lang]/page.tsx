@@ -23,9 +23,15 @@ export default async function LangHome({
       <HackerIntro />
       <DraggableTerminal />
       <TopBar dict={dict.nav} currentLang={lang} />
-      <Hero dict={dict.hero} aboutDict={dict.aboutSection} />
-      <Projects dict={dict.projects} />
-      <Footer dict={dict.footer} />
+      <div className="animate-entrance-1">
+        <Hero dict={dict.hero} aboutDict={dict.aboutSection} />
+      </div>
+      <div className="animate-entrance-2">
+        <Projects dict={dict.projects} />
+      </div>
+      <div className="animate-entrance-3">
+        <Footer dict={dict.footer} />
+      </div>
     </main>
   );
 }
