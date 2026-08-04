@@ -4,6 +4,8 @@ import { FiDownloadCloud } from "react-icons/fi";
 import styles from "./TotalDownloads.module.css";
 
 const CF_SLUGS = [
+  // ⬇️ ADD YOUR MISSING CURSEFORGE BEDROCK / DATAPACK SLUGS HERE ⬇️
+  // Example: "my-bedrock-addon",
   "project-boss-rpg",
   "project-horror",
   "structural-beyond",

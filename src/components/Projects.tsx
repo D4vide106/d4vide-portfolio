@@ -9,6 +9,8 @@ import styles from "./Projects.module.css";
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const CF_SLUGS = [
+  // ⬇️ ADD YOUR MISSING CURSEFORGE BEDROCK / DATAPACK SLUGS HERE ⬇️
+  // Example: "my-bedrock-addon",
   "project-boss-rpg",
   "project-horror",
   "structural-beyond",

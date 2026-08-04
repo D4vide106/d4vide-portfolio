@@ -91,22 +91,36 @@ export default function Hero({ dict, aboutDict }: { dict: any, aboutDict: any })
             ))}
           </div>
           
-          <div className={styles.youtubeBanner}>
-            <div className={styles.ytBannerContent}>
-              <div className={styles.ytIconWrapper}>
-                <FiYoutube className={styles.ytIcon} />
+          <div className={`${styles.youtubeSection} glass`}>
+            <div className={styles.ytHeader}>
+              <FiYoutube className={styles.ytHeaderIcon} />
+              <h4>Latest on YouTube</h4>
+              <a href="https://www.youtube.com/@d4vide106" target="_blank" rel="noreferrer" className={styles.ytHeaderLink}>View All</a>
+            </div>
+            <div className={styles.ytVideoGrid}>
+              {/* VIDEO 1 */}
+              <div className={styles.videoWrapper}>
+                <iframe 
+                  src="https://www.youtube.com/embed/MmB9b5njVbA" 
+                  title="YouTube video player" 
+                  frameBorder="0" 
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                  allowFullScreen
+                ></iframe>
               </div>
-              <div className={styles.ytText}>
-                <h4>Subscribe to my YouTube Channel</h4>
-                <p>Check out my latest videos, tutorials, and showcases!</p>
+              {/* VIDEO 2 */}
+              <div className={styles.videoWrapper}>
+                <iframe 
+                  src="https://www.youtube.com/embed/MmB9b5njVbA" 
+                  title="YouTube video player" 
+                  frameBorder="0" 
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                  allowFullScreen
+                ></iframe>
               </div>
             </div>
-            <a href="https://www.youtube.com/@d4vide106" target="_blank" rel="noreferrer" className={styles.ytButton}>
-              Visit Channel
-            </a>
           </div>
         </div>
-
       </div>
     </section>
   );
