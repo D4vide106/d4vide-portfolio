@@ -18,6 +18,7 @@
   font-weight: 700;
   margin-bottom: 4rem;
   text-align: center;
+  letter-spacing: -0.02em;
 }
 
 .highlight {
@@ -39,24 +40,28 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 2.5rem;
+  gap: 2rem;
+  align-items: stretch;
 }
 
 .card {
   padding: 3rem 2rem;
-  border-radius: 1.5rem;
+  border-radius: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-  border: 1px solid rgba(59, 130, 246, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
 }
 
 .card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-  border-color: rgba(59, 130, 246, 0.4);
+  transform: translateY(-4px);
+  border-color: rgba(59, 130, 246, 0.3);
+  box-shadow: 0 12px 40px rgba(59, 130, 246, 0.15);
 }
 
 .iconWrapper {
@@ -67,24 +72,29 @@
   align-items: center;
   width: 80px;
   height: 80px;
-  border-radius: 50%;
+  border-radius: 24px; /* Squircle style */
   background: rgba(15, 23, 42, 0.8);
-  border: 1px solid var(--border-color);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: transform 0.3s ease;
+}
+
+.card:hover .iconWrapper {
+  transform: scale(1.1);
 }
 
 .iconGlow {
   position: absolute;
   inset: 0;
-  border-radius: 50%;
+  border-radius: inherit;
   background: var(--accent-color);
-  filter: blur(15px);
-  opacity: 0.3;
+  filter: blur(12px);
+  opacity: 0.15;
   z-index: -1;
   transition: opacity 0.3s ease;
 }
 
 .card:hover .iconGlow {
-  opacity: 0.6;
+  opacity: 0.4;
 }
 
 .icon {
@@ -92,12 +102,14 @@
 }
 
 .cardTitle {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 1rem;
+  color: #f8fafc;
 }
 
 .cardDesc {
   color: #94a3b8;
   line-height: 1.6;
+  font-size: 0.95rem;
 }

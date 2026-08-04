@@ -1,4 +1,4 @@
-import { Play, Gamepad2, MessageCircle, GitBranch } from "lucide-react";
+import { FaYoutube, FaTwitch, FaDiscord, FaGithub } from "react-icons/fa";
 import styles from "./Footer.module.css";
 
 export default function Footer({ dict }: { dict: any }) {
@@ -11,16 +11,16 @@ export default function Footer({ dict }: { dict: any }) {
         
         <div className={styles.socials}>
           <a href="#" className={styles.socialLink} aria-label="YouTube">
-            <Play size={20} />
+            <FaYoutube size={20} />
           </a>
           <a href="#" className={styles.socialLink} aria-label="Twitch">
-            <Gamepad2 size={20} />
+            <FaTwitch size={20} />
           </a>
           <a href="#" className={styles.socialLink} aria-label="Discord">
-            <MessageCircle size={20} />
+            <FaDiscord size={20} />
           </a>
           <a href="#" className={styles.socialLink} aria-label="GitHub">
-            <GitBranch size={20} />
+            <FaGithub size={20} />
           </a>
         </div>
         

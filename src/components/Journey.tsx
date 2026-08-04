@@ -1,23 +1,23 @@
-import { Terminal, Network, Code } from "lucide-react";
+import { FiTerminal, FiWifi, FiCode } from "react-icons/fi";
 import styles from "./Journey.module.css";
 
 export default function Journey({ dict }: { dict: any }) {
   const skills = [
     {
       id: "scripting",
-      icon: <Terminal size={32} className={styles.icon} />,
+      icon: <FiTerminal size={32} className={styles.icon} />,
       title: dict.scripting,
       desc: dict.scriptingDesc
     },
     {
       id: "networking",
-      icon: <Network size={32} className={styles.icon} />,
+      icon: <FiWifi size={32} className={styles.icon} />,
       title: dict.networking,
       desc: dict.networkingDesc
     },
     {
       id: "development",
-      icon: <Code size={32} className={styles.icon} />,
+      icon: <FiCode size={32} className={styles.icon} />,
       title: dict.development,
       desc: dict.developmentDesc
     }

@@ -1,4 +1,4 @@
-import { User } from "lucide-react";
+import { FaUserCircle } from "react-icons/fa";
 import styles from "./Hero.module.css";
 
 export default function Hero({ dict }: { dict: any }) {
@@ -8,7 +8,7 @@ export default function Hero({ dict }: { dict: any }) {
         <div className={styles.imageWrapper}>
           <div className={styles.glow}></div>
           <div className={styles.placeholderImage}>
-            <User size={80} color="var(--accent-color)" />
+            <FaUserCircle size={80} color="var(--accent-color)" />
           </div>
         </div>
         
