@@ -7,9 +7,11 @@ export default function Hero({ dict }: { dict: any }) {
       <div className={styles.content}>
         <div className={styles.imageWrapper}>
           <div className={styles.glow}></div>
-          <div className={styles.placeholderImage}>
-            <FaUserCircle size={80} color="var(--accent-color)" />
-          </div>
+          <img 
+            src="https://mc-heads.net/avatar/_D4vide106_/150" 
+            alt="_D4vide106_" 
+            className={styles.avatarImage} 
+          />
         </div>
         
         <h1 className={styles.title}>

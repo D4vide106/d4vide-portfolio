@@ -112,6 +112,13 @@
   font-weight: 700;
 }
 
+.dlBreakdown {
+  color: #8b949e;
+  font-size: 0.85rem;
+  font-style: italic;
+  margin-left: 0.5rem;
+}
+
 .description {
   color: #c9d1d9;
   line-height: 1.8;

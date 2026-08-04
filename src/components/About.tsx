@@ -47,10 +47,10 @@ export default function About({ dict }: { dict: any }) {
           
           <div className={styles.leftCol}>
             <div className={styles.skinWrapper}>
-              {/* Dynamic 3D skin from mc-heads using username D4vide106 */}
+              {/* Dynamic 3D skin from mc-heads using username _D4vide106_ */}
               <img 
-                src="https://mc-heads.net/body/D4vide106/right" 
-                alt="D4vide106 Minecraft Skin" 
+                src="https://mc-heads.net/body/_D4vide106_/right" 
+                alt="_D4vide106_ Minecraft Skin" 
                 className={styles.skinImage}
               />
             </div>
@@ -85,7 +85,10 @@ export default function About({ dict }: { dict: any }) {
             <div className={styles.totalDownloadsBadge}>
               <span className={styles.dlLabel}>Total Downloads:</span> 
               <span className={styles.dlValue}>
-                {grandTotal > 0 ? grandTotal.toLocaleString() + "+" : "Loading..."}
+                100,000+
+              </span>
+              <span className={styles.dlBreakdown}>
+                (71k+ CurseForge, 29k+ Modrinth)
               </span>
             </div>
             
