@@ -27,6 +27,7 @@ export default function Projects({ dict }: { dict: any }) {
   const [cfData, setCfData] = useState<Record<string, any>>({});
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("downloads");
+  const [filterType, setFilterType] = useState("All");
 
   useEffect(() => {
     async function fetchCF() {
@@ -109,9 +110,12 @@ export default function Projects({ dict }: { dict: any }) {
       }
     });
 
-    // Apply Filters and Sorting
     let filtered = list.filter(p => p.title.toLowerCase().includes(searchQuery.toLowerCase()) || p.description.toLowerCase().includes(searchQuery.toLowerCase()));
     
+    if (filterType !== "All") {
+      filtered = filtered.filter(p => p.project_type === filterType.toLowerCase());
+    }
+
     filtered.sort((a, b) => {
       if (sortBy === "downloads") return b.downloads - a.downloads;
       if (sortBy === "date") return new Date(b.updated).getTime() - new Date(a.updated).getTime();
@@ -120,7 +124,9 @@ export default function Projects({ dict }: { dict: any }) {
     });
 
     return filtered;
-  }, [modrinthProjects, cfData, searchQuery, sortBy]);
+  }, [modrinthProjects, cfData, searchQuery, sortBy, filterType]);
+
+  const isFiltered = searchQuery !== "" || filterType !== "All" || sortBy !== "downloads";
 
   const getCategoryIcon = (type: string) => {
     switch(type) {
@@ -131,93 +137,110 @@ export default function Projects({ dict }: { dict: any }) {
     }
   };
 
+  const renderCard = (project: any, index: number) => {
+    const projectType = project.project_type || "mod";
+    const mainLink = project.modrinthUrl || project.cfUrl;
+    
+    return (
+      <a href={mainLink} target="_blank" rel="noopener noreferrer" key={`${project.id}-${index}`} className={styles.modrinthCard}>
+        <div className={styles.cardHeader}>
+          <div className={styles.logoWrapper}>
+            {project.icon_url ? (
+              <img src={project.icon_url} alt={project.title} className={styles.projectLogo} />
+            ) : (
+              <div className={styles.projectLogoPlaceholder}>{getCategoryIcon(projectType)}</div>
+            )}
+          </div>
+          
+          <div className={styles.titleArea}>
+            <h4 className={styles.cardTitle}>{project.title}</h4>
+            <p className={styles.cardDesc}>{project.description}</p>
+            
+            <div className={styles.tagsContainer}>
+              <span className={styles.typeBadge}>
+                {getCategoryIcon(projectType)} {projectType}
+              </span>
+              {project.categories.slice(0, 3).map((cat: string) => (
+                <span key={cat} className={styles.tagBadge}>{cat}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+        
+        <div className={styles.cardFooter}>
+          <div className={styles.statsLeft}>
+            <div className={styles.statItem}>
+              <FiDownload className={styles.statIcon} /> 
+              <span className={styles.statValue}>{project.downloads.toLocaleString()}</span>
+            </div>
+            <div className={styles.statItem}>
+              <FiClock className={styles.statIcon} /> 
+              <span className={styles.statValue}>{project.updated ? new Date(project.updated).toLocaleDateString() : "N/A"}</span>
+            </div>
+          </div>
+          <div className={styles.platforms}>
+            {project.hasModrinth && <SiModrinth size={16} color="#1bd96a" title="Modrinth" />}
+            {project.hasCF && <SiCurseforge size={16} color="#f16436" title="CurseForge" />}
+            {project.isMultiplatform && <SiItchdotio size={16} color="#fa5c5c" title="Itch.io" />}
+            {project.isMultiplatform && <SiGamejolt size={16} color="#ccff00" title="GameJolt" />}
+          </div>
+        </div>
+      </a>
+    );
+  };
+
   return (
     <section id="projects" className={styles.projectsSection}>
       <div className={styles.container}>
         
-        {/* Top Controls */}
         <div className={styles.controlsBar}>
-          <div className={styles.searchBox}>
-            <FiSearch className={styles.searchIcon} />
-            <input 
-              type="text" 
-              placeholder="Search..." 
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className={styles.searchInput}
-            />
+          <div className={styles.filtersGroup}>
+            {["All", "Mod", "Modpack", "Datapack"].map(type => (
+              <button 
+                key={type}
+                className={`${styles.filterBtn} ${filterType === type ? styles.activeFilter : ""}`}
+                onClick={() => setFilterType(type)}
+              >
+                {type}s
+              </button>
+            ))}
           </div>
-          
-          <div className={styles.sortBox}>
-            <span className={styles.sortLabel}>Sort by:</span>
-            <select 
-              value={sortBy} 
-              onChange={(e) => setSortBy(e.target.value)}
-              className={styles.sortSelect}
-            >
-              <option value="downloads">Downloads</option>
-              <option value="date">Recently Updated</option>
-              <option value="name">Name (A-Z)</option>
-            </select>
+
+          <div className={styles.searchAndSort}>
+            <div className={styles.searchBox}>
+              <FiSearch className={styles.searchIcon} />
+              <input 
+                type="text" 
+                placeholder="Search..." 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className={styles.searchInput}
+              />
+            </div>
+            
+            <div className={styles.sortBox}>
+              <span className={styles.sortLabel}>Sort by:</span>
+              <select 
+                value={sortBy} 
+                onChange={(e) => setSortBy(e.target.value)}
+                className={styles.sortSelect}
+              >
+                <option value="downloads">Downloads</option>
+                <option value="date">Recently Updated</option>
+                <option value="name">Name (A-Z)</option>
+              </select>
+            </div>
           </div>
         </div>
         
-        {/* Marquee Area */}
         <div className={styles.marqueeContainer}>
           <div className={styles.marqueeWrapper}>
-            <div className={styles.marqueeTrack}>
-              {/* Render twice for infinite loop effect */}
-              {[...mergedProjects, ...mergedProjects].map((project: any, index: number) => {
-                const projectType = project.project_type || "mod";
-                const mainLink = project.modrinthUrl || project.cfUrl;
-
-                return (
-                  <a href={mainLink} target="_blank" rel="noopener noreferrer" key={`${project.id}-${index}`} className={styles.modrinthCard}>
-                    <div className={styles.cardHeader}>
-                      <div className={styles.logoWrapper}>
-                        {project.icon_url ? (
-                          <img src={project.icon_url} alt={project.title} className={styles.projectLogo} />
-                        ) : (
-                          <div className={styles.projectLogoPlaceholder}>{getCategoryIcon(projectType)}</div>
-                        )}
-                      </div>
-                      
-                      <div className={styles.titleArea}>
-                        <h4 className={styles.cardTitle}>{project.title}</h4>
-                        <p className={styles.cardDesc}>{project.description}</p>
-                        
-                        <div className={styles.tagsContainer}>
-                          <span className={styles.typeBadge}>
-                            {getCategoryIcon(projectType)} {projectType}
-                          </span>
-                          {project.categories.slice(0, 3).map((cat: string) => (
-                            <span key={cat} className={styles.tagBadge}>{cat}</span>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className={styles.cardFooter}>
-                      <div className={styles.statsLeft}>
-                        <div className={styles.statItem}>
-                          <FiDownload className={styles.statIcon} /> 
-                          <span className={styles.statValue}>{project.downloads.toLocaleString()}</span>
-                        </div>
-                        <div className={styles.statItem}>
-                          <FiClock className={styles.statIcon} /> 
-                          <span className={styles.statValue}>{project.updated ? new Date(project.updated).toLocaleDateString() : "N/A"}</span>
-                        </div>
-                      </div>
-                      <div className={styles.platforms}>
-                        {project.hasModrinth && <SiModrinth size={16} color="#1bd96a" title="Modrinth" />}
-                        {project.hasCF && <SiCurseforge size={16} color="#f16436" title="CurseForge" />}
-                        {project.isMultiplatform && <SiItchdotio size={16} color="#fa5c5c" title="Itch.io" />}
-                        {project.isMultiplatform && <SiGamejolt size={16} color="#ccff00" title="GameJolt" />}
-                      </div>
-                    </div>
-                  </a>
-                );
-              })}
+            <div className={isFiltered ? styles.staticGrid : styles.marqueeTrack}>
+              {isFiltered ? (
+                mergedProjects.map((p: any, i: number) => renderCard(p, i))
+              ) : (
+                [...mergedProjects, ...mergedProjects].map((p: any, i: number) => renderCard(p, i))
+              )}
             </div>
           </div>
         </div>
