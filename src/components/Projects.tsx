@@ -113,7 +113,16 @@ export default function Projects({ dict }: { dict: any }) {
     let filtered = list.filter(p => p.title.toLowerCase().includes(searchQuery.toLowerCase()) || p.description.toLowerCase().includes(searchQuery.toLowerCase()));
     
     if (filterType !== "All") {
-      filtered = filtered.filter(p => p.project_type === filterType.toLowerCase());
+      filtered = filtered.filter(p => {
+        const type = filterType.toLowerCase();
+        if (type === "datapack") {
+          return p.categories.some((c: string) => c.toLowerCase().includes("datapack")) || p.title.toLowerCase().includes("datapack");
+        }
+        if (type === "resourcepack") {
+          return p.project_type === "resourcepack";
+        }
+        return p.project_type === type;
+      });
     }
 
     filtered.sort((a, b) => {
@@ -195,13 +204,13 @@ export default function Projects({ dict }: { dict: any }) {
         
         <div className={styles.controlsBar}>
           <div className={styles.filtersGroup}>
-            {["All", "Mod", "Modpack", "Datapack"].map(type => (
+            {["All", "Mod", "Modpack", "Datapack", "Resourcepack"].map(type => (
               <button 
                 key={type}
                 className={`${styles.filterBtn} ${filterType === type ? styles.activeFilter : ""}`}
                 onClick={() => setFilterType(type)}
               >
-                {type}s
+                {type === "All" ? "All" : `${type}s`}
               </button>
             ))}
           </div>
@@ -237,7 +246,11 @@ export default function Projects({ dict }: { dict: any }) {
           <div className={styles.marqueeWrapper}>
             <div className={isFiltered ? styles.staticGrid : styles.marqueeTrack}>
               {isFiltered ? (
-                mergedProjects.map((p: any, i: number) => renderCard(p, i))
+                mergedProjects.length > 0 ? (
+                  mergedProjects.map((p: any, i: number) => renderCard(p, i))
+                ) : (
+                  <div className={styles.emptyState}>No projects found for this filter.</div>
+                )
               ) : (
                 [...mergedProjects, ...mergedProjects].map((p: any, i: number) => renderCard(p, i))
               )}
