@@ -23,16 +23,19 @@ export default function TotalDownloads() {
       let modrinthSum = 0;
       let cfSum = 0;
 
+      const allSlugs = new Set(CF_SLUGS);
+
       try {
         const mrRes = await fetch("https://api.modrinth.com/v2/user/D4vide106/projects");
         if (mrRes.ok) {
           const mrData = await mrRes.json();
           modrinthSum = mrData.reduce((acc: number, p: any) => acc + p.downloads, 0);
+          mrData.forEach((p: any) => allSlugs.add(p.slug));
         }
       } catch (e) {}
 
-      for (const slug of CF_SLUGS) {
-        for (const type of ["modpacks", "mc-mods", "texture-packs"]) {
+      for (const slug of Array.from(allSlugs)) {
+        for (const type of ["modpacks", "mc-mods", "texture-packs", "customization", "mc-addons"]) {
           try {
             const res = await fetch(`https://api.cfwidget.com/minecraft/${type}/${slug}`);
             if (res.ok) {

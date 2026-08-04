@@ -39,8 +39,13 @@ export default function Projects({ dict }: { dict: any }) {
   useEffect(() => {
     async function fetchCF() {
       const dataMap: Record<string, any> = {};
-      for (const slug of CF_SLUGS) {
-        for (const type of ["modpacks", "mc-mods", "texture-packs"]) {
+      const allSlugs = new Set(CF_SLUGS);
+      if (modrinthProjects) {
+        modrinthProjects.forEach((p: any) => allSlugs.add(p.slug));
+      }
+
+      for (const slug of Array.from(allSlugs)) {
+        for (const type of ["modpacks", "mc-mods", "texture-packs", "customization", "mc-addons"]) {
           try {
             const res = await fetch(`https://api.cfwidget.com/minecraft/${type}/${slug}`);
             if (res.ok) {
@@ -57,7 +62,7 @@ export default function Projects({ dict }: { dict: any }) {
       setLoadingCF(false);
     }
     fetchCF();
-  }, []);
+  }, [modrinthProjects]);
 
   const mergedProjects = useMemo(() => {
     const list: any[] = [];

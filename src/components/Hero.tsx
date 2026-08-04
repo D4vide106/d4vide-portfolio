@@ -85,6 +85,7 @@ export default function Hero({ dict, aboutDict }: { dict: any, aboutDict: any })
           <div className={styles.skillsGrid}>
             {skills.map(skill => (
               <div key={skill.name} className={styles.skillBox}>
+
                 <div className={styles.skillIcon}>{skill.icon}</div>
                 <span className={styles.skillName}>{skill.name}</span>
               </div>
@@ -101,17 +102,7 @@ export default function Hero({ dict, aboutDict }: { dict: any, aboutDict: any })
               {/* VIDEO 1 */}
               <div className={styles.videoWrapper}>
                 <iframe 
-                  src="https://www.youtube.com/embed/MmB9b5njVbA" 
-                  title="YouTube video player" 
-                  frameBorder="0" 
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                  allowFullScreen
-                ></iframe>
-              </div>
-              {/* VIDEO 2 */}
-              <div className={styles.videoWrapper}>
-                <iframe 
-                  src="https://www.youtube.com/embed/MmB9b5njVbA" 
+                  src="https://www.youtube.com/embed/8fnO7HA9wRY" 
                   title="YouTube video player" 
                   frameBorder="0" 
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
