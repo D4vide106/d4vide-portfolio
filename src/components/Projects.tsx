@@ -12,7 +12,10 @@ const CF_SLUGS = [
   "project-boss-rpg",
   "project-horror",
   "structural-beyond",
-  "bosstweak-3d"
+  "bosstweak-3d",
+  "project-the-rpg-reborn",
+  "project-gunparty",
+  "project-realistic-rpg"
 ];
 
 // Known projects that are also on GameJolt and Itch.io
