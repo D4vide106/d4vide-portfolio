@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import styles from "./HackerIntro.module.css";
-import { FaSkullCrossbones } from "react-icons/fa";
+import { FaExclamationTriangle, FaCheckCircle } from "react-icons/fa";
 
 const introLines = [
   "Wake up...",
@@ -30,77 +30,69 @@ const introLines = [
   "SYSTEM COMPROMISED."
 ];
 
+function sleep(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 export default function HackerIntro() {
   const [lines, setLines] = useState<string[]>([]);
-  const [currentLineIdx, setCurrentLineIdx] = useState(0);
-  
-  // States for epic popups
   const [showUnauthorized, setShowUnauthorized] = useState(false);
   const [showAccessGranted, setShowAccessGranted] = useState(false);
   const [finished, setFinished] = useState(false);
-  
   const audioRef = useRef<HTMLAudioElement>(null);
+  
+  // Guard against strict mode double execution
+  const hasRun = useRef(false);
 
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = 0.5;
       audioRef.current.play().catch(e => console.log("Audio autoplay blocked by browser."));
     }
-  }, []);
 
-  useEffect(() => {
-    if (finished || showAccessGranted) return;
-    if (showUnauthorized) return; // Pause terminal while UNAUTHORIZED is flashing
+    if (hasRun.current) return;
+    hasRun.current = true;
 
-    if (currentLineIdx < introLines.length) {
-      const line = introLines[currentLineIdx];
-      
-      if (line === "[TRIGGER_UNAUTH]") {
-        setShowUnauthorized(true);
-        // Show red popup for 800ms, then hide and proceed
-        setTimeout(() => {
+    async function runSequence() {
+      for (const line of introLines) {
+        if (line === "[TRIGGER_UNAUTH]") {
+          setShowUnauthorized(true);
+          await sleep(800);
           setShowUnauthorized(false);
-          setCurrentLineIdx(prev => prev + 1);
           setLines(prev => [...prev, "[WARNING] ACCESS DENIED."]);
-        }, 800);
-        // Do not return a cleanup function here, otherwise the timer gets canceled immediately when state changes!
-        return;
-      }
-      
-      let delay = 250;
-      if (line.includes("0x") || line.includes("node") || line.includes("Decrypting mainframe")) {
-        delay = 40; 
-      } else if (line.includes("SYSTEM COMPROMISED")) {
-        delay = 500; 
-      } else {
-        delay = 100 + Math.random() * 150; 
-      }
-      
-      const timer = setTimeout(() => {
+          continue;
+        }
+
+        let delay = 250;
+        if (line.includes("0x") || line.includes("node") || line.includes("Decrypting mainframe")) {
+          delay = 40; 
+        } else if (line.includes("SYSTEM COMPROMISED")) {
+          delay = 500; 
+        } else {
+          delay = 100 + Math.random() * 150; 
+        }
+
         setLines(prev => [...prev, line]);
-        setCurrentLineIdx(prev => prev + 1);
-      }, delay);
+        await sleep(delay);
+      }
+
+      // Finish sequence
+      await sleep(300);
+      setShowAccessGranted(true);
+      await sleep(2500);
       
-      return () => clearTimeout(timer);
-    } else {
-      // Trigger Access Granted popup!
-      const accessTimer = setTimeout(() => {
-        setShowAccessGranted(true);
-        
-        // After 2.5 seconds of showing Access Granted, finish the intro
-        setTimeout(() => {
-          if (audioRef.current) audioRef.current.pause();
-          setFinished(true);
-        }, 2500);
-      }, 300);
-      return () => clearTimeout(accessTimer);
+      if (audioRef.current) audioRef.current.pause();
+      setFinished(true);
     }
-  }, [currentLineIdx, finished, showAccessGranted, showUnauthorized]);
+
+    runSequence();
+  }, []);
 
   if (finished) return null;
 
   return (
     <div className={styles.introContainer}>
+      <div className={styles.scanlines}></div>
       <audio 
         ref={audioRef}
         src="https://actions.google.com/sounds/v1/foley/typing_on_a_typewriter.ogg" 
@@ -128,13 +120,15 @@ export default function HackerIntro() {
 
       {showUnauthorized && (
         <div className={styles.unauthorizedPopup}>
-          UNAUTHORIZED <FaSkullCrossbones style={{ marginLeft: "0.5rem" }} />
+          <FaExclamationTriangle className={styles.alertIcon} />
+          <div className={styles.popupText}>SYSTEM ACCESS DENIED</div>
         </div>
       )}
 
       {showAccessGranted && (
         <div className={styles.accessPopup}>
-          ACCESS GRANTED
+          <FaCheckCircle className={styles.successIcon} />
+          <div className={styles.popupText}>SYSTEM COMPROMISED</div>
         </div>
       )}
     </div>

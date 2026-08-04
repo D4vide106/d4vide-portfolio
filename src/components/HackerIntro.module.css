@@ -1,12 +1,26 @@
 .introContainer {
   position: fixed;
   inset: 0;
-  background-color: #020617; /* Solid deep blue slate */
+  background-color: #050505; /* Near black */
   z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: 'Consolas', 'Courier New', monospace;
+  overflow: hidden;
+}
+
+.scanlines {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%,
+    rgba(0, 0, 0, 0.25) 50%
+  );
+  background-size: 100% 4px;
+  z-index: 15;
+  pointer-events: none;
+  opacity: 0.6;
 }
 
 .terminalWindow {
@@ -19,16 +33,17 @@
   justify-content: flex-start;
   align-items: flex-start;
   overflow-y: hidden;
+  z-index: 5;
 }
 
 .normalLine {
-  color: #0ea5e9;
+  color: #a1a1aa; /* Muted tech grey */
   margin-bottom: 0.2rem;
   font-size: 1.1rem;
 }
 
 .hashLine {
-  color: #38bdf8;
+  color: #52525b; /* Darker grey for hashes */
   margin-bottom: 0.1rem;
   font-size: 0.95rem;
   opacity: 0.8;
@@ -42,7 +57,7 @@
 }
 
 .cursor {
-  color: #0ea5e9;
+  color: #a1a1aa;
   animation: blink 1s step-end infinite;
   font-size: 1.2rem;
 }
@@ -55,41 +70,62 @@
 .overlayDarken {
   position: absolute;
   inset: 0;
-  background-color: rgba(2, 6, 23, 0.85);
+  background-color: rgba(0, 0, 0, 0.9);
   z-index: 10;
   animation: fadeIn 0.1s ease-out forwards;
 }
 
-.unauthorizedPopup {
+/* Base style for cinematic popups */
+.unauthorizedPopup, .accessPopup {
   position: absolute;
   z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   font-family: 'Inter', 'Courier New', sans-serif;
-  font-size: 4rem;
-  font-weight: 900;
-  color: #ef4444; /* Bright Red */
-  text-align: center;
-  text-shadow: 
-    0 0 5px rgba(239, 68, 68, 1),
-    0 0 10px rgba(239, 68, 68, 0.8),
-    0 0 20px rgba(239, 68, 68, 0.5);
   transform: scale(0.5);
-  animation: scaleUpEpic 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, shakeViolent 0.1s linear infinite 0.1s;
+}
+
+.unauthorizedPopup {
+  color: #e4e4e7; /* Metallic silver/white */
+  animation: scaleUpEpic 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, glitchShake 0.1s linear infinite 0.1s;
 }
 
 .accessPopup {
-  position: absolute;
-  z-index: 20;
-  font-family: 'Inter', 'Courier New', sans-serif;
-  font-size: 5rem;
-  font-weight: 900;
+  color: #22c55e; /* Matrix Green */
+  animation: scaleUpEpic 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, glitchShake 0.15s linear infinite 0.3s;
+}
+
+.alertIcon {
+  font-size: 8rem;
+  margin-bottom: 1rem;
+  color: #e4e4e7;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+}
+
+.successIcon {
+  font-size: 8rem;
+  margin-bottom: 1rem;
   color: #22c55e;
+  filter: drop-shadow(0 0 15px rgba(34, 197, 94, 0.6));
+}
+
+.popupText {
+  font-size: 4.5rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
   text-align: center;
-  text-shadow: 
-    0 0 5px rgba(34, 197, 94, 1),
-    0 0 10px rgba(34, 197, 94, 0.8),
-    0 0 20px rgba(34, 197, 94, 0.5);
-  transform: scale(0.5);
-  animation: scaleUpEpic 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, shakeEpic 0.1s linear infinite 0.2s;
+  text-shadow: 2px 2px 0px #000;
+}
+
+.unauthorizedPopup .popupText {
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+}
+
+.accessPopup .popupText {
+  filter: drop-shadow(0 0 15px rgba(34, 197, 94, 0.4));
 }
 
 @keyframes fadeIn {
@@ -102,28 +138,22 @@
   100% { transform: scale(1); opacity: 1; }
 }
 
-@keyframes shakeEpic {
-  0% { transform: translate(1px, 1px) rotate(0deg); }
-  25% { transform: translate(-1px, -1px) rotate(-1deg); }
-  50% { transform: translate(-1px, 1px) rotate(1deg); }
-  75% { transform: translate(1px, -1px) rotate(0deg); }
-  100% { transform: translate(1px, 1px) rotate(0deg); }
-}
-
-@keyframes shakeViolent {
-  0% { transform: translate(3px, 3px) rotate(0deg) scale(1); }
-  25% { transform: translate(-3px, -3px) rotate(-2deg) scale(1.05); }
-  50% { transform: translate(-3px, 3px) rotate(2deg) scale(1); }
-  75% { transform: translate(3px, -3px) rotate(0deg) scale(0.95); }
-  100% { transform: translate(3px, 3px) rotate(0deg) scale(1); }
+/* Industrial Glitch Shake */
+@keyframes glitchShake {
+  0% { transform: translate(1px, 1px) skew(0deg); }
+  20% { transform: translate(-1px, 0px) skew(-1deg); }
+  40% { transform: translate(0px, 1px) skew(1deg); }
+  60% { transform: translate(1px, -1px) skew(0deg); }
+  80% { transform: translate(-1px, 1px) skew(1deg); }
+  100% { transform: translate(0px, 0px) skew(0deg); }
 }
 
 /* For mobile responsiveness */
-@media (max-width: 600px) {
-  .accessPopup {
-    font-size: 3rem;
-  }
-  .unauthorizedPopup {
+@media (max-width: 768px) {
+  .popupText {
     font-size: 2.5rem;
+  }
+  .alertIcon, .successIcon {
+    font-size: 5rem;
   }
 }
