@@ -54,9 +54,9 @@ export default function HackerIntro() {
     hasRun.current = true;
 
     // Preload SFX
-    const errSound = new Audio("https://actions.google.com/sounds/v1/alarms/dosimeter_alarm.ogg");
+    const errSound = new Audio("https://actions.google.com/sounds/v1/science_fiction/computer_error.ogg");
     errSound.volume = 0.6;
-    const okSound = new Audio("https://actions.google.com/sounds/v1/science_fiction/power_up.ogg");
+    const okSound = new Audio("https://actions.google.com/sounds/v1/science_fiction/teleport.ogg");
     okSound.volume = 0.7;
 
     async function runSequence() {
@@ -91,11 +91,13 @@ export default function HackerIntro() {
       await sleep(2500);
       
       if (audioRef.current) audioRef.current.pause();
+      errSound.pause();
+      okSound.pause();
       setFinished(true);
     }
 
     runSequence();
-  }, []);
+  }, [introLines]);
 
   if (finished) return null;
 
@@ -104,9 +106,8 @@ export default function HackerIntro() {
       <div className={styles.scanlines}></div>
       <audio 
         ref={audioRef}
-        src="https://actions.google.com/sounds/v1/foley/typing_on_a_typewriter.ogg" 
+        src="https://actions.google.com/sounds/v1/office/keyboard_typing_fast.ogg" 
         loop
-        autoPlay 
       />
       
       <div className={styles.terminalWindow}>
