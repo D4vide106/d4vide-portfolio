@@ -30,9 +30,9 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     title: "PROJECT BOSS RPG",
     slug: "project-boss-rpg",
     description: "An epic RPG modpack with unique boss progression, custom gear, and questlines.",
-    icon_url: "https://cdn.modrinth.com/data/6qXHHAYn/365235145c0d9cc2cd208c674761ade3f3d1b825_96.webp",
+    icon_url: "https://cdn.modrinth.com/data/6qXHHAYn/365235145c0d9cc2cd208c674761ade3f3d1b825.png",
     type: "Modpack",
-    downloads: 1450,
+    downloads: 5420,
     updated: "2025-06-12",
     links: [
       { label: "CurseForge (Modpack)", url: "https://www.curseforge.com/minecraft/modpacks/project-boss-rpg", platform: "curseforge" },
@@ -44,9 +44,9 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     title: "SPIRAL DUNGEON OF BABEL",
     slug: "spiral-dungeon-of-babel",
     description: "Explore the tallest dungeon tower ever created! Available for Minecraft Java, Bedrock, and Datapack.",
-    icon_url: "https://cdn.modrinth.com/data/5Zdqv8rG/22f82f9f215c73845bedc57059c0c8143977d76f_96.webp",
+    icon_url: "https://cdn.modrinth.com/data/5Zdqv8rG/22f82f9f215c73845bedc57059c0c8143977d76f.png",
     type: "Mod / Datapack / Addon",
-    downloads: 3200,
+    downloads: 6800,
     updated: "2026-07-18",
     links: [
       { label: "CurseForge (Java Mod)", url: "https://www.curseforge.com/minecraft/mc-mods/sdob", platform: "curseforge" },
@@ -62,9 +62,9 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     title: "STRUCTURAL BEYOND",
     slug: "structural-beyond",
     description: "Adds dozens of unique, breathtaking structures to your world across Java, Bedrock, and Datapacks!",
-    icon_url: "https://cdn.modrinth.com/data/6Yica65F/6a4532c2cd308d8791e5ba2afc12d4aca1d07d65_96.webp",
+    icon_url: "https://cdn.modrinth.com/data/6Yica65F/6a4532c2cd308d8791e5ba2afc12d4aca1d07d65.png",
     type: "Mod / Datapack / Addon",
-    downloads: 5400,
+    downloads: 12400,
     updated: "2026-07-17",
     links: [
       { label: "CurseForge (Java Mod)", url: "https://www.curseforge.com/minecraft/mc-mods/structural-beyond", platform: "curseforge" },
@@ -147,7 +147,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     title: "PROJECT MAINTENANCE UNIVERSAL",
     slug: "pmaintanceuniversal",
     description: "Universal server maintenance plugin for Minecraft Java servers with customizable MOTDs.",
-    icon_url: "https://cdn.modrinth.com/data/y11fODQe/99a1f5300424ed796792d9454768eaff5d5b7b98_96.webp",
+    icon_url: "https://cdn.modrinth.com/data/y11fODQe/99a1f5300424ed796792d9454768eaff5d5b7b98.png",
     type: "Plugin",
     downloads: 620,
     updated: "2025-02-10",
@@ -160,15 +160,16 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     title: "INFINITYSMART SERVER",
     slug: "infinitysmart",
     description: "Crossplatform European Minecraft Java & Bedrock network featuring InfinitySMP and minigames.",
-    icon_url: "https://cdn.modrinth.com/data/c2w1TKgN/4da379944f5c563294a488f7738950ebc6a68c74_96.webp",
+    icon_url: "https://cdn.modrinth.com/data/c2w1TKgN/4da379944f5c563294a488f7738950ebc6a68c74.png",
     type: "Minecraft Server",
-    downloads: 12500,
+    downloads: 15200,
     updated: "2026-08-01",
     links: [
       { label: "Modrinth (Server)", url: "https://modrinth.com/minecraft_java_server/infinitysmart", platform: "modrinth" }
     ]
   }
 ];
+
 
 
 export default function Projects({ dict }: { dict: any }) {

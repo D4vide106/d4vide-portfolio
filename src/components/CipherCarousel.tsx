@@ -93,7 +93,11 @@ export default function CipherCarousel({ projects }: { projects: ProjectItem[] }
       {/* 2D Circular Constellation Ring Stage (Matching Image 2 & 3) */}
       <div className={styles.stage2D}>
         <div className={styles.ringCenterEmblem}>
-          <div className={styles.innerSpinGlyph}>c</div>
+          <img 
+            src="https://mc-heads.net/avatar/_D4vide106_/64" 
+            alt="_D4vide106_" 
+            className={styles.centerAvatarHead} 
+          />
         </div>
 
         <div className={styles.constellationTrack}>
@@ -137,7 +141,6 @@ export default function CipherCarousel({ projects }: { projects: ProjectItem[] }
                     alt={project.title} 
                     className={styles.cardImg2D}
                     referrerPolicy="no-referrer"
-                    crossOrigin="anonymous"
                     onError={(e) => {
                       // Fallback icon rendering if any CDN blocks loading
                       e.currentTarget.style.display = "none";
@@ -157,6 +160,7 @@ export default function CipherCarousel({ projects }: { projects: ProjectItem[] }
           })}
         </div>
       </div>
+
 
       {/* Live Bottom Information Bar */}
       {activeProject && (
