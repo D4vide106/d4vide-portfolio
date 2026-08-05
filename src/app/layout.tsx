@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Syne, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import { LiveStatsProvider } from "@/context/LiveStatsContext";
 
 const syne = Syne({
   subsets: ["latin"],
@@ -26,8 +27,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${syne.variable} ${spaceGrotesk.variable} font-sans`}>{children}</body>
+      <body className={`${syne.variable} ${spaceGrotesk.variable} font-sans`}>
+        <LiveStatsProvider>{children}</LiveStatsProvider>
+      </body>
     </html>
   );
 }
+
 

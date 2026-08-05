@@ -1,3 +1,10 @@
+.statsContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
 .downloadsBadge {
   display: inline-flex;
   align-items: center;
@@ -12,6 +19,7 @@
   letter-spacing: 0.15em;
   text-transform: uppercase;
   transition: all 0.3s ease;
+  position: relative;
 }
 
 .downloadsBadge:hover {
@@ -19,12 +27,53 @@
   border-color: #ffffff;
 }
 
+.viewsBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 1.2rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  color: #aaaaaa;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+
+.viewsBadge:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.viewIcon {
+  font-size: 0.85rem;
+}
+
+.liveDot {
+  width: 6px;
+  height: 6px;
+  background-color: #10b981;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #10b981;
+  animation: blink 1.8s infinite ease-in-out;
+  margin-left: 0.2rem;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.7); }
+}
+
 .icon {
   color: #ffffff;
   font-size: 1rem;
 }
 
-.downloadsBadge strong {
+.downloadsBadge strong, .viewsBadge strong {
   color: #ffffff;
   font-family: var(--font-heading);
   font-weight: 800;
@@ -56,3 +105,4 @@
   0% { transform: translateX(-100%); }
   100% { transform: translateX(100%); }
 }
+

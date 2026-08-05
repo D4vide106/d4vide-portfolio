@@ -1,32 +1,30 @@
 "use client";
-import { useState, useEffect } from "react";
+
 import { FiDownloadCloud } from "react-icons/fi";
+import { useLiveStats } from "@/context/LiveStatsContext";
 import styles from "./TotalDownloads.module.css";
 
 export default function TotalDownloads() {
-  const [total, setTotal] = useState<number>(100342);
-
-  useEffect(() => {
-    async function fetchTotal() {
-      try {
-        const mrRes = await fetch("https://api.modrinth.com/v2/user/D4vide106/projects");
-        if (mrRes.ok) {
-          const mrData = await mrRes.json();
-          const modrinthSum = mrData.reduce((acc: number, p: any) => acc + (p.downloads || 0), 0);
-          setTotal((prev) => Math.max(prev, modrinthSum + 85000));
-        }
-      } catch (e) {}
-    }
-    fetchTotal();
-  }, []);
+  const { totalDownloads, portfolioViews } = useLiveStats();
 
   return (
-    <div className={styles.downloadsBadge}>
-      <FiDownloadCloud className={styles.icon} />
-      <span>
-        <strong>{total.toLocaleString()}</strong> TOTAL DOWNLOADS
-      </span>
+    <div className={styles.statsContainer}>
+      <div className={styles.downloadsBadge}>
+        <FiDownloadCloud className={styles.icon} />
+        <span>
+          <strong>{totalDownloads.toLocaleString()}</strong> TOTAL DOWNLOADS
+        </span>
+        <span className={styles.liveDot} title="Real-time live stats active" />
+      </div>
+
+      <div className={styles.viewsBadge}>
+        <span className={styles.viewIcon}>👁️</span>
+        <span>
+          <strong>{portfolioViews.toLocaleString()}</strong> PORTFOLIO VIEWS
+        </span>
+      </div>
     </div>
   );
 }
+
 

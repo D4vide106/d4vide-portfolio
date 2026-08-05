@@ -1,32 +1,21 @@
 "use client";
+
 import { useState, useEffect, useRef } from "react";
 import { FiDownload, FiExternalLink } from "react-icons/fi";
 import { FaCube } from "react-icons/fa";
 import { SiCurseforge, SiModrinth, SiGamejolt, SiItchdotio } from "react-icons/si";
 import styles from "./CipherCarousel.module.css";
+import { UnifiedProject } from "@/data/projectsData";
 
-interface ProjectLink {
-  label: string;
-  url: string;
-  platform: "modrinth" | "curseforge" | "gamejolt" | "itch";
-}
-
-interface ProjectItem {
-  id: string;
-  title: string;
-  slug: string;
-  description: string;
-  icon_url: string;
-  type: string;
-  downloads: number;
-  updated: string;
-  links: ProjectLink[];
-}
-
-export default function CipherCarousel({ projects }: { projects: ProjectItem[] }) {
+export default function CipherCarousel({
+  projects,
+  onSelectProject,
+}: {
+  projects: UnifiedProject[];
+  onSelectProject?: (project: UnifiedProject) => void;
+}) {
   const [rotationAngle, setRotationAngle] = useState(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const reqIdRef = useRef<number | null>(null);
@@ -82,17 +71,14 @@ export default function CipherCarousel({ projects }: { projects: ProjectItem[] }
     };
   }, []);
 
-  const getPlatformIcon = (platform: string) => {
-    switch (platform) {
-      case "modrinth": return <SiModrinth size={18} />;
-      case "curseforge": return <SiCurseforge size={18} />;
-      case "gamejolt": return <SiGamejolt size={18} />;
-      case "itch": return <SiItchdotio size={18} />;
-      default: return <FaCube size={18} />;
+  const activeProject =
+    hoveredIndex !== null && projects[hoveredIndex] ? projects[hoveredIndex] : projects[0];
+
+  const handleCardClick = (project: UnifiedProject) => {
+    if (onSelectProject) {
+      onSelectProject(project);
     }
   };
-
-  const activeProject = hoveredIndex !== null && projects[hoveredIndex] ? projects[hoveredIndex] : projects[0];
 
   return (
     <div ref={containerRef} className={styles.carouselSection}>
@@ -102,13 +88,13 @@ export default function CipherCarousel({ projects }: { projects: ProjectItem[] }
         <p className={styles.scrollHint}>[ SCROLL MOUSE WHEEL TO ROTATE & CHANGE DIRECTION ]</p>
       </div>
 
-      {/* 2D Circular Constellation Ring Stage (Matching Image 2 & 3) */}
+      {/* 2D Circular Constellation Ring Stage */}
       <div className={styles.stage2D}>
         <div className={styles.ringCenterEmblem}>
-          <img 
-            src="https://mc-heads.net/avatar/_D4vide106_/64" 
-            alt="_D4vide106_" 
-            className={styles.centerAvatarHead} 
+          <img
+            src="https://mc-heads.net/avatar/_D4vide106_/64"
+            alt="_D4vide106_"
+            className={styles.centerAvatarHead}
           />
         </div>
 
@@ -119,7 +105,6 @@ export default function CipherCarousel({ projects }: { projects: ProjectItem[] }
             const currentItemAngle = (stepAngle * idx + rotationAngle) % 360;
             const rad = (currentItemAngle * Math.PI) / 180;
 
-            // 2D Circle Coordinates on Screen Plane (Facing front directly)
             const radiusX = 370; // horizontal ellipse radius
             const radiusY = 220; // vertical ellipse radius
             const x = Math.cos(rad) * radiusX;
@@ -131,9 +116,13 @@ export default function CipherCarousel({ projects }: { projects: ProjectItem[] }
             return (
               <div
                 key={project.id || idx}
-                className={`${styles.card2D} ${isCurrentHovered ? styles.cardHovered : ""} ${isAnyHovered && !isCurrentHovered ? styles.cardDimmed : ""}`}
+                className={`${styles.card2D} ${
+                  isCurrentHovered ? styles.cardHovered : ""
+                } ${isAnyHovered && !isCurrentHovered ? styles.cardDimmed : ""}`}
                 style={{
-                  transform: `translate3d(${x}px, ${y}px, 0px) scale(${isCurrentHovered ? 1.3 : 1})`,
+                  transform: `translate3d(${x}px, ${y}px, 0px) scale(${
+                    isCurrentHovered ? 1.3 : 1
+                  })`,
                   zIndex: isCurrentHovered ? 999 : Math.round((Math.sin(rad) + 1) * 100),
                   opacity: isAnyHovered ? (isCurrentHovered ? 1 : 0.25) : 0.85,
                 }}
@@ -145,16 +134,15 @@ export default function CipherCarousel({ projects }: { projects: ProjectItem[] }
                   setHoveredIndex(null);
                   isHoveredRef.current = false;
                 }}
-                onClick={() => setSelectedProject(project)}
+                onClick={() => handleCardClick(project)}
               >
                 <div className={styles.cardImageContainer}>
-                  <img 
-                    src={project.icon_url} 
-                    alt={project.title} 
+                  <img
+                    src={project.icon_url}
+                    alt={project.title}
                     className={styles.cardImg2D}
                     referrerPolicy="no-referrer"
                     onError={(e) => {
-                      // Fallback icon rendering if any CDN blocks loading
                       e.currentTarget.style.display = "none";
                       const parent = e.currentTarget.parentElement;
                       if (parent) {
@@ -189,51 +177,15 @@ export default function CipherCarousel({ projects }: { projects: ProjectItem[] }
           </div>
 
           <div className={styles.infoActionsRight}>
-            <button className={styles.viewDetailsBtn} onClick={() => setSelectedProject(activeProject)}>
+            <button
+              className={styles.viewDetailsBtn}
+              onClick={() => handleCardClick(activeProject)}
+            >
               EXPLORE WORK <FiExternalLink style={{ marginLeft: 6 }} />
             </button>
-          </div>
-        </div>
-      )}
-
-      {/* Detail Modal Popup */}
-      {selectedProject && (
-        <div className={styles.modalOverlay} onClick={() => setSelectedProject(null)}>
-          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-            <button className={styles.modalCloseBtn} onClick={() => setSelectedProject(null)}>×</button>
-
-            <div className={styles.modalHeader}>
-              <div className={styles.modalLogoWrapper}>
-                <img 
-                  src={selectedProject.icon_url} 
-                  alt={selectedProject.title} 
-                  className={styles.modalLogo}
-                  referrerPolicy="no-referrer"
-                />
-              </div>
-              <div className={styles.modalTitleArea}>
-                <span className={styles.modalCategoryBadge}>{selectedProject.type}</span>
-                <h2>{selectedProject.title}</h2>
-                <p>{selectedProject.description}</p>
-              </div>
-            </div>
-
-            <div className={styles.modalLinks}>
-              <span className={styles.platformHeader}>AVAILABLE PLATFORMS & EDITIONS</span>
-              <div className={styles.platformButtons}>
-                {selectedProject.links.map((link, i) => (
-                  <a key={i} href={link.url} target="_blank" rel="noreferrer" className={styles.platformBtn}>
-                    {getPlatformIcon(link.platform)}
-                    <span>{link.label}</span>
-                  </a>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
       )}
     </div>
   );
 }
-
-
