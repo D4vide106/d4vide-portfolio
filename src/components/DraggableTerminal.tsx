@@ -21,13 +21,16 @@ const terminalText = [
 export default function DraggableTerminal() {
   const [position, setPosition] = useState({ x: 20, y: 100 });
   const [isDragging, setIsDragging] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
+  const [isMaximized, setIsMaximized] = useState(false);
   const dragStartPos = useRef({ x: 0, y: 0 });
+
   const [typedLines, setTypedLines] = useState<string[]>([]);
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
   const terminalRef = useRef<HTMLDivElement>(null);
 
-  // Initial animation logic
+  // Initial typewriter animation logic
   useEffect(() => {
     if (currentLineIndex >= terminalText.length) return;
 
@@ -55,6 +58,7 @@ export default function DraggableTerminal() {
   }, [currentLineIndex, currentCharIndex]);
 
   const handleMouseDown = (e: React.MouseEvent) => {
+    if (isMaximized) return;
     setIsDragging(true);
     dragStartPos.current = {
       x: e.clientX - position.x,
@@ -111,33 +115,69 @@ export default function DraggableTerminal() {
   };
 
   return (
-    <div 
-      ref={terminalRef}
-      className={styles.terminalContainer} 
-      style={{ left: `${position.x}px`, top: `${position.y}px` }}
-    >
-      <div 
-        className={styles.terminalHeader} 
-        onMouseDown={handleMouseDown}
-      >
-        <div className={styles.headerLeft}>
-          <FiTerminal className={styles.termIcon} />
-          <span>Windows PowerShell - Control Center</span>
-        </div>
-        <div className={styles.headerRight}>
-          <button className={styles.controlBtn}><FiMinus /></button>
-          <button className={styles.controlBtn}><FiSquare /></button>
-          <button className={`${styles.controlBtn} ${styles.closeBtn}`}><FiX /></button>
-        </div>
-      </div>
-      <div className={styles.terminalBody}>
-        {typedLines.map((line, i) => (
-          <div key={i} className={styles.terminalLine}>
-            {renderLine(line, i)}
-            {i === currentLineIndex && <span className={styles.cursor}>█</span>}
+    <>
+      {/* Minimized Bottom-Left Dock Badge */}
+      {isMinimized && (
+        <button 
+          className={styles.minimizedDockBadge}
+          onClick={() => setIsMinimized(false)}
+          title="Restore CMD Terminal"
+        >
+          <span className={styles.greenPulseDot}></span>
+          <FiTerminal className={styles.dockTermIcon} />
+          <span>[CMD] CONTROL CENTER</span>
+        </button>
+      )}
+
+      {/* Main Draggable CMD Window */}
+      {!isMinimized && (
+        <div 
+          ref={terminalRef}
+          className={`${styles.terminalContainer} ${isMaximized ? styles.maximizedContainer : ""}`} 
+          style={isMaximized ? {} : { left: `${position.x}px`, top: `${position.y}px` }}
+        >
+          <div 
+            className={styles.terminalHeader} 
+            onMouseDown={handleMouseDown}
+          >
+            <div className={styles.headerLeft}>
+              <FiTerminal className={styles.termIcon} />
+              <span>Windows PowerShell - Control Center</span>
+            </div>
+            <div className={styles.headerRight}>
+              <button 
+                className={styles.controlBtn} 
+                onClick={() => setIsMinimized(true)}
+                title="Minimize"
+              >
+                <FiMinus />
+              </button>
+              <button 
+                className={styles.controlBtn} 
+                onClick={() => setIsMaximized(!isMaximized)}
+                title={isMaximized ? "Restore" : "Maximize"}
+              >
+                <FiSquare />
+              </button>
+              <button 
+                className={`${styles.controlBtn} ${styles.closeBtn}`} 
+                onClick={() => setIsMinimized(true)}
+                title="Close"
+              >
+                <FiX />
+              </button>
+            </div>
           </div>
-        ))}
-      </div>
-    </div>
+          <div className={styles.terminalBody}>
+            {typedLines.map((line, i) => (
+              <div key={i} className={styles.terminalLine}>
+                {renderLine(line, i)}
+                {i === currentLineIndex && <span className={styles.cursor}>█</span>}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </>
   );
 }
