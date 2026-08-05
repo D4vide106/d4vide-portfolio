@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { FiDownload, FiExternalLink, FiCode, FiServer } from "react-icons/fi";
-import { FaCube, FaCubes, FaGamepad } from "react-icons/fa";
+import { FiDownload, FiExternalLink } from "react-icons/fi";
+import { FaCube } from "react-icons/fa";
 import { SiCurseforge, SiModrinth, SiGamejolt, SiItchdotio } from "react-icons/si";
 import styles from "./CipherCarousel.module.css";
 
@@ -29,11 +29,11 @@ export default function CipherCarousel({ projects }: { projects: ProjectItem[] }
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
 
   const reqIdRef = useRef<number | null>(null);
-  const velocityRef = useRef(0.18);
+  const velocityRef = useRef(0.15);
   const angleRef = useRef(0);
   const isHoveredRef = useRef(false);
 
-  // Smooth continuous rotation loop with momentum physics
+  // Smooth 2D Constellation Rotation Loop with Momentum Physics
   useEffect(() => {
     let lastTime = performance.now();
 
@@ -41,13 +41,13 @@ export default function CipherCarousel({ projects }: { projects: ProjectItem[] }
       const delta = (now - lastTime) / 16;
       lastTime = now;
 
-      if (Math.abs(velocityRef.current) > 0.18) {
-        velocityRef.current *= 0.95; // decelerate wheel scroll
+      if (Math.abs(velocityRef.current) > 0.15) {
+        velocityRef.current *= 0.95; // decelerate scroll wheel boost
       } else if (Math.abs(velocityRef.current) < 0.05) {
-        velocityRef.current = 0.18 * Math.sign(velocityRef.current || 1);
+        velocityRef.current = 0.15 * Math.sign(velocityRef.current || 1);
       }
 
-      const activeVel = isHoveredRef.current ? velocityRef.current * 0.15 : velocityRef.current;
+      const activeVel = isHoveredRef.current ? velocityRef.current * 0.1 : velocityRef.current;
       angleRef.current += activeVel * delta;
 
       setRotationAngle(angleRef.current);
@@ -60,13 +60,13 @@ export default function CipherCarousel({ projects }: { projects: ProjectItem[] }
     };
   }, []);
 
-  // Mouse wheel handler ("se uso rotellina cambia direzione")
+  // Mouse wheel scroll handler ("se uso rotellina cambia direzione")
   const handleWheel = (e: React.WheelEvent) => {
     const scrollDirection = e.deltaY > 0 ? 1 : -1;
-    velocityRef.current = scrollDirection * (Math.abs(velocityRef.current) + 0.7);
+    velocityRef.current = scrollDirection * (Math.abs(velocityRef.current) + 0.6);
 
-    if (Math.abs(velocityRef.current) > 4.0) {
-      velocityRef.current = 4.0 * Math.sign(velocityRef.current);
+    if (Math.abs(velocityRef.current) > 3.5) {
+      velocityRef.current = 3.5 * Math.sign(velocityRef.current);
     }
   };
 
@@ -90,73 +90,71 @@ export default function CipherCarousel({ projects }: { projects: ProjectItem[] }
         <p className={styles.scrollHint}>[ SCROLL MOUSE WHEEL TO ROTATE & CHANGE DIRECTION ]</p>
       </div>
 
-      {/* Diagonal 3D Stage Plane (Square Cards & Tilted Circle) */}
-      <div className={styles.stage3D}>
-        <div className={styles.diagonalPlane}>
-          <div className={styles.ringCenterEmblem}>
-            <div className={styles.innerSpinGlyph}>D4</div>
-          </div>
+      {/* 2D Circular Constellation Ring Stage (Matching Image 2 & 3) */}
+      <div className={styles.stage2D}>
+        <div className={styles.ringCenterEmblem}>
+          <div className={styles.innerSpinGlyph}>c</div>
+        </div>
 
-          <div className={styles.ringTrack}>
-            {projects.map((project, idx) => {
-              const count = projects.length;
-              const stepAngle = 360 / count;
-              const currentItemAngle = (stepAngle * idx + rotationAngle) % 360;
-              const rad = (currentItemAngle * Math.PI) / 180;
+        <div className={styles.constellationTrack}>
+          {projects.map((project, idx) => {
+            const count = projects.length;
+            const stepAngle = 360 / count;
+            const currentItemAngle = (stepAngle * idx + rotationAngle) % 360;
+            const rad = (currentItemAngle * Math.PI) / 180;
 
-              // 3D Diagonal Ellipse parameters
-              const radiusX = 390;
-              const radiusY = 140;
-              const x = Math.sin(rad) * radiusX;
-              const y = Math.cos(rad) * radiusY;
-              const scale = (Math.cos(rad) + 2.2) / 3.2;
-              const opacity = (Math.cos(rad) + 1.2) / 2.2;
-              const zIndex = Math.round((Math.cos(rad) + 1) * 100);
+            // 2D Circle Coordinates on Screen Plane (Facing front directly)
+            const radiusX = 370; // horizontal ellipse radius
+            const radiusY = 220; // vertical ellipse radius
+            const x = Math.cos(rad) * radiusX;
+            const y = Math.sin(rad) * radiusY;
 
-              const isCurrentHovered = hoveredIndex === idx;
-              const isAnyHovered = hoveredIndex !== null;
+            const isCurrentHovered = hoveredIndex === idx;
+            const isAnyHovered = hoveredIndex !== null;
 
-              return (
-                <div
-                  key={project.id || idx}
-                  className={`${styles.cardSquare3D} ${isCurrentHovered ? styles.cardHovered : ""} ${isAnyHovered && !isCurrentHovered ? styles.cardDimmed : ""}`}
-                  style={{
-                    transform: `translate3d(${x}px, ${y}px, 0px) scale(${isCurrentHovered ? scale * 1.35 : scale})`,
-                    zIndex: isCurrentHovered ? 999 : zIndex,
-                    opacity: isAnyHovered ? (isCurrentHovered ? 1 : 0.2) : opacity,
-                  }}
-                  onMouseEnter={() => {
-                    setHoveredIndex(idx);
-                    isHoveredRef.current = true;
-                  }}
-                  onMouseLeave={() => {
-                    setHoveredIndex(null);
-                    isHoveredRef.current = false;
-                  }}
-                  onClick={() => setSelectedProject(project)}
-                >
-                  <div className={styles.cardImageContainer}>
-                    <img 
-                      src={project.icon_url} 
-                      alt={project.title} 
-                      className={styles.cardImgSquare}
-                      onError={(e) => {
-                        e.currentTarget.style.display = "none";
-                        const parent = e.currentTarget.parentElement;
-                        if (parent) {
-                          const fallback = parent.querySelector(`.${styles.fallbackSquare}`);
-                          if (fallback) fallback.classList.remove(styles.hiddenFallback);
-                        }
-                      }}
-                    />
-                    <div className={`${styles.fallbackSquare} ${styles.hiddenFallback}`}>
-                      <FaCube size={36} color="#ffffff" />
-                    </div>
+            return (
+              <div
+                key={project.id || idx}
+                className={`${styles.card2D} ${isCurrentHovered ? styles.cardHovered : ""} ${isAnyHovered && !isCurrentHovered ? styles.cardDimmed : ""}`}
+                style={{
+                  transform: `translate3d(${x}px, ${y}px, 0px) scale(${isCurrentHovered ? 1.3 : 1})`,
+                  zIndex: isCurrentHovered ? 999 : Math.round((Math.sin(rad) + 1) * 100),
+                  opacity: isAnyHovered ? (isCurrentHovered ? 1 : 0.25) : 0.85,
+                }}
+                onMouseEnter={() => {
+                  setHoveredIndex(idx);
+                  isHoveredRef.current = true;
+                }}
+                onMouseLeave={() => {
+                  setHoveredIndex(null);
+                  isHoveredRef.current = false;
+                }}
+                onClick={() => setSelectedProject(project)}
+              >
+                <div className={styles.cardImageContainer}>
+                  <img 
+                    src={project.icon_url} 
+                    alt={project.title} 
+                    className={styles.cardImg2D}
+                    referrerPolicy="no-referrer"
+                    crossOrigin="anonymous"
+                    onError={(e) => {
+                      // Fallback icon rendering if any CDN blocks loading
+                      e.currentTarget.style.display = "none";
+                      const parent = e.currentTarget.parentElement;
+                      if (parent) {
+                        const fallback = parent.querySelector(`.${styles.fallbackSquare}`);
+                        if (fallback) fallback.classList.remove(styles.hiddenFallback);
+                      }
+                    }}
+                  />
+                  <div className={`${styles.fallbackSquare} ${styles.hiddenFallback}`}>
+                    <FaCube size={32} color="#ffffff" />
                   </div>
                 </div>
-              );
-            })}
-          </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 
@@ -183,7 +181,7 @@ export default function CipherCarousel({ projects }: { projects: ProjectItem[] }
         </div>
       )}
 
-      {/* Project Modal Popup */}
+      {/* Detail Modal Popup */}
       {selectedProject && (
         <div className={styles.modalOverlay} onClick={() => setSelectedProject(null)}>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
@@ -191,7 +189,13 @@ export default function CipherCarousel({ projects }: { projects: ProjectItem[] }
 
             <div className={styles.modalHeader}>
               <div className={styles.modalLogoWrapper}>
-                <img src={selectedProject.icon_url} alt={selectedProject.title} className={styles.modalLogo} />
+                <img 
+                  src={selectedProject.icon_url} 
+                  alt={selectedProject.title} 
+                  className={styles.modalLogo}
+                  referrerPolicy="no-referrer"
+                  crossOrigin="anonymous"
+                />
               </div>
               <div className={styles.modalTitleArea}>
                 <span className={styles.modalCategoryBadge}>{selectedProject.type}</span>
@@ -201,7 +205,7 @@ export default function CipherCarousel({ projects }: { projects: ProjectItem[] }
             </div>
 
             <div className={styles.modalLinks}>
-              <span className={styles.platformHeader}>AVAILABLE PLATFORMS & DOWNLOADS</span>
+              <span className={styles.platformHeader}>AVAILABLE PLATFORMS & EDITIONS</span>
               <div className={styles.platformButtons}>
                 {selectedProject.links.map((link, i) => (
                   <a key={i} href={link.url} target="_blank" rel="noreferrer" className={styles.platformBtn}>
@@ -217,3 +221,4 @@ export default function CipherCarousel({ projects }: { projects: ProjectItem[] }
     </div>
   );
 }
+

@@ -42,41 +42,28 @@
   margin-top: 0.4rem;
 }
 
-/* 3D Diagonal Tilted Stage Plane */
-.stage3D {
+/* 2D Constellation Ring Stage (Matching Image 2 & 3) */
+.stage2D {
   position: relative;
   width: 100%;
-  height: 480px;
+  height: 500px;
   display: flex;
   justify-content: center;
   align-items: center;
-  perspective: 1100px;
-}
-
-.diagonalPlane {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transform-style: preserve-3d;
-  transform: rotateX(42deg) rotateZ(-12deg);
 }
 
 .ringCenterEmblem {
   position: absolute;
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.2);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 5;
   backdrop-filter: blur(10px);
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
 }
 
 .innerSpinGlyph {
@@ -84,7 +71,6 @@
   font-size: 1.1rem;
   font-weight: 800;
   color: #ffffff;
-  letter-spacing: 0.05em;
   animation: spinGlyph 16s linear infinite;
 }
 
@@ -93,34 +79,33 @@
   100% { transform: rotate(360deg); }
 }
 
-.ringTrack {
+.constellationTrack {
   position: absolute;
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  transform-style: preserve-3d;
 }
 
-/* SQUARE 3D CARDS (1:1 Ratio) */
-.cardSquare3D {
+/* 2D Flat Cards (Facing Directly Front, Matching Image 2 & 3) */
+.card2D {
   position: absolute;
-  width: 170px;
-  height: 170px;
-  aspect-ratio: 1 / 1;
-  border-radius: 8px;
+  width: 220px;
+  height: 140px;
+  border-radius: 6px;
   overflow: hidden;
   cursor: pointer;
   background: #0d0d0d;
   border: 1px solid rgba(255, 255, 255, 0.15);
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, filter 0.4s ease, border-color 0.4s ease;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.85);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease, filter 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85);
 }
 
 .cardHovered {
   border-color: #ffffff !important;
   box-shadow: 0 25px 60px rgba(255, 255, 255, 0.25);
+  filter: brightness(1.1) !important;
 }
 
 .cardDimmed {
@@ -137,7 +122,7 @@
   align-items: center;
 }
 
-.cardImgSquare {
+.cardImg2D {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -375,9 +360,9 @@
 }
 
 @media (max-width: 768px) {
-  .cardSquare3D {
-    width: 120px;
-    height: 120px;
+  .card2D {
+    width: 150px;
+    height: 100px;
   }
   .bottomInfoBar {
     flex-direction: column;
