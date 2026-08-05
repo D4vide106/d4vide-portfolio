@@ -28,6 +28,7 @@ export default function CipherCarousel({ projects }: { projects: ProjectItem[] }
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
 
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const reqIdRef = useRef<number | null>(null);
   const velocityRef = useRef(0.15);
   const angleRef = useRef(0);
@@ -60,15 +61,26 @@ export default function CipherCarousel({ projects }: { projects: ProjectItem[] }
     };
   }, []);
 
-  // Mouse wheel scroll handler ("se uso rotellina cambia direzione")
-  const handleWheel = (e: React.WheelEvent) => {
-    const scrollDirection = e.deltaY > 0 ? 1 : -1;
-    velocityRef.current = scrollDirection * (Math.abs(velocityRef.current) + 0.6);
+  // Prevent page scroll and control constellation rotation via native non-passive wheel listener
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
 
-    if (Math.abs(velocityRef.current) > 3.5) {
-      velocityRef.current = 3.5 * Math.sign(velocityRef.current);
-    }
-  };
+    const handleWheelNative = (e: WheelEvent) => {
+      e.preventDefault(); // Stop page scrolling!
+      const scrollDirection = e.deltaY > 0 ? 1 : -1;
+      velocityRef.current = scrollDirection * (Math.abs(velocityRef.current) + 0.6);
+
+      if (Math.abs(velocityRef.current) > 3.5) {
+        velocityRef.current = 3.5 * Math.sign(velocityRef.current);
+      }
+    };
+
+    container.addEventListener("wheel", handleWheelNative, { passive: false });
+    return () => {
+      container.removeEventListener("wheel", handleWheelNative);
+    };
+  }, []);
 
   const getPlatformIcon = (platform: string) => {
     switch (platform) {
@@ -83,7 +95,7 @@ export default function CipherCarousel({ projects }: { projects: ProjectItem[] }
   const activeProject = hoveredIndex !== null && projects[hoveredIndex] ? projects[hoveredIndex] : projects[0];
 
   return (
-    <div className={styles.carouselSection} onWheel={handleWheel}>
+    <div ref={containerRef} className={styles.carouselSection}>
       <div className={styles.headerArea}>
         <span className={styles.sectionCaption}>PROJECT CONSTELLATION</span>
         <h2 className={styles.sectionTitle}>FEATURED WORKS</h2>
@@ -161,7 +173,6 @@ export default function CipherCarousel({ projects }: { projects: ProjectItem[] }
         </div>
       </div>
 
-
       {/* Live Bottom Information Bar */}
       {activeProject && (
         <div className={styles.bottomInfoBar}>
@@ -198,7 +209,6 @@ export default function CipherCarousel({ projects }: { projects: ProjectItem[] }
                   alt={selectedProject.title} 
                   className={styles.modalLogo}
                   referrerPolicy="no-referrer"
-                  crossOrigin="anonymous"
                 />
               </div>
               <div className={styles.modalTitleArea}>
@@ -225,4 +235,5 @@ export default function CipherCarousel({ projects }: { projects: ProjectItem[] }
     </div>
   );
 }
+
 

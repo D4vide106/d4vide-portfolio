@@ -91,12 +91,13 @@
   align-items: center;
 }
 
-/* 2D Flat Cards (Facing Directly Front, Matching Image 2 & 3) */
+/* 2D Flat Square Cards (Facing Directly Front, 1:1 Aspect Ratio) */
 .card2D {
   position: absolute;
-  width: 220px;
-  height: 140px;
-  border-radius: 6px;
+  width: 170px;
+  height: 170px;
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
   overflow: hidden;
   cursor: pointer;
   background: #0d0d0d;
@@ -104,6 +105,7 @@
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease, filter 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85);
 }
+
 
 .cardHovered {
   border-color: #ffffff !important;
@@ -364,8 +366,8 @@
 
 @media (max-width: 768px) {
   .card2D {
-    width: 150px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
   }
   .bottomInfoBar {
     flex-direction: column;
@@ -376,3 +378,4 @@
     align-items: center;
   }
 }
+
