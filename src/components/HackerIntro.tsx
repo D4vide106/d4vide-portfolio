@@ -46,18 +46,31 @@ export default function HackerIntro() {
 
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.volume = 0.5;
+      audioRef.current.volume = 1.0;
       audioRef.current.play().catch(e => console.log("Audio autoplay blocked by browser."));
     }
+
+    const forcePlay = () => {
+      if (audioRef.current && audioRef.current.paused) {
+        audioRef.current.play().catch(() => {});
+      }
+      window.removeEventListener('click', forcePlay);
+      window.removeEventListener('keydown', forcePlay);
+      window.removeEventListener('touchstart', forcePlay);
+    };
+
+    window.addEventListener('click', forcePlay, { once: true });
+    window.addEventListener('keydown', forcePlay, { once: true });
+    window.addEventListener('touchstart', forcePlay, { once: true });
 
     if (hasRun.current) return;
     hasRun.current = true;
 
     // Preload SFX
     const errSound = new Audio("https://actions.google.com/sounds/v1/science_fiction/computer_error.ogg");
-    errSound.volume = 0.6;
+    errSound.volume = 1.0;
     const okSound = new Audio("https://actions.google.com/sounds/v1/science_fiction/teleport.ogg");
-    okSound.volume = 0.7;
+    okSound.volume = 1.0;
 
     async function runSequence() {
       for (const line of introLines) {
