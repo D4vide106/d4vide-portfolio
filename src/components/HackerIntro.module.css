@@ -10,16 +10,10 @@
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  transition: opacity 0.8s ease, visibility 0.8s ease;
+  user-select: none;
 }
 
-.fadeOut {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-.dotCanvas {
+.lightningCanvas {
   position: absolute;
   top: 0;
   left: 0;
@@ -28,114 +22,97 @@
   z-index: 1;
 }
 
-.startContainer {
+.terminalWindow {
   position: relative;
   z-index: 2;
-  text-align: center;
+  width: 90%;
+  max-width: 650px;
+  max-height: 480px;
+  background: rgba(10, 10, 10, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  padding: 1.8rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(12px);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  overflow-y: auto;
+  color: #00ff66;
+}
+
+.normalLine {
+  color: #00ff66;
+}
+
+.warnLine {
+  color: #ff3333;
+  font-weight: bold;
+}
+
+.hashLine {
+  color: #888888;
+}
+
+.cursor {
+  animation: blink 0.8s step-end infinite;
+  color: #00ff66;
+  font-weight: bold;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.overlayDarken {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 3;
+}
+
+.unauthorizedPopup, .accessPopup {
+  position: absolute;
+  z-index: 4;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+  padding: 2rem 3rem;
+  border-radius: 8px;
+  background: rgba(15, 15, 15, 0.95);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+  animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.brandTitle {
-  font-family: var(--font-heading);
-  font-size: 2.5rem;
-  font-weight: 800;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: #ffffff;
+.unauthorizedPopup {
+  border: 1px solid #ff3333;
 }
 
-.subtitle {
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  letter-spacing: 0.3em;
-  color: #888888;
-  text-transform: uppercase;
-  margin-bottom: 1.5rem;
+.accessPopup {
+  border: 1px solid #00ff66;
 }
 
-.enterBtn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.9rem 2rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-  font-family: var(--font-body);
-  font-size: 0.8rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  backdrop-filter: blur(10px);
-}
-
-.enterBtn:hover {
-  background: #ffffff;
-  color: #050505;
-  border-color: #ffffff;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15);
-}
-
-.soundIcon {
-  font-size: 1.1rem;
-}
-
-.arrowIcon {
-  font-size: 1rem;
-  transition: transform 0.3s ease;
-}
-
-.enterBtn:hover .arrowIcon {
-  transform: translateX(4px);
-}
-
-.loadingContainer {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.2rem;
-}
-
-.centerLogo {
-  font-family: var(--font-heading);
+.alertIcon {
   font-size: 3rem;
-  font-weight: 800;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
+  color: #ff3333;
+}
+
+.successIcon {
+  font-size: 3rem;
+  color: #00ff66;
+}
+
+.popupText {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  letter-spacing: 0.2em;
   color: #ffffff;
-  animation: pulseLogo 2s infinite ease-in-out;
 }
 
-@keyframes pulseLogo {
-  0%, 100% { opacity: 0.7; transform: scale(0.98); }
-  50% { opacity: 1; transform: scale(1); }
-}
-
-.progressTrack {
-  width: 240px;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.1);
-  overflow: hidden;
-  position: relative;
-}
-
-.progressBar {
-  height: 100%;
-  background: #ffffff;
-  transition: width 0.05s linear;
-}
-
-.progressText {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: #888888;
-  letter-spacing: 0.1em;
+@keyframes popIn {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
 }

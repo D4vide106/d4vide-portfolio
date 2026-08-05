@@ -13,8 +13,8 @@ export default function TopBar({ dict, currentLang }: { dict: any; currentLang: 
       <div className={styles.container}>
         <div className={styles.logo}>
           <a href="#hero">
-            <span className={styles.brandMain}>cīphər</span>
-            <span className={styles.brandSub}> // D4VIDE106</span>
+            <span className={styles.brandMain}>D4VIDE106</span>
+            <span className={styles.brandSub}> // CREATOR</span>
           </a>
         </div>
         
@@ -36,4 +36,5 @@ export default function TopBar({ dict, currentLang }: { dict: any; currentLang: 
     </header>
   );
 }
+
 

@@ -6,9 +6,10 @@ export default function Footer({ dict }: { dict: any }) {
     <footer className={styles.footer}>
       <div className={styles.container}>
         <div className={styles.metaLeft}>
-          <span className={styles.brandText}>cīphər // D4VIDE106</span>
+          <span className={styles.brandText}>D4VIDE106</span>
           <span className={styles.subText}>FOR CREATORS AND GAMERS</span>
         </div>
+
         
         <div className={styles.socials}>
           <a href="https://youtube.com/@d4vide106" target="_blank" rel="noreferrer" className={styles.socialLink} aria-label="YouTube">

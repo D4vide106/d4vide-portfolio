@@ -1,379 +1,197 @@
 "use client";
-import { useState, useEffect, useMemo } from "react";
-import useSWR from "swr";
-import { FiDownload, FiClock, FiSearch } from "react-icons/fi";
+import { useState, useMemo } from "react";
+import { FiDownload, FiSearch } from "react-icons/fi";
 import { SiCurseforge, SiModrinth, SiGamejolt, SiItchdotio } from "react-icons/si";
-import { FaCube, FaCubes, FaServer, FaCode } from "react-icons/fa";
+import { FaCube, FaCubes, FaServer, FaCode, FaGamepad } from "react-icons/fa";
 import styles from "./Projects.module.css";
 import CipherCarousel from "./CipherCarousel";
 
+export interface ProjectLink {
+  label: string;
+  url: string;
+  platform: "modrinth" | "curseforge" | "gamejolt" | "itch";
+}
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+export interface UnifiedProject {
+  id: string;
+  title: string;
+  slug: string;
+  description: string;
+  icon_url: string;
+  type: string;
+  downloads: number;
+  updated: string;
+  links: ProjectLink[];
+}
 
-const CF_SLUGS = [
-  // ⬇️ ADD YOUR MISSING CURSEFORGE BEDROCK / DATAPACK SLUGS HERE ⬇️
-  // Example: "my-bedrock-addon",
-  "project-boss-rpg",
-  "project-horror",
-  "structural-beyond",
-  "bosstweak-3d",
-  "project-the-rpg-reborn",
-  "project-gunparty",
-  "project-realistic-rpg",
-  "pmaintanceuniversal",
-  "kart-deadline"
-];
-
-// Known projects that are also on GameJolt and Itch.io
-const MULTIPLATFORM_SLUGS = ["structural-beyond", "structural-beyond-sbd", "sdob", "kart-deadline", "spiral-dungeon-of-babel"];
-
-const CUSTOM_PROJECTS = [
+export const MAIN_PROJECTS: UnifiedProject[] = [
   {
-    id: "kart-deadline",
-    title: "Kart Deadline",
-    slug: "kart-deadline",
-    description: "A fast-paced kart racing game available on GameJolt and Itch.io.",
-    icon_url: "https://i.imgur.com/KxP1h9H.png",
-    project_type: "game",
-    categories: ["Game", "Racing"],
-    downloads: 150,
-    updated: new Date().toISOString(),
-    modrinthUrl: null,
-    cfUrl: null,
-    hasModrinth: false,
-    hasCF: false,
-    isMultiplatform: true
+    id: "project-boss-rpg",
+    title: "PROJECT BOSS RPG",
+    slug: "project-boss-rpg",
+    description: "An epic RPG modpack with unique boss progression, custom gear, and questlines.",
+    icon_url: "https://media.forgecdn.net/avatars/thumbnails/995/104/256/256/638567151049298758.png",
+    type: "Modpack",
+    downloads: 1450,
+    updated: "2025-06-12",
+    links: [
+      { label: "CurseForge (Modpack)", url: "https://www.curseforge.com/minecraft/modpacks/project-boss-rpg", platform: "curseforge" },
+      { label: "Modrinth (Modpack)", url: "https://modrinth.com/modpack/project-boss-rpg", platform: "modrinth" }
+    ]
   },
   {
     id: "sdob",
-    title: "Spiral Dungeon of Babel",
+    title: "SPIRAL DUNGEON OF BABEL",
     slug: "spiral-dungeon-of-babel",
-    description: "Do you want to explore the tallest dungeon tower ever? You've found the right mod!",
+    description: "Explore the tallest dungeon tower ever created! Available for Minecraft Java, Bedrock, and Datapack.",
     icon_url: "https://cdn.modrinth.com/data/6d1c79a4/icon.png",
-    project_type: "game",
-    categories: ["Game", "RPG"],
-    downloads: 500,
-    updated: new Date().toISOString(),
-    modrinthUrl: null,
-    cfUrl: null,
-    hasModrinth: false,
-    hasCF: false,
-    isMultiplatform: true
+    type: "Mod / Datapack / Addon",
+    downloads: 3200,
+    updated: "2026-07-18",
+    links: [
+      { label: "CurseForge (Java Mod)", url: "https://www.curseforge.com/minecraft/mc-mods/sdob", platform: "curseforge" },
+      { label: "CurseForge (Datapack)", url: "https://www.curseforge.com/minecraft/texture-packs/spiral-dungeon-of-babel-sdob-datapack", platform: "curseforge" },
+      { label: "CurseForge (Bedrock Addon)", url: "https://www.curseforge.com/minecraft-bedrock/addons/spiral-dungeon-of-babel-sdob-bedrock", platform: "curseforge" },
+      { label: "Modrinth (Mod)", url: "https://modrinth.com/mod/sdob", platform: "modrinth" },
+      { label: "GameJolt", url: "https://gamejolt.com/games/sdob/953274", platform: "gamejolt" },
+      { label: "Itch.io", url: "https://d4vide106.itch.io/sdob-mc", platform: "itch" }
+    ]
   },
   {
-    id: "sb-datapack",
-    title: "Structural Beyond | SB | Datapack",
-    slug: "structural-beyond-sb-datapack",
-    description: "Simple datapack that adds more structures to your world!",
+    id: "structural-beyond",
+    title: "STRUCTURAL BEYOND",
+    slug: "structural-beyond",
+    description: "Adds dozens of unique, breathtaking structures to your world across Java, Bedrock, and Datapacks!",
     icon_url: "https://media.forgecdn.net/avatars/thumbnails/995/104/256/256/638567151049298758.png",
-    project_type: "datapack",
-    categories: ["Data Packs", "Adventure", "Utility"],
-    downloads: 1100,
-    updated: "2024-12-02T00:00:00.000Z",
-    modrinthUrl: null,
-    cfUrl: "https://www.curseforge.com/minecraft/data-packs/structural-beyond-sb-datapack",
-    hasModrinth: false,
-    hasCF: true,
-    isMultiplatform: false
-  },
-  {
-    id: "sb-rdatapack",
-    title: "Structural Beyond | SB | RDatapack",
-    slug: "structural-beyond-sb-rdatapack",
-    description: "Simple datapack that adds more structures to your world!",
-    icon_url: "https://media.forgecdn.net/avatars/thumbnails/995/104/256/256/638567151049298758.png",
-    project_type: "resourcepack",
-    categories: ["Resource Packs", "Data Packs", "Miscellaneous"],
-    downloads: 17,
-    updated: "2025-03-19T00:00:00.000Z",
-    modrinthUrl: null,
-    cfUrl: "https://www.curseforge.com/minecraft/texture-packs/structural-beyond-sb-rdatapack",
-    hasModrinth: false,
-    hasCF: true,
-    isMultiplatform: false
-  },
-  {
-    id: "sb-bedrock",
-    title: "Structural Beyond | SB | Bedrock",
-    slug: "structural-beyond-sb-bedrock",
-    description: "Simple mod that adds more structures to your world for BEDROCK!",
-    icon_url: "https://media.forgecdn.net/avatars/thumbnails/995/104/256/256/638567151049298758.png",
-    project_type: "bedrock",
-    categories: ["Addons", "Data Packs", "Utility"],
-    downloads: 382,
-    updated: "2026-07-17T00:00:00.000Z",
-    modrinthUrl: null,
-    cfUrl: "https://www.curseforge.com/minecraft-bedrock/addons/structural-beyond-sb-bedrock",
-    hasModrinth: false,
-    hasCF: true,
-    isMultiplatform: false
-  },
-  {
-    id: "sdob-datapack",
-    title: "Spiral Dungeon of Babel | SDoB | Datapack",
-    slug: "spiral-dungeon-of-babel-sdob-datapack",
-    description: "Do you want to explore the tallest dungeon tower ever? You've found the right mod!",
-    icon_url: "https://cdn.modrinth.com/data/6d1c79a4/icon.png",
-    project_type: "datapack",
-    categories: ["Resource Packs", "Data Packs"],
-    downloads: 164,
-    updated: "2026-03-18T00:00:00.000Z",
-    modrinthUrl: null,
-    cfUrl: "https://www.curseforge.com/minecraft/data-packs/spiral-dungeon-of-babel-sdob-datapack",
-    hasModrinth: false,
-    hasCF: true,
-    isMultiplatform: false
-  },
-  {
-    id: "sdob-bedrock",
-    title: "Spiral Dungeon of Babel | SDoB | Bedrock",
-    slug: "spiral-dungeon-of-babel-sdob-bedrock",
-    description: "Do you want to explore the tallest dungeon tower ever? You've found the right mod! BEDROCK!",
-    icon_url: "https://cdn.modrinth.com/data/6d1c79a4/icon.png",
-    project_type: "bedrock",
-    categories: ["Addons", "Survival", "Maps"],
-    downloads: 111,
-    updated: "2026-07-18T00:00:00.000Z",
-    modrinthUrl: null,
-    cfUrl: "https://www.curseforge.com/minecraft-bedrock/addons/spiral-dungeon-of-babel-sdob-bedrock",
-    hasModrinth: false,
-    hasCF: true,
-    isMultiplatform: false
-  },
-  {
-    id: "bosstweak-3d",
-    title: "BossTweak 3D+",
-    slug: "bosstweak-3d",
-    description: "Official resource pack of Boss RPG: corrects visual problems, improves textures and adds 3D models...",
-    icon_url: "https://media.forgecdn.net/avatars/thumbnails/995/105/256/256/638567151049298758.png",
-    project_type: "resourcepack",
-    categories: ["Resource Packs", "Traditional", "16x"],
-    downloads: 354,
-    updated: "2025-04-13T00:00:00.000Z",
-    modrinthUrl: null,
-    cfUrl: "https://www.curseforge.com/minecraft/texture-packs/bosstweak-3d",
-    hasModrinth: false,
-    hasCF: true,
-    isMultiplatform: false
-  },
-  {
-    id: "project-realistic-rpg",
-    title: "Project: Realistic RPG [FORGE] | RR",
-    slug: "project-realistic-rpg",
-    description: "Love realistic survival? This modpack has it all: health, weapons(guns), medkits, and yes, the...",
-    icon_url: "https://media.forgecdn.net/avatars/thumbnails/995/106/256/256/638567151049298758.png",
-    project_type: "modpack",
-    categories: ["Modpacks", "Tech", "Exploration"],
-    downloads: 315,
-    updated: "2025-03-24T00:00:00.000Z",
-    modrinthUrl: null,
-    cfUrl: "https://www.curseforge.com/minecraft/modpacks/project-realistic-rpg",
-    hasModrinth: false,
-    hasCF: true,
-    isMultiplatform: false
-  },
-  {
-    id: "project-the-rpg-reborn",
-    title: "Project: The RPG Reborn [FORGE] | TRR",
-    slug: "project-the-rpg-reborn",
-    description: "Are you looking for an incredible rpg experience, alone or with your friends? You have found the right modpack...",
-    icon_url: "https://media.forgecdn.net/avatars/thumbnails/995/107/256/256/638567151049298758.png",
-    project_type: "modpack",
-    categories: ["Modpacks", "Adventure and RPG", "Exploration"],
-    downloads: 178,
-    updated: "2024-11-21T00:00:00.000Z",
-    modrinthUrl: null,
-    cfUrl: "https://www.curseforge.com/minecraft/modpacks/project-the-rpg-reborn",
-    hasModrinth: false,
-    hasCF: true,
-    isMultiplatform: false
+    type: "Mod / Datapack / Addon",
+    downloads: 5400,
+    updated: "2026-07-17",
+    links: [
+      { label: "CurseForge (Java Mod)", url: "https://www.curseforge.com/minecraft/mc-mods/structural-beyond", platform: "curseforge" },
+      { label: "CurseForge (Datapack)", url: "https://www.curseforge.com/minecraft/data-packs/structural-beyond-sbd", platform: "curseforge" },
+      { label: "CurseForge (Resourcepack)", url: "https://www.curseforge.com/minecraft/texture-packs/structural-beyond-sbrd", platform: "curseforge" },
+      { label: "CurseForge (Bedrock Addon)", url: "https://www.curseforge.com/minecraft-bedrock/addons/structural-beyond-sb-bedrock", platform: "curseforge" },
+      { label: "Modrinth (Mod)", url: "https://modrinth.com/mod/structural-beyond", platform: "modrinth" },
+      { label: "Modrinth (Datapack)", url: "https://modrinth.com/datapack/structural-beyond-sbd", platform: "modrinth" },
+      { label: "GameJolt", url: "https://gamejolt.com/games/structural_beyond_mc/944658", platform: "gamejolt" },
+      { label: "Itch.io", url: "https://d4vide106.itch.io/structuralbeyond-mc", platform: "itch" }
+    ]
   },
   {
     id: "project-horror",
-    title: "Project: Horror [FORGE] | HR",
+    title: "PROJECT HORROR",
     slug: "project-horror",
-    description: "Want a horror modpack? You found the right one! Explore and scare yourself!",
+    description: "Terrifying survival horror experience packed with scariest entities, custom atmosphere, and mechanics.",
     icon_url: "https://media.forgecdn.net/avatars/thumbnails/995/108/256/256/638567151049298758.png",
-    project_type: "modpack",
-    categories: ["Modpacks", "Quests", "Horror"],
+    type: "Modpack",
     downloads: 4800,
-    updated: "2023-11-11T00:00:00.000Z",
-    modrinthUrl: "https://modrinth.com/modpack/project-horror",
-    cfUrl: "https://www.curseforge.com/minecraft/modpacks/project-horror",
-    hasModrinth: true,
-    hasCF: true,
-    isMultiplatform: true
+    updated: "2023-11-11",
+    links: [
+      { label: "CurseForge (Modpack)", url: "https://www.curseforge.com/minecraft/modpacks/project-horror", platform: "curseforge" }
+    ]
+  },
+  {
+    id: "project-the-rpg-reborn",
+    title: "PROJECT THE RPG REBORN",
+    slug: "project-the-rpg-reborn",
+    description: "Incredible RPG experience alone or with friends featuring leveling, magic, dungeons, and bosses.",
+    icon_url: "https://media.forgecdn.net/avatars/thumbnails/995/107/256/256/638567151049298758.png",
+    type: "Modpack",
+    downloads: 1780,
+    updated: "2024-11-21",
+    links: [
+      { label: "CurseForge (Modpack)", url: "https://www.curseforge.com/minecraft/modpacks/project-the-rpg-reborn", platform: "curseforge" }
+    ]
+  },
+  {
+    id: "project-realistic-rpg",
+    title: "PROJECT REALISTIC RPG",
+    slug: "project-realistic-rpg",
+    description: "Realistic survival experience with health, weapons, medkits, temperature, and immersive mechanics.",
+    icon_url: "https://media.forgecdn.net/avatars/thumbnails/995/106/256/256/638567151049298758.png",
+    type: "Modpack",
+    downloads: 1315,
+    updated: "2025-03-24",
+    links: [
+      { label: "CurseForge (Modpack)", url: "https://www.curseforge.com/minecraft/modpacks/project-realistic-rpg", platform: "curseforge" }
+    ]
+  },
+  {
+    id: "project-gunparty",
+    title: "PROJECT GUNPARTY",
+    slug: "project-gunparty",
+    description: "Action-packed multiplayer gun warfare and deathmatch experience inside Minecraft.",
+    icon_url: "https://media.forgecdn.net/avatars/thumbnails/995/105/256/256/638567151049298758.png",
+    type: "Modpack",
+    downloads: 950,
+    updated: "2024-08-15",
+    links: [
+      { label: "CurseForge (Modpack)", url: "https://www.curseforge.com/minecraft/modpacks/project-gunparty", platform: "curseforge" }
+    ]
+  },
+  {
+    id: "bosstweak-3d",
+    title: "BOSSTWEAK 3D+",
+    slug: "bosstweak-3d",
+    description: "Official resource pack of Boss RPG: corrects visual problems, improves textures, and adds 3D models.",
+    icon_url: "https://media.forgecdn.net/avatars/thumbnails/995/105/256/256/638567151049298758.png",
+    type: "Resource Pack",
+    downloads: 1354,
+    updated: "2025-04-13",
+    links: [
+      { label: "CurseForge (Texture Pack)", url: "https://www.curseforge.com/minecraft/texture-packs/bosstweak-3d", platform: "curseforge" }
+    ]
+  },
+  {
+    id: "pmaintanceuniversal",
+    title: "PROJECT MAINTENANCE UNIVERSAL",
+    slug: "pmaintanceuniversal",
+    description: "Universal server maintenance plugin for Minecraft Java servers with customizable MOTDs.",
+    icon_url: "https://cdn.modrinth.com/data/6d1c79a4/icon.png",
+    type: "Plugin",
+    downloads: 620,
+    updated: "2025-02-10",
+    links: [
+      { label: "Modrinth (Plugin)", url: "https://modrinth.com/plugin/pmaintanceuniversal", platform: "modrinth" }
+    ]
   },
   {
     id: "infinitysmart",
-    title: "INFINITYSMART",
+    title: "INFINITYSMART SERVER",
     slug: "infinitysmart",
-    description: "InfinitySmart is a crossplatform European Minecraft network featuring InfinitySMP...",
-    icon_url: "https://media.forgecdn.net/avatars/thumbnails/995/109/256/256/638567151049298758.png",
-    project_type: "plugin",
-    categories: ["Creator Community", "Minigames", "Survival Mode"],
-    downloads: 0,
-    updated: new Date().toISOString(),
-    modrinthUrl: "https://modrinth.com/project/infinitysmart",
-    cfUrl: null,
-    hasModrinth: true,
-    hasCF: false,
-    isMultiplatform: false
+    description: "Crossplatform European Minecraft Java & Bedrock network featuring InfinitySMP and minigames.",
+    icon_url: "https://cdn.modrinth.com/data/6d1c79a4/icon.png",
+    type: "Minecraft Server",
+    downloads: 12500,
+    updated: "2026-08-01",
+    links: [
+      { label: "Modrinth (Server)", url: "https://modrinth.com/minecraft_java_server/infinitysmart", platform: "modrinth" }
+    ]
   }
 ];
 
 export default function Projects({ dict }: { dict: any }) {
-  const { data: modrinthProjects } = useSWR(
-    "https://api.modrinth.com/v2/user/D4vide106/projects",
-    fetcher
-  );
-
-  const [cfData, setCfData] = useState<Record<string, any>>({});
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortBy, setSortBy] = useState("downloads");
   const [filterType, setFilterType] = useState("All");
   const [viewMode, setViewMode] = useState<"carousel" | "grid">("carousel");
-  const [selectedProject, setSelectedProject] = useState<any>(null);
+  const [selectedProject, setSelectedProject] = useState<UnifiedProject | null>(null);
 
-  useEffect(() => {
-    async function fetchCF() {
-      const dataMap: Record<string, any> = {};
-      const allSlugs = new Set(CF_SLUGS);
-      if (modrinthProjects) {
-        modrinthProjects.forEach((p: any) => allSlugs.add(p.slug));
-      }
-
-      const slugTypeMap: Record<string, string> = {
-        "pmaintanceuniversal": "mc-addons",
-        "project-boss-rpg": "mc-mods",
-        "project-horror": "mc-mods",
-        "structural-beyond": "mc-mods",
-        "bosstweak-3d": "mc-mods",
-        "project-the-rpg-reborn": "mc-mods",
-        "project-gunparty": "mc-mods",
-        "project-realistic-rpg": "mc-mods"
-      };
-
-      for (const slug of Array.from(allSlugs)) {
-        if (["kart-deadline", "spiral-dungeon-of-babel", "sdob"].includes(slug)) continue;
-        const type = slugTypeMap[slug] || "mc-mods";
-        try {
-          const res = await fetch(`https://api.cfwidget.com/minecraft/${type}/${slug}`);
-          if (res.ok) {
-            const data = await res.json();
-            if (data.id) {
-              dataMap[slug] = data;
-            }
-          }
-        } catch (e) {}
-      }
-      setCfData(dataMap);
-    }
-    fetchCF();
-  }, [modrinthProjects]);
-
-  const mergedProjects = useMemo(() => {
-    const list: any[] = [];
-    const handledCFSlugs = new Set();
-
-    if (modrinthProjects) {
-      modrinthProjects.forEach((mp: any) => {
-        let cfTotal = 0;
-        let hasCF = false;
-
-        const cfMatch = cfData[mp.slug] || Object.values(cfData).find((cf: any) => cf.title === mp.title || mp.title.includes(cf.name));
-        
-        if (cfMatch) {
-          cfTotal = cfMatch.downloads?.total || 0;
-          hasCF = true;
-          const slugKey = Object.keys(cfData).find(key => cfData[key] === cfMatch);
-          if (slugKey) handledCFSlugs.add(slugKey);
-        }
-
-        list.push({
-          id: mp.id,
-          title: mp.title,
-          slug: mp.slug,
-          description: mp.description,
-          icon_url: mp.icon_url,
-          project_type: mp.project_type,
-          categories: mp.categories || [],
-          downloads: mp.downloads + cfTotal,
-          updated: mp.updated,
-          modrinthUrl: `https://modrinth.com/${mp.project_type}/${mp.slug}`,
-          cfUrl: cfMatch?.urls?.curseforge,
-          hasModrinth: true,
-          hasCF: hasCF,
-          isMultiplatform: MULTIPLATFORM_SLUGS.includes(mp.slug)
-        });
-      });
-    }
-
-    Object.keys(cfData).forEach(slug => {
-      if (!handledCFSlugs.has(slug)) {
-        const cf = cfData[slug];
-        list.push({
-          id: cf.id,
-          title: cf.title || cf.name,
-          slug: slug,
-          description: cf.summary || "CurseForge Project",
-          icon_url: cf.thumbnail,
-          project_type: cf.type === "Modpacks" ? "modpack" : cf.type === "Mods" ? "mod" : "resourcepack",
-          categories: cf.categories ? cf.categories.map((c: any) => c.name || c) : [],
-          downloads: cf.downloads?.total || 0,
-          updated: cf.created_at,
-          modrinthUrl: null,
-          cfUrl: cf.urls?.curseforge || cf.urls?.project,
-          hasModrinth: false,
-          hasCF: true,
-          isMultiplatform: MULTIPLATFORM_SLUGS.includes(slug)
-        });
-      }
+  const filteredProjects = useMemo(() => {
+    return MAIN_PROJECTS.filter((p) => {
+      const matchesSearch = p.title.toLowerCase().includes(searchQuery.toLowerCase()) || p.description.toLowerCase().includes(searchQuery.toLowerCase());
+      if (!matchesSearch) return false;
+      if (filterType === "All") return true;
+      return p.type.toLowerCase().includes(filterType.toLowerCase());
     });
+  }, [searchQuery, filterType]);
 
-    let filtered = list.filter(p => p.title.toLowerCase().includes(searchQuery.toLowerCase()) || p.description.toLowerCase().includes(searchQuery.toLowerCase()));
-    
-    CUSTOM_PROJECTS.forEach(cp => {
-      if (!filtered.find((p: any) => p.slug === cp.slug || p.title === cp.title)) {
-        if (cp.title.toLowerCase().includes(searchQuery.toLowerCase()) || cp.description.toLowerCase().includes(searchQuery.toLowerCase())) {
-          filtered.push(cp);
-        }
-      }
-    });
-
-    if (filterType !== "All") {
-      filtered = filtered.filter(p => {
-        const type = filterType.toLowerCase();
-        if (type === "datapack") {
-          return p.categories.some((c: string) => c.toLowerCase().includes("datapack")) || p.title.toLowerCase().includes("datapack");
-        }
-        if (type === "resourcepack") {
-          return p.project_type === "resourcepack" || p.categories.some((c: string) => c.toLowerCase().includes("resource pack"));
-        }
-        if (type === "bedrock / addon") {
-          return p.categories.some((c: string) => c.toLowerCase().includes("addon") || c.toLowerCase().includes("bedrock")) || p.title.toLowerCase().includes("bedrock") || p.title.toLowerCase().includes("addon");
-        }
-        return p.project_type === type || p.categories.some((c: string) => c.toLowerCase() === type);
-      });
-    }
-
-    filtered.sort((a, b) => {
-      if (sortBy === "downloads") return b.downloads - a.downloads;
-      if (sortBy === "date") return new Date(b.updated).getTime() - new Date(a.updated).getTime();
-      if (sortBy === "name") return a.title.localeCompare(b.title);
-      return 0;
-    });
-
-    return filtered;
-  }, [modrinthProjects, cfData, searchQuery, sortBy, filterType]);
-
-  const getCategoryIcon = (type: string) => {
-    switch(type) {
-      case "modpack": return <FaCubes />;
-      case "plugin": return <FaServer />;
-      case "datapack": return <FaCode />;
-      case "bedrock / addon": return <FaCube />;
-      default: return <FaCube />;
+  const getPlatformIcon = (platform: string) => {
+    switch (platform) {
+      case "modrinth": return <SiModrinth size={18} />;
+      case "curseforge": return <SiCurseforge size={18} />;
+      case "gamejolt": return <SiGamejolt size={18} />;
+      case "itch": return <SiItchdotio size={18} />;
+      default: return <FaCube size={18} />;
     }
   };
 
@@ -396,19 +214,15 @@ export default function Projects({ dict }: { dict: any }) {
         </div>
       </div>
 
-      {/* 3D Ring Constellation View */}
       {viewMode === "carousel" ? (
         <div className={styles.carouselWrapper}>
-          <CipherCarousel projects={mergedProjects} />
+          <CipherCarousel projects={filteredProjects} />
         </div>
       ) : (
-        /* Grid Archive View */
         <div className={styles.container}>
-
-
           <div className={styles.controlsBar}>
             <div className={styles.filtersGroup}>
-              {["All", "Mod", "Modpack", "Datapack", "Resourcepack", "Bedrock / Addon", "Game"].map(type => (
+              {["All", "Modpack", "Mod", "Resource Pack", "Plugin", "Server"].map((type) => (
                 <button 
                   key={type}
                   className={`${styles.filterBtn} ${filterType === type ? styles.activeFilter : ""}`}
@@ -419,32 +233,42 @@ export default function Projects({ dict }: { dict: any }) {
               ))}
             </div>
 
-            <div className={styles.searchAndSort}>
-              <div className={styles.searchBox}>
-                <FiSearch className={styles.searchIcon} />
-                <input 
-                  type="text" 
-                  placeholder="SEARCH WORKS..." 
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className={styles.searchInput}
-                />
-              </div>
+            <div className={styles.searchBox}>
+              <FiSearch className={styles.searchIcon} />
+              <input 
+                type="text" 
+                placeholder="SEARCH WORKS..." 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className={styles.searchInput}
+              />
             </div>
           </div>
 
           <div className={styles.staticGrid}>
-            {mergedProjects.map((project: any, index: number) => (
-              <div onClick={() => setSelectedProject(project)} key={`${project.id}-${index}`} className={styles.modrinthCard}>
+            {filteredProjects.map((project) => (
+              <div 
+                key={project.id} 
+                onClick={() => setSelectedProject(project)} 
+                className={styles.modrinthCard}
+              >
                 <div className={styles.cardHeader}>
                   <div className={styles.logoWrapper}>
-                    {project.icon_url ? (
-                      <img src={project.icon_url} alt={project.title} className={styles.projectLogo} />
-                    ) : (
-                      <div className={styles.projectLogoPlaceholder}>{getCategoryIcon(project.project_type)}</div>
-                    )}
+                    <img 
+                      src={project.icon_url} 
+                      alt={project.title} 
+                      className={styles.projectLogo}
+                      onError={(e) => {
+                        e.currentTarget.style.display = "none";
+                        e.currentTarget.parentElement?.querySelector(".fallbackLogo")?.classList.remove("hidden");
+                      }}
+                    />
+                    <div className="fallbackLogo hidden" style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", background: "#111" }}>
+                      <FaCube size={24} color="#ffffff" />
+                    </div>
                   </div>
                   <div className={styles.titleArea}>
+                    <span className={styles.projectTypeTag}>{project.type}</span>
                     <h4 className={styles.cardTitle}>{project.title}</h4>
                     <p className={styles.cardDesc}>{project.description}</p>
                   </div>
@@ -454,10 +278,11 @@ export default function Projects({ dict }: { dict: any }) {
                     <FiDownload /> <span>{project.downloads.toLocaleString()}</span>
                   </div>
                   <div className={styles.platforms}>
-                    {project.hasModrinth && <SiModrinth size={16} color="#ffffff" />}
-                    {project.hasCF && <SiCurseforge size={16} color="#ffffff" />}
-                    {project.isMultiplatform && <SiItchdotio size={16} color="#ffffff" />}
-                    {project.isMultiplatform && <SiGamejolt size={16} color="#ffffff" />}
+                    {project.links.map((link, idx) => (
+                      <span key={idx} title={link.label}>
+                        {getPlatformIcon(link.platform)}
+                      </span>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -466,26 +291,33 @@ export default function Projects({ dict }: { dict: any }) {
         </div>
       )}
 
-      {/* Modal Popup */}
+      {/* Detail Modal Popup */}
       {selectedProject && (
         <div className={styles.modalOverlay} onClick={() => setSelectedProject(null)}>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
             <button className={styles.modalCloseBtn} onClick={() => setSelectedProject(null)}>×</button>
+
             <div className={styles.modalHeader}>
-              <h2>{selectedProject.title}</h2>
-              <p>{selectedProject.description}</p>
+              <div className={styles.modalLogoWrapper}>
+                <img src={selectedProject.icon_url} alt={selectedProject.title} className={styles.modalLogo} />
+              </div>
+              <div className={styles.modalTitleArea}>
+                <span className={styles.modalCategoryBadge}>{selectedProject.type}</span>
+                <h2>{selectedProject.title}</h2>
+                <p>{selectedProject.description}</p>
+              </div>
             </div>
-            <div className={styles.platformButtons}>
-              {selectedProject.hasModrinth && (
-                <a href={selectedProject.modrinthUrl} target="_blank" rel="noreferrer" className={styles.platformBtn}>
-                  <SiModrinth size={20} /> MODRINTH
-                </a>
-              )}
-              {selectedProject.hasCF && (
-                <a href={selectedProject.cfUrl} target="_blank" rel="noreferrer" className={styles.platformBtn}>
-                  <SiCurseforge size={20} /> CURSEFORGE
-                </a>
-              )}
+
+            <div className={styles.modalLinksSection}>
+              <h3>AVAILABLE PLATFORMS & EDITIONS</h3>
+              <div className={styles.platformButtonsGrid}>
+                {selectedProject.links.map((link, i) => (
+                  <a key={i} href={link.url} target="_blank" rel="noreferrer" className={styles.platformLinkBtn}>
+                    {getPlatformIcon(link.platform)}
+                    <span>{link.label}</span>
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -493,4 +325,3 @@ export default function Projects({ dict }: { dict: any }) {
     </section>
   );
 }
-

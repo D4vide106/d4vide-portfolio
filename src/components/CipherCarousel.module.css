@@ -7,7 +7,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  padding: 3rem 1.5rem 1rem 1.5rem;
+  padding: 2rem 1.5rem;
   overflow: hidden;
   user-select: none;
 }
@@ -23,7 +23,6 @@
   letter-spacing: 0.35em;
   color: #888888;
   text-transform: uppercase;
-  margin-bottom: 0.4rem;
 }
 
 .sectionTitle {
@@ -32,6 +31,7 @@
   font-weight: 800;
   letter-spacing: 0.15em;
   color: #ffffff;
+  margin-top: 0.2rem;
 }
 
 .scrollHint {
@@ -39,41 +39,53 @@
   font-size: 0.7rem;
   color: #555555;
   letter-spacing: 0.1em;
-  margin-top: 0.5rem;
+  margin-top: 0.4rem;
 }
 
-/* 3D Stage (Image 3 & 4 layout) */
+/* 3D Diagonal Tilted Stage Plane */
 .stage3D {
   position: relative;
   width: 100%;
-  height: 440px;
+  height: 480px;
   display: flex;
   justify-content: center;
   align-items: center;
-  perspective: 1200px;
-  margin: 1.5rem 0;
+  perspective: 1100px;
 }
 
-.ringCenterLogo {
+.diagonalPlane {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform-style: preserve-3d;
+  transform: rotateX(42deg) rotateZ(-12deg);
+}
+
+.ringCenterEmblem {
   position: absolute;
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 5;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
 }
 
 .innerSpinGlyph {
   font-family: var(--font-heading);
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 800;
   color: #ffffff;
-  animation: spinGlyph 12s linear infinite;
+  letter-spacing: 0.05em;
+  animation: spinGlyph 16s linear infinite;
 }
 
 @keyframes spinGlyph {
@@ -88,32 +100,34 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  transform-style: preserve-3d;
 }
 
-/* 3D Cards */
-.card3D {
+/* SQUARE 3D CARDS (1:1 Ratio) */
+.cardSquare3D {
   position: absolute;
-  width: 220px;
-  height: 140px;
+  width: 170px;
+  height: 170px;
+  aspect-ratio: 1 / 1;
   border-radius: 8px;
   overflow: hidden;
   cursor: pointer;
   background: #0d0d0d;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, filter 0.4s ease, border-color 0.4s ease;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.85);
 }
 
 .cardHovered {
   border-color: #ffffff !important;
-  box-shadow: 0 20px 50px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 25px 60px rgba(255, 255, 255, 0.25);
 }
 
 .cardDimmed {
-  filter: grayscale(0.8) brightness(0.35);
+  filter: grayscale(0.85) brightness(0.3);
 }
 
-.cardImageWrapper {
+.cardImageContainer {
   width: 100%;
   height: 100%;
   position: relative;
@@ -123,29 +137,31 @@
   align-items: center;
 }
 
-.cardImg {
+.cardImgSquare {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.fallbackIcon {
-  font-size: 2.5rem;
-  color: #555555;
+.fallbackSquare {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #161616;
 }
 
-.imageOverlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 60%);
+.hiddenFallback {
+  display: none !important;
 }
 
-/* Live Bottom Information Bar (Image 4 match) */
+/* Live Bottom Information Bar */
 .bottomInfoBar {
   width: 90%;
   max-width: 1100px;
   padding: 1.2rem 2rem;
-  background: rgba(13, 13, 13, 0.85);
+  background: rgba(13, 13, 13, 0.9);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 6px;
   backdrop-filter: blur(16px);
@@ -154,20 +170,19 @@
   justify-content: space-between;
   gap: 2rem;
   z-index: 20;
-  transition: all 0.3s ease;
 }
 
 .infoMetaLeft {
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
-  min-width: 160px;
+  min-width: 170px;
 }
 
 .infoBadge {
   font-family: var(--font-body);
   font-size: 0.65rem;
-  letter-spacing: 0.25em;
+  letter-spacing: 0.2em;
   color: #ffffff;
   text-transform: uppercase;
   background: rgba(255, 255, 255, 0.1);
@@ -191,8 +206,8 @@
 
 .infoTitleText {
   font-family: var(--font-heading);
-  font-size: 1.15rem;
-  font-weight: 700;
+  font-size: 1.2rem;
+  font-weight: 800;
   letter-spacing: 0.1em;
   color: #ffffff;
   text-transform: uppercase;
@@ -213,7 +228,7 @@
 }
 
 .infoActionsRight {
-  min-width: 160px;
+  min-width: 170px;
   display: flex;
   justify-content: flex-end;
 }
@@ -235,7 +250,6 @@
 
 .viewDetailsBtn:hover {
   background: #cccccc;
-  transform: translateY(-1px);
 }
 
 /* Modal Popup */
@@ -259,7 +273,6 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
   padding: 2.5rem;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9);
 }
 
 .modalCloseBtn {
@@ -269,7 +282,6 @@
   font-size: 1.8rem;
   color: #888888;
   cursor: pointer;
-  transition: color 0.2s;
 }
 
 .modalCloseBtn:hover {
@@ -298,16 +310,6 @@
   object-fit: cover;
 }
 
-.modalLogoFallback {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2rem;
-  color: #ffffff;
-}
-
 .modalCategoryBadge {
   font-family: var(--font-body);
   font-size: 0.65rem;
@@ -332,35 +334,7 @@
   line-height: 1.4;
 }
 
-.modalStatsRow {
-  display: flex;
-  gap: 2rem;
-  padding: 1.2rem 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  margin-bottom: 2rem;
-}
-
-.statBox {
-  display: flex;
-  flex-direction: column;
-}
-
-.statLabel {
-  font-family: var(--font-body);
-  font-size: 0.65rem;
-  letter-spacing: 0.2em;
-  color: #666666;
-}
-
-.statVal {
-  font-family: var(--font-heading);
-  font-size: 1.1rem;
-  color: #ffffff;
-  margin-top: 0.2rem;
-}
-
-.modalPlatforms {
+.modalLinks {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -374,17 +348,16 @@
 }
 
 .platformButtons {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
 }
 
-.platformButtons a {
+.platformBtn {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-  padding: 0.8rem;
+  gap: 0.8rem;
+  padding: 0.8rem 1.2rem;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 4px;
@@ -396,24 +369,22 @@
   transition: all 0.2s ease;
 }
 
-.platformButtons a:hover {
+.platformBtn:hover {
   background: #ffffff;
   color: #050505;
 }
 
 @media (max-width: 768px) {
+  .cardSquare3D {
+    width: 120px;
+    height: 120px;
+  }
   .bottomInfoBar {
     flex-direction: column;
     text-align: center;
-    gap: 1rem;
   }
   .infoMetaLeft, .infoActionsRight {
     min-width: unset;
     align-items: center;
-    justify-content: center;
-  }
-  .card3D {
-    width: 160px;
-    height: 100px;
   }
 }
