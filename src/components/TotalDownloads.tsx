@@ -1,6 +1,6 @@
 "use client";
 
-import { FiDownloadCloud } from "react-icons/fi";
+import { FiDownloadCloud, FiEye } from "react-icons/fi";
 import { useLiveStats } from "@/context/LiveStatsContext";
 import styles from "./TotalDownloads.module.css";
 
@@ -14,14 +14,15 @@ export default function TotalDownloads() {
         <span>
           <strong>{totalDownloads.toLocaleString()}</strong> TOTAL DOWNLOADS
         </span>
-        <span className={styles.liveDot} title="Real-time live stats active" />
+        <span className={styles.liveDot} title="Download aggiornati in tempo reale" />
       </div>
 
       <div className={styles.viewsBadge}>
-        <span className={styles.viewIcon}>👁️</span>
+        <FiEye className={styles.viewIcon} />
         <span>
           <strong>{portfolioViews.toLocaleString()}</strong> PORTFOLIO VIEWS
         </span>
+        <span className={styles.liveDotBlue} title="Visitatori reali tracciati globalmente" />
       </div>
     </div>
   );

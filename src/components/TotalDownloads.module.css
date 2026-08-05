@@ -50,17 +50,30 @@
 }
 
 .viewIcon {
-  font-size: 0.85rem;
+  color: #3b82f6;
+  font-size: 1rem;
 }
 
 .liveDot {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
   background-color: #10b981;
   border-radius: 50%;
   box-shadow: 0 0 8px #10b981;
   animation: blink 1.8s infinite ease-in-out;
   margin-left: 0.2rem;
+  flex-shrink: 0;
+}
+
+.liveDotBlue {
+  width: 7px;
+  height: 7px;
+  background-color: #3b82f6;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #3b82f6;
+  animation: blink 1.8s infinite ease-in-out;
+  margin-left: 0.2rem;
+  flex-shrink: 0;
 }
 
 @keyframes blink {
