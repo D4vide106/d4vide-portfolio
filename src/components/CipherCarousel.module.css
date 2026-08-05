@@ -1,0 +1,419 @@
+.carouselSection {
+  position: relative;
+  width: 100%;
+  min-height: 85vh;
+  background-color: #050505;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3rem 1.5rem 1rem 1.5rem;
+  overflow: hidden;
+  user-select: none;
+}
+
+.headerArea {
+  text-align: center;
+  z-index: 10;
+}
+
+.sectionCaption {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  letter-spacing: 0.35em;
+  color: #888888;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.sectionTitle {
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  color: #ffffff;
+}
+
+.scrollHint {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: #555555;
+  letter-spacing: 0.1em;
+  margin-top: 0.5rem;
+}
+
+/* 3D Stage (Image 3 & 4 layout) */
+.stage3D {
+  position: relative;
+  width: 100%;
+  height: 440px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 1200px;
+  margin: 1.5rem 0;
+}
+
+.ringCenterLogo {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+  backdrop-filter: blur(8px);
+}
+
+.innerSpinGlyph {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #ffffff;
+  animation: spinGlyph 12s linear infinite;
+}
+
+@keyframes spinGlyph {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.ringTrack {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 3D Cards */
+.card3D {
+  position: absolute;
+  width: 220px;
+  height: 140px;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #0d0d0d;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, filter 0.4s ease, border-color 0.4s ease;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+}
+
+.cardHovered {
+  border-color: #ffffff !important;
+  box-shadow: 0 20px 50px rgba(255, 255, 255, 0.2);
+}
+
+.cardDimmed {
+  filter: grayscale(0.8) brightness(0.35);
+}
+
+.cardImageWrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: #111111;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cardImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fallbackIcon {
+  font-size: 2.5rem;
+  color: #555555;
+}
+
+.imageOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 60%);
+}
+
+/* Live Bottom Information Bar (Image 4 match) */
+.bottomInfoBar {
+  width: 90%;
+  max-width: 1100px;
+  padding: 1.2rem 2rem;
+  background: rgba(13, 13, 13, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  backdrop-filter: blur(16px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  z-index: 20;
+  transition: all 0.3s ease;
+}
+
+.infoMetaLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 160px;
+}
+
+.infoBadge {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  color: #ffffff;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.2rem 0.6rem;
+  border-radius: 2px;
+  width: fit-content;
+}
+
+.infoDownloads {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: #888888;
+  display: flex;
+  align-items: center;
+}
+
+.infoTitleCenter {
+  text-align: center;
+  flex: 1;
+}
+
+.infoTitleText {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #ffffff;
+  text-transform: uppercase;
+  display: block;
+}
+
+.infoDescText {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: #888888;
+  margin-top: 0.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.infoActionsRight {
+  min-width: 160px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.viewDetailsBtn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.6rem 1.2rem;
+  background: #ffffff;
+  color: #050505;
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+}
+
+.viewDetailsBtn:hover {
+  background: #cccccc;
+  transform: translateY(-1px);
+}
+
+/* Modal Popup */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  z-index: 100000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+}
+
+.modalContent {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  background: #0d0d0d;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 2.5rem;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9);
+}
+
+.modalCloseBtn {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.5rem;
+  font-size: 1.8rem;
+  color: #888888;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.modalCloseBtn:hover {
+  color: #ffffff;
+}
+
+.modalHeader {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.modalLogoWrapper {
+  width: 70px;
+  height: 70px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #1a1a1a;
+  flex-shrink: 0;
+}
+
+.modalLogo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modalLogoFallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  color: #ffffff;
+}
+
+.modalCategoryBadge {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  color: #888888;
+  text-transform: uppercase;
+}
+
+.modalTitleArea h2 {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-top: 0.2rem;
+}
+
+.modalTitleArea p {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: #aaaaaa;
+  margin-top: 0.4rem;
+  line-height: 1.4;
+}
+
+.modalStatsRow {
+  display: flex;
+  gap: 2rem;
+  padding: 1.2rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 2rem;
+}
+
+.statBox {
+  display: flex;
+  flex-direction: column;
+}
+
+.statLabel {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: #666666;
+}
+
+.statVal {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  color: #ffffff;
+  margin-top: 0.2rem;
+}
+
+.modalPlatforms {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.platformHeader {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  color: #888888;
+}
+
+.platformButtons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.platformButtons a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.8rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.platformButtons a:hover {
+  background: #ffffff;
+  color: #050505;
+}
+
+@media (max-width: 768px) {
+  .bottomInfoBar {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+  .infoMetaLeft, .infoActionsRight {
+    min-width: unset;
+    align-items: center;
+    justify-content: center;
+  }
+  .card3D {
+    width: 160px;
+    height: 100px;
+  }
+}

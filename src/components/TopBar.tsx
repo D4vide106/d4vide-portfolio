@@ -1,6 +1,5 @@
 "use client";
-import { FiHome, FiUser, FiCode, FiGlobe } from "react-icons/fi";
-import { SiCurseforge } from "react-icons/si";
+import { FiGlobe } from "react-icons/fi";
 import styles from "./TopBar.module.css";
 
 export default function TopBar({ dict, currentLang }: { dict: any; currentLang: string }) {
@@ -13,23 +12,28 @@ export default function TopBar({ dict, currentLang }: { dict: any; currentLang: 
     <header className={styles.topBar}>
       <div className={styles.container}>
         <div className={styles.logo}>
-          <a href="#hero">D4vide106</a>
+          <a href="#hero">
+            <span className={styles.brandMain}>cīphər</span>
+            <span className={styles.brandSub}> // D4VIDE106</span>
+          </a>
         </div>
         
         <nav className={styles.nav}>
           <ul className={styles.menuList}>
-            <li><a href="#hero"><FiUser size={18} /> {dict.about || "About Me"}</a></li>
-            <li><a href="#projects"><SiCurseforge size={18} /> {dict.projects || "Projects"}</a></li>
+            <li><a href="#projects">WORKS</a></li>
+            <li><a href="#about">ABOUT</a></li>
+            <li><a href="#youtube">MEDIA</a></li>
           </ul>
         </nav>
         
         <div className={styles.actions}>
           <button onClick={toggleLang} className={styles.langBtn} aria-label="Switch Language">
-            <FiGlobe size={18} />
-            <span>{currentLang === 'en' ? 'IT' : 'EN'}</span>
+            <FiGlobe size={14} />
+            <span>{currentLang.toUpperCase()}</span>
           </button>
         </div>
       </div>
     </header>
   );
 }
+

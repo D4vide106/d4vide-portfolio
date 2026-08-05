@@ -1,21 +1,22 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Jua } from "next/font/google";
+import { Syne, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 
-const plusJakarta = Plus_Jakarta_Sans({ 
+const syne = Syne({
   subsets: ["latin"],
-  variable: '--font-sans',
+  weight: ["400", "700", "800"],
+  variable: "--font-syne",
 });
 
-const jua = Jua({ 
-  weight: '400',
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  variable: '--font-jua',
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-space",
 });
 
 export const metadata: Metadata = {
-  title: "_D4vide106_ Portfolio",
-  description: "Minecraft Mod Developer and Content Creator",
+  title: "D4VIDE106 // CREATOR & DEVELOPER",
+  description: "Minecraft Mod Developer, Game Creator and Content Creator",
 };
 
 export default function RootLayout({
@@ -25,7 +26,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${plusJakarta.variable} ${jua.variable} font-sans`}>{children}</body>
+      <body className={`${syne.variable} ${spaceGrotesk.variable} font-sans`}>{children}</body>
     </html>
   );
 }
+

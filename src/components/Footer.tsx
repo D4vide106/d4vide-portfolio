@@ -1,33 +1,38 @@
-import { FaYoutube, FaTwitch, FaDiscord, FaGithub } from "react-icons/fa";
+import { SiYoutube, SiDiscord, SiGithub, SiCurseforge, SiModrinth } from "react-icons/si";
 import styles from "./Footer.module.css";
 
 export default function Footer({ dict }: { dict: any }) {
   return (
     <footer className={styles.footer}>
       <div className={styles.container}>
-        <div className={styles.logo}>
-          D4vide106
+        <div className={styles.metaLeft}>
+          <span className={styles.brandText}>cīphər // D4VIDE106</span>
+          <span className={styles.subText}>FOR CREATORS AND GAMERS</span>
         </div>
         
         <div className={styles.socials}>
-          <a href="#" className={styles.socialLink} aria-label="YouTube">
-            <FaYoutube size={20} />
+          <a href="https://youtube.com/@d4vide106" target="_blank" rel="noreferrer" className={styles.socialLink} aria-label="YouTube">
+            <SiYoutube size={16} />
           </a>
-          <a href="#" className={styles.socialLink} aria-label="Twitch">
-            <FaTwitch size={20} />
+          <a href="https://discord.gg/7T3u9a9" target="_blank" rel="noreferrer" className={styles.socialLink} aria-label="Discord">
+            <SiDiscord size={16} />
           </a>
-          <a href="#" className={styles.socialLink} aria-label="Discord">
-            <FaDiscord size={20} />
+          <a href="https://github.com/D4vide106" target="_blank" rel="noreferrer" className={styles.socialLink} aria-label="GitHub">
+            <SiGithub size={16} />
           </a>
-          <a href="#" className={styles.socialLink} aria-label="GitHub">
-            <FaGithub size={20} />
+          <a href="https://modrinth.com/user/D4vide106" target="_blank" rel="noreferrer" className={styles.socialLink} aria-label="Modrinth">
+            <SiModrinth size={16} />
+          </a>
+          <a href="https://www.curseforge.com/members/d4vide106/projects" target="_blank" rel="noreferrer" className={styles.socialLink} aria-label="CurseForge">
+            <SiCurseforge size={16} />
           </a>
         </div>
         
         <p className={styles.copyright}>
-          &copy; {new Date().getFullYear()} D4vide106. {dict.rights}
+          &copy; {new Date().getFullYear()} D4VIDE106. ALL RIGHTS RESERVED.
         </p>
       </div>
     </footer>
   );
 }
+

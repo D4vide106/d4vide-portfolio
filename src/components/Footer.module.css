@@ -1,51 +1,59 @@
 .footer {
-  padding: 4rem 2rem;
-  border-top: 1px solid var(--border-color);
-  background-color: rgba(15, 23, 42, 0.5);
-  backdrop-filter: blur(10px);
+  background-color: #050505;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 2.5rem 0;
+  width: 100%;
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1300px;
   margin: 0 auto;
+  padding: 0 2rem;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  gap: 2rem;
+  flex-wrap: wrap;
+  gap: 1.5rem;
 }
 
-.logo {
-  font-size: 1.5rem;
+.metaLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.brandText {
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
   font-weight: 800;
-  letter-spacing: -0.05em;
+  letter-spacing: 0.2em;
+  color: #ffffff;
+}
+
+.subText {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: #666666;
 }
 
 .socials {
   display: flex;
-  gap: 1.5rem;
+  gap: 1.2rem;
 }
 
 .socialLink {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--surface-color);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 600;
-  font-size: 0.875rem;
-  transition: all 0.2s ease;
-  border: 1px solid var(--border-color);
+  color: #888888;
+  transition: color 0.2s ease;
 }
 
 .socialLink:hover {
-  background: var(--accent-color);
-  transform: translateY(-4px);
-  border-color: var(--accent-hover);
+  color: #ffffff;
 }
 
 .copyright {
-  color: #64748b;
-  font-size: 0.875rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: #666666;
+  letter-spacing: 0.1em;
 }

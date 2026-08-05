@@ -1,154 +1,141 @@
-.introContainer {
+.introOverlay {
   position: fixed;
-  inset: 0;
-  background-color: #050505; /* Near black */
-  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #050505;
+  z-index: 99999;
   display: flex;
-  align-items: center;
   justify-content: center;
-  font-family: 'Consolas', 'Courier New', monospace;
+  align-items: center;
   overflow: hidden;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
 }
 
-.scanlines {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    rgba(18, 16, 16, 0) 50%,
-    rgba(0, 0, 0, 0.25) 50%
-  );
-  background-size: 100% 4px;
-  z-index: 15;
+.fadeOut {
+  opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  opacity: 0.6;
 }
 
-.terminalWindow {
+.dotCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  max-width: 900px;
-  height: 90%;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  overflow-y: hidden;
-  z-index: 5;
+  height: 100%;
+  z-index: 1;
 }
 
-.normalLine {
-  color: #a1a1aa; /* Muted tech grey */
-  margin-bottom: 0.2rem;
-  font-size: 1.1rem;
-}
-
-.hashLine {
-  color: #52525b; /* Darker grey for hashes */
-  margin-bottom: 0.1rem;
-  font-size: 0.95rem;
-  opacity: 0.8;
-}
-
-.warnLine {
-  color: #ef4444; /* Red for warning */
-  margin-bottom: 0.3rem;
-  font-size: 1.1rem;
-  font-weight: bold;
-}
-
-.cursor {
-  color: #a1a1aa;
-  animation: blink 1s step-end infinite;
-  font-size: 1.2rem;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-.overlayDarken {
-  position: absolute;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.9);
-  z-index: 10;
-  animation: fadeIn 0.1s ease-out forwards;
-}
-
-/* Base style for cinematic popups */
-.unauthorizedPopup, .accessPopup {
-  position: absolute;
-  z-index: 20;
+.startContainer {
+  position: relative;
+  z-index: 2;
+  text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-family: 'Inter', 'Courier New', sans-serif;
-  transform: scale(0.5);
+  gap: 1rem;
 }
 
-.unauthorizedPopup {
-  color: #e4e4e7; /* Metallic silver/white */
-  animation: scaleUpEpic 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, glitchShake 0.1s linear infinite 0.1s;
-}
-
-.accessPopup {
-  color: #22c55e; /* Matrix Green */
-  animation: scaleUpEpic 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, glitchShake 0.15s linear infinite 0.3s;
-}
-
-.alertIcon {
-  font-size: 8rem;
-  margin-bottom: 1rem;
-  color: #e4e4e7;
-}
-
-.successIcon {
-  font-size: 8rem;
-  margin-bottom: 1rem;
-  color: #22c55e;
-}
-
-.popupText {
-  font-size: 4.5rem;
-  font-weight: 900;
+.brandTitle {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  text-align: center;
+  color: #ffffff;
 }
 
-.unauthorizedPopup .popupText {
+.subtitle {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  color: #888888;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
 }
 
-.accessPopup .popupText {
+.enterBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(10px);
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.enterBtn:hover {
+  background: #ffffff;
+  color: #050505;
+  border-color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15);
 }
 
-@keyframes scaleUpEpic {
-  0% { transform: scale(0.1); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
+.soundIcon {
+  font-size: 1.1rem;
 }
 
-/* Industrial Glitch Shake */
-@keyframes glitchShake {
-  0% { transform: translate(1px, 1px) skew(0deg); }
-  20% { transform: translate(-1px, 0px) skew(-1deg); }
-  40% { transform: translate(0px, 1px) skew(1deg); }
-  60% { transform: translate(1px, -1px) skew(0deg); }
-  80% { transform: translate(-1px, 1px) skew(1deg); }
-  100% { transform: translate(0px, 0px) skew(0deg); }
+.arrowIcon {
+  font-size: 1rem;
+  transition: transform 0.3s ease;
 }
 
-/* For mobile responsiveness */
-@media (max-width: 768px) {
-  .popupText {
-    font-size: 2.5rem;
-  }
-  .alertIcon, .successIcon {
-    font-size: 5rem;
-  }
+.enterBtn:hover .arrowIcon {
+  transform: translateX(4px);
+}
+
+.loadingContainer {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.centerLogo {
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #ffffff;
+  animation: pulseLogo 2s infinite ease-in-out;
+}
+
+@keyframes pulseLogo {
+  0%, 100% { opacity: 0.7; transform: scale(0.98); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+.progressTrack {
+  width: 240px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  position: relative;
+}
+
+.progressBar {
+  height: 100%;
+  background: #ffffff;
+  transition: width 0.05s linear;
+}
+
+.progressText {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: #888888;
+  letter-spacing: 0.1em;
 }

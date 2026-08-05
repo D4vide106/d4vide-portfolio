@@ -5,6 +5,8 @@ import { FiDownload, FiClock, FiSearch } from "react-icons/fi";
 import { SiCurseforge, SiModrinth, SiGamejolt, SiItchdotio } from "react-icons/si";
 import { FaCube, FaCubes, FaServer, FaCode } from "react-icons/fa";
 import styles from "./Projects.module.css";
+import CipherCarousel from "./CipherCarousel";
+
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -227,10 +229,10 @@ export default function Projects({ dict }: { dict: any }) {
   );
 
   const [cfData, setCfData] = useState<Record<string, any>>({});
-  const [loadingCF, setLoadingCF] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("downloads");
   const [filterType, setFilterType] = useState("All");
+  const [viewMode, setViewMode] = useState<"carousel" | "grid">("carousel");
   const [selectedProject, setSelectedProject] = useState<any>(null);
 
   useEffect(() => {
@@ -253,10 +255,8 @@ export default function Projects({ dict }: { dict: any }) {
       };
 
       for (const slug of Array.from(allSlugs)) {
-        // If it's a known multiplatform game, skip CF check completely
         if (["kart-deadline", "spiral-dungeon-of-babel", "sdob"].includes(slug)) continue;
-        
-        const type = slugTypeMap[slug] || "mc-mods"; // Fallback to mc-mods
+        const type = slugTypeMap[slug] || "mc-mods";
         try {
           const res = await fetch(`https://api.cfwidget.com/minecraft/${type}/${slug}`);
           if (res.ok) {
@@ -268,7 +268,6 @@ export default function Projects({ dict }: { dict: any }) {
         } catch (e) {}
       }
       setCfData(dataMap);
-      setLoadingCF(false);
     }
     fetchCF();
   }, [modrinthProjects]);
@@ -334,9 +333,7 @@ export default function Projects({ dict }: { dict: any }) {
 
     let filtered = list.filter(p => p.title.toLowerCase().includes(searchQuery.toLowerCase()) || p.description.toLowerCase().includes(searchQuery.toLowerCase()));
     
-    // Add custom projects
     CUSTOM_PROJECTS.forEach(cp => {
-      // Avoid duplicates if they somehow loaded from Modrinth/CF
       if (!filtered.find((p: any) => p.slug === cp.slug || p.title === cp.title)) {
         if (cp.title.toLowerCase().includes(searchQuery.toLowerCase()) || cp.description.toLowerCase().includes(searchQuery.toLowerCase())) {
           filtered.push(cp);
@@ -370,8 +367,6 @@ export default function Projects({ dict }: { dict: any }) {
     return filtered;
   }, [modrinthProjects, cfData, searchQuery, sortBy, filterType]);
 
-  const isFiltered = searchQuery !== "" || filterType !== "All" || sortBy !== "downloads";
-
   const getCategoryIcon = (type: string) => {
     switch(type) {
       case "modpack": return <FaCubes />;
@@ -382,186 +377,115 @@ export default function Projects({ dict }: { dict: any }) {
     }
   };
 
-  const renderCard = (project: any, index: number) => {
-    const projectType = project.project_type || "mod";
-    
-    return (
-      <div onClick={() => setSelectedProject(project)} key={`${project.id}-${index}`} className={styles.modrinthCard}>
-        <div className={styles.cardHeader}>
-          <div className={styles.logoWrapper}>
-            {project.icon_url ? (
-              <img 
-                src={project.icon_url} 
-                alt={project.title} 
-                className={styles.projectLogo} 
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                  e.currentTarget.parentElement?.querySelector(`.${styles.projectLogoPlaceholder}`)?.removeAttribute("hidden");
-                }}
-              />
-            ) : null}
-            <div 
-              className={styles.projectLogoPlaceholder} 
-              hidden={!!project.icon_url}
-            >
-              {getCategoryIcon(projectType)}
-            </div>
-          </div>
-          
-          <div className={styles.titleArea}>
-            <h4 className={styles.cardTitle}>{project.title}</h4>
-            <p className={styles.cardDesc}>{project.description}</p>
-            
-            <div className={styles.tagsContainer}>
-              <span className={styles.typeBadge}>
-                {getCategoryIcon(projectType)} {projectType}
-              </span>
-              {project.categories.slice(0, 3).map((cat: string) => (
-                <span key={cat} className={styles.tagBadge}>{cat}</span>
-              ))}
-            </div>
-          </div>
-        </div>
-        
-        <div className={styles.cardFooter}>
-          <div className={styles.statsLeft}>
-            <div className={styles.statItem}>
-              <FiDownload className={styles.statIcon} /> 
-              <span className={styles.statValue}>{project.downloads.toLocaleString()}</span>
-            </div>
-            <div className={styles.statItem}>
-              <FiClock className={styles.statIcon} /> 
-              <span className={styles.statValue}>{project.updated ? new Date(project.updated).toLocaleDateString() : "N/A"}</span>
-            </div>
-          </div>
-          <div className={styles.platforms}>
-            {project.hasModrinth && <SiModrinth size={16} color="#1bd96a" title="Modrinth" />}
-            {project.hasCF && <SiCurseforge size={16} color="#f16436" title="CurseForge" />}
-            {project.isMultiplatform && <SiItchdotio size={16} color="#fa5c5c" title="Itch.io" />}
-            {project.isMultiplatform && <SiGamejolt size={16} color="#ccff00" title="GameJolt" />}
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   return (
     <section id="projects" className={styles.projectsSection}>
-      <div className={styles.container}>
-        
-        <div className={styles.controlsBar}>
-          <div className={styles.filtersGroup}>
-            {["All", "Mod", "Modpack", "Datapack", "Resourcepack", "Bedrock / Addon", "Game"].map(type => (
-              <button 
-                key={type}
-                className={`${styles.filterBtn} ${filterType === type ? styles.activeFilter : ""}`}
-                onClick={() => setFilterType(type)}
-              >
-                {type === "All" ? "All" : `${type}s`.replace("Addons", "Addon").replace("Games", "Games")}
-              </button>
-            ))}
-          </div>
-
-          <div className={styles.searchAndSort}>
-            <div className={styles.searchBox}>
-              <FiSearch className={styles.searchIcon} />
-              <input 
-                type="text" 
-                placeholder="Search..." 
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className={styles.searchInput}
-              />
-            </div>
-            
-            <div className={styles.sortBox}>
-              <span className={styles.sortLabel}>Sort by:</span>
-              <select 
-                value={sortBy} 
-                onChange={(e) => setSortBy(e.target.value)}
-                className={styles.sortSelect}
-              >
-                <option value="downloads">Downloads</option>
-                <option value="date">Recently Updated</option>
-                <option value="name">Name (A-Z)</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        
-        <div className={styles.marqueeContainer}>
-          <div className={styles.marqueeWrapper}>
-            <div className={isFiltered ? styles.staticGrid : styles.marqueeTrack}>
-              {isFiltered ? (
-                mergedProjects.length > 0 ? (
-                  mergedProjects.map((p: any, i: number) => renderCard(p, i))
-                ) : (
-                  <div className={styles.emptyState}>No projects found for this filter.</div>
-                )
-              ) : (
-                [...mergedProjects, ...mergedProjects].map((p: any, i: number) => renderCard(p, i))
-              )}
-            </div>
-          </div>
+      <div className={styles.topControlBar}>
+        <div className={styles.viewToggleGroup}>
+          <button 
+            className={`${styles.viewBtn} ${viewMode === "carousel" ? styles.activeViewBtn : ""}`} 
+            onClick={() => setViewMode("carousel")}
+          >
+            3D CONSTELLATION
+          </button>
+          <button 
+            className={`${styles.viewBtn} ${viewMode === "grid" ? styles.activeViewBtn : ""}`} 
+            onClick={() => setViewMode("grid")}
+          >
+            GRID ARCHIVE
+          </button>
         </div>
       </div>
+
+      {/* 3D Ring Constellation View */}
+      {viewMode === "carousel" ? (
+        <div className={styles.carouselWrapper}>
+          <CipherCarousel projects={mergedProjects} />
+        </div>
+      ) : (
+        /* Grid Archive View */
+        <div className={styles.container}>
+
+
+          <div className={styles.controlsBar}>
+            <div className={styles.filtersGroup}>
+              {["All", "Mod", "Modpack", "Datapack", "Resourcepack", "Bedrock / Addon", "Game"].map(type => (
+                <button 
+                  key={type}
+                  className={`${styles.filterBtn} ${filterType === type ? styles.activeFilter : ""}`}
+                  onClick={() => setFilterType(type)}
+                >
+                  {type}
+                </button>
+              ))}
+            </div>
+
+            <div className={styles.searchAndSort}>
+              <div className={styles.searchBox}>
+                <FiSearch className={styles.searchIcon} />
+                <input 
+                  type="text" 
+                  placeholder="SEARCH WORKS..." 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className={styles.searchInput}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.staticGrid}>
+            {mergedProjects.map((project: any, index: number) => (
+              <div onClick={() => setSelectedProject(project)} key={`${project.id}-${index}`} className={styles.modrinthCard}>
+                <div className={styles.cardHeader}>
+                  <div className={styles.logoWrapper}>
+                    {project.icon_url ? (
+                      <img src={project.icon_url} alt={project.title} className={styles.projectLogo} />
+                    ) : (
+                      <div className={styles.projectLogoPlaceholder}>{getCategoryIcon(project.project_type)}</div>
+                    )}
+                  </div>
+                  <div className={styles.titleArea}>
+                    <h4 className={styles.cardTitle}>{project.title}</h4>
+                    <p className={styles.cardDesc}>{project.description}</p>
+                  </div>
+                </div>
+                <div className={styles.cardFooter}>
+                  <div className={styles.statItem}>
+                    <FiDownload /> <span>{project.downloads.toLocaleString()}</span>
+                  </div>
+                  <div className={styles.platforms}>
+                    {project.hasModrinth && <SiModrinth size={16} color="#ffffff" />}
+                    {project.hasCF && <SiCurseforge size={16} color="#ffffff" />}
+                    {project.isMultiplatform && <SiItchdotio size={16} color="#ffffff" />}
+                    {project.isMultiplatform && <SiGamejolt size={16} color="#ffffff" />}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Modal Popup */}
       {selectedProject && (
         <div className={styles.modalOverlay} onClick={() => setSelectedProject(null)}>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
             <button className={styles.modalCloseBtn} onClick={() => setSelectedProject(null)}>×</button>
-            
             <div className={styles.modalHeader}>
-              <div className={styles.modalLogoWrapper}>
-                {selectedProject.icon_url ? (
-                  <img 
-                    src={selectedProject.icon_url} 
-                    alt={selectedProject.title} 
-                    className={styles.modalLogo} 
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                      e.currentTarget.parentElement?.querySelector(`.${styles.projectLogoPlaceholder}`)?.removeAttribute("hidden");
-                    }}
-                  />
-                ) : null}
-                <div 
-                  className={styles.projectLogoPlaceholder}
-                  hidden={!!selectedProject.icon_url}
-                >
-                  {getCategoryIcon(selectedProject.project_type)}
-                </div>
-              </div>
-              <div className={styles.modalTitleArea}>
-                <h2>{selectedProject.title}</h2>
-                <p>{selectedProject.description}</p>
-              </div>
+              <h2>{selectedProject.title}</h2>
+              <p>{selectedProject.description}</p>
             </div>
-
-            <div className={styles.modalLinks}>
-              <h3>Available Platforms</h3>
-              <div className={styles.platformButtons}>
-                {selectedProject.hasModrinth && (
-                  <a href={selectedProject.modrinthUrl} target="_blank" rel="noreferrer" className={styles.platformBtn} style={{ "--btn-color": "#1bd96a", "--btn-bg": "rgba(27, 217, 106, 0.1)" } as any}>
-                    <SiModrinth size={24} /> Download on Modrinth
-                  </a>
-                )}
-                {selectedProject.hasCF && (
-                  <a href={selectedProject.cfUrl} target="_blank" rel="noreferrer" className={styles.platformBtn} style={{ "--btn-color": "#f16436", "--btn-bg": "rgba(241, 100, 54, 0.1)" } as any}>
-                    <SiCurseforge size={24} /> Download on CurseForge
-                  </a>
-                )}
-                {selectedProject.isMultiplatform && (
-                  <a href={`https://d4vide106.itch.io/${selectedProject.slug}`} target="_blank" rel="noreferrer" className={styles.platformBtn} style={{ "--btn-color": "#fa5c5c", "--btn-bg": "rgba(250, 92, 92, 0.1)" } as any}>
-                    <SiItchdotio size={24} /> View on Itch.io
-                  </a>
-                )}
-                {selectedProject.isMultiplatform && (
-                  <a href="https://gamejolt.com/@D4vide106/games" target="_blank" rel="noreferrer" className={styles.platformBtn} style={{ "--btn-color": "#ccff00", "--btn-bg": "rgba(204, 255, 0, 0.1)" } as any}>
-                    <SiGamejolt size={24} /> View on GameJolt
-                  </a>
-                )}
-              </div>
+            <div className={styles.platformButtons}>
+              {selectedProject.hasModrinth && (
+                <a href={selectedProject.modrinthUrl} target="_blank" rel="noreferrer" className={styles.platformBtn}>
+                  <SiModrinth size={20} /> MODRINTH
+                </a>
+              )}
+              {selectedProject.hasCF && (
+                <a href={selectedProject.cfUrl} target="_blank" rel="noreferrer" className={styles.platformBtn}>
+                  <SiCurseforge size={20} /> CURSEFORGE
+                </a>
+              )}
             </div>
           </div>
         </div>
@@ -569,3 +493,4 @@ export default function Projects({ dict }: { dict: any }) {
     </section>
   );
 }
+
