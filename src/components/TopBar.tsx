@@ -44,17 +44,17 @@ export default function TopBar({ dict, currentLang }: { dict: any; currentLang: 
           <ul className={styles.menuList}>
             <li>
               <a href="#projects" className={styles.menuLink}>
-                Works
+                WORKS
               </a>
             </li>
             <li>
               <a href="#about" className={styles.menuLink}>
-                About
+                ABOUT
               </a>
             </li>
             <li>
               <a href="#youtube" className={styles.menuLink}>
-                Media
+                MEDIA
               </a>
             </li>
           </ul>
