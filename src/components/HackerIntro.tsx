@@ -38,12 +38,41 @@ export default function HackerIntro() {
   const [lines, setLines] = useState<string[]>([]);
   const [showUnauthorized, setShowUnauthorized] = useState(false);
   const [showAccessGranted, setShowAccessGranted] = useState(false);
-  const [finished, setFinished] = useState(false);
+  const [finished, setFinished] = useState(true); // default true until checked in useEffect
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const hasRun = useRef(false);
 
+  // Check localStorage on mount
+  useEffect(() => {
+    const seen = localStorage.getItem("d4v_intro_seen");
+    if (seen === "true") {
+      setFinished(true);
+      return;
+    }
+    setFinished(false);
+  }, []);
+
+  const handleSkip = () => {
+    try {
+      localStorage.setItem("d4v_intro_seen", "true");
+    } catch {}
+    setFinished(true);
+  };
+
+  // Keyboard shortcut listener (ESC to skip)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        handleSkip();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   // Full Original Hacker Terminal Sequence
   useEffect(() => {
+    if (finished) return;
     if (hasRun.current) return;
     hasRun.current = true;
 
@@ -73,14 +102,18 @@ export default function HackerIntro() {
       await sleep(200);
       setShowAccessGranted(true);
       await sleep(1800);
+      try {
+        localStorage.setItem("d4v_intro_seen", "true");
+      } catch {}
       setFinished(true);
     }
 
     runSequence();
-  }, []);
+  }, [finished]);
 
-  // Lightning Spark / Glitch Dot Matrix Canvas (Random lightning bursts, no circles, no mouse follow)
+  // Lightning Spark / Glitch Dot Matrix Canvas
   useEffect(() => {
+    if (finished) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -142,13 +175,17 @@ export default function HackerIntro() {
       window.removeEventListener("resize", handleResize);
       cancelAnimationFrame(animationFrameId);
     };
-  }, []);
+  }, [finished]);
 
   if (finished) return null;
 
   return (
     <div className={styles.introOverlay}>
       <canvas ref={canvasRef} className={styles.lightningCanvas} />
+
+      <button className={styles.skipBtn} onClick={handleSkip} title="Press ESC to skip">
+        [ SKIP INTRO ✕ ]
+      </button>
 
       <div className={styles.terminalWindow}>
         {lines.map((line, i) => (

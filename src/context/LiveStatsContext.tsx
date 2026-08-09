@@ -13,6 +13,7 @@ interface LiveStatsContextType {
   platformTotals: Record<string, number>;
   projectViewsMap: Record<string, number>;
   incrementProjectViews: (projectId: string) => void;
+  incrementDownloadLink: (projectId: string, linkUrl: string) => void;
   getProjectViews: (projectId: string) => number;
   isLiveUpdating: boolean;
 }
@@ -24,6 +25,7 @@ const LiveStatsContext = createContext<LiveStatsContextType>({
   platformTotals: {},
   projectViewsMap: {},
   incrementProjectViews: () => {},
+  incrementDownloadLink: () => {},
   getProjectViews: () => 1250,
   isLiveUpdating: false,
 });
@@ -168,6 +170,31 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     }
   };
 
+  const incrementDownloadLink = (projectId: string, linkUrl: string) => {
+    setProjects((prevProjects) =>
+      prevProjects.map((p) => {
+        if (p.id !== projectId) return p;
+        const updatedLinks = p.links.map((l) => {
+          if (l.url === linkUrl) {
+            const nextCount = (l.initialDownloads || 0) + 1;
+            try {
+              localStorage.setItem(`d4v_link_dl_${p.id}_${l.platform}`, nextCount.toString());
+            } catch {}
+            return { ...l, initialDownloads: nextCount };
+          }
+          return l;
+        });
+        const newTotalSum = updatedLinks.reduce((sum, l) => sum + (l.initialDownloads || 0), 0);
+        return {
+          ...p,
+          downloads: Math.max(p.downloads + 1, newTotalSum),
+          links: updatedLinks,
+        };
+      })
+    );
+    counterUp(`dl-${projectId}`);
+  };
+
   const getProjectViews = (projectId: string) => {
     return projectViewsMap[projectId] ?? 1250;
   };
@@ -186,6 +213,12 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
           const updatedLinks = await Promise.all(
             project.links.map(async (link) => {
               let liveCount = link.initialDownloads ?? 0;
+
+              // Check if user clicked and incremented link locally
+              const userSavedVal = parseInt(localStorage.getItem(`d4v_link_dl_${project.id}_${link.platform}`) || "0", 10);
+              if (userSavedVal > liveCount) {
+                liveCount = userSavedVal;
+              }
 
               if (link.mrId) {
                 try {
@@ -224,7 +257,6 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
             })
           );
 
-          // Never allow project downloads to decrease below initial baseline or current totalSum
           const newProjectTotal = Math.max(project.downloads, totalSum);
 
           return {
@@ -282,6 +314,7 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         platformTotals,
         projectViewsMap,
         incrementProjectViews,
+        incrementDownloadLink,
         getProjectViews,
         isLiveUpdating,
       }}
@@ -292,5 +325,6 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 };
 
 export const useLiveStats = () => useContext(LiveStatsContext);
+
 
 

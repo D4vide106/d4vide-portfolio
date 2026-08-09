@@ -17,7 +17,7 @@ const PLATFORM_NAMES: Record<string, string> = {
 };
 
 export default function Projects({ dict }: { dict: any }) {
-  const { projects, incrementProjectViews, getProjectViews, portfolioViews } = useLiveStats();
+  const { projects, incrementProjectViews, getProjectViews, portfolioViews, incrementDownloadLink } = useLiveStats();
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState("All");
   const [viewMode, setViewMode] = useState<"carousel" | "grid">("carousel");
@@ -296,7 +296,12 @@ export default function Projects({ dict }: { dict: any }) {
                               target="_blank"
                               rel="noreferrer"
                               className={styles.editionBtn}
-                              onClick={(e) => e.stopPropagation()}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                if (selectedProject) {
+                                  incrementDownloadLink(selectedProject.id, link.url);
+                                }
+                              }}
                             >
                               <span>{link.label.replace(`${platformName} `, "")}</span>
                               {link.initialDownloads !== undefined && link.initialDownloads > 0 && (

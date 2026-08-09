@@ -13,6 +13,17 @@
   gap: 4.5rem;
 }
 
+@keyframes bentoHeroCascade {
+  0% {
+    opacity: 0;
+    transform: translateY(28px) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 /* Editorial Top Headline */
 .editorialHeader {
   text-align: center;
@@ -20,6 +31,8 @@
   flex-direction: column;
   align-items: center;
   gap: 0.9rem;
+  animation: bentoHeroCascade 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.05s;
 }
 
 .topCaption {
@@ -70,6 +83,8 @@
   padding: 3.5rem;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.12);
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: bentoHeroCascade 0.75s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.15s;
 }
 
 .aboutRow:hover {
@@ -175,6 +190,8 @@
   padding: 2.8rem;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.12);
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: bentoHeroCascade 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.25s;
 }
 
 .youtubeSection:hover {
