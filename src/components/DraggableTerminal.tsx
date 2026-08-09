@@ -128,7 +128,7 @@ export default function DraggableTerminal() {
         >
           <span className={styles.greenPulseDot}></span>
           <FiTerminal className={styles.dockTermIcon} />
-          <span>[CMD] CONTROL CENTER</span>
+          <span>Terminal — Control Center</span>
         </button>
       )}
 

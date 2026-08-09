@@ -11,10 +11,9 @@ export default function Hero({ dict, aboutDict }: { dict: any, aboutDict: any })
         
         {/* Editorial Top Headline */}
         <div className={styles.editorialHeader}>
-          <span className={styles.topCaption}>SYSTEM DESIGNER & GAME CREATOR</span>
           <h1 className={styles.heroTitle}>D4VIDE106</h1>
           <p className={styles.heroSubtitle}>
-            FOR CULTURE, MINECRAFT MODDING, AND INDIE GAME CREATION
+            System Designer & Minecraft Mod Creator
           </p>
         </div>
 
@@ -30,7 +29,6 @@ export default function Hero({ dict, aboutDict }: { dict: any, aboutDict: any })
           </div>
 
           <div className={styles.bioTextContainer}>
-            <span className={styles.bioTag}>[ ABOUT THE CREATOR ]</span>
             <p className={styles.bioDescription}>
               {aboutDict.aboutDesc1 || "I am a Minecraft mod developer and content creator pushing the boundaries of what is possible inside procedural worlds."} 
               {" "}

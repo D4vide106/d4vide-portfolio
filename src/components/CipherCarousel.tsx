@@ -83,9 +83,9 @@ export default function CipherCarousel({
   return (
     <div ref={containerRef} className={styles.carouselSection}>
       <div className={styles.headerArea}>
-        <span className={styles.sectionCaption}>PROJECT CONSTELLATION</span>
-        <h2 className={styles.sectionTitle}>FEATURED WORKS</h2>
-        <p className={styles.scrollHint}>[ SCROLL MOUSE WHEEL TO ROTATE & CHANGE DIRECTION ]</p>
+        <span className={styles.sectionCaption}>FEATURED WORKS</span>
+        <h2 className={styles.sectionTitle}>PROJECT CONSTELLATION</h2>
+        <p className={styles.scrollHint}>Scroll mouse wheel or drag to rotate constellation</p>
       </div>
 
       {/* 2D Circular Constellation Ring Stage */}

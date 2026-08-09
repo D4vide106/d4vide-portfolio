@@ -4,16 +4,23 @@
   left: 50%;
   transform: translateX(-50%);
   width: calc(100% - 3rem);
-  max-width: 960px;
+  max-width: 1040px;
   z-index: 9000;
-  background: rgba(18, 18, 22, 0.72);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  background: rgba(18, 18, 22, 0.75);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 9999px;
-  padding: 0.6rem 1.4rem;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 0.5rem 1.2rem;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.topBarScrolled {
+  top: 0.8rem;
+  background: rgba(14, 14, 18, 0.88);
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .container {
@@ -23,30 +30,62 @@
   justify-content: space-between;
 }
 
-.logo a {
+.logo {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+}
+
+.brandLink {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  transition: opacity 0.2s;
+}
+
+.brandLink:hover {
+  opacity: 0.9;
+}
+
+.avatarWrap {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatarImg {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.onlineDot {
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 7px;
+  height: 7px;
+  background-color: #30d158;
+  border-radius: 50%;
+  border: 1.5px solid #0d0d0f;
+  box-shadow: 0 0 6px #30d158;
 }
 
 .brandMain {
   font-family: var(--font-heading);
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   font-weight: 800;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   color: #ffffff;
-  text-transform: uppercase;
-  background: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.8) 100%);
+  background: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.82) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-}
-
-.brandSub {
-  font-family: var(--font-body);
-  font-size: 0.7rem;
-  letter-spacing: 0.1em;
-  color: #86868b;
-  font-weight: 500;
 }
 
 .nav {
@@ -56,68 +95,94 @@
 .menuList {
   display: flex;
   list-style: none;
-  gap: 1.8rem;
-  background: rgba(255, 255, 255, 0.04);
-  padding: 0.35rem 1.2rem;
+  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.3rem 0.4rem;
   border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.menuList a {
-  font-family: var(--font-body);
-  font-size: 0.73rem;
-  font-weight: 600;
-  letter-spacing: 0.15em;
+.menuLink {
+  display: inline-block;
+  padding: 0.35rem 1.1rem;
+  border-radius: 9999px;
+  font-family: var(--font-apple);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
   color: #a1a1a6;
-  text-transform: uppercase;
-  transition: color 0.2s ease, transform 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.menuList a:hover {
+.menuLink:hover {
   color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .actions {
   display: flex;
   align-items: center;
+  gap: 0.6rem;
+}
+
+.discordBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.95rem;
+  background: rgba(88, 101, 242, 0.15);
+  border: 1px solid rgba(88, 101, 242, 0.35);
+  border-radius: 9999px;
+  color: #7289da;
+  font-family: var(--font-apple);
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.discordBtn:hover {
+  background: #5865f2;
+  color: #ffffff;
+  border-color: #5865f2;
+  transform: scale(1.04);
+  box-shadow: 0 4px 16px rgba(88, 101, 242, 0.4);
 }
 
 .langBtn {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.4rem 0.9rem;
-  background: rgba(255, 255, 255, 0.08);
+  padding: 0.4rem 0.85rem;
+  background: rgba(255, 255, 255, 0.07);
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 9999px;
   color: #ffffff;
-  font-family: var(--font-body);
-  font-size: 0.7rem;
+  font-family: var(--font-apple);
+  font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.05em;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .langBtn:hover {
   background: #ffffff;
   color: #000000;
-  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.25);
+  border-color: #ffffff;
   transform: scale(1.04);
+  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.25);
 }
 
 @media (max-width: 768px) {
   .topBar {
     top: 0.8rem;
     width: calc(100% - 1.6rem);
-    padding: 0.5rem 1rem;
+    padding: 0.45rem 0.9rem;
   }
-  .menuList {
-    gap: 1rem;
-    padding: 0.3rem 0.8rem;
-  }
-  .brandSub {
+  .actionText {
     display: none;
   }
+  .menuLink {
+    padding: 0.3rem 0.8rem;
+    font-size: 0.75rem;
+  }
 }
-

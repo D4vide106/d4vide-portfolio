@@ -78,13 +78,13 @@ export default function Projects({ dict }: { dict: any }) {
             className={`${styles.viewBtn} ${viewMode === "carousel" ? styles.activeViewBtn : ""}`}
             onClick={() => setViewMode("carousel")}
           >
-            3D CONSTELLATION
+            Constellation View
           </button>
           <button
             className={`${styles.viewBtn} ${viewMode === "grid" ? styles.activeViewBtn : ""}`}
             onClick={() => setViewMode("grid")}
           >
-            GRID ARCHIVE
+            Grid View
           </button>
         </div>
       </div>
