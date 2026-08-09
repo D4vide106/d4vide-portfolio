@@ -1,19 +1,23 @@
 .topBar {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
+  top: 1.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 3rem);
+  max-width: 960px;
   z-index: 9000;
-  background: rgba(5, 5, 5, 0.85);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 1rem 0;
+  background: rgba(18, 18, 22, 0.72);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 9999px;
+  padding: 0.6rem 1.4rem;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .container {
-  max-width: 1300px;
-  margin: 0 auto;
-  padding: 0 2rem;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -27,18 +31,22 @@
 
 .brandMain {
   font-family: var(--font-heading);
-  font-size: 1.4rem;
+  font-size: 1.15rem;
   font-weight: 800;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.12em;
   color: #ffffff;
   text-transform: uppercase;
+  background: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.8) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .brandSub {
   font-family: var(--font-body);
-  font-size: 0.75rem;
-  letter-spacing: 0.15em;
-  color: #888888;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: #86868b;
+  font-weight: 500;
 }
 
 .nav {
@@ -48,17 +56,21 @@
 .menuList {
   display: flex;
   list-style: none;
-  gap: 2.5rem;
+  gap: 1.8rem;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.35rem 1.2rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .menuList a {
   font-family: var(--font-body);
-  font-size: 0.75rem;
+  font-size: 0.73rem;
   font-weight: 600;
-  letter-spacing: 0.25em;
-  color: #888888;
+  letter-spacing: 0.15em;
+  color: #a1a1a6;
   text-transform: uppercase;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .menuList a:hover {
@@ -74,18 +86,38 @@
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.35rem 0.8rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 3px;
+  padding: 0.4rem 0.9rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 9999px;
   color: #ffffff;
   font-family: var(--font-body);
   font-size: 0.7rem;
-  letter-spacing: 0.1em;
-  transition: all 0.2s ease;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .langBtn:hover {
   background: #ffffff;
-  color: #050505;
+  color: #000000;
+  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.25);
+  transform: scale(1.04);
 }
+
+@media (max-width: 768px) {
+  .topBar {
+    top: 0.8rem;
+    width: calc(100% - 1.6rem);
+    padding: 0.5rem 1rem;
+  }
+  .menuList {
+    gap: 1rem;
+    padding: 0.3rem 0.8rem;
+  }
+  .brandSub {
+    display: none;
+  }
+}
+

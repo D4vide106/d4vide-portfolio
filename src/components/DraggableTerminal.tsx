@@ -140,32 +140,26 @@ export default function DraggableTerminal() {
             className={styles.terminalHeader} 
             onMouseDown={handleMouseDown}
           >
-            <div className={styles.headerLeft}>
-              <FiTerminal className={styles.termIcon} />
-              <span>Windows PowerShell - Control Center</span>
+            <div className={styles.macTrafficLights}>
+              <span 
+                className={`${styles.trafficDot} ${styles.dotRed}`} 
+                onClick={() => setIsMinimized(true)} 
+                title="Close" 
+              />
+              <span 
+                className={`${styles.trafficDot} ${styles.dotYellow}`} 
+                onClick={() => setIsMinimized(true)} 
+                title="Minimize" 
+              />
+              <span 
+                className={`${styles.trafficDot} ${styles.dotGreen}`} 
+                onClick={() => setIsMaximized(!isMaximized)} 
+                title={isMaximized ? "Restore" : "Maximize"} 
+              />
             </div>
-            <div className={styles.headerRight}>
-              <button 
-                className={styles.controlBtn} 
-                onClick={() => setIsMinimized(true)}
-                title="Minimize"
-              >
-                <FiMinus />
-              </button>
-              <button 
-                className={styles.controlBtn} 
-                onClick={() => setIsMaximized(!isMaximized)}
-                title={isMaximized ? "Restore" : "Maximize"}
-              >
-                <FiSquare />
-              </button>
-              <button 
-                className={`${styles.controlBtn} ${styles.closeBtn}`} 
-                onClick={() => setIsMinimized(true)}
-                title="Close"
-              >
-                <FiX />
-              </button>
+            <div className={styles.headerTitle}>
+              <FiTerminal className={styles.termIcon} />
+              <span>Terminal — Control Center</span>
             </div>
           </div>
           <div className={styles.terminalBody}>

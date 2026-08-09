@@ -194,7 +194,15 @@ export default function Projects({ dict }: { dict: any }) {
         return (
           <div className={styles.modalOverlay} onClick={() => setSelectedProject(null)}>
             <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-              <button className={styles.modalCloseBtn} onClick={() => setSelectedProject(null)}>×</button>
+              <div className={styles.modalMacHeader}>
+                <div className={styles.modalTrafficLights}>
+                  <span className={`${styles.trafficDot} ${styles.dotRed}`} onClick={() => setSelectedProject(null)} title="Close" />
+                  <span className={`${styles.trafficDot} ${styles.dotYellow}`} title="Minimize" />
+                  <span className={`${styles.trafficDot} ${styles.dotGreen}`} title="Zoom" />
+                </div>
+                <span className={styles.macHeaderTitle}>{selectedProject.title}</span>
+                <button className={styles.modalCloseBtn} onClick={() => setSelectedProject(null)}>×</button>
+              </div>
 
               {/* Header */}
               <div className={styles.modalHeader}>

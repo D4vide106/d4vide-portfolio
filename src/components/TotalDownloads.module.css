@@ -1,65 +1,79 @@
 .statsContainer {
   display: flex;
   align-items: center;
-  gap: 0.8rem;
+  gap: 0.9rem;
   flex-wrap: wrap;
 }
 
 .downloadsBadge {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.6rem 1.2rem;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 4px;
+  gap: 0.65rem;
+  padding: 0.65rem 1.4rem;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 9999px;
   color: #ffffff;
   font-family: var(--font-body);
-  font-size: 0.75rem;
-  letter-spacing: 0.15em;
+  font-size: 0.73rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .downloadsBadge:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
 }
 
 .viewsBadge {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.6rem 1.2rem;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 4px;
-  color: #aaaaaa;
+  gap: 0.65rem;
+  padding: 0.65rem 1.4rem;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  color: #a1a1a6;
   font-family: var(--font-body);
-  font-size: 0.75rem;
-  letter-spacing: 0.15em;
+  font-size: 0.73rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .viewsBadge:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.22);
   color: #ffffff;
+  transform: translateY(-2px);
 }
 
 .viewIcon {
-  color: #3b82f6;
-  font-size: 1rem;
+  color: #64d2ff;
+  font-size: 1.05rem;
+}
+
+.icon {
+  color: #30d158;
+  font-size: 1.05rem;
 }
 
 .liveDot {
   width: 7px;
   height: 7px;
-  background-color: #10b981;
+  background-color: #30d158;
   border-radius: 50%;
-  box-shadow: 0 0 8px #10b981;
+  box-shadow: 0 0 8px #30d158;
   animation: blink 1.8s infinite ease-in-out;
   margin-left: 0.2rem;
   flex-shrink: 0;
@@ -68,9 +82,9 @@
 .liveDotBlue {
   width: 7px;
   height: 7px;
-  background-color: #3b82f6;
+  background-color: #64d2ff;
   border-radius: 50%;
-  box-shadow: 0 0 8px #3b82f6;
+  box-shadow: 0 0 8px #64d2ff;
   animation: blink 1.8s infinite ease-in-out;
   margin-left: 0.2rem;
   flex-shrink: 0;
@@ -78,12 +92,7 @@
 
 @keyframes blink {
   0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.3; transform: scale(0.7); }
-}
-
-.icon {
-  color: #ffffff;
-  font-size: 1rem;
+  50% { opacity: 0.35; transform: scale(0.7); }
 }
 
 .downloadsBadge strong, .viewsBadge strong {
@@ -97,7 +106,7 @@
   display: inline-flex;
   width: 200px;
   height: 40px;
-  border-radius: 4px;
+  border-radius: 9999px;
   background-color: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.1);
   overflow: hidden;
@@ -118,4 +127,5 @@
   0% { transform: translateX(-100%); }
   100% { transform: translateX(100%); }
 }
+
 
