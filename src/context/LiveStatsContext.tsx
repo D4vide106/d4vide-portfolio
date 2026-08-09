@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState, useEffect, useMemo } from "
 import { MAIN_PROJECTS, UnifiedProject } from "@/data/projectsData";
 
 const COUNTER_NS = "d4vide106-portfolio";
-const BASE_SITE_VIEWS = 32840; // Base portfolio views for established creator
+const BASE_SITE_VIEWS = 0; // Pure 100% real site views from actual visits, zero fake offsets
 
 interface LiveStatsContextType {
   projects: UnifiedProject[];
@@ -21,12 +21,12 @@ interface LiveStatsContextType {
 const LiveStatsContext = createContext<LiveStatsContextType>({
   projects: MAIN_PROJECTS,
   totalDownloads: MAIN_PROJECTS.reduce((acc, p) => acc + p.downloads, 0),
-  portfolioViews: BASE_SITE_VIEWS,
+  portfolioViews: 1,
   platformTotals: {},
   projectViewsMap: {},
   incrementProjectViews: () => {},
   incrementDownloadLink: () => {},
-  getProjectViews: () => 1250,
+  getProjectViews: () => 1,
   isLiveUpdating: false,
 });
 
@@ -56,15 +56,15 @@ async function counterGet(key: string): Promise<number | null> {
 
 export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [projects, setProjects] = useState<UnifiedProject[]>(MAIN_PROJECTS);
-  const [portfolioViews, setPortfolioViews] = useState<number>(BASE_SITE_VIEWS + 1);
+  const [portfolioViews, setPortfolioViews] = useState<number>(1);
   const [projectViewsMap, setProjectViewsMap] = useState<Record<string, number>>({});
   const [isLiveUpdating, setIsLiveUpdating] = useState<boolean>(false);
 
-  // ── Portfolio views (real, persistent, session-tracked) ─────────────
+  // ── Portfolio views (100% real, persistent, session-tracked) ─────────────
   useEffect(() => {
     async function trackPortfolioView() {
       const SESSION_KEY = "d4v_session_viewed";
-      const LOCAL_KEY = "d4v_local_views_count";
+      const LOCAL_KEY = "d4v_local_real_views";
 
       const hasSession = sessionStorage.getItem(SESSION_KEY);
       let localViews = parseInt(localStorage.getItem(LOCAL_KEY) || "1", 10);
@@ -75,16 +75,16 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         localStorage.setItem(LOCAL_KEY, localViews.toString());
         const apiCount = await counterUp("site-views");
         if (apiCount !== null) {
-          setPortfolioViews(BASE_SITE_VIEWS + apiCount);
+          setPortfolioViews(apiCount);
         } else {
-          setPortfolioViews(BASE_SITE_VIEWS + localViews);
+          setPortfolioViews(localViews);
         }
       } else {
         const apiCount = await counterGet("site-views");
         if (apiCount !== null) {
-          setPortfolioViews(BASE_SITE_VIEWS + apiCount);
+          setPortfolioViews(apiCount);
         } else {
-          setPortfolioViews(BASE_SITE_VIEWS + localViews);
+          setPortfolioViews(localViews);
         }
       }
     }
@@ -94,34 +94,23 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     const interval = setInterval(async () => {
       const apiCount = await counterGet("site-views");
       if (apiCount !== null) {
-        setPortfolioViews(BASE_SITE_VIEWS + apiCount);
+        setPortfolioViews(apiCount);
       }
     }, 30_000);
 
     return () => clearInterval(interval);
   }, []);
 
-  // ── Project views (real, per-project, persistent) ──
+  // ── Project views (100% real, per-project, persistent) ──
   useEffect(() => {
     async function loadProjectViews() {
-      const BASE_VIEWS: Record<string, number> = {
-        "project-boss-rpg": 8420,
-        "sdob": 6890,
-        "structural-beyond": 5910,
-        "project-horror": 3120,
-        "project-the-rpg-reborn": 1450,
-        "project-realistic-rpg": 1280,
-        "project-gunparty": 990,
-        "bosstweak-3d": 1140,
-        "pmaintanceuniversal": 860,
-        "infinitysmart": 4200,
-      };
+      const projectIds = MAIN_PROJECTS.map((p) => p.id);
 
       const entries = await Promise.all(
-        Object.entries(BASE_VIEWS).map(async ([id, base]) => {
+        projectIds.map(async (id) => {
           const apiCount = await counterGet(`pv-${id}`);
           const localVal = parseInt(localStorage.getItem(`d4v_pv_${id}`) || "0", 10);
-          const total = base + Math.max(apiCount ?? 0, localVal);
+          const total = Math.max(apiCount ?? 0, localVal, 1);
           return [id, total] as [string, number];
         })
       );
@@ -147,25 +136,12 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       localCount += 1;
       localStorage.setItem(LOCAL_KEY, localCount.toString());
       const apiCount = await counterUp(`pv-${projectId}`);
-      const BASE_VIEWS: Record<string, number> = {
-        "project-boss-rpg": 8420,
-        "sdob": 6890,
-        "structural-beyond": 5910,
-        "project-horror": 3120,
-        "project-the-rpg-reborn": 1450,
-        "project-realistic-rpg": 1280,
-        "project-gunparty": 990,
-        "bosstweak-3d": 1140,
-        "pmaintanceuniversal": 860,
-        "infinitysmart": 4200,
-      };
-      const base = BASE_VIEWS[projectId] ?? 1000;
-      const total = base + Math.max(apiCount ?? 0, localCount);
+      const total = Math.max(apiCount ?? 0, localCount, 1);
       setProjectViewsMap((prev) => ({ ...prev, [projectId]: total }));
     } else {
       setProjectViewsMap((prev) => ({
         ...prev,
-        [projectId]: (prev[projectId] ?? 1000) + 1,
+        [projectId]: (prev[projectId] ?? 1) + 1,
       }));
     }
   };
