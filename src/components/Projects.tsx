@@ -8,6 +8,7 @@ import styles from "./Projects.module.css";
 import CipherCarousel from "./CipherCarousel";
 import { useLiveStats } from "@/context/LiveStatsContext";
 import { UnifiedProject } from "@/data/projectsData";
+import AnimatedNumber from "./AnimatedNumber";
 
 const PLATFORM_NAMES: Record<string, string> = {
   curseforge: "CurseForge",
@@ -231,7 +232,9 @@ export default function Projects({ dict }: { dict: any }) {
                   <div className={styles.modalStatLabel}>
                     <FiDownload className={styles.statIconGreen} /> TOTAL DOWNLOADS
                   </div>
-                  <div className={styles.modalStatNumber}>{selectedProject.downloads.toLocaleString()}</div>
+                  <div className={styles.modalStatNumber}>
+                    <AnimatedNumber value={selectedProject.downloads} />
+                  </div>
                   <div className={styles.modalStatSub}>Tutte le piattaforme sommate</div>
                 </div>
                 <div className={styles.modalStatDivider} />
@@ -239,7 +242,9 @@ export default function Projects({ dict }: { dict: any }) {
                   <div className={styles.modalStatLabel}>
                     <FiEye className={styles.statIconBlue} /> VIEWS PROGETTO
                   </div>
-                  <div className={styles.modalStatNumber}>{getProjectViews(selectedProject.id).toLocaleString()}</div>
+                  <div className={styles.modalStatNumber}>
+                    <AnimatedNumber value={getProjectViews(selectedProject.id)} />
+                  </div>
                   <div className={styles.modalStatSub}>Visualizzazioni reali del progetto</div>
                 </div>
                 <div className={styles.modalStatDivider} />
@@ -247,7 +252,9 @@ export default function Projects({ dict }: { dict: any }) {
                   <div className={styles.modalStatLabel}>
                     <FiGlobe className={styles.statIconPurple} /> VIEWS PORTFOLIO
                   </div>
-                  <div className={styles.modalStatNumber}>{portfolioViews.toLocaleString()}</div>
+                  <div className={styles.modalStatNumber}>
+                    <AnimatedNumber value={portfolioViews} />
+                  </div>
                   <div className={styles.modalStatSub}>Visitatori live del sito</div>
                 </div>
               </div>

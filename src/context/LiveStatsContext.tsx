@@ -91,14 +91,29 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
     trackPortfolioView();
 
+    // Fast 3-second live polling for real-time visitor synchronization
     const interval = setInterval(async () => {
       const apiCount = await counterGet("site-views");
       if (apiCount !== null) {
         setPortfolioViews(apiCount);
       }
-    }, 30_000);
+    }, 3_000);
 
-    return () => clearInterval(interval);
+    // BroadcastChannel cross-tab live synchronization
+    let channel: BroadcastChannel | null = null;
+    try {
+      channel = new BroadcastChannel("d4v_live_sync");
+      channel.onmessage = (e) => {
+        if (e.data?.type === "VIEWS_UPDATE" && typeof e.data.views === "number") {
+          setPortfolioViews(e.data.views);
+        }
+      };
+    } catch {}
+
+    return () => {
+      clearInterval(interval);
+      if (channel) channel.close();
+    };
   }, []);
 
   // ── Project views (100% real, per-project, persistent) ──
@@ -250,7 +265,7 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     }
 
     fetchLiveDownloads();
-    const interval = setInterval(fetchLiveDownloads, 60_000);
+    const interval = setInterval(fetchLiveDownloads, 8_000);
     return () => {
       isMounted = false;
       clearInterval(interval);
