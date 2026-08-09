@@ -1,15 +1,16 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useMemo } from "react";
 import { MAIN_PROJECTS, UnifiedProject } from "@/data/projectsData";
 
 const COUNTER_NS = "d4vide106-portfolio";
-const BASE_SITE_VIEWS = 28500; // base offset to add to API count
+const BASE_SITE_VIEWS = 0; // Real counter starting from real visits
 
 interface LiveStatsContextType {
   projects: UnifiedProject[];
   totalDownloads: number;
   portfolioViews: number;
+  platformTotals: Record<string, number>;
   projectViewsMap: Record<string, number>;
   incrementProjectViews: (projectId: string) => void;
   getProjectViews: (projectId: string) => number;
@@ -19,7 +20,8 @@ interface LiveStatsContextType {
 const LiveStatsContext = createContext<LiveStatsContextType>({
   projects: MAIN_PROJECTS,
   totalDownloads: MAIN_PROJECTS.reduce((acc, p) => acc + p.downloads, 0),
-  portfolioViews: BASE_SITE_VIEWS,
+  portfolioViews: 1,
+  platformTotals: {},
   projectViewsMap: {},
   incrementProjectViews: () => {},
   getProjectViews: () => 1250,
@@ -52,7 +54,7 @@ async function counterGet(key: string): Promise<number | null> {
 
 export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [projects, setProjects] = useState<UnifiedProject[]>(MAIN_PROJECTS);
-  const [portfolioViews, setPortfolioViews] = useState<number>(BASE_SITE_VIEWS);
+  const [portfolioViews, setPortfolioViews] = useState<number>(1);
   const [projectViewsMap, setProjectViewsMap] = useState<Record<string, number>>({});
   const [isLiveUpdating, setIsLiveUpdating] = useState<boolean>(false);
 
@@ -67,13 +69,13 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         sessionStorage.setItem(SESSION_KEY, "1");
         const count = await counterUp("site-views");
         if (count !== null) {
-          setPortfolioViews(BASE_SITE_VIEWS + count);
+          setPortfolioViews(count);
         }
       } else {
         // Already counted this session → just read current value
         const count = await counterGet("site-views");
         if (count !== null) {
-          setPortfolioViews(BASE_SITE_VIEWS + count);
+          setPortfolioViews(count);
         }
       }
     }
@@ -83,7 +85,7 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     // Refresh portfolio views every 30s (live updates from other visitors)
     const interval = setInterval(async () => {
       const count = await counterGet("site-views");
-      if (count !== null) setPortfolioViews(BASE_SITE_VIEWS + count);
+      if (count !== null) setPortfolioViews(count);
     }, 30_000);
 
     return () => clearInterval(interval);
@@ -191,7 +193,6 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
                   }
                 } catch {}
               }
-              // GameJolt / Itch.io: no public API, keep initial value (0 = hidden)
 
               totalSum += liveCount;
               return { ...link, initialDownloads: liveCount };
@@ -220,7 +221,29 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     };
   }, []);
 
-  const totalDownloads = projects.reduce((acc, p) => acc + p.downloads, 0);
+  const totalDownloads = useMemo(
+    () => projects.reduce((acc, p) => acc + p.downloads, 0),
+    [projects]
+  );
+
+  const platformTotals = useMemo(() => {
+    const totals: Record<string, number> = {
+      curseforge: 0,
+      modrinth: 0,
+      gamejolt: 0,
+      itch: 0,
+    };
+    projects.forEach((p) => {
+      p.links.forEach((l) => {
+        if (totals[l.platform] !== undefined) {
+          totals[l.platform] += l.initialDownloads || 0;
+        } else {
+          totals[l.platform] = l.initialDownloads || 0;
+        }
+      });
+    });
+    return totals;
+  }, [projects]);
 
   return (
     <LiveStatsContext.Provider
@@ -228,6 +251,7 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         projects,
         totalDownloads,
         portfolioViews,
+        platformTotals,
         projectViewsMap,
         incrementProjectViews,
         getProjectViews,
@@ -240,3 +264,4 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 };
 
 export const useLiveStats = () => useContext(LiveStatsContext);
+

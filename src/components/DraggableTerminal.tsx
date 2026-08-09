@@ -57,48 +57,51 @@ export default function DraggableTerminal() {
     }
   }, [currentLineIndex, currentCharIndex]);
 
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (isMaximized) return;
-    setIsDragging(true);
-    dragStartPos.current = {
-      x: e.clientX - position.x,
-      y: e.clientY - position.y
-    };
-  };
+  const isDraggingRef = useRef(false);
+  const positionRef = useRef(position);
+
+  useEffect(() => {
+    positionRef.current = position;
+  }, [position]);
 
   const handleMouseMove = (e: MouseEvent) => {
-    if (isDragging && terminalRef.current) {
-      const terminalWidth = terminalRef.current.offsetWidth;
-      const terminalHeight = terminalRef.current.offsetHeight;
-      
-      let newX = e.clientX - dragStartPos.current.x;
-      let newY = e.clientY - dragStartPos.current.y;
-      
-      // Boundaries
-      newX = Math.max(0, Math.min(newX, window.innerWidth - terminalWidth));
-      newY = Math.max(80, Math.min(newY, window.innerHeight - terminalHeight));
-      
-      setPosition({ x: newX, y: newY });
-    }
+    if (!isDraggingRef.current || !terminalRef.current) return;
+
+    const terminalWidth = terminalRef.current.offsetWidth;
+    const terminalHeight = terminalRef.current.offsetHeight;
+
+    let newX = e.clientX - dragStartPos.current.x;
+    let newY = e.clientY - dragStartPos.current.y;
+
+    newX = Math.max(0, Math.min(newX, window.innerWidth - terminalWidth));
+    newY = Math.max(80, Math.min(newY, window.innerHeight - terminalHeight));
+
+    positionRef.current = { x: newX, y: newY };
+    terminalRef.current.style.left = `${newX}px`;
+    terminalRef.current.style.top = `${newY}px`;
   };
 
   const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
-  useEffect(() => {
-    if (isDragging) {
-      window.addEventListener("mousemove", handleMouseMove);
-      window.addEventListener("mouseup", handleMouseUp);
-    } else {
+    if (isDraggingRef.current) {
+      isDraggingRef.current = false;
+      setIsDragging(false);
+      setPosition(positionRef.current);
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
     }
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseup", handleMouseUp);
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (isMaximized) return;
+    isDraggingRef.current = true;
+    setIsDragging(true);
+    dragStartPos.current = {
+      x: e.clientX - positionRef.current.x,
+      y: e.clientY - positionRef.current.y,
     };
-  }, [isDragging]);
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+  };
 
   const renderLine = (line: string, i: number) => {
     if (!line) return <span key={i}></span>;

@@ -50,22 +50,22 @@ export default function CipherCarousel({
     };
   }, []);
 
-  // Prevent page scroll and control constellation rotation via native non-passive wheel listener
+  // Allow smooth constellation rotation via mouse wheel without trapping page scrolling
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
     const handleWheelNative = (e: WheelEvent) => {
-      e.preventDefault(); // Stop page scrolling!
+      // Rotate constellation smoothly without blocking natural page scroll
       const scrollDirection = e.deltaY > 0 ? 1 : -1;
-      velocityRef.current = scrollDirection * (Math.abs(velocityRef.current) + 0.6);
+      velocityRef.current = scrollDirection * (Math.abs(velocityRef.current) + 0.5);
 
-      if (Math.abs(velocityRef.current) > 3.5) {
-        velocityRef.current = 3.5 * Math.sign(velocityRef.current);
+      if (Math.abs(velocityRef.current) > 3.0) {
+        velocityRef.current = 3.0 * Math.sign(velocityRef.current);
       }
     };
 
-    container.addEventListener("wheel", handleWheelNative, { passive: false });
+    container.addEventListener("wheel", handleWheelNative, { passive: true });
     return () => {
       container.removeEventListener("wheel", handleWheelNative);
     };

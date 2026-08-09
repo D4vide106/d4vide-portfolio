@@ -172,13 +172,22 @@ export default function Projects({ dict }: { dict: any }) {
                       <span>{project.downloads.toLocaleString()}</span>
                       <span className={styles.livePulseDot} title="Somma live in tempo reale" />
                     </div>
-                    {/* DEDUPLICATED platform icons */}
+                    {/* DEDUPLICATED platform icons with download breakdown on hover */}
                     <div className={styles.platforms}>
-                      {uniquePlatforms.map((link, idx) => (
-                        <span key={idx} className={styles.platformIcon} title={PLATFORM_NAMES[link.platform] || link.platform}>
-                          {getPlatformIcon(link.platform, 16)}
-                        </span>
-                      ))}
+                      {uniquePlatforms.map((link, idx) => {
+                        const platformName = PLATFORM_NAMES[link.platform] || link.platform;
+                        const pLinks = project.links.filter((l) => l.platform === link.platform);
+                        const pDownloads = pLinks.reduce((sum, l) => sum + (l.initialDownloads || 0), 0);
+                        const hoverText = pDownloads > 0 
+                          ? `${platformName}: ${pDownloads.toLocaleString()} downloads` 
+                          : platformName;
+                        
+                        return (
+                          <span key={idx} className={styles.platformIcon} title={hoverText}>
+                            {getPlatformIcon(link.platform, 16)}
+                          </span>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
