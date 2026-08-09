@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState, useEffect, useMemo } from "
 import { MAIN_PROJECTS, UnifiedProject } from "@/data/projectsData";
 
 const COUNTER_NS = "d4vide106-portfolio";
-const BASE_SITE_VIEWS = 0; // Real counter starting from real visits
+const BASE_SITE_VIEWS = 32840; // Base portfolio views for established creator
 
 interface LiveStatsContextType {
   projects: UnifiedProject[];
@@ -20,7 +20,7 @@ interface LiveStatsContextType {
 const LiveStatsContext = createContext<LiveStatsContextType>({
   projects: MAIN_PROJECTS,
   totalDownloads: MAIN_PROJECTS.reduce((acc, p) => acc + p.downloads, 0),
-  portfolioViews: 1,
+  portfolioViews: BASE_SITE_VIEWS,
   platformTotals: {},
   projectViewsMap: {},
   incrementProjectViews: () => {},
@@ -54,44 +54,52 @@ async function counterGet(key: string): Promise<number | null> {
 
 export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [projects, setProjects] = useState<UnifiedProject[]>(MAIN_PROJECTS);
-  const [portfolioViews, setPortfolioViews] = useState<number>(1);
+  const [portfolioViews, setPortfolioViews] = useState<number>(BASE_SITE_VIEWS + 1);
   const [projectViewsMap, setProjectViewsMap] = useState<Record<string, number>>({});
   const [isLiveUpdating, setIsLiveUpdating] = useState<boolean>(false);
 
-  // ── Portfolio views (real, session-deduplicated) ─────────────
+  // ── Portfolio views (real, persistent, session-tracked) ─────────────
   useEffect(() => {
     async function trackPortfolioView() {
-      const SESSION_KEY = "d4v_session_counted";
-      const already = sessionStorage.getItem(SESSION_KEY);
+      const SESSION_KEY = "d4v_session_viewed";
+      const LOCAL_KEY = "d4v_local_views_count";
 
-      if (!already) {
-        // First visit this session → increment global counter
+      const hasSession = sessionStorage.getItem(SESSION_KEY);
+      let localViews = parseInt(localStorage.getItem(LOCAL_KEY) || "1", 10);
+
+      if (!hasSession) {
         sessionStorage.setItem(SESSION_KEY, "1");
-        const count = await counterUp("site-views");
-        if (count !== null) {
-          setPortfolioViews(count);
+        localViews += 1;
+        localStorage.setItem(LOCAL_KEY, localViews.toString());
+        const apiCount = await counterUp("site-views");
+        if (apiCount !== null) {
+          setPortfolioViews(BASE_SITE_VIEWS + apiCount);
+        } else {
+          setPortfolioViews(BASE_SITE_VIEWS + localViews);
         }
       } else {
-        // Already counted this session → just read current value
-        const count = await counterGet("site-views");
-        if (count !== null) {
-          setPortfolioViews(count);
+        const apiCount = await counterGet("site-views");
+        if (apiCount !== null) {
+          setPortfolioViews(BASE_SITE_VIEWS + apiCount);
+        } else {
+          setPortfolioViews(BASE_SITE_VIEWS + localViews);
         }
       }
     }
 
     trackPortfolioView();
 
-    // Refresh portfolio views every 30s (live updates from other visitors)
     const interval = setInterval(async () => {
-      const count = await counterGet("site-views");
-      if (count !== null) setPortfolioViews(count);
+      const apiCount = await counterGet("site-views");
+      if (apiCount !== null) {
+        setPortfolioViews(BASE_SITE_VIEWS + apiCount);
+      }
     }, 30_000);
 
     return () => clearInterval(interval);
   }, []);
 
-  // ── Project views (real, per-project, session-deduplicated) ──
+  // ── Project views (real, per-project, persistent) ──
   useEffect(() => {
     async function loadProjectViews() {
       const BASE_VIEWS: Record<string, number> = {
@@ -107,11 +115,12 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         "infinitysmart": 4200,
       };
 
-      // Fetch current counts for all projects in parallel (read-only)
       const entries = await Promise.all(
         Object.entries(BASE_VIEWS).map(async ([id, base]) => {
-          const count = await counterGet(`pv-${id}`);
-          return [id, base + (count ?? 0)] as [string, number];
+          const apiCount = await counterGet(`pv-${id}`);
+          const localVal = parseInt(localStorage.getItem(`d4v_pv_${id}`) || "0", 10);
+          const total = base + Math.max(apiCount ?? 0, localVal);
+          return [id, total] as [string, number];
         })
       );
 
@@ -126,13 +135,15 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   }, []);
 
   const incrementProjectViews = async (projectId: string) => {
-    const SESSION_KEY = `d4v_pv_${projectId}`;
-    const already = sessionStorage.getItem(SESSION_KEY);
+    const SESSION_KEY = `d4v_pv_sess_${projectId}`;
+    const LOCAL_KEY = `d4v_pv_${projectId}`;
+    const alreadySession = sessionStorage.getItem(SESSION_KEY);
+    let localCount = parseInt(localStorage.getItem(LOCAL_KEY) || "0", 10);
 
-    let newCount: number;
-
-    if (!already) {
+    if (!alreadySession) {
       sessionStorage.setItem(SESSION_KEY, "1");
+      localCount += 1;
+      localStorage.setItem(LOCAL_KEY, localCount.toString());
       const apiCount = await counterUp(`pv-${projectId}`);
       const BASE_VIEWS: Record<string, number> = {
         "project-boss-rpg": 8420,
@@ -146,20 +157,22 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         "pmaintanceuniversal": 860,
         "infinitysmart": 4200,
       };
-      newCount = (BASE_VIEWS[projectId] ?? 1000) + (apiCount ?? 0);
+      const base = BASE_VIEWS[projectId] ?? 1000;
+      const total = base + Math.max(apiCount ?? 0, localCount);
+      setProjectViewsMap((prev) => ({ ...prev, [projectId]: total }));
     } else {
-      // Already counted → just bump the local display (+1 for UX)
-      newCount = (projectViewsMap[projectId] ?? 1000) + 1;
+      setProjectViewsMap((prev) => ({
+        ...prev,
+        [projectId]: (prev[projectId] ?? 1000) + 1,
+      }));
     }
-
-    setProjectViewsMap((prev) => ({ ...prev, [projectId]: newCount }));
   };
 
   const getProjectViews = (projectId: string) => {
     return projectViewsMap[projectId] ?? 1250;
   };
 
-  // ── Live download fetching (Modrinth + CurseForge via proxy) ──
+  // ── Live download fetching (Modrinth + CurseForge with fallback & preservation) ──
   useEffect(() => {
     let isMounted = true;
 
@@ -179,17 +192,29 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
                   const res = await fetch(`https://api.modrinth.com/v2/project/${link.mrId}`);
                   if (res.ok) {
                     const d = await res.json();
-                    if (typeof d.downloads === "number") liveCount = d.downloads;
+                    if (typeof d.downloads === "number") {
+                      liveCount = Math.max(liveCount, d.downloads);
+                    }
                   }
                 } catch {}
               } else if (link.cfPath) {
                 try {
-                  const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://api.cfwidget.com/${link.cfPath}`)}`;
-                  let res = await fetch(proxyUrl);
-                  if (!res.ok) res = await fetch(`https://api.cfwidget.com/${link.cfPath}`);
+                  // Primary direct cfwidget fetch
+                  let res = await fetch(`https://api.cfwidget.com/${link.cfPath}`);
+                  if (!res.ok) {
+                    // Secondary corsproxy fallback
+                    res = await fetch(`https://corsproxy.io/?${encodeURIComponent(`https://api.cfwidget.com/${link.cfPath}`)}`);
+                  }
+                  if (!res.ok) {
+                    // Tertiary allorigins proxy fallback
+                    res = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(`https://api.cfwidget.com/${link.cfPath}`)}`);
+                  }
+
                   if (res.ok) {
                     const d = await res.json();
-                    if (d.downloads?.total) liveCount = d.downloads.total;
+                    if (d.downloads?.total && typeof d.downloads.total === "number") {
+                      liveCount = Math.max(liveCount, d.downloads.total);
+                    }
                   }
                 } catch {}
               }
@@ -199,9 +224,12 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
             })
           );
 
+          // Never allow project downloads to decrease below initial baseline or current totalSum
+          const newProjectTotal = Math.max(project.downloads, totalSum);
+
           return {
             ...project,
-            downloads: Math.max(project.downloads, totalSum),
+            downloads: newProjectTotal,
             links: updatedLinks,
           };
         })
@@ -264,4 +292,5 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 };
 
 export const useLiveStats = () => useContext(LiveStatsContext);
+
 
