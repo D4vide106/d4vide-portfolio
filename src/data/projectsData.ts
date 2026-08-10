@@ -56,7 +56,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     icon_url: "https://cdn.modrinth.com/data/5Zdqv8rG/22f82f9f215c73845bedc57059c0c8143977d76f.png",
     type: "Mod / Datapack / Addon",
     tags: ["Mod", "Datapack", "Bedrock Addon", "Java & Bedrock", "Dungeon", "Adventure", "Structures"],
-    downloads: 29184,
+    downloads: 30093,
     updated: "2026-07-18",
     links: [
       {
@@ -64,21 +64,21 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
         url: "https://www.curseforge.com/minecraft/mc-mods/sdob",
         platform: "curseforge",
         cfPath: "minecraft/mc-mods/sdob",
-        initialDownloads: 19727
+        initialDownloads: 19755
       },
       {
         label: "CurseForge (Datapack)",
         url: "https://www.curseforge.com/minecraft/texture-packs/spiral-dungeon-of-babel-sdob-datapack",
         platform: "curseforge",
         cfPath: "minecraft/texture-packs/spiral-dungeon-of-babel-sdob-datapack",
-        initialDownloads: 165
+        initialDownloads: 167
       },
       {
         label: "CurseForge (Bedrock Addon)",
         url: "https://www.curseforge.com/minecraft-bedrock/addons/spiral-dungeon-of-babel-sdob-bedrock",
         platform: "curseforge",
         cfPath: "minecraft-bedrock/addons/spiral-dungeon-of-babel-sdob-bedrock",
-        initialDownloads: 116
+        initialDownloads: 135
       },
       {
         label: "Modrinth (Mod)",

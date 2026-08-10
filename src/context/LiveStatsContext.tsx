@@ -60,31 +60,38 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [projectViewsMap, setProjectViewsMap] = useState<Record<string, number>>({});
   const [isLiveUpdating, setIsLiveUpdating] = useState<boolean>(false);
 
-  // ── Portfolio views (100% real, persistent, session-tracked) ─────────────
+  // ── Portfolio views (100% real, deduplicated per visitor device) ─────────────
   useEffect(() => {
+    let isTrackedInThisMount = false;
+
     async function trackPortfolioView() {
-      const SESSION_KEY = "d4v_session_viewed";
-      const LOCAL_KEY = "d4v_local_real_views";
+      if (isTrackedInThisMount) return;
+      isTrackedInThisMount = true;
 
-      const hasSession = sessionStorage.getItem(SESSION_KEY);
-      let localViews = parseInt(localStorage.getItem(LOCAL_KEY) || "1", 10);
+      const DEVICE_KEY = "d4v_device_counted_v2";
+      const SESSION_KEY = "d4v_session_viewed_v2";
 
-      if (!hasSession) {
-        sessionStorage.setItem(SESSION_KEY, "1");
-        localViews += 1;
-        localStorage.setItem(LOCAL_KEY, localViews.toString());
+      const isDeviceTracked = localStorage.getItem(DEVICE_KEY);
+      const isSessionTracked = sessionStorage.getItem(SESSION_KEY);
+
+      if (!isDeviceTracked && !isSessionTracked) {
+        // Brand new visitor device → increment global counter once
+        try {
+          localStorage.setItem(DEVICE_KEY, "1");
+          sessionStorage.setItem(SESSION_KEY, "1");
+        } catch {}
+
         const apiCount = await counterUp("site-views");
         if (apiCount !== null) {
           setPortfolioViews(apiCount);
         } else {
-          setPortfolioViews(localViews);
+          setPortfolioViews(1);
         }
       } else {
+        // Existing visitor device or refreshed session → read current count without incrementing
         const apiCount = await counterGet("site-views");
         if (apiCount !== null) {
           setPortfolioViews(apiCount);
-        } else {
-          setPortfolioViews(localViews);
         }
       }
     }
@@ -141,22 +148,20 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   }, []);
 
   const incrementProjectViews = async (projectId: string) => {
+    const DEVICE_KEY = `d4v_pv_dev_${projectId}`;
     const SESSION_KEY = `d4v_pv_sess_${projectId}`;
-    const LOCAL_KEY = `d4v_pv_${projectId}`;
-    const alreadySession = sessionStorage.getItem(SESSION_KEY);
-    let localCount = parseInt(localStorage.getItem(LOCAL_KEY) || "0", 10);
+    const alreadyDev = localStorage.getItem(DEVICE_KEY);
+    const alreadySess = sessionStorage.getItem(SESSION_KEY);
 
-    if (!alreadySession) {
-      sessionStorage.setItem(SESSION_KEY, "1");
-      localCount += 1;
-      localStorage.setItem(LOCAL_KEY, localCount.toString());
+    if (!alreadyDev && !alreadySess) {
+      try {
+        localStorage.setItem(DEVICE_KEY, "1");
+        sessionStorage.setItem(SESSION_KEY, "1");
+      } catch {}
       const apiCount = await counterUp(`pv-${projectId}`);
-      const total = Math.max(apiCount ?? 0, localCount, 1);
-      setProjectViewsMap((prev) => ({ ...prev, [projectId]: total }));
-    } else {
       setProjectViewsMap((prev) => ({
         ...prev,
-        [projectId]: (prev[projectId] ?? 1) + 1,
+        [projectId]: Math.max(apiCount ?? 1, (prev[projectId] ?? 0) + 1),
       }));
     }
   };

@@ -1,22 +1,8 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import styles from "./DraggableTerminal.module.css";
-import { FiTerminal, FiX, FiMinus, FiSquare } from "react-icons/fi";
+import { FiTerminal } from "react-icons/fi";
 import { SiDiscord, SiGithub, SiYoutube } from "react-icons/si";
-
-const terminalText = [
-  "C:\\Users\\D4vide106> ./fetch_system_status.sh",
-  "Status: ONLINE 🟢",
-  "Uptime: 99.99%",
-  "",
-  "C:\\Users\\D4vide106> ./list_links.sh",
-  "Available Quick Links:",
-  "1. [GitHub] -> https://github.com/D4vide106",
-  "2. [YouTube] -> https://youtube.com/@d4vide106",
-  "3. [Discord] -> https://discord.gg/7T3u9a9",
-  "",
-  "C:\\Users\\D4vide106> _"
-];
 
 export default function DraggableTerminal() {
   const [position, setPosition] = useState({ x: 20, y: 100 });
@@ -24,6 +10,38 @@ export default function DraggableTerminal() {
   const [isMinimized, setIsMinimized] = useState(false);
   const [isMaximized, setIsMaximized] = useState(false);
   const dragStartPos = useRef({ x: 0, y: 0 });
+
+  const [userPrompt, setUserPrompt] = useState("C:\\Users\\Visitor>");
+
+  // Detect visitor OS/Device for dynamic visitor terminal path
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const ua = navigator.userAgent;
+      if (ua.includes("Win")) {
+        setUserPrompt("C:\\Users\\Visitor>");
+      } else if (ua.includes("Mac")) {
+        setUserPrompt("visitor@macbook:~$");
+      } else if (ua.includes("Linux")) {
+        setUserPrompt("visitor@linux:~$");
+      } else {
+        setUserPrompt("visitor@d4vide106:~$");
+      }
+    }
+  }, []);
+
+  const terminalText = useMemo(() => [
+    `${userPrompt} ./fetch_system_status.sh`,
+    "Status: ONLINE 🟢",
+    "Uptime: 99.99%",
+    "",
+    `${userPrompt} ./list_links.sh`,
+    "Available Quick Links:",
+    "1. [GitHub] -> https://github.com/D4vide106",
+    "2. [YouTube] -> https://youtube.com/@d4vide106",
+    "3. [Discord] -> https://discord.gg/7T3u9a9",
+    "",
+    `${userPrompt} _`
+  ], [userPrompt]);
 
   const [typedLines, setTypedLines] = useState<string[]>([]);
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
@@ -55,7 +73,7 @@ export default function DraggableTerminal() {
       }, line === "" ? 100 : 300);
       return () => clearTimeout(timeout);
     }
-  }, [currentLineIndex, currentCharIndex]);
+  }, [currentLineIndex, currentCharIndex, terminalText]);
 
   const isDraggingRef = useRef(false);
   const positionRef = useRef(position);
