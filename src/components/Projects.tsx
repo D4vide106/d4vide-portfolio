@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { FiDownload, FiSearch, FiEye, FiGlobe, FiTag, FiExternalLink } from "react-icons/fi";
+import { useState, useMemo, useEffect, useRef } from "react";
+import { FiDownload, FiSearch, FiEye, FiGlobe, FiTag, FiExternalLink, FiChevronLeft, FiChevronRight, FiPause, FiPlay } from "react-icons/fi";
 import { SiCurseforge, SiModrinth, SiGamejolt, SiItchdotio } from "react-icons/si";
 import { FaCube } from "react-icons/fa";
 import styles from "./Projects.module.css";
@@ -16,12 +16,17 @@ const PLATFORM_NAMES: Record<string, string> = {
   itch: "Itch.io",
 };
 
+const ITEMS_PER_PAGE = 4; // 2x2 Grid
+
 export default function Projects({ dict }: { dict?: any }) {
   const { projects, incrementProjectViews, getProjectViews, portfolioViews, incrementDownloadLink } = useLiveStats();
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState("All");
+  const [currentPage, setCurrentPage] = useState(0);
+  const [isPausedByHover, setIsPausedByHover] = useState(false);
   const [selectedProject, setSelectedProject] = useState<UnifiedProject | null>(null);
 
+  // Filter projects by category and search
   const filteredProjects = useMemo(() => {
     return projects.filter((p) => {
       const matchesSearch =
@@ -34,12 +39,35 @@ export default function Projects({ dict }: { dict?: any }) {
     });
   }, [projects, searchQuery, filterType]);
 
+  // Total Pages for 2x2 Grid
+  const totalPages = Math.max(1, Math.ceil(filteredProjects.length / ITEMS_PER_PAGE));
+
+  // Reset to page 0 when filters change
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [filterType, searchQuery]);
+
+  // Auto-loop pagination timer (cycles every 4.5s unless hovered)
+  useEffect(() => {
+    if (isPausedByHover || totalPages <= 1) return;
+    const timer = setInterval(() => {
+      setCurrentPage((prev) => (prev + 1) % totalPages);
+    }, 4500);
+    return () => clearInterval(timer);
+  }, [isPausedByHover, totalPages]);
+
+  // Slice projects for current 2x2 page
+  const currentProjects = useMemo(() => {
+    const start = currentPage * ITEMS_PER_PAGE;
+    return filteredProjects.slice(start, start + ITEMS_PER_PAGE);
+  }, [filteredProjects, currentPage]);
+
   const handleOpenProjectModal = (project: UnifiedProject) => {
     setSelectedProject(project);
     incrementProjectViews(project.id);
   };
 
-  const getPlatformIcon = (platform: string, size = 17) => {
+  const getPlatformIcon = (platform: string, size = 16) => {
     switch (platform) {
       case "modrinth": return <SiModrinth size={size} />;
       case "curseforge": return <SiCurseforge size={size} />;
@@ -49,7 +77,6 @@ export default function Projects({ dict }: { dict?: any }) {
     }
   };
 
-  // Unique platforms deduplicated
   const getUniquePlatforms = (project: UnifiedProject) => {
     const seen = new Set<string>();
     return project.links.filter((l) => {
@@ -59,7 +86,6 @@ export default function Projects({ dict }: { dict?: any }) {
     });
   };
 
-  // Group links by platform
   const groupLinksByPlatform = (project: UnifiedProject) => {
     const groups: Record<string, typeof project.links> = {};
     for (const link of project.links) {
@@ -73,93 +99,125 @@ export default function Projects({ dict }: { dict?: any }) {
     <section id="projects" className={styles.projectsSection}>
       <div className={styles.container}>
         
-        {/* Clean Controls & Category Filters Header */}
-        <div className={styles.galleryHeader}>
-          <div className={styles.headerTitleArea}>
-            <span className={styles.sectionBadge}>WORKS GALLERY</span>
-            <h3 className={styles.galleryTitle}>EXPLORE ALL PROJECTS</h3>
+        {/* Controls Bar: Categories + Search */}
+        <div className={styles.controlsBar}>
+          <div className={styles.filtersGroup}>
+            {["All", "Modpack", "Mod", "Resource Pack", "Plugin", "Server"].map((type) => (
+              <button
+                key={type}
+                className={`${styles.filterBtn} ${filterType === type ? styles.activeFilter : ""}`}
+                onClick={() => setFilterType(type)}
+              >
+                {type}
+              </button>
+            ))}
           </div>
 
-          <div className={styles.controlsBar}>
-            <div className={styles.filtersGroup}>
-              {["All", "Modpack", "Mod", "Resource Pack", "Plugin", "Server"].map((type) => (
-                <button
-                  key={type}
-                  className={`${styles.filterBtn} ${filterType === type ? styles.activeFilter : ""}`}
-                  onClick={() => setFilterType(type)}
-                >
-                  {type}
-                </button>
-              ))}
-            </div>
-
-            <div className={styles.searchBox}>
-              <FiSearch className={styles.searchIcon} />
-              <input
-                type="text"
-                placeholder="SEARCH PROJECTS..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className={styles.searchInput}
-              />
-            </div>
+          <div className={styles.searchBox}>
+            <FiSearch className={styles.searchIcon} />
+            <input
+              type="text"
+              placeholder="SEARCH PROJECTS..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className={styles.searchInput}
+            />
           </div>
         </div>
 
-        {/* Clean Project Grid */}
-        <div className={styles.staticGrid}>
-          {filteredProjects.map((project) => {
-            const uniquePlatforms = getUniquePlatforms(project);
-            return (
-              <div
-                key={project.id}
-                onClick={() => handleOpenProjectModal(project)}
-                className={styles.modCard}
-              >
-                <div className={styles.cardTop}>
-                  <div className={styles.logoBox}>
-                    <img
-                      src={project.icon_url}
-                      alt={project.title}
-                      className={styles.projectLogo}
-                    />
+        {/* 2x2 Grid Container with Auto-Loop Pause on Hover */}
+        <div 
+          className={`${styles.gridWrapper} ${isPausedByHover ? styles.pausedState : ""}`}
+          onMouseEnter={() => setIsPausedByHover(true)}
+          onMouseLeave={() => setIsPausedByHover(false)}
+        >
+          <div className={styles.grid2x2}>
+            {currentProjects.map((project) => {
+              const uniquePlatforms = getUniquePlatforms(project);
+              return (
+                <div
+                  key={project.id}
+                  onClick={() => handleOpenProjectModal(project)}
+                  className={styles.projectCard}
+                >
+                  <div className={styles.cardHeader}>
+                    <div className={styles.logoBox}>
+                      <img
+                        src={project.icon_url}
+                        alt={project.title}
+                        className={styles.projectLogo}
+                      />
+                    </div>
+                    <div className={styles.titleArea}>
+                      <span className={styles.typeBadge}>{project.type}</span>
+                      <h4 className={styles.cardTitle}>{project.title}</h4>
+                    </div>
                   </div>
-                  <div className={styles.cardHeaderInfo}>
-                    <span className={styles.typeBadge}>{project.type}</span>
-                    <h4 className={styles.cardTitle}>{project.title}</h4>
+
+                  <p className={styles.cardDesc}>{project.description}</p>
+
+                  {project.tags && project.tags.length > 0 && (
+                    <div className={styles.tagsRow}>
+                      {project.tags.slice(0, 3).map((tag, idx) => (
+                        <span key={idx} className={styles.tagChip}>#{tag}</span>
+                      ))}
+                    </div>
+                  )}
+
+                  <div className={styles.cardFooter}>
+                    <div className={styles.downloadStat}>
+                      <FiDownload size={14} />
+                      <span>{project.downloads.toLocaleString()}</span>
+                    </div>
+
+                    <div className={styles.platformsRow}>
+                      {uniquePlatforms.map((link, idx) => {
+                        const platformName = PLATFORM_NAMES[link.platform] || link.platform;
+                        return (
+                          <span key={idx} className={styles.platformIcon} title={platformName}>
+                            {getPlatformIcon(link.platform, 15)}
+                          </span>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
+              );
+            })}
+          </div>
+        </div>
 
-                <p className={styles.cardDesc}>{project.description}</p>
+        {/* Pagination Controls */}
+        <div className={styles.paginationBar}>
+          <button
+            className={styles.pageBtn}
+            onClick={() => setCurrentPage((prev) => Math.max(0, prev - 1))}
+            disabled={currentPage === 0}
+          >
+            <FiChevronLeft size={16} /> PREV
+          </button>
 
-                {project.tags && project.tags.length > 0 && (
-                  <div className={styles.tagsRow}>
-                    {project.tags.slice(0, 3).map((tag, idx) => (
-                      <span key={idx} className={styles.tagChip}>#{tag}</span>
-                    ))}
-                  </div>
-                )}
+          <div className={styles.pageIndicators}>
+            {Array.from({ length: totalPages }).map((_, idx) => (
+              <button
+                key={idx}
+                className={`${styles.pageDot} ${currentPage === idx ? styles.activeDot : ""}`}
+                onClick={() => setCurrentPage(idx)}
+                title={`Page ${idx + 1}`}
+              />
+            ))}
+            <span className={styles.pageText}>
+              {currentPage + 1} / {totalPages}
+            </span>
+          </div>
 
-                <div className={styles.cardFooter}>
-                  <div className={styles.downloadStat}>
-                    <FiDownload size={14} />
-                    <span>{project.downloads.toLocaleString()}</span>
-                  </div>
-
-                  <div className={styles.platformsRow}>
-                    {uniquePlatforms.map((link, idx) => {
-                      const platformName = PLATFORM_NAMES[link.platform] || link.platform;
-                      return (
-                        <span key={idx} className={styles.platformIcon} title={platformName}>
-                          {getPlatformIcon(link.platform, 15)}
-                        </span>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+          <button
+            className={styles.pageBtn}
+            onClick={() => setCurrentPage((prev) => Math.min(totalPages - 1, prev + 1))}
+            disabled={currentPage >= totalPages - 1}
+          >
+            NEXT <FiChevronRight size={16} />
+          </button>
         </div>
 
       </div>

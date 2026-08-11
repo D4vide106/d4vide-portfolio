@@ -3,6 +3,7 @@ import TopBar from "@/components/TopBar";
 import Hero from "@/components/Hero";
 import Footer from "@/components/Footer";
 import HackerIntro from "@/components/HackerIntro";
+import DraggableTerminal from "@/components/DraggableTerminal";
 
 export function generateStaticParams() {
   return [{ lang: "en" }, { lang: "it" }];
@@ -22,6 +23,9 @@ export default async function LangHome({
       <TopBar dict={dict.nav} currentLang={lang} />
       <Hero dict={dict.hero} aboutDict={dict.aboutSection} />
       <Footer dict={dict.footer} />
+
+      {/* Floating Standalone Draggable Terminal Window (Can be moved & closed) */}
+      <DraggableTerminal />
     </main>
   );
 }

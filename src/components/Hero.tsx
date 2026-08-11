@@ -1,10 +1,9 @@
 "use client";
 
 import { SiCurseforge, SiModrinth, SiYoutube, SiDiscord, SiGithub, SiGamejolt, SiItchdotio } from "react-icons/si";
-import { FiArrowUpRight, FiPlayCircle, FiCompass } from "react-icons/fi";
+import { FiArrowUpRight, FiPlayCircle } from "react-icons/fi";
 import styles from "./Hero.module.css";
 import TotalDownloads from "./TotalDownloads";
-import DraggableTerminal from "./DraggableTerminal";
 import CipherCarousel from "./CipherCarousel";
 import Projects from "./Projects";
 import { useLiveStats } from "@/context/LiveStatsContext";
@@ -16,50 +15,40 @@ export default function Hero({ dict, aboutDict }: { dict: any; aboutDict: any })
     <section id="hero" className={styles.heroSection}>
       <div className={styles.container}>
         
-        {/* ── 1. PRIMARY HERO SHOWCASE (FIRST THING VISITORS SEE) ───── */}
+        {/* ── 1. CLEAN 3D CONSTELLATION HERO (NO CLUTTER TEXT) ─────── */}
         <div className={styles.topConstellationHero}>
-          <div className={styles.editorialHeader}>
-            <span className={styles.captionTag}>FEATURED WORKS</span>
-            <h1 className={styles.heroTitle}>D4VIDE106</h1>
-            <p className={styles.heroSubtitle}>
-              System Designer & Minecraft Mod Creator
-            </p>
-            <p className={styles.constellationHint}>
-              Scroll mouse wheel or drag cards to orbit through featured Minecraft mods & projects
-            </p>
-          </div>
-
+          <h1 className={styles.heroTitle}>D4VIDE106</h1>
+          
           {/* Spacious 3D Project Constellation Orbit */}
           <div className={styles.constellationWrapper}>
             <CipherCarousel projects={projects} />
           </div>
         </div>
 
-        {/* ── 2. PROJECT GALLERY & FILTER GRID (RIGHT BELOW CONSTELLATION) ── */}
+        {/* ── 2. PROJECT GALLERY (2x2 GRID + PAGINATION + HOVER PAUSE) ── */}
         <div className={styles.gridShowcaseSection}>
           <Projects dict={dict} />
         </div>
 
-        {/* ── 3. CREATOR PROFILE & MEDIA SHOWCASE (2-COLUMN CLEAN GRID) ── */}
-        <div className={styles.lowerShowcaseGrid} id="about">
+        {/* ── 3. PROFILE & ABOUT SHOWCASE ──────────────────────────── */}
+        <div className={styles.profileAboutGrid} id="about">
           
-          {/* Left Column: Bio, Metrics, Terminal & Socials */}
-          <div className={styles.leftShowcaseCol}>
-            
-            {/* Identity & Bio Card */}
-            <div className={styles.bioCard}>
-              <div className={styles.cardHeader}>
+          {/* Left Column: Skin Avatar + Bio + Socials */}
+          <div className={styles.leftProfileCol}>
+            <div className={styles.profileCard}>
+              <div className={styles.profileHeader}>
                 <div className={styles.avatarWrap}>
-                  <span className={styles.onlineDot} />
+                  <div className={styles.onlineDot} />
                   <img 
                     src="https://mc-heads.net/avatar/_D4vide106_/64" 
                     alt="_D4vide106_" 
                     className={styles.avatarImg} 
                   />
                 </div>
-                <div className={styles.identityText}>
+                <div className={styles.identityInfo}>
                   <span className={styles.cardTag}>CREATOR PROFILE</span>
-                  <h3 className={styles.cardTitle}>ABOUT D4VIDE106</h3>
+                  <h3 className={styles.cardTitle}>D4VIDE106</h3>
+                  <span className={styles.roleSubtitle}>System Designer & Minecraft Mod Creator</span>
                 </div>
               </div>
 
@@ -103,21 +92,21 @@ export default function Hero({ dict, aboutDict }: { dict: any; aboutDict: any })
                 </div>
               </div>
             </div>
+          </div>
 
-            {/* Live Metrics Widget */}
-            <div className={styles.metricsWidget}>
-              <div className={styles.widgetTag}>
-                <span className={styles.greenDot} /> LIVE METRICS
+          {/* Right Column: Live Metrics Badge + YouTube Showcase */}
+          <div className={styles.rightProfileCol}>
+            
+            {/* Live Download Metrics Card */}
+            <div className={styles.metricsCard}>
+              <div className={styles.cardTagRow}>
+                <span className={styles.greenDot} />
+                <span className={styles.cardTag}>LIVE STATS & METRICS</span>
               </div>
               <TotalDownloads />
             </div>
 
-          </div>
-
-          {/* Right Column: YouTube Broadcast & Terminal Control */}
-          <div className={styles.rightShowcaseCol}>
-            
-            {/* YouTube Broadcast Showcase */}
+            {/* YouTube Broadcast Showcase Card */}
             <div className={styles.youtubeCard} id="youtube">
               <div className={styles.ytHeader}>
                 <div className={styles.ytTitle}>
@@ -137,14 +126,6 @@ export default function Hero({ dict, aboutDict }: { dict: any; aboutDict: any })
                   allowFullScreen
                 />
               </div>
-            </div>
-
-            {/* Terminal Control Console Widget */}
-            <div className={styles.terminalCard}>
-              <div className={styles.widgetTag}>
-                <span className={styles.blueDot} /> TERMINAL CONTROL
-              </div>
-              <DraggableTerminal inlineMode={true} />
             </div>
 
           </div>
