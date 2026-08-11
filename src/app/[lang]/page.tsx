@@ -2,6 +2,7 @@ import { getDictionary } from "../dictionaries";
 import TopBar from "@/components/TopBar";
 import Hero from "@/components/Hero";
 import Projects from "@/components/Projects";
+import ServicesSection from "@/components/ServicesSection";
 import Footer from "@/components/Footer";
 import HackerIntro from "@/components/HackerIntro";
 import DraggableTerminal from "@/components/DraggableTerminal";
@@ -29,7 +30,10 @@ export default async function LangHome({
       {/* 2. Standalone Full-Bleed Edge-to-Edge Modrinth Marquee Showcase */}
       <Projects dict={dict.projects} />
 
-      {/* 3. Footer */}
+      {/* 3. External Services, Discord Bots, Freelance & Estimator */}
+      <ServicesSection dict={dict.services} />
+
+      {/* 4. Footer */}
       <Footer dict={dict.footer} />
 
       {/* Floating Standalone Draggable Terminal Window */}

@@ -49,7 +49,12 @@ export default function TopBar({ dict, currentLang }: { dict: any; currentLang: 
           <ul className={styles.menuList}>
             <li>
               <a href="#projects" className={styles.menuLink} onClick={handleLinkClick}>
-                WORKS
+                MINECRAFT
+              </a>
+            </li>
+            <li>
+              <a href="#services" className={styles.menuLink} onClick={handleLinkClick}>
+                SERVICES
               </a>
             </li>
             <li>
@@ -98,13 +103,16 @@ export default function TopBar({ dict, currentLang }: { dict: any; currentLang: 
         <div className={styles.mobileDrawer}>
           <nav className={styles.mobileNav}>
             <a href="#projects" className={styles.mobileNavLink} onClick={handleLinkClick}>
-              WORKS
+              MINECRAFT PROJECTS
+            </a>
+            <a href="#services" className={styles.mobileNavLink} onClick={handleLinkClick}>
+              SERVICES & BOTS
             </a>
             <a href="#about" className={styles.mobileNavLink} onClick={handleLinkClick}>
-              ABOUT
+              ABOUT ME
             </a>
             <a href="#youtube" className={styles.mobileNavLink} onClick={handleLinkClick}>
-              MEDIA
+              MEDIA & VIDEOS
             </a>
           </nav>
           

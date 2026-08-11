@@ -1,9 +1,11 @@
 {
   "nav": {
     "home": "Home",
-    "projects": "Progetti Minecraft",
+    "projects": "Minecraft",
+    "services": "Servizi & Bot",
     "journey": "Percorso Informatico",
-    "about": "Chi Sono"
+    "about": "Chi Sono",
+    "media": "Media"
   },
   "hero": {
     "greeting": "Ciao, sono",
@@ -18,14 +20,24 @@
       "age": "Età",
       "gender": "Genere"
     },
-    "aboutDesc1": "Sono tante cose, ma di quelle che probabilmente ti interessano di più: uno sviluppatore di mod per Minecraft e un content creator.",
-    "aboutDesc2": "Ho una passione particolare per la creazione di esperienze RPG immersive, strutture e strumenti. Gran parte della mia esperienza consiste nello spingere oltre i limiti di ciò che è possibile fare all'interno del gioco.",
-    "aboutDesc3": "In questi giorni puoi trovarmi sul mio server Discord, dove chiacchiero di tutto, e annuncio i nuovi sviluppi dei miei progetti. Puoi anche dare un'occhiata ai miei video sul mio canale YouTube dove pubblico occasionalmente aggiornamenti e gameplay!"
+    "aboutDesc1": "Sono uno sviluppatore di mod per Minecraft, sviluppatore software e content creator.",
+    "aboutDesc2": "Oltre ai progetti per Minecraft, creo Bot Discord personalizzati, webapp ad alte prestazioni, automazioni in Python e offro commissioni freelance su Fiverr.",
+    "aboutDesc3": "Puoi trovarmi sul mio server Discord ufficiale o su Fiverr per commissioni personalizzate e supporto tecnico."
   },
   "projects": {
     "title": "I miei",
-    "highlight": "Progetti",
+    "highlight": "Progetti Minecraft",
     "viewProject": "Vedi Progetto"
+  },
+  "services": {
+    "tag": "FREELANCE & SVILUPPO ESTERNO",
+    "title": "Servizi, Bot Discord & Progetti Extra",
+    "subtitle": "Soluzioni software su misura oltre Minecraft: dai Bot Discord avanzati fino alle commissioni freelance su Fiverr e applicazioni web.",
+    "estimatorTitle": "Calcolatore Preventivo Progetto",
+    "estimatorSubtitle": "Seleziona le opzioni per calcolare una stima indicativa di tempi e costi.",
+    "externalTitle": "Vetrina Progetti Esterni",
+    "orderFiverr": "Ordina su Fiverr",
+    "contactDiscord": "Richiedi su Discord"
   },
   "footer": {
     "rights": "Tutti i diritti riservati."
