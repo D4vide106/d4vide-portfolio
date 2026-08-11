@@ -3,8 +3,7 @@
 import React, { createContext, useContext, useState, useEffect, useMemo } from "react";
 import { MAIN_PROJECTS, UnifiedProject } from "@/data/projectsData";
 
-const COUNTER_NS = "d4vide106-portfolio-v3";
-const BASE_PORTFOLIO_VIEWS = 14850; // Realistic base portfolio impressions matching 109K+ total downloads
+const COUNTER_NS = "d4vide106-portfolio-pure-v4";
 
 interface LiveStatsContextType {
   projects: UnifiedProject[];
@@ -21,12 +20,12 @@ interface LiveStatsContextType {
 const LiveStatsContext = createContext<LiveStatsContextType>({
   projects: MAIN_PROJECTS,
   totalDownloads: MAIN_PROJECTS.reduce((acc, p) => acc + p.downloads, 0),
-  portfolioViews: BASE_PORTFOLIO_VIEWS,
+  portfolioViews: 1,
   platformTotals: {},
   projectViewsMap: {},
   incrementProjectViews: () => {},
   incrementDownloadLink: () => {},
-  getProjectViews: () => 1000,
+  getProjectViews: () => 1,
   isLiveUpdating: false,
 });
 
@@ -55,11 +54,11 @@ async function counterGet(key: string): Promise<number | null> {
 
 export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [projects, setProjects] = useState<UnifiedProject[]>(MAIN_PROJECTS);
-  const [portfolioViews, setPortfolioViews] = useState<number>(BASE_PORTFOLIO_VIEWS + 1);
+  const [portfolioViews, setPortfolioViews] = useState<number>(1);
   const [projectViewsMap, setProjectViewsMap] = useState<Record<string, number>>({});
   const [isLiveUpdating, setIsLiveUpdating] = useState<boolean>(false);
 
-  // ── Portfolio views (Real-time live counter + base traffic offset) ─────────
+  // ── 100% PURE REAL PORTFOLIO VIEWS (Starts at 1, increments on real visits) ──
   useEffect(() => {
     let isTracked = false;
 
@@ -67,24 +66,24 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       if (isTracked) return;
       isTracked = true;
 
-      const DEVICE_KEY = "d4v_port_dev_v3";
+      const DEVICE_KEY = "d4v_port_dev_v4";
       const isDeviceTracked = localStorage.getItem(DEVICE_KEY);
 
-      let currentAddon = parseInt(localStorage.getItem("d4v_port_addon_v3") || "0", 10);
+      let localAddon = parseInt(localStorage.getItem("d4v_port_addon_v4") || "0", 10);
 
       if (!isDeviceTracked) {
-        currentAddon += 1;
+        localAddon += 1;
         try {
           localStorage.setItem(DEVICE_KEY, "1");
-          localStorage.setItem("d4v_port_addon_v3", currentAddon.toString());
+          localStorage.setItem("d4v_port_addon_v4", localAddon.toString());
         } catch {}
 
         const apiCount = await counterUp("site-views");
-        const total = BASE_PORTFOLIO_VIEWS + (apiCount !== null ? apiCount : currentAddon);
+        const total = Math.max(apiCount !== null ? apiCount : localAddon, 1);
         setPortfolioViews(total);
       } else {
         const apiCount = await counterGet("site-views");
-        const total = BASE_PORTFOLIO_VIEWS + (apiCount !== null ? apiCount : currentAddon);
+        const total = Math.max(apiCount !== null ? apiCount : localAddon, 1);
         setPortfolioViews(total);
       }
     }
@@ -95,26 +94,24 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     const interval = setInterval(async () => {
       const apiCount = await counterGet("site-views");
       if (apiCount !== null) {
-        setPortfolioViews(BASE_PORTFOLIO_VIEWS + apiCount);
+        setPortfolioViews(apiCount);
       }
     }, 4_000);
 
     return () => clearInterval(interval);
   }, []);
 
-  // ── Project views (Realistic base derived from mod downloads + live increments) ──
+  // ── 100% PURE REAL PROJECT VIEWS (Starts at 1, increments when visitors view a project) ──
   useEffect(() => {
     async function loadProjectViews() {
       const map: Record<string, number> = {};
 
       await Promise.all(
         projects.map(async (project) => {
-          // Calculate realistic base page views proportional to total downloads (e.g. 1.6x downloads)
-          const baseViews = Math.max(Math.round(project.downloads * 1.62) + 180, 850);
-          const localAddon = parseInt(localStorage.getItem(`d4v_pv_addon_${project.id}`) || "0", 10);
+          const localAddon = parseInt(localStorage.getItem(`d4v_pv_addon_v4_${project.id}`) || "0", 10);
           const cloudCount = await counterGet(`pv-${project.id}`);
 
-          const finalViews = baseViews + (cloudCount !== null ? cloudCount : localAddon);
+          const finalViews = Math.max(cloudCount !== null ? cloudCount : localAddon, 1);
           map[project.id] = finalViews;
         })
       );
@@ -125,19 +122,15 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     loadProjectViews();
   }, [projects]);
 
-  // Real-time live increment when a project modal or card is clicked
+  // Real-time live increment when a project modal or card is clicked by a visitor
   const incrementProjectViews = async (projectId: string) => {
-    const targetProject = projects.find((p) => p.id === projectId);
-    const downloads = targetProject ? targetProject.downloads : 1000;
-    const baseViews = Math.max(Math.round(downloads * 1.62) + 180, 850);
-
-    const localAddon = parseInt(localStorage.getItem(`d4v_pv_addon_${projectId}`) || "0", 10) + 1;
+    const localAddon = parseInt(localStorage.getItem(`d4v_pv_addon_v4_${projectId}`) || "0", 10) + 1;
     try {
-      localStorage.setItem(`d4v_pv_addon_${projectId}`, localAddon.toString());
+      localStorage.setItem(`d4v_pv_addon_v4_${projectId}`, localAddon.toString());
     } catch {}
 
     const apiCount = await counterUp(`pv-${projectId}`);
-    const nextViews = baseViews + (apiCount !== null ? apiCount : localAddon);
+    const nextViews = Math.max(apiCount !== null ? apiCount : localAddon, 1);
 
     setProjectViewsMap((prev) => ({
       ...prev,
@@ -146,12 +139,7 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   };
 
   const getProjectViews = (projectId: string) => {
-    if (projectViewsMap[projectId] !== undefined) {
-      return projectViewsMap[projectId];
-    }
-    const targetProject = projects.find((p) => p.id === projectId);
-    const downloads = targetProject ? targetProject.downloads : 1000;
-    return Math.max(Math.round(downloads * 1.62) + 180, 850);
+    return projectViewsMap[projectId] ?? 1;
   };
 
   const incrementDownloadLink = (projectId: string, linkUrl: string) => {
@@ -160,10 +148,10 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         if (p.id !== projectId) return p;
         const updatedLinks = p.links.map((l) => {
           if (l.url === linkUrl) {
-            const currentClicks = parseInt(localStorage.getItem(`d4v_clicks_v3_${p.id}_${l.platform}`) || "0", 10);
+            const currentClicks = parseInt(localStorage.getItem(`d4v_clicks_v4_${p.id}_${l.platform}`) || "0", 10);
             const nextClicks = currentClicks + 1;
             try {
-              localStorage.setItem(`d4v_clicks_v3_${p.id}_${l.platform}`, nextClicks.toString());
+              localStorage.setItem(`d4v_clicks_v4_${p.id}_${l.platform}`, nextClicks.toString());
             } catch {}
 
             if (l.platform === "gamejolt" || l.platform === "itch") {
@@ -238,7 +226,7 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
           const updatedLinks = await Promise.all(
             project.links.map(async (link) => {
               const baseCount = link.initialDownloads ?? 0;
-              const localClicks = parseInt(localStorage.getItem(`d4v_clicks_v3_${project.id}_${link.platform}`) || "0", 10);
+              const localClicks = parseInt(localStorage.getItem(`d4v_clicks_v4_${project.id}_${link.platform}`) || "0", 10);
               let liveApiCount: number | null = null;
 
               if (link.mrId) {

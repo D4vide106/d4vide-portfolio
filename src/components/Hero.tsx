@@ -88,7 +88,7 @@ export default function Hero({ dict, aboutDict }: { dict: any; aboutDict: any })
         {/* ── 2. PYRAMID PROFILE & ABOUT SHOWCASE (NO BACKGROUND BOX) ── */}
         <div className={styles.pyramidProfileShowcase} id="about">
           
-          {/* Center: Avatar, Title, Subtitle, & Bio Text (Pyramid Layout, Clean/No Background) */}
+          {/* Center: Avatar, Title, Subtitle, Bio Text & Horizontal Social Buttons directly under bio */}
           <div className={styles.centerPyramidCol}>
             <div className={styles.pyramidAvatarWrap}>
               <div className={styles.pyramidOnlineDot} />
@@ -110,22 +110,42 @@ export default function Hero({ dict, aboutDict }: { dict: any; aboutDict: any })
               <br />
               {aboutDict?.aboutDesc2 || "Passionate about building deep RPG experiences, intricate structures, and custom tools for creators worldwide."}
             </p>
+
+            {/* Horizontal Social Buttons directly UNDER Bio */}
+            <div className={styles.socialHorizontalRow}>
+              {SOCIAL_LINKS.map((soc) => {
+                const IconComp = soc.icon;
+                return (
+                  <a
+                    key={soc.name}
+                    href={soc.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={styles.socialPillBtn}
+                    style={{ "--hover-color": soc.color } as React.CSSProperties}
+                    title={`${soc.name} (${soc.handle})`}
+                  >
+                    <IconComp className={styles.socIcon} />
+                    <span className={styles.socName}>{soc.name}</span>
+                    <span className={styles.socHandle}>{soc.handle}</span>
+                  </a>
+                );
+              })}
+            </div>
           </div>
 
-          {/* Bottom Grid Row: Live Metrics (Left) + YouTube Broadcast (Middle) + Social Matrix with @Hover (Right) */}
-          <div className={styles.bottomShowcaseGrid}>
-            
-            {/* Left: Live Stats & Metrics with Dropdown ON TOP */}
-            <div className={styles.metricsCard}>
-              <div className={styles.cardTagRow}>
-                <span className={styles.greenDot} />
-                <span className={styles.cardTag}>LIVE STATS & METRICS</span>
-              </div>
-              <TotalDownloads />
+          {/* ── 3. LIVE STATS & METRICS (TRANSPARENT / NO BACKGROUND BOX) ── */}
+          <div className={styles.transparentMetricsContainer}>
+            <div className={styles.metricsLabelHeader}>
+              <span className={styles.greenDot} />
+              <span className={styles.cardTag}>LIVE STATS & METRICS</span>
             </div>
+            <TotalDownloads />
+          </div>
 
-            {/* Middle: YouTube Latest Broadcast */}
-            <div className={styles.youtubeCard} id="youtube">
+          {/* ── 4. CENTERED YOUTUBE LATEST BROADCAST ────────────────── */}
+          <div className={styles.centeredYoutubeWrapper} id="youtube">
+            <div className={styles.youtubeCard}>
               <div className={styles.ytHeader}>
                 <div className={styles.ytTitle}>
                   <FiPlayCircle className={styles.ytIcon} />
@@ -145,33 +165,6 @@ export default function Hero({ dict, aboutDict }: { dict: any; aboutDict: any })
                 />
               </div>
             </div>
-
-            {/* Right: Social Matrix Cards with @Handle on Hover */}
-            <div className={styles.socialMatrixCard}>
-              <div className={styles.cardTagRow}>
-                <span className={styles.cardTag}>CONNECT & SOCIALS</span>
-              </div>
-              <div className={styles.socialPillsGrid}>
-                {SOCIAL_LINKS.map((soc) => {
-                  const IconComp = soc.icon;
-                  return (
-                    <a
-                      key={soc.name}
-                      href={soc.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={styles.socialPill}
-                      style={{ "--hover-color": soc.color } as React.CSSProperties}
-                    >
-                      <IconComp className={styles.socIcon} />
-                      <span className={styles.socName}>{soc.name}</span>
-                      <span className={styles.socHandle}>{soc.handle}</span>
-                    </a>
-                  );
-                })}
-              </div>
-            </div>
-
           </div>
 
         </div>
