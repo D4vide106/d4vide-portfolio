@@ -172,18 +172,25 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         if (p.id !== projectId) return p;
         const updatedLinks = p.links.map((l) => {
           if (l.url === linkUrl) {
-            const nextCount = (l.initialDownloads || 0) + 1;
+            const currentClicks = parseInt(localStorage.getItem(`d4v_clicks_v2_${p.id}_${l.platform}`) || "0", 10);
+            const nextClicks = currentClicks + 1;
             try {
-              localStorage.setItem(`d4v_link_dl_${p.id}_${l.platform}`, nextCount.toString());
+              localStorage.setItem(`d4v_clicks_v2_${p.id}_${l.platform}`, nextClicks.toString());
             } catch {}
-            return { ...l, initialDownloads: nextCount };
+
+            // Trigger global cloud counter increment for GameJolt & Itch
+            if (l.platform === "gamejolt" || l.platform === "itch") {
+              counterUp(`dl-${l.platform}-${p.id}`);
+            }
+
+            return { ...l, initialDownloads: (l.initialDownloads || 0) + 1 };
           }
           return l;
         });
         const newTotalSum = updatedLinks.reduce((sum, l) => sum + (l.initialDownloads || 0), 0);
         return {
           ...p,
-          downloads: Math.max(p.downloads + 1, newTotalSum),
+          downloads: newTotalSum,
           links: updatedLinks,
         };
       })
@@ -195,12 +202,29 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     return projectViewsMap[projectId] ?? 1250;
   };
 
-  // ── Live download fetching (Modrinth + CurseForge with fallback & preservation) ──
+  // ── Live download fetching (Modrinth + CurseForge + GameJolt + Itch) ──
   useEffect(() => {
     let isMounted = true;
 
     async function fetchLiveDownloads() {
       setIsLiveUpdating(true);
+
+      // Pre-fetch all Modrinth user projects in 1 batch request
+      const modrinthUserMap: Record<string, number> = {};
+      try {
+        const mrUserRes = await fetch("https://api.modrinth.com/v2/user/D4vide106/projects");
+        if (mrUserRes.ok) {
+          const mrProjects = await mrUserRes.json();
+          if (Array.isArray(mrProjects)) {
+            mrProjects.forEach((p: { id?: string; slug?: string; downloads?: number }) => {
+              if (typeof p.downloads === "number") {
+                if (p.id) modrinthUserMap[p.id] = p.downloads;
+                if (p.slug) modrinthUserMap[p.slug] = p.downloads;
+              }
+            });
+          }
+        }
+      } catch {}
 
       const updatedProjects = await Promise.all(
         MAIN_PROJECTS.map(async (project) => {
@@ -208,24 +232,24 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
           const updatedLinks = await Promise.all(
             project.links.map(async (link) => {
-              let liveCount = link.initialDownloads ?? 0;
-
-              // Check if user clicked and incremented link locally
-              const userSavedVal = parseInt(localStorage.getItem(`d4v_link_dl_${project.id}_${link.platform}`) || "0", 10);
-              if (userSavedVal > liveCount) {
-                liveCount = userSavedVal;
-              }
+              const baseCount = link.initialDownloads ?? 0;
+              const localClicks = parseInt(localStorage.getItem(`d4v_clicks_v2_${project.id}_${link.platform}`) || "0", 10);
+              let liveApiCount: number | null = null;
 
               if (link.mrId) {
-                try {
-                  const res = await fetch(`https://api.modrinth.com/v2/project/${link.mrId}`);
-                  if (res.ok) {
-                    const d = await res.json();
-                    if (typeof d.downloads === "number") {
-                      liveCount = Math.max(liveCount, d.downloads);
+                if (modrinthUserMap[link.mrId] !== undefined) {
+                  liveApiCount = modrinthUserMap[link.mrId];
+                } else {
+                  try {
+                    const res = await fetch(`https://api.modrinth.com/v2/project/${link.mrId}`);
+                    if (res.ok) {
+                      const d = await res.json();
+                      if (typeof d.downloads === "number") {
+                        liveApiCount = d.downloads;
+                      }
                     }
-                  }
-                } catch {}
+                  } catch {}
+                }
               } else if (link.cfPath) {
                 try {
                   // Primary direct cfwidget fetch
@@ -242,22 +266,27 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
                   if (res.ok) {
                     const d = await res.json();
                     if (d.downloads?.total && typeof d.downloads.total === "number") {
-                      liveCount = Math.max(liveCount, d.downloads.total);
+                      liveApiCount = d.downloads.total;
                     }
                   }
                 } catch {}
+              } else if (link.platform === "gamejolt" || link.platform === "itch") {
+                const cloudKey = `dl-${link.platform}-${project.id}`;
+                const cloudCount = await counterGet(cloudKey);
+                if (cloudCount !== null) {
+                  liveApiCount = baseCount + cloudCount;
+                }
               }
 
-              totalSum += liveCount;
-              return { ...link, initialDownloads: liveCount };
+              const linkTotal = (liveApiCount !== null ? liveApiCount : baseCount) + localClicks;
+              totalSum += linkTotal;
+              return { ...link, initialDownloads: linkTotal };
             })
           );
 
-          const newProjectTotal = Math.max(project.downloads, totalSum);
-
           return {
             ...project,
-            downloads: newProjectTotal,
+            downloads: totalSum,
             links: updatedLinks,
           };
         })
@@ -270,7 +299,8 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     }
 
     fetchLiveDownloads();
-    const interval = setInterval(fetchLiveDownloads, 8_000);
+    // Poll every 60 seconds so counts automatically increase in real-time while viewing
+    const interval = setInterval(fetchLiveDownloads, 60_000);
     return () => {
       isMounted = false;
       clearInterval(interval);

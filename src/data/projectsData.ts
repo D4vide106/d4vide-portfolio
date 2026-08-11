@@ -29,7 +29,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     icon_url: "https://cdn.modrinth.com/data/6qXHHAYn/365235145c0d9cc2cd208c674761ade3f3d1b825.png",
     type: "Modpack",
     tags: ["Modpack", "RPG", "Bosses", "Quests", "1.20.1", "Forge"],
-    downloads: 45096,
+    downloads: 45510,
     updated: "2025-06-12",
     links: [
       {
@@ -37,14 +37,14 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
         url: "https://www.curseforge.com/minecraft/modpacks/project-boss-rpg",
         platform: "curseforge",
         cfPath: "minecraft/modpacks/project-boss-rpg",
-        initialDownloads: 33242
+        initialDownloads: 33454
       },
       {
         label: "Modrinth (Modpack)",
         url: "https://modrinth.com/modpack/project-boss-rpg",
         platform: "modrinth",
         mrId: "6qXHHAYn",
-        initialDownloads: 11854
+        initialDownloads: 12056
       }
     ]
   },
@@ -56,7 +56,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     icon_url: "https://cdn.modrinth.com/data/5Zdqv8rG/22f82f9f215c73845bedc57059c0c8143977d76f.png",
     type: "Mod / Datapack / Addon",
     tags: ["Mod", "Datapack", "Bedrock Addon", "Java & Bedrock", "Dungeon", "Adventure", "Structures"],
-    downloads: 30093,
+    downloads: 33148,
     updated: "2026-07-18",
     links: [
       {
@@ -64,7 +64,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
         url: "https://www.curseforge.com/minecraft/mc-mods/sdob",
         platform: "curseforge",
         cfPath: "minecraft/mc-mods/sdob",
-        initialDownloads: 19755
+        initialDownloads: 20562
       },
       {
         label: "CurseForge (Datapack)",
@@ -85,19 +85,19 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
         url: "https://modrinth.com/mod/sdob",
         platform: "modrinth",
         mrId: "sdob",
-        initialDownloads: 9176
+        initialDownloads: 11849
       },
       {
         label: "GameJolt",
         url: "https://gamejolt.com/games/sdob/953274",
         platform: "gamejolt",
-        initialDownloads: 340
+        initialDownloads: 430
       },
       {
         label: "Itch.io",
         url: "https://d4vide106.itch.io/sdob-mc",
         platform: "itch",
-        initialDownloads: 520
+        initialDownloads: 5
       }
     ]
   },
@@ -109,7 +109,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     icon_url: "https://cdn.modrinth.com/data/6Yica65F/6a4532c2cd308d8791e5ba2afc12d4aca1d07d65.png",
     type: "Mod / Datapack / Addon",
     tags: ["Mod", "Datapack", "Bedrock Addon", "Resourcepack", "Java & Bedrock", "Structures", "World Gen"],
-    downloads: 27775,
+    downloads: 24750,
     updated: "2026-07-17",
     links: [
       {
@@ -117,7 +117,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
         url: "https://www.curseforge.com/minecraft/mc-mods/structural-beyond",
         platform: "curseforge",
         cfPath: "minecraft/mc-mods/structural-beyond",
-        initialDownloads: 15891
+        initialDownloads: 16180
       },
       {
         label: "CurseForge (Datapack)",
@@ -145,26 +145,26 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
         url: "https://modrinth.com/mod/structural-beyond",
         platform: "modrinth",
         mrId: "structural-beyond",
-        initialDownloads: 8772
+        initialDownloads: 6363
       },
       {
         label: "Modrinth (Datapack)",
         url: "https://modrinth.com/datapack/structural-beyond-sbd",
         platform: "modrinth",
         mrId: "structural-beyond-sbd",
-        initialDownloads: 384
+        initialDownloads: 0
       },
       {
         label: "GameJolt",
         url: "https://gamejolt.com/games/structural_beyond_mc/944658",
         platform: "gamejolt",
-        initialDownloads: 280
+        initialDownloads: 163
       },
       {
         label: "Itch.io",
         url: "https://d4vide106.itch.io/structuralbeyond-mc",
         platform: "itch",
-        initialDownloads: 410
+        initialDownloads: 6
       }
     ]
   },
@@ -276,7 +276,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     icon_url: "https://cdn.modrinth.com/data/y11fODQe/99a1f5300424ed796792d9454768eaff5d5b7b98.png",
     type: "Plugin",
     tags: ["Plugin", "Server", "Paper", "Spigot", "MOTD", "Maintenance"],
-    downloads: 145,
+    downloads: 483,
     updated: "2025-02-10",
     links: [
       {
@@ -284,7 +284,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
         url: "https://modrinth.com/plugin/pmaintanceuniversal",
         platform: "modrinth",
         mrId: "pmaintanceuniversal",
-        initialDownloads: 145
+        initialDownloads: 483
       }
     ]
   },
@@ -296,7 +296,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     icon_url: "https://cdn.modrinth.com/data/c2w1TKgN/4da379944f5c563294a488f7738950ebc6a68c74.png",
     type: "Minecraft Server",
     tags: ["Minecraft Server", "Java & Bedrock", "Crossplatform", "Minigames", "SMP"],
-    downloads: 15200,
+    downloads: 0,
     updated: "2026-08-01",
     links: [
       {
@@ -304,7 +304,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
         url: "https://modrinth.com/minecraft_java_server/infinitysmart",
         platform: "modrinth",
         mrId: "infinitysmart",
-        initialDownloads: 15200
+        initialDownloads: 0
       }
     ]
   }
