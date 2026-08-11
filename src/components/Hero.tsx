@@ -88,7 +88,7 @@ export default function Hero({ dict, aboutDict }: { dict: any; aboutDict: any })
         {/* ── 2. PYRAMID PROFILE & ABOUT SHOWCASE (NO BACKGROUND BOX) ── */}
         <div className={styles.pyramidProfileShowcase} id="about">
           
-          {/* Center: Avatar, Title, Subtitle, Bio Text & Stationary Social Buttons */}
+          {/* Center: Avatar, Title, Subtitle, Bio Text & Inline Cross-Fading Social Buttons */}
           <div className={styles.centerPyramidCol}>
             <div className={styles.pyramidAvatarWrap}>
               <div className={styles.pyramidOnlineDot} />
@@ -111,7 +111,7 @@ export default function Hero({ dict, aboutDict }: { dict: any; aboutDict: any })
               {aboutDict?.aboutDesc2 || "Passionate about building deep RPG experiences, intricate structures, and custom tools for creators worldwide."}
             </p>
 
-            {/* Rock-Solid Stationary Social Buttons with Floating @Handle Tooltips */}
+            {/* Inline Cross-Fading Fixed-Width Social Buttons (Zero Jitter, Zero Tooltips) */}
             <div className={styles.socialHorizontalRow}>
               {SOCIAL_LINKS.map((soc) => {
                 const IconComp = soc.icon;
@@ -125,8 +125,10 @@ export default function Hero({ dict, aboutDict }: { dict: any; aboutDict: any })
                     style={{ "--hover-color": soc.color } as React.CSSProperties}
                   >
                     <IconComp className={styles.socIcon} />
-                    <span className={styles.socName}>{soc.name}</span>
-                    <span className={styles.socHandleTooltip}>{soc.handle}</span>
+                    <div className={styles.textContainer}>
+                      <span className={styles.socNameDefault}>{soc.name}</span>
+                      <span className={styles.socHandleHover}>{soc.handle}</span>
+                    </div>
                   </a>
                 );
               })}
