@@ -195,18 +195,26 @@
   display: none;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
   background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   color: #ffffff;
   cursor: pointer;
-  transition: all 0.2s;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.mobileToggleBtn:hover {
+.mobileToggleBtn:hover,
+.mobileToggleBtn:active,
+.mobileToggleBtn:focus,
+.mobileToggleBtn:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
   background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.3);
   transform: scale(1.05);
 }
 

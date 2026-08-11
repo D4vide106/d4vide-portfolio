@@ -14,12 +14,41 @@ export default function CipherCarousel({
 }) {
   const [rotationAngle, setRotationAngle] = useState(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [dimensions, setDimensions] = useState({ radiusX: 340, radiusY: 160 });
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const reqIdRef = useRef<number | null>(null);
   const velocityRef = useRef(0.15);
   const angleRef = useRef(0);
   const isHoveredRef = useRef(false);
+  const touchStartRef = useRef(0);
+
+  // Dynamic Responsive Ellipse Radius for Mobile vs Desktop
+  useEffect(() => {
+    const updateDimensions = () => {
+      const w = window.innerWidth;
+      if (w <= 480) {
+        setDimensions({
+          radiusX: Math.max(105, Math.min(135, (w - 80) / 2)),
+          radiusY: 65
+        });
+      } else if (w <= 768) {
+        setDimensions({
+          radiusX: Math.max(140, Math.min(185, (w - 100) / 2)),
+          radiusY: 90
+        });
+      } else {
+        setDimensions({
+          radiusX: 340,
+          radiusY: 160
+        });
+      }
+    };
+
+    updateDimensions();
+    window.addEventListener("resize", updateDimensions);
+    return () => window.removeEventListener("resize", updateDimensions);
+  }, []);
 
   // Smooth 2D Constellation Rotation Loop with Momentum Physics
   useEffect(() => {
@@ -68,6 +97,20 @@ export default function CipherCarousel({
     };
   }, []);
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (e.touches[0]) {
+      touchStartRef.current = e.touches[0].clientX;
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (e.touches[0]) {
+      const deltaX = e.touches[0].clientX - touchStartRef.current;
+      touchStartRef.current = e.touches[0].clientX;
+      velocityRef.current = deltaX * 0.15;
+    }
+  };
+
   const handleCardClick = (project: UnifiedProject) => {
     if (onSelectProject) {
       onSelectProject(project);
@@ -75,7 +118,12 @@ export default function CipherCarousel({
   };
 
   return (
-    <div ref={containerRef} className={styles.carouselSection}>
+    <div
+      ref={containerRef}
+      className={styles.carouselSection}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+    >
       {/* 2D Circular Constellation Ring Stage */}
       <div className={styles.stage2D}>
         <div className={styles.ringCenterEmblem}>
@@ -93,8 +141,8 @@ export default function CipherCarousel({
             const currentItemAngle = (stepAngle * idx + rotationAngle) % 360;
             const rad = (currentItemAngle * Math.PI) / 180;
 
-            const radiusX = 340; // horizontal ellipse radius
-            const radiusY = 160; // vertical ellipse radius (comfortable top & bottom clearance)
+            const radiusX = dimensions.radiusX;
+            const radiusY = dimensions.radiusY;
             const x = Math.cos(rad) * radiusX;
             const y = Math.sin(rad) * radiusY;
 

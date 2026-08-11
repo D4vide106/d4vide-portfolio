@@ -111,9 +111,38 @@
 }
 
 @media (max-width: 768px) {
+  .carouselSection {
+    min-height: 320px;
+    padding: 0.5rem 0;
+  }
+  .stage2D {
+    height: 300px;
+  }
+  .ringCenterEmblem {
+    width: 48px;
+    height: 48px;
+  }
   .card2D {
-    width: 105px;
-    height: 105px;
-    border-radius: 16px;
+    width: 85px;
+    height: 85px;
+    border-radius: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .carouselSection {
+    min-height: 270px;
+  }
+  .stage2D {
+    height: 250px;
+  }
+  .ringCenterEmblem {
+    width: 40px;
+    height: 40px;
+  }
+  .card2D {
+    width: 75px;
+    height: 75px;
+    border-radius: 12px;
   }
 }
