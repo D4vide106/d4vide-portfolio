@@ -1,11 +1,9 @@
 {
   "nav": {
     "home": "Home",
-    "projects": "Minecraft",
-    "services": "Labs & Software",
+    "projects": "Progetti Minecraft",
     "journey": "Percorso Informatico",
-    "about": "Chi Sono",
-    "media": "Media"
+    "about": "Chi Sono"
   },
   "hero": {
     "greeting": "Ciao, sono",
@@ -20,22 +18,14 @@
       "age": "Età",
       "gender": "Genere"
     },
-    "aboutDesc1": "Sono uno sviluppatore di mod per Minecraft, sviluppatore software e content creator.",
-    "aboutDesc2": "Oltre ai progetti per Minecraft, sviluppo Bot Discord personalizzati, webapp ad alte prestazioni, automazioni in Python e software su misura.",
-    "aboutDesc3": "Puoi trovarmi sul mio server Discord ufficiale o su GitHub per esplorare il codice e i progetti."
+    "aboutDesc1": "Sono tante cose, ma di quelle che probabilmente ti interessano di più: uno sviluppatore di mod per Minecraft e un content creator.",
+    "aboutDesc2": "Ho una passione particolare per la creazione di esperienze RPG immersive, strutture e strumenti. Gran parte della mia esperienza consiste nello spingere oltre i limiti di ciò che è possibile fare all'interno del gioco.",
+    "aboutDesc3": "In questi giorni puoi trovarmi sul mio server Discord, dove chiacchiero di tutto, e annuncio i nuovi sviluppi dei miei progetti. Puoi anche dare un'occhiata ai miei video sul mio canale YouTube dove pubblico occasionalmente aggiornamenti e gameplay!"
   },
   "projects": {
     "title": "I miei",
-    "highlight": "Progetti Minecraft",
+    "highlight": "Progetti",
     "viewProject": "Vedi Progetto"
-  },
-  "services": {
-    "tag": "CREATOR LABS & SOFTWARE",
-    "title": "Bot Discord, Software & Altri Progetti",
-    "subtitle": "Esplora le mie competenze software oltre Minecraft: dai Bot Discord avanzati all'ingegnerizzazione di plugin, applicazioni web e automazioni backend.",
-    "externalTitle": "Vetrina Progetti Software & Tool",
-    "exploreProject": "Esplora Progetto",
-    "contactDiscord": "Entra nel Server Discord"
   },
   "footer": {
     "rights": "Tutti i diritti riservati."
