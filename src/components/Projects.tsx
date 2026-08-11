@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { FiDownload, FiSearch, FiEye, FiGlobe, FiTag, FiExternalLink } from "react-icons/fi";
+import { FiDownload, FiSearch, FiEye, FiGlobe, FiTag, FiExternalLink, FiGrid, FiCompass } from "react-icons/fi";
 import { SiCurseforge, SiModrinth, SiGamejolt, SiItchdotio } from "react-icons/si";
 import { FaCube } from "react-icons/fa";
 import styles from "./Projects.module.css";
@@ -73,132 +73,150 @@ export default function Projects({ dict }: { dict: any }) {
 
   return (
     <section id="projects" className={styles.projectsSection}>
-      <div className={styles.topControlBar}>
-        <div className={styles.viewToggleGroup}>
-          <button
-            className={`${styles.viewBtn} ${viewMode === "carousel" ? styles.activeViewBtn : ""}`}
-            onClick={() => setViewMode("carousel")}
-          >
-            Constellation View
-          </button>
-          <button
-            className={`${styles.viewBtn} ${viewMode === "grid" ? styles.activeViewBtn : ""}`}
-            onClick={() => setViewMode("grid")}
-          >
-            Grid View
-          </button>
-        </div>
-      </div>
+      <div className={styles.container}>
+        
+        {/* Section Header */}
+        <div className={styles.sectionHeader}>
+          <span className={styles.sectionTag}>FEATURED WORKS</span>
+          <h2 className={styles.sectionTitle}>
+            {viewMode === "carousel" ? "PROJECT CONSTELLATION" : "WORKS GALLERY"}
+          </h2>
+          <p className={styles.sectionSubtitle}>
+            {viewMode === "carousel" 
+              ? "Scroll mouse wheel or drag cards to orbit through featured Minecraft mods & projects" 
+              : "Search, filter, and inspect detailed metrics across all platforms"}
+          </p>
 
-      {viewMode === "carousel" ? (
-        <div className={styles.carouselWrapper}>
-          <CipherCarousel projects={filteredProjects} onSelectProject={handleOpenProjectModal} />
-        </div>
-      ) : (
-        <div className={styles.container}>
-          <div className={styles.controlsBar}>
-            <div className={styles.filtersGroup}>
-              {["All", "Modpack", "Mod", "Resource Pack", "Plugin", "Server"].map((type) => (
-                <button
-                  key={type}
-                  className={`${styles.filterBtn} ${filterType === type ? styles.activeFilter : ""}`}
-                  onClick={() => setFilterType(type)}
-                >
-                  {type}
-                </button>
-              ))}
-            </div>
-
-            <div className={styles.searchBox}>
-              <FiSearch className={styles.searchIcon} />
-              <input
-                type="text"
-                placeholder="SEARCH WORKS & TAGS..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className={styles.searchInput}
-              />
-            </div>
+          {/* Mode Switcher Buttons */}
+          <div className={styles.viewToggleGroup}>
+            <button
+              className={`${styles.viewBtn} ${viewMode === "carousel" ? styles.activeViewBtn : ""}`}
+              onClick={() => setViewMode("carousel")}
+            >
+              <FiCompass size={14} /> Constellation 3D
+            </button>
+            <button
+              className={`${styles.viewBtn} ${viewMode === "grid" ? styles.activeViewBtn : ""}`}
+              onClick={() => setViewMode("grid")}
+            >
+              <FiGrid size={14} /> Grid Gallery
+            </button>
           </div>
+        </div>
 
-          <div className={styles.staticGrid}>
-            {filteredProjects.map((project) => {
-              const uniquePlatforms = getUniquePlatforms(project);
-              return (
-                <div
-                  key={project.id}
-                  onClick={() => handleOpenProjectModal(project)}
-                  className={styles.modrinthCard}
-                >
-                  <div className={styles.cardHeader}>
-                    <div className={styles.logoWrapper}>
-                      <img
-                        src={project.icon_url}
-                        alt={project.title}
-                        className={styles.projectLogo}
-                        onError={(e) => {
-                          e.currentTarget.style.display = "none";
-                          const parent = e.currentTarget.parentElement;
-                          if (parent) {
-                            const fallback = parent.querySelector(".fallbackLogo");
-                            if (fallback) fallback.classList.remove("hidden");
-                          }
-                        }}
-                      />
-                      <div
-                        className="fallbackLogo hidden"
-                        style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", background: "#111" }}
-                      >
-                        <FaCube size={24} color="#ffffff" />
+        {/* Constellation View */}
+        {viewMode === "carousel" ? (
+          <div className={styles.carouselContainer}>
+            <CipherCarousel projects={filteredProjects} onSelectProject={handleOpenProjectModal} />
+          </div>
+        ) : (
+          /* Grid View */
+          <div className={styles.gridContainer}>
+            <div className={styles.controlsBar}>
+              <div className={styles.filtersGroup}>
+                {["All", "Modpack", "Mod", "Resource Pack", "Plugin", "Server"].map((type) => (
+                  <button
+                    key={type}
+                    className={`${styles.filterBtn} ${filterType === type ? styles.activeFilter : ""}`}
+                    onClick={() => setFilterType(type)}
+                  >
+                    {type}
+                  </button>
+                ))}
+              </div>
+
+              <div className={styles.searchBox}>
+                <FiSearch className={styles.searchIcon} />
+                <input
+                  type="text"
+                  placeholder="SEARCH WORKS & TAGS..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className={styles.searchInput}
+                />
+              </div>
+            </div>
+
+            <div className={styles.staticGrid}>
+              {filteredProjects.map((project) => {
+                const uniquePlatforms = getUniquePlatforms(project);
+                return (
+                  <div
+                    key={project.id}
+                    onClick={() => handleOpenProjectModal(project)}
+                    className={styles.modrinthCard}
+                  >
+                    <div className={styles.cardHeader}>
+                      <div className={styles.logoWrapper}>
+                        <img
+                          src={project.icon_url}
+                          alt={project.title}
+                          className={styles.projectLogo}
+                          onError={(e) => {
+                            e.currentTarget.style.display = "none";
+                            const parent = e.currentTarget.parentElement;
+                            if (parent) {
+                              const fallback = parent.querySelector(".fallbackLogo");
+                              if (fallback) fallback.classList.remove("hidden");
+                            }
+                          }}
+                        />
+                        <div
+                          className="fallbackLogo hidden"
+                          style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", background: "#111" }}
+                        >
+                          <FaCube size={24} color="#ffffff" />
+                        </div>
+                      </div>
+                      <div className={styles.titleArea}>
+                        <span className={styles.projectTypeTag}>{project.type}</span>
+                        <h4 className={styles.cardTitle}>{project.title}</h4>
+                        <p className={styles.cardDesc}>{project.description}</p>
                       </div>
                     </div>
-                    <div className={styles.titleArea}>
-                      <span className={styles.projectTypeTag}>{project.type}</span>
-                      <h4 className={styles.cardTitle}>{project.title}</h4>
-                      <p className={styles.cardDesc}>{project.description}</p>
+
+                    {project.tags && project.tags.length > 0 && (
+                      <div className={styles.tagsRow}>
+                        {project.tags.slice(0, 4).map((tag, idx) => (
+                          <span key={idx} className={styles.tagChip}>#{tag}</span>
+                        ))}
+                      </div>
+                    )}
+
+                    <div className={styles.cardFooter}>
+                      <div className={styles.statItem}>
+                        <FiDownload />
+                        <span>{project.downloads.toLocaleString()}</span>
+                        <span className={styles.livePulseDot} title="Somma live in tempo reale" />
+                      </div>
+                      {/* Deduplicated platform icons with download breakdown on hover */}
+                      <div className={styles.platforms}>
+                        {uniquePlatforms.map((link, idx) => {
+                          const platformName = PLATFORM_NAMES[link.platform] || link.platform;
+                          const pLinks = project.links.filter((l) => l.platform === link.platform);
+                          const pDownloads = pLinks.reduce((sum, l) => sum + (l.initialDownloads || 0), 0);
+                          const hoverText = pDownloads > 0 
+                            ? `${platformName}: ${pDownloads.toLocaleString()} downloads` 
+                            : platformName;
+                          
+                          return (
+                            <span key={idx} className={styles.platformIcon} title={hoverText}>
+                              {getPlatformIcon(link.platform, 16)}
+                            </span>
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
-
-                  {project.tags && project.tags.length > 0 && (
-                    <div className={styles.tagsRow}>
-                      {project.tags.slice(0, 4).map((tag, idx) => (
-                        <span key={idx} className={styles.tagChip}>#{tag}</span>
-                      ))}
-                    </div>
-                  )}
-
-                  <div className={styles.cardFooter}>
-                    <div className={styles.statItem}>
-                      <FiDownload />
-                      <span>{project.downloads.toLocaleString()}</span>
-                      <span className={styles.livePulseDot} title="Somma live in tempo reale" />
-                    </div>
-                    {/* DEDUPLICATED platform icons with download breakdown on hover */}
-                    <div className={styles.platforms}>
-                      {uniquePlatforms.map((link, idx) => {
-                        const platformName = PLATFORM_NAMES[link.platform] || link.platform;
-                        const pLinks = project.links.filter((l) => l.platform === link.platform);
-                        const pDownloads = pLinks.reduce((sum, l) => sum + (l.initialDownloads || 0), 0);
-                        const hoverText = pDownloads > 0 
-                          ? `${platformName}: ${pDownloads.toLocaleString()} downloads` 
-                          : platformName;
-                        
-                        return (
-                          <span key={idx} className={styles.platformIcon} title={hoverText}>
-                            {getPlatformIcon(link.platform, 16)}
-                          </span>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Enhanced Detail Modal */}
+      </div>
+
+      {/* Enhanced Project Detail Modal */}
       {selectedProject && (() => {
         const grouped = groupLinksByPlatform(selectedProject);
         return (

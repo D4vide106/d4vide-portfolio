@@ -1,6 +1,7 @@
 import { getDictionary } from "../dictionaries";
 import TopBar from "@/components/TopBar";
 import Hero from "@/components/Hero";
+import Projects from "@/components/Projects";
 import Footer from "@/components/Footer";
 import HackerIntro from "@/components/HackerIntro";
 
@@ -17,15 +18,18 @@ export default async function LangHome({
   const dict = await getDictionary(lang);
 
   return (
-    <main>
+    <main style={{ minHeight: "100vh", backgroundColor: "#050508", overflowX: "hidden" }}>
       <HackerIntro />
       <TopBar dict={dict.nav} currentLang={lang} />
-      <div className="animate-entrance-1">
-        <Hero dict={dict.hero} aboutDict={dict.aboutSection} projectsDict={dict.projects} />
-      </div>
-      <div className="animate-entrance-2">
-        <Footer dict={dict.footer} />
-      </div>
+      
+      {/* Hero Bento Dashboard & Creator Showcase */}
+      <Hero dict={dict.hero} aboutDict={dict.aboutSection} />
+      
+      {/* Featured Works - 3D Constellation & Project Grid */}
+      <Projects dict={dict.projects} />
+      
+      {/* Footer */}
+      <Footer dict={dict.footer} />
     </main>
   );
 }

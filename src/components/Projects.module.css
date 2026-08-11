@@ -1,47 +1,90 @@
 .projectsSection {
-  padding: 4rem 0 6rem 0;
-  background-color: #050505;
+  padding: 5rem 0 6rem 0;
+  background-color: #050508;
   position: relative;
   width: 100%;
-}
-
-.carouselWrapper {
-  width: 100%;
-  position: relative;
 }
 
 .container {
-  max-width: 1400px;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 1.8rem;
+  width: 100%;
+}
+
+.sectionHeader {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 2.8rem;
+  position: relative;
+  z-index: 10;
+}
+
+.sectionTag {
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  color: #86868b;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.3rem 0.95rem;
+  border-radius: 9999px;
+}
+
+.sectionTitle {
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin: 0.2rem 0;
+}
+
+.sectionSubtitle {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: #a1a1a6;
+  max-width: 580px;
+  margin-bottom: 0.8rem;
+}
+
+.carouselContainer {
+  width: 100%;
+  position: relative;
+  min-height: 520px;
+}
+
+.gridContainer {
   width: 100%;
 }
 
 /* ── Apple Segmented View Toggle ── */
-.topControlBar {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 2.5rem;
-  z-index: 100;
-  position: relative;
-}
-
 .viewToggleGroup {
-  display: flex;
+  display: inline-flex;
+  align-items: center;
   background: rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 9999px;
-  padding: 4px;
-  gap: 4px;
+  padding: 5px;
+  gap: 6px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  margin-top: 0.5rem;
 }
 
 .viewBtn {
-  padding: 0.6rem 1.6rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.6rem;
   font-family: var(--font-body);
   font-size: 0.73rem;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   color: #a1a1a6;
   font-weight: 600;
   border-radius: 9999px;
