@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useMemo, useEffect, useRef } from "react";
-import { FiDownload, FiSearch, FiEye, FiGlobe, FiTag, FiExternalLink, FiChevronLeft, FiChevronRight, FiPause, FiPlay } from "react-icons/fi";
+import { useState, useMemo } from "react";
+import { FiDownload, FiSearch, FiEye, FiGlobe, FiTag, FiExternalLink } from "react-icons/fi";
 import { SiCurseforge, SiModrinth, SiGamejolt, SiItchdotio } from "react-icons/si";
 import { FaCube } from "react-icons/fa";
 import styles from "./Projects.module.css";
@@ -16,14 +16,10 @@ const PLATFORM_NAMES: Record<string, string> = {
   itch: "Itch.io",
 };
 
-const ITEMS_PER_PAGE = 4; // 2x2 Grid
-
 export default function Projects({ dict }: { dict?: any }) {
   const { projects, incrementProjectViews, getProjectViews, portfolioViews, incrementDownloadLink } = useLiveStats();
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState("All");
-  const [currentPage, setCurrentPage] = useState(0);
-  const [isPausedByHover, setIsPausedByHover] = useState(false);
   const [selectedProject, setSelectedProject] = useState<UnifiedProject | null>(null);
 
   // Filter projects by category and search
@@ -39,28 +35,17 @@ export default function Projects({ dict }: { dict?: any }) {
     });
   }, [projects, searchQuery, filterType]);
 
-  // Total Pages for 2x2 Grid
-  const totalPages = Math.max(1, Math.ceil(filteredProjects.length / ITEMS_PER_PAGE));
+  // Split projects into 2 sets for Row 1 & Row 2
+  const row1Projects = useMemo(() => {
+    const half = Math.ceil(filteredProjects.length / 2);
+    return [...filteredProjects.slice(0, half), ...filteredProjects.slice(0, half)];
+  }, [filteredProjects]);
 
-  // Reset to page 0 when filters change
-  useEffect(() => {
-    setCurrentPage(0);
-  }, [filterType, searchQuery]);
-
-  // Auto-loop pagination timer (cycles every 4.5s unless hovered)
-  useEffect(() => {
-    if (isPausedByHover || totalPages <= 1) return;
-    const timer = setInterval(() => {
-      setCurrentPage((prev) => (prev + 1) % totalPages);
-    }, 4500);
-    return () => clearInterval(timer);
-  }, [isPausedByHover, totalPages]);
-
-  // Slice projects for current 2x2 page
-  const currentProjects = useMemo(() => {
-    const start = currentPage * ITEMS_PER_PAGE;
-    return filteredProjects.slice(start, start + ITEMS_PER_PAGE);
-  }, [filteredProjects, currentPage]);
+  const row2Projects = useMemo(() => {
+    const half = Math.ceil(filteredProjects.length / 2);
+    const set2 = filteredProjects.slice(half).length > 0 ? filteredProjects.slice(half) : filteredProjects;
+    return [...set2, ...set2];
+  }, [filteredProjects]);
 
   const handleOpenProjectModal = (project: UnifiedProject) => {
     setSelectedProject(project);
@@ -99,7 +84,7 @@ export default function Projects({ dict }: { dict?: any }) {
     <section id="projects" className={styles.projectsSection}>
       <div className={styles.container}>
         
-        {/* Controls Bar: Categories + Search */}
+        {/* Controls Bar: Category Filter Chips & Search Bar */}
         <div className={styles.controlsBar}>
           <div className={styles.filtersGroup}>
             {["All", "Modpack", "Mod", "Resource Pack", "Plugin", "Server"].map((type) => (
@@ -125,99 +110,109 @@ export default function Projects({ dict }: { dict?: any }) {
           </div>
         </div>
 
-        {/* 2x2 Grid Container with Auto-Loop Pause on Hover */}
-        <div 
-          className={`${styles.gridWrapper} ${isPausedByHover ? styles.pausedState : ""}`}
-          onMouseEnter={() => setIsPausedByHover(true)}
-          onMouseLeave={() => setIsPausedByHover(false)}
-        >
-          <div className={styles.grid2x2}>
-            {currentProjects.map((project) => {
-              const uniquePlatforms = getUniquePlatforms(project);
-              return (
-                <div
-                  key={project.id}
-                  onClick={() => handleOpenProjectModal(project)}
-                  className={styles.projectCard}
-                >
-                  <div className={styles.cardHeader}>
-                    <div className={styles.logoBox}>
-                      <img
-                        src={project.icon_url}
-                        alt={project.title}
-                        className={styles.projectLogo}
-                      />
-                    </div>
-                    <div className={styles.titleArea}>
-                      <span className={styles.typeBadge}>{project.type}</span>
-                      <h4 className={styles.cardTitle}>{project.title}</h4>
-                    </div>
-                  </div>
-
-                  <p className={styles.cardDesc}>{project.description}</p>
-
-                  {project.tags && project.tags.length > 0 && (
-                    <div className={styles.tagsRow}>
-                      {project.tags.slice(0, 3).map((tag, idx) => (
-                        <span key={idx} className={styles.tagChip}>#{tag}</span>
-                      ))}
-                    </div>
-                  )}
-
-                  <div className={styles.cardFooter}>
-                    <div className={styles.downloadStat}>
-                      <FiDownload size={14} />
-                      <span>{project.downloads.toLocaleString()}</span>
+        {/* Modrinth-Style Infinite Horizontal Marquee Showcase */}
+        <div className={styles.marqueeSection}>
+          
+          {/* Marquee Row 1 (Scrolling Left) */}
+          <div className={styles.marqueeRowContainer}>
+            <div className={`${styles.marqueeTrack} ${styles.marqueeLeft}`}>
+              {row1Projects.map((project, idx) => {
+                const uniquePlatforms = getUniquePlatforms(project);
+                return (
+                  <div
+                    key={`r1-${project.id}-${idx}`}
+                    onClick={() => handleOpenProjectModal(project)}
+                    className={styles.modrinthCard}
+                  >
+                    <div className={styles.cardHeader}>
+                      <div className={styles.logoBox}>
+                        <img
+                          src={project.icon_url}
+                          alt={project.title}
+                          className={styles.projectLogo}
+                        />
+                      </div>
+                      <div className={styles.titleArea}>
+                        <span className={styles.typeBadge}>{project.type}</span>
+                        <h4 className={styles.cardTitle}>{project.title}</h4>
+                      </div>
                     </div>
 
-                    <div className={styles.platformsRow}>
-                      {uniquePlatforms.map((link, idx) => {
-                        const platformName = PLATFORM_NAMES[link.platform] || link.platform;
-                        return (
-                          <span key={idx} className={styles.platformIcon} title={platformName}>
-                            {getPlatformIcon(link.platform, 15)}
-                          </span>
-                        );
-                      })}
+                    <p className={styles.cardDesc}>{project.description}</p>
+
+                    <div className={styles.cardFooter}>
+                      <div className={styles.downloadStat}>
+                        <FiDownload size={13} />
+                        <span>{project.downloads.toLocaleString()}</span>
+                      </div>
+
+                      <div className={styles.platformsRow}>
+                        {uniquePlatforms.map((link, pIdx) => {
+                          const platformName = PLATFORM_NAMES[link.platform] || link.platform;
+                          return (
+                            <span key={pIdx} className={styles.platformIcon} title={platformName}>
+                              {getPlatformIcon(link.platform, 14)}
+                            </span>
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Pagination Controls */}
-        <div className={styles.paginationBar}>
-          <button
-            className={styles.pageBtn}
-            onClick={() => setCurrentPage((prev) => Math.max(0, prev - 1))}
-            disabled={currentPage === 0}
-          >
-            <FiChevronLeft size={16} /> PREV
-          </button>
-
-          <div className={styles.pageIndicators}>
-            {Array.from({ length: totalPages }).map((_, idx) => (
-              <button
-                key={idx}
-                className={`${styles.pageDot} ${currentPage === idx ? styles.activeDot : ""}`}
-                onClick={() => setCurrentPage(idx)}
-                title={`Page ${idx + 1}`}
-              />
-            ))}
-            <span className={styles.pageText}>
-              {currentPage + 1} / {totalPages}
-            </span>
+                );
+              })}
+            </div>
           </div>
 
-          <button
-            className={styles.pageBtn}
-            onClick={() => setCurrentPage((prev) => Math.min(totalPages - 1, prev + 1))}
-            disabled={currentPage >= totalPages - 1}
-          >
-            NEXT <FiChevronRight size={16} />
-          </button>
+          {/* Marquee Row 2 (Scrolling Right) */}
+          <div className={styles.marqueeRowContainer}>
+            <div className={`${styles.marqueeTrack} ${styles.marqueeRight}`}>
+              {row2Projects.map((project, idx) => {
+                const uniquePlatforms = getUniquePlatforms(project);
+                return (
+                  <div
+                    key={`r2-${project.id}-${idx}`}
+                    onClick={() => handleOpenProjectModal(project)}
+                    className={styles.modrinthCard}
+                  >
+                    <div className={styles.cardHeader}>
+                      <div className={styles.logoBox}>
+                        <img
+                          src={project.icon_url}
+                          alt={project.title}
+                          className={styles.projectLogo}
+                        />
+                      </div>
+                      <div className={styles.titleArea}>
+                        <span className={styles.typeBadge}>{project.type}</span>
+                        <h4 className={styles.cardTitle}>{project.title}</h4>
+                      </div>
+                    </div>
+
+                    <p className={styles.cardDesc}>{project.description}</p>
+
+                    <div className={styles.cardFooter}>
+                      <div className={styles.downloadStat}>
+                        <FiDownload size={13} />
+                        <span>{project.downloads.toLocaleString()}</span>
+                      </div>
+
+                      <div className={styles.platformsRow}>
+                        {uniquePlatforms.map((link, pIdx) => {
+                          const platformName = PLATFORM_NAMES[link.platform] || link.platform;
+                          return (
+                            <span key={pIdx} className={styles.platformIcon} title={platformName}>
+                              {getPlatformIcon(link.platform, 14)}
+                            </span>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
         </div>
 
       </div>

@@ -1,9 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { FiDownload, FiExternalLink } from "react-icons/fi";
 import { FaCube } from "react-icons/fa";
-import { SiCurseforge, SiModrinth, SiGamejolt, SiItchdotio } from "react-icons/si";
 import styles from "./CipherCarousel.module.css";
 import { UnifiedProject } from "@/data/projectsData";
 
@@ -56,7 +54,6 @@ export default function CipherCarousel({
     if (!container) return;
 
     const handleWheelNative = (e: WheelEvent) => {
-      // Rotate constellation smoothly without blocking natural page scroll
       const scrollDirection = e.deltaY > 0 ? 1 : -1;
       velocityRef.current = scrollDirection * (Math.abs(velocityRef.current) + 0.5);
 
@@ -71,9 +68,6 @@ export default function CipherCarousel({
     };
   }, []);
 
-  const activeProject =
-    hoveredIndex !== null && projects[hoveredIndex] ? projects[hoveredIndex] : projects[0];
-
   const handleCardClick = (project: UnifiedProject) => {
     if (onSelectProject) {
       onSelectProject(project);
@@ -82,12 +76,6 @@ export default function CipherCarousel({
 
   return (
     <div ref={containerRef} className={styles.carouselSection}>
-      <div className={styles.headerArea}>
-        <span className={styles.sectionCaption}>FEATURED WORKS</span>
-        <h2 className={styles.sectionTitle}>PROJECT CONSTELLATION</h2>
-        <p className={styles.scrollHint}>Scroll mouse wheel or drag to rotate constellation</p>
-      </div>
-
       {/* 2D Circular Constellation Ring Stage */}
       <div className={styles.stage2D}>
         <div className={styles.ringCenterEmblem}>
@@ -105,8 +93,8 @@ export default function CipherCarousel({
             const currentItemAngle = (stepAngle * idx + rotationAngle) % 360;
             const rad = (currentItemAngle * Math.PI) / 180;
 
-            const radiusX = 370; // horizontal ellipse radius
-            const radiusY = 220; // vertical ellipse radius
+            const radiusX = 350; // horizontal ellipse radius
+            const radiusY = 190; // vertical ellipse radius
             const x = Math.cos(rad) * radiusX;
             const y = Math.sin(rad) * radiusY;
 
@@ -121,10 +109,11 @@ export default function CipherCarousel({
                 } ${isAnyHovered && !isCurrentHovered ? styles.cardDimmed : ""}`}
                 style={{
                   transform: `translate3d(${x}px, ${y}px, 0px) scale(${
-                    isCurrentHovered ? 1.3 : 1
+                    isCurrentHovered ? 1.25 : 1
                   })`,
                   zIndex: isCurrentHovered ? 999 : Math.round((Math.sin(rad) + 1) * 100),
-                  opacity: isAnyHovered ? (isCurrentHovered ? 1 : 0.25) : 0.85,
+                  opacity: isAnyHovered ? (isCurrentHovered ? 1 : 0.3) : 0.85,
+                  cursor: "pointer"
                 }}
                 onMouseEnter={() => {
                   setHoveredIndex(idx);
@@ -134,7 +123,10 @@ export default function CipherCarousel({
                   setHoveredIndex(null);
                   isHoveredRef.current = false;
                 }}
-                onClick={() => handleCardClick(project)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleCardClick(project);
+                }}
               >
                 <div className={styles.cardImageContainer}>
                   <img
@@ -160,32 +152,6 @@ export default function CipherCarousel({
           })}
         </div>
       </div>
-
-      {/* Live Bottom Information Bar */}
-      {activeProject && (
-        <div className={styles.bottomInfoBar}>
-          <div className={styles.infoMetaLeft}>
-            <span className={styles.infoBadge}>{activeProject.type}</span>
-            <span className={styles.infoDownloads}>
-              <FiDownload style={{ marginRight: 4 }} /> {activeProject.downloads.toLocaleString()} DOWNLOADS
-            </span>
-          </div>
-
-          <div className={styles.infoTitleCenter}>
-            <span className={styles.infoTitleText}>{activeProject.title}</span>
-            <p className={styles.infoDescText}>{activeProject.description}</p>
-          </div>
-
-          <div className={styles.infoActionsRight}>
-            <button
-              className={styles.viewDetailsBtn}
-              onClick={() => handleCardClick(activeProject)}
-            >
-              EXPLORE WORK <FiExternalLink style={{ marginLeft: 6 }} />
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
