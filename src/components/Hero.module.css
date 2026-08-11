@@ -25,10 +25,10 @@
 
 .heroTitle {
   font-family: var(--font-heading);
-  font-size: 5rem;
+  font-size: clamp(2.2rem, 6.5vw, 5rem);
   font-weight: 800;
   letter-spacing: -0.03em;
-  line-height: 1;
+  line-height: 1.05;
   background: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.75) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -39,7 +39,7 @@
 .constellationWrapper {
   width: 100%;
   position: relative;
-  min-height: 480px;
+  min-height: clamp(320px, 45vh, 480px);
 }
 
 /* ── 2. PYRAMID PROFILE & ABOUT SHOWCASE (NO CARD BOX) ───── */
@@ -111,7 +111,7 @@
 
 .pyramidName {
   font-family: var(--font-heading);
-  font-size: 2.6rem;
+  font-size: clamp(1.6rem, 4.5vw, 2.6rem);
   font-weight: 800;
   color: #ffffff;
   margin: 0;
@@ -120,16 +120,16 @@
 
 .pyramidRole {
   font-family: var(--font-body);
-  font-size: 0.88rem;
+  font-size: clamp(0.78rem, 2vw, 0.88rem);
   color: #a1a1a6;
   font-weight: 500;
 }
 
 .pyramidBioText {
   font-family: var(--font-body);
-  font-size: 1.02rem;
+  font-size: clamp(0.88rem, 2.2vw, 1.02rem);
   color: #e4e4e7;
-  line-height: 1.7;
+  line-height: 1.65;
   margin: 0;
   max-width: 780px;
   font-weight: 400;
@@ -143,13 +143,17 @@
   gap: 0.75rem;
   flex-wrap: wrap;
   padding-top: 0.5rem;
+  width: 100%;
 }
 
 .socialPillBtn {
   display: inline-flex;
   align-items: center;
-  padding: 0 1rem;
-  width: 148px;
+  padding: 0 0.9rem;
+  width: auto;
+  min-width: 130px;
+  max-width: 148px;
+  flex: 1 1 130px;
   height: 42px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -343,13 +347,37 @@
 }
 
 @media (max-width: 768px) {
-  .heroTitle {
-    font-size: 3.4rem;
+  .heroSection {
+    padding: 4.5rem 0 3.5rem 0;
   }
-  .pyramidName {
-    font-size: 2rem;
+  .container {
+    padding: 0 1.2rem;
+    gap: 2.5rem;
+  }
+  .youtubeCard {
+    padding: 1.2rem;
+    border-radius: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .heroSection {
+    padding: 3.8rem 0 3rem 0;
+  }
+  .container {
+    padding: 0 0.9rem;
+    gap: 2rem;
+  }
+  .socialHorizontalRow {
+    gap: 0.5rem;
   }
   .socialPillBtn {
-    width: 135px;
+    min-width: calc(50% - 0.5rem);
+    height: 40px;
+    font-size: 0.72rem;
+  }
+  .pyramidAvatarWrap {
+    width: 76px;
+    height: 76px;
   }
 }

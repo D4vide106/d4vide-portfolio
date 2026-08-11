@@ -1,6 +1,6 @@
 .topBar {
   position: fixed;
-  top: 1.2rem;
+  top: calc(0.8rem + env(safe-area-inset-top, 0px));
   left: 50%;
   transform: translateX(-50%);
   width: calc(100% - 3rem);
@@ -17,10 +17,16 @@
 }
 
 .topBarScrolled {
-  top: 0.8rem;
+  top: calc(0.6rem + env(safe-area-inset-top, 0px));
   background: rgba(14, 14, 18, 0.88);
   border-color: rgba(255, 255, 255, 0.18);
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.topBarExpanded {
+  border-radius: 28px !important;
+  background: rgba(14, 14, 18, 0.94) !important;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.95) !important;
 }
 
 /* 100% Perfect Mathematical Centering using 3-column equal grid */
@@ -91,6 +97,7 @@
   background: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.82) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  white-space: nowrap;
 }
 
 .nav {
@@ -183,17 +190,164 @@
   box-shadow: 0 4px 14px rgba(255, 255, 255, 0.25);
 }
 
+/* Mobile Toggle Button (Hidden on Desktop) */
+.mobileToggleBtn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mobileToggleBtn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: scale(1.05);
+}
+
+/* Mobile Apple Glass Dropdown Drawer */
+.mobileDrawer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding-top: 0.9rem;
+  margin-top: 0.7rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  animation: drawerSlideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes drawerSlideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.mobileNav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.mobileNavLink {
+  display: flex;
+  align-items: center;
+  height: 46px;
+  padding: 0 1.2rem;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #f5f5f7;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.mobileNavLink:hover, .mobileNavLink:active {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  transform: translateX(4px);
+}
+
+.mobileActionsRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 0.3rem;
+}
+
+.mobileDiscordBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  height: 46px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+}
+
+.mobileLangBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  height: 46px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #a1a1a6;
+  font-family: var(--font-heading);
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Tablet & iPad Responsive Media Queries (769px - 1024px) */
+@media (max-width: 1024px) {
+  .topBar {
+    width: calc(100% - 2.2rem);
+  }
+  .brandMain {
+    font-size: 0.95rem;
+  }
+  .menuLink {
+    padding: 0.35rem 0.8rem;
+    font-size: 0.7rem;
+  }
+}
+
+/* Mobile Devices (<= 768px: iPhone, Samsung Galaxy, portrait tablets) */
 @media (max-width: 768px) {
   .topBar {
-    top: 0.8rem;
-    width: calc(100% - 1.6rem);
+    top: calc(0.6rem + env(safe-area-inset-top, 0px));
+    width: calc(100% - 1.2rem);
     padding: 0.45rem 0.9rem;
+  }
+  .container {
+    grid-template-columns: 1fr auto;
+  }
+  .nav {
+    display: none;
   }
   .actionText {
     display: none;
   }
-  .menuLink {
-    padding: 0.3rem 0.8rem;
-    font-size: 0.75rem;
+  .discordBtn {
+    padding: 0.4rem;
+    width: 36px;
+    height: 36px;
+    justify-content: center;
+  }
+  .langBtn {
+    padding: 0.4rem;
+    width: 36px;
+    height: 36px;
+    justify-content: center;
+  }
+  .langBtn span {
+    display: none;
+  }
+  .mobileToggleBtn {
+    display: flex;
+  }
+  .brandMain {
+    font-size: 0.92rem;
+  }
+  .avatarWrap {
+    width: 28px;
+    height: 28px;
   }
 }

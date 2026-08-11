@@ -73,3 +73,19 @@
   letter-spacing: 0.08em;
 }
 
+@media (max-width: 600px) {
+  .footer {
+    padding: 2.2rem 0;
+  }
+  .container {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 0 1.2rem;
+  }
+  .metaLeft {
+    align-items: center;
+  }
+}
+

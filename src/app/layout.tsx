@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Syne, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { LiveStatsProvider } from "@/context/LiveStatsContext";
@@ -14,6 +14,13 @@ const spaceGrotesk = Space_Grotesk({
   weight: ["300", "400", "500", "600", "700"],
   variable: "--font-space",
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  viewportFit: "cover",
+};
 
 export const metadata: Metadata = {
   title: "D4VIDE106 // CREATOR & DEVELOPER",

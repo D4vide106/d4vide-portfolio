@@ -144,6 +144,57 @@ export default function DraggableTerminal({ inlineMode = false }: { inlineMode?:
     window.addEventListener("mouseup", handleMouseUp);
   };
 
+  // Touch Gesture Drag Handlers (Mobile & iPad)
+  const handleTouchMove = (e: TouchEvent) => {
+    if (!isDraggingRef.current || !terminalRef.current || !e.touches[0]) return;
+
+    const touch = e.touches[0];
+    const terminalWidth = terminalRef.current.offsetWidth;
+    const terminalHeight = terminalRef.current.offsetHeight;
+
+    let newX = touch.clientX - dragStartPos.current.x;
+    let newY = touch.clientY - dragStartPos.current.y;
+
+    newX = Math.max(0, Math.min(newX, window.innerWidth - terminalWidth));
+    newY = Math.max(40, Math.min(newY, window.innerHeight - terminalHeight));
+
+    positionRef.current = { x: newX, y: newY };
+    terminalRef.current.style.left = `${newX}px`;
+    terminalRef.current.style.top = `${newY}px`;
+  };
+
+  const handleTouchEnd = () => {
+    if (isDraggingRef.current) {
+      isDraggingRef.current = false;
+      setPosition(positionRef.current);
+      try {
+        localStorage.setItem("d4v_term_pos_v4", JSON.stringify(positionRef.current));
+      } catch {}
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchend", handleTouchEnd);
+    }
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (isMaximized || !e.touches[0]) return;
+    const touch = e.touches[0];
+    if (!isFloating) {
+      setIsFloating(true);
+      if (terminalRef.current) {
+        const rect = terminalRef.current.getBoundingClientRect();
+        setPosition({ x: rect.left, y: rect.top });
+        positionRef.current = { x: rect.left, y: rect.top };
+      }
+    }
+    isDraggingRef.current = true;
+    dragStartPos.current = {
+      x: touch.clientX - positionRef.current.x,
+      y: touch.clientY - positionRef.current.y,
+    };
+    window.addEventListener("touchmove", handleTouchMove, { passive: false });
+    window.addEventListener("touchend", handleTouchEnd);
+  };
+
   const toggleMinimize = (min: boolean) => {
     setIsMinimized(min);
     try {
@@ -307,6 +358,7 @@ export default function DraggableTerminal({ inlineMode = false }: { inlineMode?:
           <div 
             className={styles.terminalHeader} 
             onMouseDown={handleMouseDown}
+            onTouchStart={handleTouchStart}
           >
             <div className={styles.macTrafficLights}>
               <span 

@@ -165,3 +165,20 @@
   font-weight: 700;
   color: #ffffff;
 }
+
+@media (max-width: 500px) {
+  .statsContainer {
+    gap: 0.6rem;
+  }
+  .downloadsBadge, .viewsBadge {
+    padding: 0.5rem 1rem;
+    font-size: 0.68rem;
+  }
+  .downloadsBadge strong, .viewsBadge strong {
+    font-size: 0.85rem;
+  }
+  .platformTooltip {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
