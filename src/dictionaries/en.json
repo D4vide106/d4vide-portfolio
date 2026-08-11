@@ -2,7 +2,7 @@
   "nav": {
     "home": "Home",
     "projects": "Minecraft",
-    "services": "Services & Bots",
+    "services": "Labs & Software",
     "journey": "IT Journey",
     "about": "About Me",
     "media": "Media"
@@ -21,8 +21,8 @@
       "gender": "Gender"
     },
     "aboutDesc1": "I am a Minecraft mod developer, software engineer, and content creator.",
-    "aboutDesc2": "Beyond Minecraft, I build custom Discord bots, high-performance web apps, Python automation tooling, and offer freelance commissions on Fiverr.",
-    "aboutDesc3": "Find me on my official Discord server or on Fiverr for custom developer commissions and technical support."
+    "aboutDesc2": "Beyond Minecraft, I build custom Discord bots, high-performance web apps, Python automation tooling, and custom software.",
+    "aboutDesc3": "Find me on my official Discord server or GitHub to explore code and software projects."
   },
   "projects": {
     "title": "My",
@@ -30,14 +30,12 @@
     "viewProject": "View Project"
   },
   "services": {
-    "tag": "FREELANCE & EXTERNAL LABS",
-    "title": "Services, Discord Bots & Extra Projects",
-    "subtitle": "Custom software solutions beyond Minecraft: custom Discord bots, Fiverr commissions, web development, and backend automation.",
-    "estimatorTitle": "Project Cost & Time Estimator",
-    "estimatorSubtitle": "Select options to get an instant estimate of timeframe and cost.",
-    "externalTitle": "External Projects Showcase",
-    "orderFiverr": "Order on Fiverr",
-    "contactDiscord": "Request on Discord"
+    "tag": "CREATOR LABS & SOFTWARE",
+    "title": "Discord Bots, Software & Extra Projects",
+    "subtitle": "Explore software engineering beyond Minecraft: custom Discord bots, plugin architecture, modern web development, and backend automation.",
+    "externalTitle": "External Software & Projects Showcase",
+    "exploreProject": "Explore Project",
+    "contactDiscord": "Join Discord Server"
   },
   "footer": {
     "rights": "All rights reserved."

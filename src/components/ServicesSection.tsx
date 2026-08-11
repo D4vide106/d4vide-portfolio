@@ -1,65 +1,40 @@
 "use client";
 
-import { useState } from "react";
 import { 
   SiDiscord, 
   SiGithub, 
   SiPython, 
   SiReact, 
   SiTypescript, 
-  SiNextdotjs 
+  SiNextdotjs,
+  SiOpenjdk
 } from "react-icons/si";
 import { 
   FiCheckCircle, 
   FiArrowUpRight, 
-  FiBriefcase, 
   FiGlobe, 
   FiTerminal, 
   FiZap, 
-  FiClock, 
-  FiDollarSign,
-  FiExternalLink
+  FiExternalLink,
+  FiCode,
+  FiCpu
 } from "react-icons/fi";
 import styles from "./ServicesSection.module.css";
 import { 
-  SERVICES_LIST, 
+  LABS_DOMAINS, 
   EXTERNAL_PROJECTS, 
-  ESTIMATOR_SERVICE_TYPES, 
-  ESTIMATOR_COMPLEXITIES, 
-  ServiceItem 
+  LabDomain 
 } from "@/data/servicesData";
 
 export default function ServicesSection({ dict }: { dict?: any }) {
-  const [selectedServiceId, setSelectedServiceId] = useState("discord_bot");
-  const [selectedComplexityId, setSelectedComplexityId] = useState("standard");
-  const [fastDelivery, setFastDelivery] = useState(false);
-
-  const activeServiceOpt = ESTIMATOR_SERVICE_TYPES.find((s) => s.id === selectedServiceId) || ESTIMATOR_SERVICE_TYPES[0];
-  const activeComplexityOpt = ESTIMATOR_COMPLEXITIES.find((c) => c.id === selectedComplexityId) || ESTIMATOR_COMPLEXITIES[0];
-
-  let calculatedPrice = activeServiceOpt.basePrice + activeComplexityOpt.basePrice;
-  let calculatedDays = activeServiceOpt.estDays + activeComplexityOpt.estDays;
-
-  if (fastDelivery) {
-    calculatedPrice += 15;
-    calculatedDays = Math.max(1, Math.round(calculatedDays * 0.6));
-  }
-
-  const getServiceIcon = (iconType: string) => {
+  const getDomainIcon = (iconType: string) => {
     switch (iconType) {
       case "discord": return <SiDiscord className={styles.discordIcon} />;
-      case "fiverr": return <FiBriefcase className={styles.fiverrIcon} />;
+      case "plugin": return <FiCode className={styles.pluginIcon} />;
       case "web": return <FiGlobe className={styles.webIcon} />;
       case "system": return <FiTerminal className={styles.systemIcon} />;
-      default: return <FiZap />;
+      default: return <FiCpu />;
     }
-  };
-
-  const buildDiscordPrompt = () => {
-    const text = encodeURIComponent(
-      `Hi D4VIDE106! I'm interested in commissioning a project: ${activeServiceOpt.label} (${activeComplexityOpt.label}). Est Price: ~$${calculatedPrice}.`
-    );
-    return `https://discord.gg/7T3u9a9?prompt=${text}`;
   };
 
   return (
@@ -70,61 +45,62 @@ export default function ServicesSection({ dict }: { dict?: any }) {
         <div className={styles.sectionHeader}>
           <div className={styles.sectionBadge}>
             <FiZap size={13} />
-            <span>{dict?.tag || "FREELANCE & EXTERNAL LABS"}</span>
+            <span>{dict?.tag || "CREATOR LABS & SOFTWARE"}</span>
           </div>
           <h2 className={styles.sectionTitle}>
-            {dict?.title || "Services, Discord Bots & Extra Projects"}
+            {dict?.title || "Discord Bots, Software & Extra Projects"}
           </h2>
           <p className={styles.sectionSubtitle}>
-            {dict?.subtitle || "Custom software solutions beyond Minecraft: custom Discord bots, Fiverr freelance contracts, modern web applications, and system automation."}
+            {dict?.subtitle || "Explore software engineering capabilities beyond Minecraft: custom Discord bots, plugin architecture, modern web development, and backend automation."}
           </p>
         </div>
 
-        {/* ── 1. The 4 Service Pillars Grid ────────────────────── */}
+        {/* ── 1. The 4 Software & Labs Domains Grid ────────────── */}
         <div className={styles.servicesGrid}>
-          {SERVICES_LIST.map((service) => (
-            <div key={service.id} className={styles.serviceCard}>
+          {LABS_DOMAINS.map((domain) => (
+            <div key={domain.id} className={styles.serviceCard}>
               <div className={styles.cardTopHeader}>
                 <div className={styles.iconBox}>
-                  {getServiceIcon(service.iconType)}
+                  {getDomainIcon(domain.iconType)}
                 </div>
-                <span className={styles.pillBadge}>{service.badge}</span>
+                <span className={styles.pillBadge}>{domain.badge}</span>
               </div>
 
               <div className={styles.cardMainInfo}>
-                <span className={styles.categoryTag}>{service.category}</span>
-                <h3 className={styles.cardTitle}>{service.title}</h3>
-                <p className={styles.cardDesc}>{service.description}</p>
+                <span className={styles.categoryTag}>{domain.category}</span>
+                <h3 className={styles.cardTitle}>{domain.title}</h3>
+                <p className={styles.cardDesc}>{domain.description}</p>
               </div>
 
-              {/* Feature Checklist */}
+              {/* Capability Checklist */}
               <ul className={styles.featureList}>
-                {service.features.map((feat, idx) => (
+                {domain.capabilities.map((cap, idx) => (
                   <li key={idx} className={styles.featureItem}>
                     <FiCheckCircle className={styles.checkIcon} />
-                    <span>{feat}</span>
+                    <span>{cap}</span>
                   </li>
                 ))}
               </ul>
 
               {/* Tech Stack */}
               <div className={styles.techTags}>
-                {service.techStack.map((tech, idx) => (
+                {domain.techStack.map((tech, idx) => (
                   <span key={idx} className={styles.techTag}>#{tech}</span>
                 ))}
               </div>
 
               {/* Action Buttons */}
               <div className={styles.cardActions}>
-                {service.fiverrUrl && (
-                  <a href={service.fiverrUrl} target="_blank" rel="noreferrer" className={styles.btnPrimary}>
-                    <span>Fiverr Order</span> <FiArrowUpRight size={13} />
+                {domain.discordUrl && (
+                  <a href={domain.discordUrl} target="_blank" rel="noreferrer" className={styles.btnPrimary}>
+                    <SiDiscord size={15} />
+                    <span>{dict?.contactDiscord || "Join Discord Server"}</span>
                   </a>
                 )}
-                {service.discordUrl && (
-                  <a href={service.discordUrl} target="_blank" rel="noreferrer" className={styles.btnSecondary}>
-                    <SiDiscord size={14} />
-                    <span>Discord Request</span>
+                {domain.githubUrl && (
+                  <a href={domain.githubUrl} target="_blank" rel="noreferrer" className={styles.btnSecondary}>
+                    <SiGithub size={14} />
+                    <span>GitHub Profile</span>
                   </a>
                 )}
               </div>
@@ -132,101 +108,11 @@ export default function ServicesSection({ dict }: { dict?: any }) {
           ))}
         </div>
 
-        {/* ── 2. Interactive Project Estimator Widget ──────────── */}
-        <div className={styles.estimatorContainer}>
-          <div className={styles.estimatorHeader}>
-            <div className={styles.estimatorTitleGroup}>
-              <h3 className={styles.estimatorTitle}>
-                {dict?.estimatorTitle || "Project Cost & Time Estimator"}
-              </h3>
-              <p className={styles.estimatorSubtitle}>
-                {dict?.estimatorSubtitle || "Select options to calculate an indicative estimate of timeframe and budget."}
-              </p>
-            </div>
-          </div>
-
-          <div className={styles.estimatorGrid}>
-            <div className={styles.optionsCol}>
-              
-              {/* Option 1: Service Type */}
-              <div className={styles.optionBlock}>
-                <span className={styles.optionLabel}>1. SELECT SERVICE TYPE</span>
-                <div className={styles.buttonGroup}>
-                  {ESTIMATOR_SERVICE_TYPES.map((opt) => (
-                    <button
-                      key={opt.id}
-                      className={`${styles.optionBtn} ${selectedServiceId === opt.id ? styles.activeOption : ""}`}
-                      onClick={() => setSelectedServiceId(opt.id)}
-                    >
-                      {opt.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Option 2: Complexity Level */}
-              <div className={styles.optionBlock}>
-                <span className={styles.optionLabel}>2. COMPLEXITY LEVEL</span>
-                <div className={styles.buttonGroup}>
-                  {ESTIMATOR_COMPLEXITIES.map((opt) => (
-                    <button
-                      key={opt.id}
-                      className={`${styles.optionBtn} ${selectedComplexityId === opt.id ? styles.activeOption : ""}`}
-                      onClick={() => setSelectedComplexityId(opt.id)}
-                    >
-                      {opt.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Option 3: Express Delivery Toggle */}
-              <div 
-                className={styles.toggleRow} 
-                onClick={() => setFastDelivery(!fastDelivery)}
-              >
-                <div className={`${styles.checkbox} ${fastDelivery ? styles.checkedBox : ""}`}>
-                  {fastDelivery && <FiCheckCircle size={14} />}
-                </div>
-                <span style={{ fontFamily: "var(--font-body)", fontSize: "0.82rem", color: "#ffffff", fontWeight: 600 }}>
-                  Priority Express Delivery (+⚡ Fast Track)
-                </span>
-              </div>
-
-            </div>
-
-            {/* Price & Delivery Calculation Box */}
-            <div className={styles.resultCard}>
-              <span className={styles.resultHeader}>ESTIMATED INDICATIVE QUOTE</span>
-              
-              <div className={styles.priceDisplay}>
-                <div className={styles.priceAmount}>${calculatedPrice}</div>
-                <div className={styles.timeEstimate}>
-                  <FiClock style={{ verticalAlign: "middle", marginRight: 4, color: "#64d2ff" }} /> 
-                  Est. Delivery: ~{calculatedDays} Days
-                </div>
-              </div>
-
-              <a 
-                href={buildDiscordPrompt()} 
-                target="_blank" 
-                rel="noreferrer" 
-                className={styles.btnPrimary}
-                style={{ justifyContent: "center", width: "100%" }}
-              >
-                <span>Order / Request on Discord</span>
-                <FiArrowUpRight size={14} />
-              </a>
-            </div>
-
-          </div>
-        </div>
-
-        {/* ── 3. External Projects Showcase Grid ───────────────── */}
+        {/* ── 2. External Projects Showcase Grid ───────────────── */}
         <div className={styles.externalSection}>
           <div className={styles.externalHeader}>
             <h3 className={styles.externalTitle}>
-              {dict?.externalTitle || "External Projects & Tools Showcase"}
+              {dict?.externalTitle || "External Software & Projects Showcase"}
             </h3>
           </div>
 

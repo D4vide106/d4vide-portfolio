@@ -54,7 +54,7 @@ export default function TopBar({ dict, currentLang }: { dict: any; currentLang: 
             </li>
             <li>
               <a href="#services" className={styles.menuLink} onClick={handleLinkClick}>
-                SERVICES
+                LABS
               </a>
             </li>
             <li>
@@ -106,7 +106,7 @@ export default function TopBar({ dict, currentLang }: { dict: any; currentLang: 
               MINECRAFT PROJECTS
             </a>
             <a href="#services" className={styles.mobileNavLink} onClick={handleLinkClick}>
-              SERVICES & BOTS
+              LABS & SOFTWARE
             </a>
             <a href="#about" className={styles.mobileNavLink} onClick={handleLinkClick}>
               ABOUT ME

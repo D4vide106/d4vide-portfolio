@@ -2,7 +2,7 @@
   "nav": {
     "home": "Home",
     "projects": "Minecraft",
-    "services": "Servizi & Bot",
+    "services": "Labs & Software",
     "journey": "Percorso Informatico",
     "about": "Chi Sono",
     "media": "Media"
@@ -21,8 +21,8 @@
       "gender": "Genere"
     },
     "aboutDesc1": "Sono uno sviluppatore di mod per Minecraft, sviluppatore software e content creator.",
-    "aboutDesc2": "Oltre ai progetti per Minecraft, creo Bot Discord personalizzati, webapp ad alte prestazioni, automazioni in Python e offro commissioni freelance su Fiverr.",
-    "aboutDesc3": "Puoi trovarmi sul mio server Discord ufficiale o su Fiverr per commissioni personalizzate e supporto tecnico."
+    "aboutDesc2": "Oltre ai progetti per Minecraft, sviluppo Bot Discord personalizzati, webapp ad alte prestazioni, automazioni in Python e software su misura.",
+    "aboutDesc3": "Puoi trovarmi sul mio server Discord ufficiale o su GitHub per esplorare il codice e i progetti."
   },
   "projects": {
     "title": "I miei",
@@ -30,14 +30,12 @@
     "viewProject": "Vedi Progetto"
   },
   "services": {
-    "tag": "FREELANCE & SVILUPPO ESTERNO",
-    "title": "Servizi, Bot Discord & Progetti Extra",
-    "subtitle": "Soluzioni software su misura oltre Minecraft: dai Bot Discord avanzati fino alle commissioni freelance su Fiverr e applicazioni web.",
-    "estimatorTitle": "Calcolatore Preventivo Progetto",
-    "estimatorSubtitle": "Seleziona le opzioni per calcolare una stima indicativa di tempi e costi.",
-    "externalTitle": "Vetrina Progetti Esterni",
-    "orderFiverr": "Ordina su Fiverr",
-    "contactDiscord": "Richiedi su Discord"
+    "tag": "CREATOR LABS & SOFTWARE",
+    "title": "Bot Discord, Software & Altri Progetti",
+    "subtitle": "Esplora le mie competenze software oltre Minecraft: dai Bot Discord avanzati all'ingegnerizzazione di plugin, applicazioni web e automazioni backend.",
+    "externalTitle": "Vetrina Progetti Software & Tool",
+    "exploreProject": "Esplora Progetto",
+    "contactDiscord": "Entra nel Server Discord"
   },
   "footer": {
     "rights": "Tutti i diritti riservati."

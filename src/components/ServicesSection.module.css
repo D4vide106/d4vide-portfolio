@@ -113,7 +113,7 @@
 }
 
 .discordIcon { color: #5865f2; background: rgba(88, 101, 242, 0.12); border-color: rgba(88, 101, 242, 0.3); }
-.fiverrIcon { color: #1dbf73; background: rgba(29, 191, 115, 0.12); border-color: rgba(29, 191, 115, 0.3); }
+.pluginIcon { color: #30d158; background: rgba(48, 209, 88, 0.12); border-color: rgba(48, 209, 88, 0.3); }
 .webIcon { color: #64d2ff; background: rgba(100, 210, 255, 0.12); border-color: rgba(100, 210, 255, 0.3); }
 .systemIcon { color: #bf5af2; background: rgba(191, 90, 242, 0.12); border-color: rgba(191, 90, 242, 0.3); }
 
@@ -253,179 +253,6 @@
   transform: translateY(-2px);
 }
 
-/* Estimator Container */
-.estimatorContainer {
-  background: rgba(18, 18, 24, 0.85);
-  backdrop-filter: blur(28px) saturate(180%);
-  -webkit-backdrop-filter: blur(28px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 28px;
-  padding: 2.8rem;
-  display: flex;
-  flex-direction: column;
-  gap: 2.2rem;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85);
-}
-
-.estimatorHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-}
-
-.estimatorTitleGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-.estimatorTitle {
-  font-family: var(--font-heading);
-  font-size: 1.8rem;
-  font-weight: 800;
-  color: #ffffff;
-  margin: 0;
-}
-
-.estimatorSubtitle {
-  font-family: var(--font-body);
-  font-size: 0.88rem;
-  color: #a1a1a6;
-  margin: 0;
-}
-
-.estimatorGrid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 2rem;
-  align-items: start;
-}
-
-.optionsCol {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.optionBlock {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.optionLabel {
-  font-family: var(--font-body);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  color: #86868b;
-  text-transform: uppercase;
-}
-
-.buttonGroup {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-}
-
-.optionBtn {
-  padding: 0.65rem 1.2rem;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 14px;
-  color: #a1a1a6;
-  font-family: var(--font-body);
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.25s;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.optionBtn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-}
-
-.activeOption {
-  background: rgba(100, 210, 255, 0.12) !important;
-  border-color: #64d2ff !important;
-  color: #ffffff !important;
-  box-shadow: 0 0 20px rgba(100, 210, 255, 0.2);
-}
-
-.toggleRow {
-  display: flex;
-  align-items: center;
-  gap: 0.9rem;
-  cursor: pointer;
-  user-select: none;
-}
-
-.checkbox {
-  width: 20px;
-  height: 20px;
-  border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.05);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #30d158;
-}
-
-.checkedBox {
-  background: #30d158;
-  border-color: #30d158;
-  color: #000000;
-}
-
-/* Result Card */
-.resultCard {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 20px;
-  padding: 1.8rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.4rem;
-  text-align: center;
-}
-
-.resultHeader {
-  font-family: var(--font-body);
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  color: #86868b;
-  text-transform: uppercase;
-}
-
-.priceDisplay {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.priceAmount {
-  font-family: var(--font-heading);
-  font-size: 2.8rem;
-  font-weight: 800;
-  color: #30d158;
-  line-height: 1;
-}
-
-.timeEstimate {
-  font-family: var(--font-body);
-  font-size: 0.82rem;
-  color: #a1a1a6;
-  margin-top: 0.4rem;
-}
-
 /* External Projects Section */
 .externalSection {
   display: flex;
@@ -517,9 +344,6 @@
   .servicesGrid {
     grid-template-columns: repeat(1, 1fr);
   }
-  .estimatorGrid {
-    grid-template-columns: repeat(1, 1fr);
-  }
   .externalGrid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -536,18 +360,7 @@
   .serviceCard {
     padding: 1.4rem;
   }
-  .estimatorContainer {
-    padding: 1.5rem;
-    border-radius: 20px;
-  }
   .externalGrid {
     grid-template-columns: repeat(1, 1fr);
-  }
-  .buttonGroup {
-    flex-direction: column;
-  }
-  .optionBtn {
-    width: 100%;
-    justify-content: center;
   }
 }
