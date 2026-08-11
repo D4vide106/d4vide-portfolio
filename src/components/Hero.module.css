@@ -348,11 +348,25 @@
 
 @media (max-width: 768px) {
   .heroSection {
-    padding: 4.5rem 0 3.5rem 0;
+    padding: 3.2rem 0 2rem 0;
   }
   .container {
     padding: 0 1.2rem;
-    gap: 2.5rem;
+    gap: 1.5rem;
+  }
+  .heroTitle {
+    margin: 0 0 0.4rem 0;
+  }
+  .constellationWrapper {
+    min-height: auto;
+    height: 250px;
+  }
+  .pyramidProfileShowcase {
+    gap: 2rem;
+    margin-top: 0.5rem;
+  }
+  .centerPyramidCol {
+    gap: 0.9rem;
   }
   .youtubeCard {
     padding: 1.2rem;
@@ -362,11 +376,25 @@
 
 @media (max-width: 480px) {
   .heroSection {
-    padding: 3.8rem 0 3rem 0;
+    padding: 2.8rem 0 1.5rem 0;
   }
   .container {
     padding: 0 0.9rem;
-    gap: 2rem;
+    gap: 1.2rem;
+  }
+  .heroTitle {
+    margin: 0 0 0.2rem 0;
+  }
+  .constellationWrapper {
+    min-height: auto;
+    height: 220px;
+  }
+  .pyramidProfileShowcase {
+    gap: 1.5rem;
+    margin-top: 0.2rem;
+  }
+  .centerPyramidCol {
+    gap: 0.8rem;
   }
   .socialHorizontalRow {
     gap: 0.5rem;

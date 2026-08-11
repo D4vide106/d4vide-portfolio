@@ -29,13 +29,13 @@ export default function CipherCarousel({
       const w = window.innerWidth;
       if (w <= 480) {
         setDimensions({
-          radiusX: Math.max(105, Math.min(135, (w - 80) / 2)),
-          radiusY: 65
+          radiusX: Math.max(95, Math.min(125, (w - 70) / 2)),
+          radiusY: 52
         });
       } else if (w <= 768) {
         setDimensions({
-          radiusX: Math.max(140, Math.min(185, (w - 100) / 2)),
-          radiusY: 90
+          radiusX: Math.max(130, Math.min(170, (w - 90) / 2)),
+          radiusY: 70
         });
       } else {
         setDimensions({
