@@ -1,11 +1,10 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { FiDownload, FiSearch, FiEye, FiGlobe, FiTag, FiExternalLink, FiGrid, FiCompass } from "react-icons/fi";
+import { FiDownload, FiSearch, FiEye, FiGlobe, FiTag, FiExternalLink } from "react-icons/fi";
 import { SiCurseforge, SiModrinth, SiGamejolt, SiItchdotio } from "react-icons/si";
 import { FaCube } from "react-icons/fa";
 import styles from "./Projects.module.css";
-import CipherCarousel from "./CipherCarousel";
 import { useLiveStats } from "@/context/LiveStatsContext";
 import { UnifiedProject } from "@/data/projectsData";
 import AnimatedNumber from "./AnimatedNumber";
@@ -17,11 +16,10 @@ const PLATFORM_NAMES: Record<string, string> = {
   itch: "Itch.io",
 };
 
-export default function Projects({ dict }: { dict: any }) {
+export default function Projects({ dict }: { dict?: any }) {
   const { projects, incrementProjectViews, getProjectViews, portfolioViews, incrementDownloadLink } = useLiveStats();
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState("All");
-  const [viewMode, setViewMode] = useState<"carousel" | "grid">("carousel");
   const [selectedProject, setSelectedProject] = useState<UnifiedProject | null>(null);
 
   const filteredProjects = useMemo(() => {
@@ -41,7 +39,7 @@ export default function Projects({ dict }: { dict: any }) {
     incrementProjectViews(project.id);
   };
 
-  const getPlatformIcon = (platform: string, size = 18) => {
+  const getPlatformIcon = (platform: string, size = 17) => {
     switch (platform) {
       case "modrinth": return <SiModrinth size={size} />;
       case "curseforge": return <SiCurseforge size={size} />;
@@ -51,7 +49,7 @@ export default function Projects({ dict }: { dict: any }) {
     }
   };
 
-  // Get unique platforms for a project (deduplicated)
+  // Unique platforms deduplicated
   const getUniquePlatforms = (project: UnifiedProject) => {
     const seen = new Set<string>();
     return project.links.filter((l) => {
@@ -61,7 +59,7 @@ export default function Projects({ dict }: { dict: any }) {
     });
   };
 
-  // Group links by platform in the modal
+  // Group links by platform
   const groupLinksByPlatform = (project: UnifiedProject) => {
     const groups: Record<string, typeof project.links> = {};
     for (const link of project.links) {
@@ -75,148 +73,98 @@ export default function Projects({ dict }: { dict: any }) {
     <section id="projects" className={styles.projectsSection}>
       <div className={styles.container}>
         
-        {/* Section Header */}
-        <div className={styles.sectionHeader}>
-          <span className={styles.sectionTag}>FEATURED WORKS</span>
-          <h2 className={styles.sectionTitle}>
-            {viewMode === "carousel" ? "PROJECT CONSTELLATION" : "WORKS GALLERY"}
-          </h2>
-          <p className={styles.sectionSubtitle}>
-            {viewMode === "carousel" 
-              ? "Scroll mouse wheel or drag cards to orbit through featured Minecraft mods & projects" 
-              : "Search, filter, and inspect detailed metrics across all platforms"}
-          </p>
+        {/* Clean Controls & Category Filters Header */}
+        <div className={styles.galleryHeader}>
+          <div className={styles.headerTitleArea}>
+            <span className={styles.sectionBadge}>WORKS GALLERY</span>
+            <h3 className={styles.galleryTitle}>EXPLORE ALL PROJECTS</h3>
+          </div>
 
-          {/* Mode Switcher Buttons */}
-          <div className={styles.viewToggleGroup}>
-            <button
-              className={`${styles.viewBtn} ${viewMode === "carousel" ? styles.activeViewBtn : ""}`}
-              onClick={() => setViewMode("carousel")}
-            >
-              <FiCompass size={14} /> Constellation 3D
-            </button>
-            <button
-              className={`${styles.viewBtn} ${viewMode === "grid" ? styles.activeViewBtn : ""}`}
-              onClick={() => setViewMode("grid")}
-            >
-              <FiGrid size={14} /> Grid Gallery
-            </button>
+          <div className={styles.controlsBar}>
+            <div className={styles.filtersGroup}>
+              {["All", "Modpack", "Mod", "Resource Pack", "Plugin", "Server"].map((type) => (
+                <button
+                  key={type}
+                  className={`${styles.filterBtn} ${filterType === type ? styles.activeFilter : ""}`}
+                  onClick={() => setFilterType(type)}
+                >
+                  {type}
+                </button>
+              ))}
+            </div>
+
+            <div className={styles.searchBox}>
+              <FiSearch className={styles.searchIcon} />
+              <input
+                type="text"
+                placeholder="SEARCH PROJECTS..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className={styles.searchInput}
+              />
+            </div>
           </div>
         </div>
 
-        {/* Constellation View */}
-        {viewMode === "carousel" ? (
-          <div className={styles.carouselContainer}>
-            <CipherCarousel projects={filteredProjects} onSelectProject={handleOpenProjectModal} />
-          </div>
-        ) : (
-          /* Grid View */
-          <div className={styles.gridContainer}>
-            <div className={styles.controlsBar}>
-              <div className={styles.filtersGroup}>
-                {["All", "Modpack", "Mod", "Resource Pack", "Plugin", "Server"].map((type) => (
-                  <button
-                    key={type}
-                    className={`${styles.filterBtn} ${filterType === type ? styles.activeFilter : ""}`}
-                    onClick={() => setFilterType(type)}
-                  >
-                    {type}
-                  </button>
-                ))}
-              </div>
-
-              <div className={styles.searchBox}>
-                <FiSearch className={styles.searchIcon} />
-                <input
-                  type="text"
-                  placeholder="SEARCH WORKS & TAGS..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className={styles.searchInput}
-                />
-              </div>
-            </div>
-
-            <div className={styles.staticGrid}>
-              {filteredProjects.map((project) => {
-                const uniquePlatforms = getUniquePlatforms(project);
-                return (
-                  <div
-                    key={project.id}
-                    onClick={() => handleOpenProjectModal(project)}
-                    className={styles.modrinthCard}
-                  >
-                    <div className={styles.cardHeader}>
-                      <div className={styles.logoWrapper}>
-                        <img
-                          src={project.icon_url}
-                          alt={project.title}
-                          className={styles.projectLogo}
-                          onError={(e) => {
-                            e.currentTarget.style.display = "none";
-                            const parent = e.currentTarget.parentElement;
-                            if (parent) {
-                              const fallback = parent.querySelector(".fallbackLogo");
-                              if (fallback) fallback.classList.remove("hidden");
-                            }
-                          }}
-                        />
-                        <div
-                          className="fallbackLogo hidden"
-                          style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", background: "#111" }}
-                        >
-                          <FaCube size={24} color="#ffffff" />
-                        </div>
-                      </div>
-                      <div className={styles.titleArea}>
-                        <span className={styles.projectTypeTag}>{project.type}</span>
-                        <h4 className={styles.cardTitle}>{project.title}</h4>
-                        <p className={styles.cardDesc}>{project.description}</p>
-                      </div>
-                    </div>
-
-                    {project.tags && project.tags.length > 0 && (
-                      <div className={styles.tagsRow}>
-                        {project.tags.slice(0, 4).map((tag, idx) => (
-                          <span key={idx} className={styles.tagChip}>#{tag}</span>
-                        ))}
-                      </div>
-                    )}
-
-                    <div className={styles.cardFooter}>
-                      <div className={styles.statItem}>
-                        <FiDownload />
-                        <span>{project.downloads.toLocaleString()}</span>
-                        <span className={styles.livePulseDot} title="Somma live in tempo reale" />
-                      </div>
-                      {/* Deduplicated platform icons with download breakdown on hover */}
-                      <div className={styles.platforms}>
-                        {uniquePlatforms.map((link, idx) => {
-                          const platformName = PLATFORM_NAMES[link.platform] || link.platform;
-                          const pLinks = project.links.filter((l) => l.platform === link.platform);
-                          const pDownloads = pLinks.reduce((sum, l) => sum + (l.initialDownloads || 0), 0);
-                          const hoverText = pDownloads > 0 
-                            ? `${platformName}: ${pDownloads.toLocaleString()} downloads` 
-                            : platformName;
-                          
-                          return (
-                            <span key={idx} className={styles.platformIcon} title={hoverText}>
-                              {getPlatformIcon(link.platform, 16)}
-                            </span>
-                          );
-                        })}
-                      </div>
-                    </div>
+        {/* Clean Project Grid */}
+        <div className={styles.staticGrid}>
+          {filteredProjects.map((project) => {
+            const uniquePlatforms = getUniquePlatforms(project);
+            return (
+              <div
+                key={project.id}
+                onClick={() => handleOpenProjectModal(project)}
+                className={styles.modCard}
+              >
+                <div className={styles.cardTop}>
+                  <div className={styles.logoBox}>
+                    <img
+                      src={project.icon_url}
+                      alt={project.title}
+                      className={styles.projectLogo}
+                    />
                   </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
+                  <div className={styles.cardHeaderInfo}>
+                    <span className={styles.typeBadge}>{project.type}</span>
+                    <h4 className={styles.cardTitle}>{project.title}</h4>
+                  </div>
+                </div>
+
+                <p className={styles.cardDesc}>{project.description}</p>
+
+                {project.tags && project.tags.length > 0 && (
+                  <div className={styles.tagsRow}>
+                    {project.tags.slice(0, 3).map((tag, idx) => (
+                      <span key={idx} className={styles.tagChip}>#{tag}</span>
+                    ))}
+                  </div>
+                )}
+
+                <div className={styles.cardFooter}>
+                  <div className={styles.downloadStat}>
+                    <FiDownload size={14} />
+                    <span>{project.downloads.toLocaleString()}</span>
+                  </div>
+
+                  <div className={styles.platformsRow}>
+                    {uniquePlatforms.map((link, idx) => {
+                      const platformName = PLATFORM_NAMES[link.platform] || link.platform;
+                      return (
+                        <span key={idx} className={styles.platformIcon} title={platformName}>
+                          {getPlatformIcon(link.platform, 15)}
+                        </span>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
 
       </div>
 
-      {/* Enhanced Project Detail Modal */}
+      {/* Project Detail Modal */}
       {selectedProject && (() => {
         const grouped = groupLinksByPlatform(selectedProject);
         return (
@@ -224,19 +172,17 @@ export default function Projects({ dict }: { dict: any }) {
             <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
               <div className={styles.modalMacHeader}>
                 <div className={styles.modalTrafficLights}>
-                  <span className={`${styles.trafficDot} ${styles.dotRed}`} onClick={() => setSelectedProject(null)} title="Close" />
-                  <span className={`${styles.trafficDot} ${styles.dotYellow}`} title="Minimize" />
-                  <span className={`${styles.trafficDot} ${styles.dotGreen}`} title="Zoom" />
+                  <span className={`${styles.trafficDot} ${styles.dotRed}`} onClick={() => setSelectedProject(null)} />
+                  <span className={`${styles.trafficDot} ${styles.dotYellow}`} />
+                  <span className={`${styles.trafficDot} ${styles.dotGreen}`} />
                 </div>
                 <span className={styles.macHeaderTitle}>{selectedProject.title}</span>
                 <button className={styles.modalCloseBtn} onClick={() => setSelectedProject(null)}>×</button>
               </div>
 
-              {/* Header */}
+              {/* Modal Main Header */}
               <div className={styles.modalHeader}>
-                <div className={styles.modalLogoWrapper}>
-                  <img src={selectedProject.icon_url} alt={selectedProject.title} className={styles.modalLogo} />
-                </div>
+                <img src={selectedProject.icon_url} alt={selectedProject.title} className={styles.modalLogo} />
                 <div className={styles.modalTitleArea}>
                   <span className={styles.modalCategoryBadge}>{selectedProject.type}</span>
                   <h2>{selectedProject.title}</h2>
@@ -248,32 +194,27 @@ export default function Projects({ dict }: { dict: any }) {
               <div className={styles.modalStatsRow}>
                 <div className={styles.modalStatBlock}>
                   <div className={styles.modalStatLabel}>
-                    <FiDownload className={styles.statIconGreen} /> TOTAL DOWNLOADS
+                    <FiDownload style={{ color: "#30d158" }} /> TOTAL DOWNLOADS
                   </div>
                   <div className={styles.modalStatNumber}>
                     <AnimatedNumber value={selectedProject.downloads} />
                   </div>
-                  <div className={styles.modalStatSub}>Tutte le piattaforme sommate</div>
                 </div>
-                <div className={styles.modalStatDivider} />
                 <div className={styles.modalStatBlock}>
                   <div className={styles.modalStatLabel}>
-                    <FiEye className={styles.statIconBlue} /> VIEWS PROGETTO
+                    <FiEye style={{ color: "#64d2ff" }} /> VIEWS PROGETTO
                   </div>
                   <div className={styles.modalStatNumber}>
                     <AnimatedNumber value={getProjectViews(selectedProject.id)} />
                   </div>
-                  <div className={styles.modalStatSub}>Visualizzazioni reali del progetto</div>
                 </div>
-                <div className={styles.modalStatDivider} />
                 <div className={styles.modalStatBlock}>
                   <div className={styles.modalStatLabel}>
-                    <FiGlobe className={styles.statIconPurple} /> VIEWS PORTFOLIO
+                    <FiGlobe style={{ color: "#bf5af2" }} /> VIEWS PORTFOLIO
                   </div>
                   <div className={styles.modalStatNumber}>
                     <AnimatedNumber value={portfolioViews} />
                   </div>
-                  <div className={styles.modalStatSub}>Visitatori live del sito</div>
                 </div>
               </div>
 
@@ -291,10 +232,10 @@ export default function Projects({ dict }: { dict: any }) {
                 </div>
               )}
 
-              {/* Platforms grouped */}
+              {/* Platforms */}
               <div className={styles.modalPlatformsSection}>
                 <div className={styles.sectionLabel}>
-                  <FiExternalLink size={12} /> PIATTAFORME & EDIZIONI
+                  <FiExternalLink size={12} /> PIATTAFORME & DOWNLOAD
                 </div>
                 <div className={styles.platformGroupsGrid}>
                   {Object.entries(grouped).map(([platform, links]) => {
@@ -302,9 +243,8 @@ export default function Projects({ dict }: { dict: any }) {
                     const platformTotal = links.reduce((sum, l) => sum + (l.initialDownloads || 0), 0);
                     return (
                       <div key={platform} className={styles.platformGroup}>
-                        {/* Platform Header */}
                         <div className={styles.platformGroupHeader}>
-                          <span className={styles.platformGroupIcon}>{getPlatformIcon(platform, 20)}</span>
+                          <span className={styles.platformGroupIcon}>{getPlatformIcon(platform, 18)}</span>
                           <span className={styles.platformGroupName}>{platformName}</span>
                           {platformTotal > 0 && (
                             <span className={styles.platformGroupTotal}>
@@ -312,7 +252,6 @@ export default function Projects({ dict }: { dict: any }) {
                             </span>
                           )}
                         </div>
-                        {/* Edition links */}
                         <div className={styles.platformEditions}>
                           {links.map((link, i) => (
                             <a
@@ -342,6 +281,7 @@ export default function Projects({ dict }: { dict: any }) {
                   })}
                 </div>
               </div>
+
             </div>
           </div>
         );
