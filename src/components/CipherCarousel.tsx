@@ -39,8 +39,8 @@ export default function CipherCarousel({
         });
       } else {
         setDimensions({
-          radiusX: 330,
-          radiusY: 130
+          radiusX: 340,
+          radiusY: 160
         });
       }
     };
