@@ -102,7 +102,7 @@
   align-items: center;
   gap: 1.8rem;
   flex-wrap: wrap;
-  padding: 1rem 0;
+  padding: 1.5rem 0;
 }
 
 .modrinthCardStill {
@@ -133,15 +133,18 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1.6rem;
+  gap: 1.2rem;
   position: relative;
   overflow: hidden;
+  padding: 1rem 0;
 }
 
 .marqueeRowContainer {
   width: 100%;
   overflow: hidden;
   position: relative;
+  padding: 14px 0;
+  margin: -14px 0;
 }
 
 .marqueeTrack {

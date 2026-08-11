@@ -93,8 +93,8 @@ export default function CipherCarousel({
             const currentItemAngle = (stepAngle * idx + rotationAngle) % 360;
             const rad = (currentItemAngle * Math.PI) / 180;
 
-            const radiusX = 350; // horizontal ellipse radius
-            const radiusY = 190; // vertical ellipse radius
+            const radiusX = 340; // horizontal ellipse radius
+            const radiusY = 160; // vertical ellipse radius (comfortable top & bottom clearance)
             const x = Math.cos(rad) * radiusX;
             const y = Math.sin(rad) * radiusY;
 

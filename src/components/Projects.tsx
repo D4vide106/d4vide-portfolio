@@ -22,7 +22,7 @@ export default function Projects({ dict }: { dict?: any }) {
   const [filterType, setFilterType] = useState("All");
   const [selectedProject, setSelectedProject] = useState<UnifiedProject | null>(null);
 
-  // Filter projects by category and search
+  // Strict Filter projects by category and search
   const filteredProjects = useMemo(() => {
     return projects.filter((p) => {
       const matchesSearch =
@@ -31,7 +31,15 @@ export default function Projects({ dict }: { dict?: any }) {
         (p.tags && p.tags.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase())));
       if (!matchesSearch) return false;
       if (filterType === "All") return true;
-      return p.type.toLowerCase().includes(filterType.toLowerCase());
+
+      const pType = p.type.toLowerCase();
+      const fType = filterType.toLowerCase();
+
+      // Strict distinction: "Mod" matches mods but excludes "modpack"
+      if (fType === "mod") {
+        return pType.includes("mod") && !pType.includes("modpack");
+      }
+      return pType.includes(fType);
     });
   }, [projects, searchQuery, filterType]);
 
