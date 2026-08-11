@@ -202,7 +202,7 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     return projectViewsMap[projectId] ?? 1250;
   };
 
-  // ── Live download fetching (Modrinth + CurseForge + GameJolt + Itch) ──
+  // ── Live download fetching (Modrinth + Official CurseForge API + GameJolt + Itch) ──
   useEffect(() => {
     let isMounted = true;
 
@@ -220,6 +220,28 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
               if (typeof p.downloads === "number") {
                 if (p.id) modrinthUserMap[p.id] = p.downloads;
                 if (p.slug) modrinthUserMap[p.slug] = p.downloads;
+              }
+            });
+          }
+        }
+      } catch {}
+
+      // Pre-fetch official CurseForge API projects with API Key
+      const curseforgeMap: Record<string, number> = {};
+      try {
+        const cfRes = await fetch("https://api.curseforge.com/v1/mods/search?gameId=432&searchFilter=D4vide106", {
+          headers: {
+            "x-api-key": "$2a$10$Dn9qGY8YZ6sbf5HnUpG0VOYbTcl1OAeGYri.LUdqUYxfHw8qTyeEi",
+            "Accept": "application/json"
+          }
+        });
+        if (cfRes.ok) {
+          const cfData = await cfRes.json();
+          if (Array.isArray(cfData?.data)) {
+            cfData.data.forEach((m: { slug?: string; name?: string; downloadCount?: number }) => {
+              if (typeof m.downloadCount === "number") {
+                if (m.slug) curseforgeMap[m.slug] = m.downloadCount;
+                if (m.name) curseforgeMap[m.name.toLowerCase()] = m.downloadCount;
               }
             });
           }
@@ -251,25 +273,31 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
                   } catch {}
                 }
               } else if (link.cfPath) {
-                try {
-                  // Primary direct cfwidget fetch
-                  let res = await fetch(`https://api.cfwidget.com/${link.cfPath}`);
-                  if (!res.ok) {
-                    // Secondary corsproxy fallback
-                    res = await fetch(`https://corsproxy.io/?${encodeURIComponent(`https://api.cfwidget.com/${link.cfPath}`)}`);
-                  }
-                  if (!res.ok) {
-                    // Tertiary allorigins proxy fallback
-                    res = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(`https://api.cfwidget.com/${link.cfPath}`)}`);
-                  }
-
-                  if (res.ok) {
-                    const d = await res.json();
-                    if (d.downloads?.total && typeof d.downloads.total === "number") {
-                      liveApiCount = d.downloads.total;
+                // Extract slug from cfPath e.g. "minecraft/modpacks/project-boss-rpg" -> "project-boss-rpg"
+                const slug = link.cfPath.split("/").pop();
+                if (slug && curseforgeMap[slug] !== undefined) {
+                  liveApiCount = curseforgeMap[slug];
+                } else {
+                  try {
+                    // Primary direct cfwidget fetch
+                    let res = await fetch(`https://api.cfwidget.com/${link.cfPath}`);
+                    if (!res.ok) {
+                      // Secondary corsproxy fallback
+                      res = await fetch(`https://corsproxy.io/?${encodeURIComponent(`https://api.cfwidget.com/${link.cfPath}`)}`);
                     }
-                  }
-                } catch {}
+                    if (!res.ok) {
+                      // Tertiary allorigins proxy fallback
+                      res = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(`https://api.cfwidget.com/${link.cfPath}`)}`);
+                    }
+
+                    if (res.ok) {
+                      const d = await res.json();
+                      if (d.downloads?.total && typeof d.downloads.total === "number") {
+                        liveApiCount = d.downloads.total;
+                      }
+                    }
+                  } catch {}
+                }
               } else if (link.platform === "gamejolt" || link.platform === "itch") {
                 const cloudKey = `dl-${link.platform}-${project.id}`;
                 const cloudCount = await counterGet(cloudKey);

@@ -1,0 +1,190 @@
+.roomSection {
+  position: relative;
+  width: 100%;
+  height: 640px;
+  background: #050508;
+  border-radius: 28px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 25px 65px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  margin-bottom: 2.5rem;
+}
+
+.canvasContainer {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  cursor: grab;
+}
+
+.canvasContainer:active {
+  cursor: grabbing;
+}
+
+/* Floating HUD Controls Header */
+.hudControls {
+  position: absolute;
+  top: 18px;
+  left: 22px;
+  right: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.hudBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 1.2rem;
+  background: rgba(18, 18, 22, 0.75);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 9999px;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #ffffff;
+  pointer-events: auto;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.hudPulseDot {
+  width: 8px;
+  height: 8px;
+  background-color: #30d158;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #30d158;
+  animation: pulseGreen 2s infinite;
+}
+
+@keyframes pulseGreen {
+  0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(48, 209, 88, 0.7); }
+  70% { transform: scale(1.05); box-shadow: 0 0 0 8px rgba(48, 209, 88, 0); }
+  100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(48, 209, 88, 0); }
+}
+
+.hudInstructions {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: #a1a1a6;
+  background: rgba(18, 18, 22, 0.65);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.45rem 1rem;
+  border-radius: 9999px;
+  pointer-events: auto;
+}
+
+/* Floating HTML Tooltip overlay attached to hovered 3D object */
+.objectTooltip {
+  position: absolute;
+  z-index: 30;
+  transform: translate(-50%, -100%);
+  padding: 0.55rem 1.1rem;
+  background: rgba(15, 15, 20, 0.92);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(100, 210, 255, 0.4);
+  border-radius: 14px;
+  color: #ffffff;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(100, 210, 255, 0.25);
+  animation: tooltipBounce 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@keyframes tooltipBounce {
+  from { opacity: 0; transform: translate(-50%, -90%) scale(0.92); }
+  to { opacity: 1; transform: translate(-50%, -100%) scale(1); }
+}
+
+.tooltipSub {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  color: #64d2ff;
+  font-weight: 500;
+}
+
+/* Modal Overlay for 3D Station Clicks */
+.roomModalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.78);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.roomModalContent {
+  background: rgba(22, 22, 28, 0.95);
+  backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 680px;
+  padding: 2.2rem;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  position: relative;
+  color: #ffffff;
+  animation: modalSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalSlideUp {
+  from { opacity: 0; transform: translateY(24px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modalCloseBtn {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #a1a1a6;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.modalCloseBtn:hover {
+  background: #ffffff;
+  color: #000000;
+}
+
+@media (max-width: 768px) {
+  .roomSection {
+    height: 480px;
+  }
+  .hudInstructions {
+    display: none;
+  }
+}
