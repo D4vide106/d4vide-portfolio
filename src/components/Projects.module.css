@@ -1,12 +1,12 @@
 .projectsSection {
-  padding: 2rem 0 4rem 0;
+  padding: 3rem 0 5rem 0;
   background-color: #07070a;
   position: relative;
   width: 100%;
   overflow: hidden;
 }
 
-.container {
+.controlsWrapper {
   max-width: 1440px;
   margin: 0 auto;
   padding: 0 1.8rem;
@@ -88,19 +88,54 @@
   background: rgba(255, 255, 255, 0.08);
 }
 
-/* ── 100% FULL SCREEN WIDTH MARQUEE SHOWCASE (FULL BLEED 100VW) ── */
-.marqueeSection {
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-  overflow: hidden;
+/* ── STILL CENTERED GRID (< 4 PROJECTS) ──────────────────── */
+.staticCenteredContainer {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 1.8rem;
+  width: 100%;
+}
+
+.staticCenteredGrid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.8rem;
+  flex-wrap: wrap;
+  padding: 1rem 0;
+}
+
+.modrinthCardStill {
+  width: 340px;
+  flex-shrink: 0;
+  background: rgba(16, 16, 22, 0.75);
+  backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 1.3rem;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  padding: 0.5rem 0;
+  justify-content: space-between;
+  gap: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+}
+
+.modrinthCardStill:hover {
+  transform: translateY(-6px) scale(1.03);
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
+}
+
+/* ── 100% FULL-BLEED EDGE-TO-EDGE MARQUEE SHOWCASE (>= 4 PROJECTS) ── */
+.marqueeFullBleedSection {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  position: relative;
+  overflow: hidden;
 }
 
 .marqueeRowContainer {
@@ -111,7 +146,7 @@
 
 .marqueeTrack {
   display: flex;
-  gap: 1.5rem;
+  gap: 1.6rem;
   width: max-content;
   will-change: transform;
 }

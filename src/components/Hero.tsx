@@ -7,7 +7,6 @@ import { FaCube } from "react-icons/fa";
 import styles from "./Hero.module.css";
 import TotalDownloads from "./TotalDownloads";
 import CipherCarousel from "./CipherCarousel";
-import Projects from "./Projects";
 import { useLiveStats } from "@/context/LiveStatsContext";
 import { UnifiedProject } from "@/data/projectsData";
 import AnimatedNumber from "./AnimatedNumber";
@@ -64,12 +63,7 @@ export default function Hero({ dict, aboutDict }: { dict: any; aboutDict: any })
           </div>
         </div>
 
-        {/* ── 2. MODRINTH-STYLE MARQUEE SHOWCASE (INFINITE SCROLL) ──── */}
-        <div className={styles.gridShowcaseSection}>
-          <Projects dict={dict} />
-        </div>
-
-        {/* ── 3. PROFILE & ABOUT SHOWCASE ──────────────────────────── */}
+        {/* ── 2. PROFILE & ABOUT SHOWCASE ──────────────────────────── */}
         <div className={styles.profileAboutGrid} id="about">
           
           {/* Left Column: Skin Avatar + Bio + Socials */}

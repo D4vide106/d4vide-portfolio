@@ -35,16 +35,22 @@ export default function Projects({ dict }: { dict?: any }) {
     });
   }, [projects, searchQuery, filterType]);
 
-  // Split projects into 2 sets for Row 1 & Row 2
+  // Determine if marquee animation should run (Only if 4 or more projects exist)
+  const isMarqueeMode = filteredProjects.length >= 4;
+
+  // Duplicate cards for marquee mode
   const row1Projects = useMemo(() => {
+    if (filteredProjects.length === 0) return [];
     const half = Math.ceil(filteredProjects.length / 2);
-    return [...filteredProjects.slice(0, half), ...filteredProjects.slice(0, half)];
+    const slice1 = filteredProjects.slice(0, half);
+    return [...slice1, ...slice1, ...slice1, ...slice1];
   }, [filteredProjects]);
 
   const row2Projects = useMemo(() => {
+    if (filteredProjects.length === 0) return [];
     const half = Math.ceil(filteredProjects.length / 2);
-    const set2 = filteredProjects.slice(half).length > 0 ? filteredProjects.slice(half) : filteredProjects;
-    return [...set2, ...set2];
+    const slice2 = filteredProjects.slice(half).length > 0 ? filteredProjects.slice(half) : filteredProjects;
+    return [...slice2, ...slice2, ...slice2, ...slice2];
   }, [filteredProjects]);
 
   const handleOpenProjectModal = (project: UnifiedProject) => {
@@ -82,9 +88,9 @@ export default function Projects({ dict }: { dict?: any }) {
 
   return (
     <section id="projects" className={styles.projectsSection}>
-      <div className={styles.container}>
-        
-        {/* Controls Bar: Category Filter Chips & Search Bar */}
+      
+      {/* Centered Controls Bar Container */}
+      <div className={styles.controlsWrapper}>
         <div className={styles.controlsBar}>
           <div className={styles.filtersGroup}>
             {["All", "Modpack", "Mod", "Resource Pack", "Plugin", "Server"].map((type) => (
@@ -109,9 +115,60 @@ export default function Projects({ dict }: { dict?: any }) {
             />
           </div>
         </div>
+      </div>
 
-        {/* Modrinth-Style Infinite Horizontal Marquee Showcase */}
-        <div className={styles.marqueeSection}>
+      {/* Conditional Display: Still Centered Grid (<4 projects) vs Marquee Showcase (>=4 projects) */}
+      {!isMarqueeMode ? (
+        <div className={styles.staticCenteredContainer}>
+          <div className={styles.staticCenteredGrid}>
+            {filteredProjects.map((project) => {
+              const uniquePlatforms = getUniquePlatforms(project);
+              return (
+                <div
+                  key={project.id}
+                  onClick={() => handleOpenProjectModal(project)}
+                  className={styles.modrinthCardStill}
+                >
+                  <div className={styles.cardHeader}>
+                    <div className={styles.logoBox}>
+                      <img
+                        src={project.icon_url}
+                        alt={project.title}
+                        className={styles.projectLogo}
+                      />
+                    </div>
+                    <div className={styles.titleArea}>
+                      <span className={styles.typeBadge}>{project.type}</span>
+                      <h4 className={styles.cardTitle}>{project.title}</h4>
+                    </div>
+                  </div>
+
+                  <p className={styles.cardDesc}>{project.description}</p>
+
+                  <div className={styles.cardFooter}>
+                    <div className={styles.downloadStat}>
+                      <FiDownload size={13} />
+                      <span>{project.downloads.toLocaleString()}</span>
+                    </div>
+
+                    <div className={styles.platformsRow}>
+                      {uniquePlatforms.map((link, pIdx) => {
+                        const platformName = PLATFORM_NAMES[link.platform] || link.platform;
+                        return (
+                          <span key={pIdx} className={styles.platformIcon} title={platformName}>
+                            {getPlatformIcon(link.platform, 14)}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ) : (
+        <div className={styles.marqueeFullBleedSection}>
           
           {/* Marquee Row 1 (Scrolling Left) */}
           <div className={styles.marqueeRowContainer}>
@@ -214,8 +271,7 @@ export default function Projects({ dict }: { dict?: any }) {
           </div>
 
         </div>
-
-      </div>
+      )}
 
       {/* Project Detail Modal */}
       {selectedProject && (() => {
