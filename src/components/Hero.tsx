@@ -1,7 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { SiCurseforge, SiModrinth, SiYoutube, SiDiscord, SiGithub, SiGamejolt, SiItchdotio } from "react-icons/si";
+import { 
+  SiCurseforge, 
+  SiModrinth, 
+  SiYoutube, 
+  SiDiscord, 
+  SiGithub, 
+  SiGamejolt, 
+  SiItchdotio,
+  SiInstagram,
+  SiTiktok 
+} from "react-icons/si";
 import { FiArrowUpRight, FiPlayCircle, FiDownload, FiEye, FiGlobe, FiTag, FiExternalLink } from "react-icons/fi";
 import { FaCube } from "react-icons/fa";
 import styles from "./Hero.module.css";
@@ -17,6 +27,18 @@ const PLATFORM_NAMES: Record<string, string> = {
   gamejolt: "GameJolt",
   itch: "Itch.io",
 };
+
+const SOCIAL_LINKS = [
+  { name: "Modrinth", handle: "@D4vide106", url: "https://modrinth.com/user/D4vide106", icon: SiModrinth, color: "#1bd96a" },
+  { name: "CurseForge", handle: "@d4vide106", url: "https://www.curseforge.com/members/d4vide106/projects", icon: SiCurseforge, color: "#f16436" },
+  { name: "YouTube", handle: "@d4vide106", url: "https://youtube.com/@d4vide106", icon: SiYoutube, color: "#ff453a" },
+  { name: "Instagram", handle: "@d4vide106", url: "https://instagram.com/d4vide106", icon: SiInstagram, color: "#e1306c" },
+  { name: "TikTok", handle: "@d4vide106", url: "https://tiktok.com/@d4vide106", icon: SiTiktok, color: "#00f2fe" },
+  { name: "Discord", handle: "@d4vide106", url: "https://discord.gg/7T3u9a9", icon: SiDiscord, color: "#5865f2" },
+  { name: "Itch.io", handle: "@d4vide106", url: "https://d4vide106.itch.io", icon: SiItchdotio, color: "#fa5c5c" },
+  { name: "GameJolt", handle: "@D4vide106", url: "https://gamejolt.com/@D4vide106", icon: SiGamejolt, color: "#2fcc71" },
+  { name: "GitHub", handle: "@D4vide106", url: "https://github.com/D4vide106", icon: SiGithub, color: "#ffffff" },
+];
 
 export default function Hero({ dict, aboutDict }: { dict: any; aboutDict: any }) {
   const { projects, incrementProjectViews, getProjectViews, portfolioViews, incrementDownloadLink } = useLiveStats();
@@ -63,74 +85,37 @@ export default function Hero({ dict, aboutDict }: { dict: any; aboutDict: any })
           </div>
         </div>
 
-        {/* ── 2. PROFILE & ABOUT SHOWCASE ──────────────────────────── */}
-        <div className={styles.profileAboutGrid} id="about">
+        {/* ── 2. PYRAMID PROFILE & ABOUT SHOWCASE (NO BACKGROUND BOX) ── */}
+        <div className={styles.pyramidProfileShowcase} id="about">
           
-          {/* Left Column: Skin Avatar + Bio + Socials */}
-          <div className={styles.leftProfileCol}>
-            <div className={styles.profileCard}>
-              <div className={styles.profileHeader}>
-                <div className={styles.avatarWrap}>
-                  <div className={styles.onlineDot} />
-                  <img 
-                    src="https://mc-heads.net/avatar/_D4vide106_/64" 
-                    alt="_D4vide106_" 
-                    className={styles.avatarImg} 
-                  />
-                </div>
-                <div className={styles.identityInfo}>
-                  <span className={styles.cardTag}>CREATOR PROFILE</span>
-                  <h3 className={styles.cardTitle}>D4VIDE106</h3>
-                  <span className={styles.roleSubtitle}>System Designer & Minecraft Mod Creator</span>
-                </div>
-              </div>
-
-              <p className={styles.bioText}>
-                {aboutDict?.aboutDesc1 || "I am a Minecraft mod developer and content creator pushing the boundaries of procedural worlds, custom boss progression, RPG mechanics, and world generation."}
-                {" "}
-                {aboutDict?.aboutDesc2 || "Passionate about building deep RPG experiences, intricate structures, and custom tools for creators worldwide."}
-              </p>
-
-              {/* Social Matrix */}
-              <div className={styles.socialsSection}>
-                <span className={styles.socialsLabel}>LINKS & SOCIALS</span>
-                <div className={styles.socialBar}>
-                  <a href="https://modrinth.com/user/D4vide106" target="_blank" rel="noreferrer" className={styles.socialLink} title="Modrinth">
-                    <SiModrinth size={17} />
-                  </a>
-                  <span className={styles.socialSep}>|</span>
-                  <a href="https://www.curseforge.com/members/d4vide106/projects" target="_blank" rel="noreferrer" className={styles.socialLink} title="CurseForge">
-                    <SiCurseforge size={17} />
-                  </a>
-                  <span className={styles.socialSep}>|</span>
-                  <a href="https://youtube.com/@d4vide106" target="_blank" rel="noreferrer" className={styles.socialLink} title="YouTube">
-                    <SiYoutube size={17} />
-                  </a>
-                  <span className={styles.socialSep}>|</span>
-                  <a href="https://discord.gg/7T3u9a9" target="_blank" rel="noreferrer" className={styles.socialLink} title="Discord">
-                    <SiDiscord size={17} />
-                  </a>
-                  <span className={styles.socialSep}>|</span>
-                  <a href="https://d4vide106.itch.io" target="_blank" rel="noreferrer" className={styles.socialLink} title="Itch.io">
-                    <SiItchdotio size={17} />
-                  </a>
-                  <span className={styles.socialSep}>|</span>
-                  <a href="https://gamejolt.com/@D4vide106" target="_blank" rel="noreferrer" className={styles.socialLink} title="GameJolt">
-                    <SiGamejolt size={17} />
-                  </a>
-                  <span className={styles.socialSep}>|</span>
-                  <a href="https://github.com/D4vide106" target="_blank" rel="noreferrer" className={styles.socialLink} title="GitHub">
-                    <SiGithub size={17} />
-                  </a>
-                </div>
-              </div>
+          {/* Center: Avatar, Title, Subtitle, & Bio Text (Pyramid Layout, Clean/No Background) */}
+          <div className={styles.centerPyramidCol}>
+            <div className={styles.pyramidAvatarWrap}>
+              <div className={styles.pyramidOnlineDot} />
+              <img 
+                src="https://mc-heads.net/avatar/_D4vide106_/96" 
+                alt="_D4vide106_" 
+                className={styles.pyramidAvatarImg} 
+              />
             </div>
+
+            <div className={styles.pyramidTitleGroup}>
+              <span className={styles.pyramidTag}>CREATOR PROFILE</span>
+              <h2 className={styles.pyramidName}>D4VIDE106</h2>
+              <span className={styles.pyramidRole}>System Designer & Minecraft Mod Creator</span>
+            </div>
+
+            <p className={styles.pyramidBioText}>
+              {aboutDict?.aboutDesc1 || "I am a Minecraft mod developer and content creator pushing the boundaries of procedural worlds, custom boss progression, RPG mechanics, and world generation."}
+              <br />
+              {aboutDict?.aboutDesc2 || "Passionate about building deep RPG experiences, intricate structures, and custom tools for creators worldwide."}
+            </p>
           </div>
 
-          {/* Right Column: Live Metrics Badge + YouTube Showcase */}
-          <div className={styles.rightProfileCol}>
+          {/* Bottom Grid Row: Live Metrics (Left) + YouTube Broadcast (Middle) + Social Matrix with @Hover (Right) */}
+          <div className={styles.bottomShowcaseGrid}>
             
-            {/* Live Download Metrics Card */}
+            {/* Left: Live Stats & Metrics with Dropdown ON TOP */}
             <div className={styles.metricsCard}>
               <div className={styles.cardTagRow}>
                 <span className={styles.greenDot} />
@@ -139,7 +124,7 @@ export default function Hero({ dict, aboutDict }: { dict: any; aboutDict: any })
               <TotalDownloads />
             </div>
 
-            {/* YouTube Broadcast Showcase Card */}
+            {/* Middle: YouTube Latest Broadcast */}
             <div className={styles.youtubeCard} id="youtube">
               <div className={styles.ytHeader}>
                 <div className={styles.ytTitle}>
@@ -158,6 +143,32 @@ export default function Hero({ dict, aboutDict }: { dict: any; aboutDict: any })
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                   allowFullScreen
                 />
+              </div>
+            </div>
+
+            {/* Right: Social Matrix Cards with @Handle on Hover */}
+            <div className={styles.socialMatrixCard}>
+              <div className={styles.cardTagRow}>
+                <span className={styles.cardTag}>CONNECT & SOCIALS</span>
+              </div>
+              <div className={styles.socialPillsGrid}>
+                {SOCIAL_LINKS.map((soc) => {
+                  const IconComp = soc.icon;
+                  return (
+                    <a
+                      key={soc.name}
+                      href={soc.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={styles.socialPill}
+                      style={{ "--hover-color": soc.color } as React.CSSProperties}
+                    >
+                      <IconComp className={styles.socIcon} />
+                      <span className={styles.socName}>{soc.name}</span>
+                      <span className={styles.socHandle}>{soc.handle}</span>
+                    </a>
+                  );
+                })}
               </div>
             </div>
 
