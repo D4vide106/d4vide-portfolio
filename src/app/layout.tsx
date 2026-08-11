@@ -18,6 +18,11 @@ const spaceGrotesk = Space_Grotesk({
 export const metadata: Metadata = {
   title: "D4VIDE106 // CREATOR & DEVELOPER",
   description: "Minecraft Mod Developer, Game Creator and Content Creator",
+  icons: {
+    icon: "https://mc-heads.net/avatar/_D4vide106_/64",
+    shortcut: "https://mc-heads.net/avatar/_D4vide106_/64",
+    apple: "https://mc-heads.net/avatar/_D4vide106_/64",
+  },
 };
 
 export default function RootLayout({
@@ -33,5 +38,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-

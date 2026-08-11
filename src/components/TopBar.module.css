@@ -40,6 +40,7 @@
   align-items: center;
   gap: 0.65rem;
   transition: opacity 0.2s;
+  text-decoration: none;
 }
 
 .brandLink:hover {
@@ -48,13 +49,14 @@
 
 .avatarWrap {
   position: relative;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   overflow: visible;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
 }
 
 .avatarImg {
@@ -62,15 +64,16 @@
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  image-rendering: pixelated;
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
 }
 
 .onlineDot {
   position: absolute;
   bottom: -1px;
   right: -1px;
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   background-color: #30d158;
   border-radius: 50%;
   border: 1.5px solid #0d0d0f;
@@ -111,6 +114,7 @@
   font-weight: 700;
   letter-spacing: 0.12em;
   color: #86868b;
+  text-decoration: none;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -138,6 +142,7 @@
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.08em;
+  text-decoration: none;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -162,6 +167,7 @@
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.08em;
+  cursor: pointer;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
