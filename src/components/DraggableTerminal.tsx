@@ -1,88 +1,101 @@
 "use client";
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "./DraggableTerminal.module.css";
 import { FiTerminal } from "react-icons/fi";
-import { SiDiscord, SiGithub, SiYoutube } from "react-icons/si";
+import { SiDiscord, SiGithub, SiYoutube, SiModrinth, SiCurseforge, SiInstagram, SiTiktok } from "react-icons/si";
+import { useLiveStats } from "@/context/LiveStatsContext";
+
+interface HistoryItem {
+  type: "banner" | "cmd" | "output";
+  content?: string | React.ReactNode;
+  cmdText?: string;
+}
 
 export default function DraggableTerminal({ inlineMode = false }: { inlineMode?: boolean }) {
-  const [position, setPosition] = useState({ x: 20, y: 100 });
-  const [isDragging, setIsDragging] = useState(false);
+  const { totalDownloads, portfolioViews, projects } = useLiveStats();
+  
+  // Default position & state
+  const [position, setPosition] = useState({ x: 40, y: 120 });
   const [isMinimized, setIsMinimized] = useState(false);
   const [isMaximized, setIsMaximized] = useState(false);
   const [isFloating, setIsFloating] = useState(!inlineMode);
+  const [inputVal, setInputVal] = useState("");
+  const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [userPrompt, setUserPrompt] = useState("visitor@d4vide106:~$");
+
   const dragStartPos = useRef({ x: 0, y: 0 });
-
-  const [userPrompt, setUserPrompt] = useState("C:\\Users\\Visitor>");
-
-  // Detect visitor OS/Device for dynamic visitor terminal path
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const ua = navigator.userAgent;
-      if (ua.includes("Win")) {
-        setUserPrompt("C:\\Users\\Visitor>");
-      } else if (ua.includes("Mac")) {
-        setUserPrompt("visitor@macbook:~$");
-      } else if (ua.includes("Linux")) {
-        setUserPrompt("visitor@linux:~$");
-      } else {
-        setUserPrompt("visitor@d4vide106:~$");
-      }
-    }
-  }, []);
-
-  const terminalText = useMemo(() => [
-    `${userPrompt} ./fetch_system_status.sh`,
-    "Status: ONLINE 🟢",
-    "Uptime: 99.99%",
-    "",
-    `${userPrompt} ./list_links.sh`,
-    "Available Quick Links:",
-    "1. [GitHub] -> https://github.com/D4vide106",
-    "2. [YouTube] -> https://youtube.com/@d4vide106",
-    "3. [Discord] -> https://discord.gg/7T3u9a9",
-    "",
-    `${userPrompt} _`
-  ], [userPrompt]);
-
-  const [typedLines, setTypedLines] = useState<string[]>([]);
-  const [currentLineIndex, setCurrentLineIndex] = useState(0);
-  const [currentCharIndex, setCurrentCharIndex] = useState(0);
   const terminalRef = useRef<HTMLDivElement>(null);
-
-  // Initial typewriter animation logic
-  useEffect(() => {
-    if (currentLineIndex >= terminalText.length) return;
-
-    const line = terminalText[currentLineIndex];
-    if (currentCharIndex < line.length) {
-      const timeout = setTimeout(() => {
-        setCurrentCharIndex(prev => prev + 1);
-        setTypedLines(prev => {
-          const newLines = [...prev];
-          if (newLines[currentLineIndex] === undefined) {
-            newLines[currentLineIndex] = "";
-          }
-          newLines[currentLineIndex] = line.slice(0, currentCharIndex + 1);
-          return newLines;
-        });
-      }, Math.random() * 30 + 30);
-      return () => clearTimeout(timeout);
-    } else {
-      const timeout = setTimeout(() => {
-        setCurrentLineIndex(prev => prev + 1);
-        setCurrentCharIndex(0);
-      }, line === "" ? 100 : 300);
-      return () => clearTimeout(timeout);
-    }
-  }, [currentLineIndex, currentCharIndex, terminalText]);
-
+  const bodyRef = useRef<HTMLDivElement>(null);
   const isDraggingRef = useRef(false);
   const positionRef = useRef(position);
 
+  // 1. Restore Position and Closed State from localStorage
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const savedPos = localStorage.getItem("d4v_term_pos_v4");
+        if (savedPos) {
+          const parsed = JSON.parse(savedPos);
+          if (typeof parsed.x === "number" && typeof parsed.y === "number") {
+            setPosition(parsed);
+            positionRef.current = parsed;
+          }
+        }
+        const savedClosed = localStorage.getItem("d4v_term_closed_v4");
+        if (savedClosed === "true") {
+          setIsMinimized(true);
+        }
+      } catch {}
+
+      const ua = navigator.userAgent;
+      if (ua.includes("Win")) setUserPrompt("C:\\Users\\Visitor>");
+      else if (ua.includes("Mac")) setUserPrompt("visitor@macbook:~$");
+      else setUserPrompt("visitor@d4vide106:~$");
+    }
+  }, []);
+
+  // Update position ref
   useEffect(() => {
     positionRef.current = position;
   }, [position]);
 
+  // Initial welcome banner
+  useEffect(() => {
+    setHistory([
+      {
+        type: "banner",
+        content: (
+          <div style={{ color: "#30d158", marginBottom: "0.5rem" }}>
+            <pre style={{ margin: 0, fontSize: "0.68rem", lineHeight: 1.15, fontFamily: "var(--font-mono)", color: "#64d2ff" }}>
+{`  ____  _  ___     _____ ____  _____ 
+ |  _ \\| || \\ \\   / /_ _|  _ \\| ____|
+ | | | | || |\\ \\ / / | || | | |  _|  
+ | |_| |__   _\\ V /  | || |_| | |___ 
+ |____/   |_|  \\_/  |___|____/|_____|`}
+            </pre>
+            <div style={{ margin: "0.4rem 0 0.6rem 0", color: "#a1a1a6", fontSize: "0.76rem" }}>
+              [D4VIDE106 System OS Kernel v4.2.0] — Type <span style={{ color: "#30d158", fontWeight: 700 }}>help</span> for available commands.
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: "0.3rem 0.8rem", fontSize: "0.75rem", background: "rgba(255, 255, 255, 0.04)", padding: "0.6rem 0.8rem", borderRadius: "10px", border: "1px solid rgba(255,255,255,0.08)" }}>
+              <span style={{ color: "#86868b" }}>Status:</span> <span style={{ color: "#30d158", fontWeight: 700 }}>ONLINE 🟢 (99.99% Uptime)</span>
+              <span style={{ color: "#86868b" }}>Kernel:</span> <span style={{ color: "#ffffff" }}>Minecraft Modding Core & Custom Engine</span>
+              <span style={{ color: "#86868b" }}>Downloads:</span> <span style={{ color: "#64d2ff", fontWeight: 700 }}>{totalDownloads.toLocaleString()} TOTAL</span>
+              <span style={{ color: "#86868b" }}>Site Views:</span> <span style={{ color: "#bf5af2", fontWeight: 700 }}>{portfolioViews.toLocaleString()} REALS</span>
+            </div>
+          </div>
+        )
+      }
+    ]);
+  }, [totalDownloads, portfolioViews]);
+
+  // Auto-scroll terminal body on history change
+  useEffect(() => {
+    if (bodyRef.current) {
+      bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
+    }
+  }, [history]);
+
+  // Handle Dragging
   const handleMouseMove = (e: MouseEvent) => {
     if (!isDraggingRef.current || !terminalRef.current) return;
 
@@ -93,7 +106,7 @@ export default function DraggableTerminal({ inlineMode = false }: { inlineMode?:
     let newY = e.clientY - dragStartPos.current.y;
 
     newX = Math.max(0, Math.min(newX, window.innerWidth - terminalWidth));
-    newY = Math.max(80, Math.min(newY, window.innerHeight - terminalHeight));
+    newY = Math.max(60, Math.min(newY, window.innerHeight - terminalHeight));
 
     positionRef.current = { x: newX, y: newY };
     terminalRef.current.style.left = `${newX}px`;
@@ -103,8 +116,10 @@ export default function DraggableTerminal({ inlineMode = false }: { inlineMode?:
   const handleMouseUp = () => {
     if (isDraggingRef.current) {
       isDraggingRef.current = false;
-      setIsDragging(false);
       setPosition(positionRef.current);
+      try {
+        localStorage.setItem("d4v_term_pos_v4", JSON.stringify(positionRef.current));
+      } catch {}
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
     }
@@ -121,7 +136,6 @@ export default function DraggableTerminal({ inlineMode = false }: { inlineMode?:
       }
     }
     isDraggingRef.current = true;
-    setIsDragging(true);
     dragStartPos.current = {
       x: e.clientX - positionRef.current.x,
       y: e.clientY - positionRef.current.y,
@@ -130,27 +144,147 @@ export default function DraggableTerminal({ inlineMode = false }: { inlineMode?:
     window.addEventListener("mouseup", handleMouseUp);
   };
 
-  const renderLine = (line: string, i: number) => {
-    if (!line) return <span key={i}></span>;
-    if (line.includes("[GitHub]")) {
-      return <span>1. [<a href="https://github.com/D4vide106" target="_blank" rel="noreferrer" style={{color: '#0ea5e9'}}>GitHub</a>] - <SiGithub style={{display: 'inline', verticalAlign: 'middle'}}/></span>;
+  const toggleMinimize = (min: boolean) => {
+    setIsMinimized(min);
+    try {
+      localStorage.setItem("d4v_term_closed_v4", min ? "true" : "false");
+    } catch {}
+  };
+
+  // Interactive Command Execution Engine
+  const executeCommand = (cmdStr: string) => {
+    const trimmed = cmdStr.trim().toLowerCase();
+    if (!trimmed) return;
+
+    const newEntries: HistoryItem[] = [{ type: "cmd", cmdText: cmdStr }];
+
+    switch (trimmed) {
+      case "help":
+        newEntries.push({
+          type: "output",
+          content: (
+            <div style={{ color: "#e4e4e7", fontSize: "0.75rem", lineHeight: 1.6 }}>
+              <div style={{ color: "#64d2ff", fontWeight: 700, marginBottom: "0.2rem" }}>AVAILABLE COMMANDS:</div>
+              <div>• <span style={{ color: "#30d158", fontWeight: 700 }}>neofetch</span> — Show D4VIDE106 system specs & live banner</div>
+              <div>• <span style={{ color: "#30d158", fontWeight: 700 }}>projects</span> — List top Minecraft mods & quick launch links</div>
+              <div>• <span style={{ color: "#30d158", fontWeight: 700 }}>stats</span> — Display live total downloads & portfolio page views</div>
+              <div>• <span style={{ color: "#30d158", fontWeight: 700 }}>socials</span> — List all official social channels (@d4vide106)</div>
+              <div>• <span style={{ color: "#30d158", fontWeight: 700 }}>whoami</span> — Display creator bio & core technical stack</div>
+              <div>• <span style={{ color: "#30d158", fontWeight: 700 }}>clear</span> — Clear the terminal history</div>
+            </div>
+          )
+        });
+        break;
+
+      case "neofetch":
+      case "./fetch_system_status.sh":
+        newEntries.push({
+          type: "output",
+          content: (
+            <div style={{ fontSize: "0.75rem", color: "#e4e4e7" }}>
+              <span style={{ color: "#30d158", fontWeight: 700 }}>OS:</span> D4VIDE106 Creator Kernel v4.2.0<br />
+              <span style={{ color: "#30d158", fontWeight: 700 }}>Uptime:</span> 99.99% (Live Active)<br />
+              <span style={{ color: "#30d158", fontWeight: 700 }}>Total Downloads:</span> {totalDownloads.toLocaleString()}<br />
+              <span style={{ color: "#30d158", fontWeight: 700 }}>Portfolio Views:</span> {portfolioViews.toLocaleString()}<br />
+              <span style={{ color: "#30d158", fontWeight: 700 }}>Active Projects:</span> {projects.length} Minecraft Mods & Modpacks
+            </div>
+          )
+        });
+        break;
+
+      case "projects":
+      case "works":
+        newEntries.push({
+          type: "output",
+          content: (
+            <div style={{ fontSize: "0.75rem", color: "#e4e4e7" }}>
+              <div style={{ color: "#64d2ff", fontWeight: 700, marginBottom: "0.3rem" }}>TOP CREATED MODS:</div>
+              {projects.map((p, idx) => (
+                <div key={p.id} style={{ marginBottom: "0.2rem" }}>
+                  {idx + 1}. <span style={{ color: "#ffffff", fontWeight: 700 }}>{p.title}</span> ({p.downloads.toLocaleString()} DLs)
+                </div>
+              ))}
+            </div>
+          )
+        });
+        break;
+
+      case "stats":
+        newEntries.push({
+          type: "output",
+          content: (
+            <div style={{ fontSize: "0.75rem", color: "#e4e4e7" }}>
+              <div>🟢 <span style={{ color: "#30d158", fontWeight: 700 }}>Total Downloads:</span> {totalDownloads.toLocaleString()}</div>
+              <div>👀 <span style={{ color: "#64d2ff", fontWeight: 700 }}>Portfolio Real Views:</span> {portfolioViews.toLocaleString()}</div>
+            </div>
+          )
+        });
+        break;
+
+      case "socials":
+        newEntries.push({
+          type: "output",
+          content: (
+            <div style={{ fontSize: "0.75rem", color: "#e4e4e7", display: "flex", flexDirection: "column", gap: "0.2rem" }}>
+              <a href="https://modrinth.com/user/D4vide106" target="_blank" rel="noreferrer" style={{ color: "#1bd96a", textDecoration: "none" }}><SiModrinth style={{ verticalAlign: "middle", marginRight: 4 }} /> Modrinth (@D4vide106)</a>
+              <a href="https://www.curseforge.com/members/d4vide106/projects" target="_blank" rel="noreferrer" style={{ color: "#f16436", textDecoration: "none" }}><SiCurseforge style={{ verticalAlign: "middle", marginRight: 4 }} /> CurseForge (@d4vide106)</a>
+              <a href="https://youtube.com/@d4vide106" target="_blank" rel="noreferrer" style={{ color: "#ff453a", textDecoration: "none" }}><SiYoutube style={{ verticalAlign: "middle", marginRight: 4 }} /> YouTube (@d4vide106)</a>
+              <a href="https://instagram.com/d4vide106" target="_blank" rel="noreferrer" style={{ color: "#e1306c", textDecoration: "none" }}><SiInstagram style={{ verticalAlign: "middle", marginRight: 4 }} /> Instagram (@d4vide106)</a>
+              <a href="https://tiktok.com/@d4vide106" target="_blank" rel="noreferrer" style={{ color: "#00f2fe", textDecoration: "none" }}><SiTiktok style={{ verticalAlign: "middle", marginRight: 4 }} /> TikTok (@d4vide106)</a>
+              <a href="https://discord.gg/7T3u9a9" target="_blank" rel="noreferrer" style={{ color: "#5865f2", textDecoration: "none" }}><SiDiscord style={{ verticalAlign: "middle", marginRight: 4 }} /> Discord (@d4vide106)</a>
+              <a href="https://github.com/D4vide106" target="_blank" rel="noreferrer" style={{ color: "#ffffff", textDecoration: "none" }}><SiGithub style={{ verticalAlign: "middle", marginRight: 4 }} /> GitHub (@D4vide106)</a>
+            </div>
+          )
+        });
+        break;
+
+      case "whoami":
+        newEntries.push({
+          type: "output",
+          content: (
+            <div style={{ fontSize: "0.75rem", color: "#e4e4e7" }}>
+              <span style={{ color: "#ffffff", fontWeight: 700 }}>D4VIDE106</span> — System Designer & Minecraft Mod Creator.<br />
+              Specialized in procedural RPG mechanics, custom dimension engines,boss AI, and high-performance Web apps.
+            </div>
+          )
+        });
+        break;
+
+      case "clear":
+      case "cls":
+        setHistory([]);
+        setInputVal("");
+        return;
+
+      default:
+        newEntries.push({
+          type: "output",
+          content: (
+            <div style={{ color: "#ff453a", fontSize: "0.75rem" }}>
+              Command not found: &apos;{cmdStr}&apos;. Type <span style={{ color: "#30d158", fontWeight: 700 }}>help</span> for available commands.
+            </div>
+          )
+        });
+        break;
     }
-    if (line.includes("[YouTube]")) {
-      return <span>2. [<a href="https://youtube.com/@d4vide106" target="_blank" rel="noreferrer" style={{color: '#0ea5e9'}}>YouTube</a>] - <SiYoutube style={{display: 'inline', verticalAlign: 'middle'}} color="#ff0000"/></span>;
+
+    setHistory((prev) => [...prev, ...newEntries]);
+    setInputVal("");
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      executeCommand(inputVal);
     }
-    if (line.includes("[Discord]")) {
-      return <span>3. [<a href="https://discord.gg/7T3u9a9" target="_blank" rel="noreferrer" style={{color: '#0ea5e9'}}>Discord</a>] - <SiDiscord style={{display: 'inline', verticalAlign: 'middle'}} color="#5865F2"/></span>;
-    }
-    return line;
   };
 
   return (
     <>
-      {/* Minimized Dock Badge */}
+      {/* Minimized Bottom-Left Floating Dock Badge */}
       {isMinimized && (
         <button 
           className={styles.minimizedDockBadge}
-          onClick={() => setIsMinimized(false)}
+          onClick={() => toggleMinimize(false)}
           title="Restore CMD Terminal"
         >
           <span className={styles.greenPulseDot}></span>
@@ -159,7 +293,7 @@ export default function DraggableTerminal({ inlineMode = false }: { inlineMode?:
         </button>
       )}
 
-      {/* Main Terminal Window */}
+      {/* Main Draggable Terminal Window */}
       {!isMinimized && (
         <div 
           ref={terminalRef}
@@ -177,12 +311,12 @@ export default function DraggableTerminal({ inlineMode = false }: { inlineMode?:
             <div className={styles.macTrafficLights}>
               <span 
                 className={`${styles.trafficDot} ${styles.dotRed}`} 
-                onClick={() => setIsMinimized(true)} 
+                onClick={() => toggleMinimize(true)} 
                 title="Close" 
               />
               <span 
                 className={`${styles.trafficDot} ${styles.dotYellow}`} 
-                onClick={() => setIsMinimized(true)} 
+                onClick={() => toggleMinimize(true)} 
                 title="Minimize" 
               />
               <span 
@@ -199,13 +333,32 @@ export default function DraggableTerminal({ inlineMode = false }: { inlineMode?:
               <span>Terminal — Control Center</span>
             </div>
           </div>
-          <div className={styles.terminalBody}>
-            {typedLines.map((line, i) => (
-              <div key={i} className={styles.terminalLine}>
-                {renderLine(line, i)}
-                {i === currentLineIndex && <span className={styles.cursor}>█</span>}
+
+          <div ref={bodyRef} className={styles.terminalBody}>
+            {history.map((item, index) => (
+              <div key={index} style={{ marginBottom: "0.4rem" }}>
+                {item.type === "cmd" && (
+                  <div style={{ color: "#30d158", fontWeight: 600 }}>
+                    <span style={{ color: "#64d2ff" }}>{userPrompt}</span> {item.cmdText}
+                  </div>
+                )}
+                {item.type !== "cmd" && item.content}
               </div>
             ))}
+
+            {/* Interactive Input Line */}
+            <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", marginTop: "0.4rem" }}>
+              <span style={{ color: "#64d2ff", fontWeight: 600, flexShrink: 0 }}>{userPrompt}</span>
+              <input
+                type="text"
+                value={inputVal}
+                onChange={(e) => setInputVal(e.target.value)}
+                onKeyDown={handleKeyDown}
+                className={styles.termInput}
+                placeholder="type 'help' or command..."
+                autoFocus
+              />
+            </div>
           </div>
         </div>
       )}

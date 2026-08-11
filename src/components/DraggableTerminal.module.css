@@ -1,8 +1,8 @@
 .terminalContainer {
   position: fixed;
-  width: 520px;
-  height: 310px;
-  background: rgba(18, 18, 22, 0.82);
+  width: 560px;
+  height: 340px;
+  background: rgba(16, 16, 22, 0.88);
   backdrop-filter: blur(28px) saturate(180%);
   -webkit-backdrop-filter: blur(28px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.16);
@@ -11,7 +11,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  z-index: 1000;
+  z-index: 10000;
   font-family: var(--font-mono);
   opacity: 0.98;
   transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), height 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -19,10 +19,10 @@
 }
 
 .maximizedContainer {
-  top: 90px !important;
+  top: 80px !important;
   left: 20px !important;
   width: calc(100vw - 40px) !important;
-  height: calc(100vh - 120px) !important;
+  height: calc(100vh - 100px) !important;
 }
 
 .terminalHeader {
@@ -77,27 +77,31 @@
 }
 
 .terminalBody {
-  padding: 16px;
+  padding: 14px 16px;
   flex: 1;
   color: #e4e4e7;
   font-size: 13px;
   line-height: 1.65;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
-.terminalLine {
-  white-space: pre-wrap;
-  word-break: break-all;
+.termInput {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  flex: 1;
+  caret-color: #30d158;
 }
 
-.cursor {
-  animation: blink 1s step-end infinite;
-  color: #64d2ff;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+.termInput::placeholder {
+  color: rgba(255, 255, 255, 0.25);
+  font-size: 0.72rem;
 }
 
 /* Bottom-Left Floating Minimized Dock Badge */
@@ -110,7 +114,7 @@
   align-items: center;
   gap: 0.65rem;
   padding: 0.65rem 1.2rem;
-  background: rgba(20, 20, 24, 0.8);
+  background: rgba(20, 20, 24, 0.85);
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 9999px;
   color: #ffffff;
@@ -176,4 +180,3 @@
     display: none;
   }
 }
-
