@@ -4,11 +4,12 @@ import styles from "./DraggableTerminal.module.css";
 import { FiTerminal } from "react-icons/fi";
 import { SiDiscord, SiGithub, SiYoutube } from "react-icons/si";
 
-export default function DraggableTerminal() {
+export default function DraggableTerminal({ inlineMode = false }: { inlineMode?: boolean }) {
   const [position, setPosition] = useState({ x: 20, y: 100 });
   const [isDragging, setIsDragging] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [isMaximized, setIsMaximized] = useState(false);
+  const [isFloating, setIsFloating] = useState(!inlineMode);
   const dragStartPos = useRef({ x: 0, y: 0 });
 
   const [userPrompt, setUserPrompt] = useState("C:\\Users\\Visitor>");
@@ -111,6 +112,14 @@ export default function DraggableTerminal() {
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (isMaximized) return;
+    if (!isFloating) {
+      setIsFloating(true);
+      if (terminalRef.current) {
+        const rect = terminalRef.current.getBoundingClientRect();
+        setPosition({ x: rect.left, y: rect.top });
+        positionRef.current = { x: rect.left, y: rect.top };
+      }
+    }
     isDraggingRef.current = true;
     setIsDragging(true);
     dragStartPos.current = {
@@ -137,7 +146,7 @@ export default function DraggableTerminal() {
 
   return (
     <>
-      {/* Minimized Bottom-Left Dock Badge */}
+      {/* Minimized Dock Badge */}
       {isMinimized && (
         <button 
           className={styles.minimizedDockBadge}
@@ -150,12 +159,16 @@ export default function DraggableTerminal() {
         </button>
       )}
 
-      {/* Main Draggable CMD Window */}
+      {/* Main Terminal Window */}
       {!isMinimized && (
         <div 
           ref={terminalRef}
-          className={`${styles.terminalContainer} ${isMaximized ? styles.maximizedContainer : ""}`} 
-          style={isMaximized ? {} : { left: `${position.x}px`, top: `${position.y}px` }}
+          className={`
+            ${styles.terminalContainer} 
+            ${!isFloating ? styles.inlineTerminal : ""} 
+            ${isMaximized ? styles.maximizedContainer : ""}
+          `} 
+          style={isMaximized ? {} : isFloating ? { left: `${position.x}px`, top: `${position.y}px`, position: "fixed" } : { position: "relative" }}
         >
           <div 
             className={styles.terminalHeader} 
@@ -174,7 +187,10 @@ export default function DraggableTerminal() {
               />
               <span 
                 className={`${styles.trafficDot} ${styles.dotGreen}`} 
-                onClick={() => setIsMaximized(!isMaximized)} 
+                onClick={() => {
+                  setIsFloating(true);
+                  setIsMaximized(!isMaximized);
+                }} 
                 title={isMaximized ? "Restore" : "Maximize"} 
               />
             </div>

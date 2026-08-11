@@ -1,22 +1,22 @@
 .heroSection {
-  padding: 9rem 0 5rem 0;
+  padding: 6.5rem 0 4rem 0;
   background-color: #050505;
   width: 100%;
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 4.5rem;
+  gap: 3.5rem;
 }
 
 @keyframes bentoHeroCascade {
   0% {
     opacity: 0;
-    transform: translateY(28px) scale(0.97);
+    transform: translateY(24px) scale(0.98);
   }
   100% {
     opacity: 1;
@@ -24,137 +24,226 @@
   }
 }
 
-/* Editorial Top Headline */
+.bentoLabel {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: #86868b;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ── TOP DASHBOARD ROW ────────────────────────────────────── */
+.topDashboardRow {
+  display: grid;
+  grid-template-columns: 320px 1fr 280px;
+  gap: 1.8rem;
+  align-items: start;
+  animation: bentoHeroCascade 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.topLeftCol {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.topCenterCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.topRightCol {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
 .editorialHeader {
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.9rem;
-  animation: bentoHeroCascade 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: 0.05s;
-}
-
-.topCaption {
-  font-family: var(--font-body);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.35em;
-  color: #86868b;
-  text-transform: uppercase;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0.35rem 1rem;
-  border-radius: 9999px;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .heroTitle {
   font-family: var(--font-heading);
-  font-size: 5.5rem;
+  font-size: 4.8rem;
   font-weight: 800;
   letter-spacing: -0.03em;
   line-height: 1;
   background: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.75) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin: 0.2rem 0;
+  margin: 0;
 }
 
 .heroSubtitle {
   font-family: var(--font-apple);
-  font-size: 1.05rem;
+  font-size: 0.98rem;
   font-weight: 400;
   letter-spacing: 0.05em;
   color: #a1a1a6;
-  max-width: 580px;
+  max-width: 520px;
 }
 
-/* About Creator Bento Card */
-.aboutRow {
+.projectsWrapper {
+  width: 100%;
+}
+
+.countersCard {
+  background: rgba(22, 22, 26, 0.65);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 22px;
+  padding: 1.5rem 1.2rem;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.12);
   display: flex;
-  gap: 3.5rem;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ── BOTTOM PROFILE ROW ────────────────────────────────────── */
+.bottomProfileRow {
+  display: grid;
+  grid-template-columns: 210px 1fr 380px;
+  gap: 1.8rem;
+  align-items: stretch;
+  animation: bentoHeroCascade 0.75s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.15s;
+}
+
+.bottomLeftCol {
+  display: flex;
+}
+
+.avatarCard {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 240px;
+  display: flex;
+  justify-content: center;
   align-items: center;
   background: rgba(22, 22, 26, 0.65);
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 28px;
-  padding: 3.5rem;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.12);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  animation: bentoHeroCascade 0.75s cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: 0.15s;
-}
-
-.aboutRow:hover {
-  border-color: rgba(255, 255, 255, 0.22);
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
-.avatarCard {
-  position: relative;
-  width: 190px;
-  height: 230px;
-  flex-shrink: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 24px;
   overflow: hidden;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.avatarCard:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75);
 }
 
 .skinGlow {
   position: absolute;
   inset: -20px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(100, 210, 255, 0.18) 0%, transparent 70%);
   filter: blur(20px);
 }
 
 .skinImage {
   position: relative;
-  height: 90%;
+  height: 85%;
   object-fit: contain;
   filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.9));
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .avatarCard:hover .skinImage {
-  transform: scale(1.05) translateY(-4px);
+  transform: scale(1.06) translateY(-4px);
 }
 
-.bioTextContainer {
+.bottomCenterCol {
+  display: flex;
+}
+
+.bioCard {
+  width: 100%;
+  background: rgba(22, 22, 26, 0.65);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  padding: 1.8rem 2.2rem;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.12);
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   gap: 1.2rem;
 }
 
-.bioTag {
+.bioHeaderTag {
   font-family: var(--font-body);
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.25em;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
   color: #86868b;
   text-transform: uppercase;
 }
 
-.bioDescription {
+.bioText {
   font-family: var(--font-body);
-  font-size: 1.05rem;
+  font-size: 0.98rem;
   color: #e4e4e7;
-  line-height: 1.7;
+  line-height: 1.65;
   font-weight: 400;
 }
 
-.downloadsStatWrapper {
-  margin-top: 0.5rem;
+.verticalDividerWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  margin: 0.4rem 0;
+}
+
+.verticalLine {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+}
+
+.dividerDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.socialsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.socialsLabel {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: #86868b;
+  text-transform: uppercase;
 }
 
 .socialBar {
   display: flex;
-  gap: 0.8rem;
-  margin-top: 0.5rem;
+  align-items: center;
+  gap: 0.75rem;
   flex-wrap: wrap;
 }
 
@@ -162,9 +251,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 9999px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.12);
   color: #a1a1a6;
@@ -179,59 +268,67 @@
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
 }
 
-/* YouTube Broadcast Bento Card */
+.socialSep {
+  color: rgba(255, 255, 255, 0.18);
+  font-size: 0.9rem;
+  font-weight: 300;
+  user-select: none;
+}
+
+/* Bottom Right: YouTube Showcase */
+.bottomRightCol {
+  display: flex;
+}
+
 .youtubeSection {
+  width: 100%;
   background: rgba(22, 22, 26, 0.65);
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 28px;
-  padding: 2.8rem;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.12);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  animation: bentoHeroCascade 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: 0.25s;
-}
-
-.youtubeSection:hover {
-  border-color: rgba(255, 255, 255, 0.22);
+  border-radius: 24px;
+  padding: 1.5rem;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .ytHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .ytHeaderTitle {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.5rem;
   font-family: var(--font-heading);
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.15em;
   color: #ffffff;
 }
 
 .ytIcon {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   color: #ff453a;
 }
 
 .ytChannelLink {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.45rem 1.1rem;
+  gap: 0.3rem;
+  padding: 0.35rem 0.85rem;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 9999px;
   font-family: var(--font-body);
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   color: #e4e4e7;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -240,7 +337,6 @@
   background: #ffffff;
   color: #000000;
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(255, 255, 255, 0.2);
 }
 
 .videoGrid {
@@ -250,12 +346,12 @@
 .videoFrame {
   position: relative;
   width: 100%;
-  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+  padding-bottom: 56.25%;
   background: #000000;
-  border-radius: 18px;
+  border-radius: 14px;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.8);
 }
 
 .videoFrame iframe {
@@ -265,22 +361,38 @@
   height: 100%;
 }
 
-@media (max-width: 900px) {
-  .heroTitle {
-    font-size: 3.2rem;
+/* ── RESPONSIVE MEDIA QUERIES ────────────────────────────── */
+@media (max-width: 1280px) {
+  .topDashboardRow {
+    grid-template-columns: 1fr;
   }
-  .aboutRow {
-    flex-direction: column;
-    text-align: center;
-    padding: 2.2rem;
-    gap: 2rem;
+
+  .topLeftCol, .topRightCol {
+    max-width: 600px;
+    margin: 0 auto;
   }
+
+  .bottomProfileRow {
+    grid-template-columns: 1fr;
+  }
+
   .avatarCard {
-    height: 190px;
-    width: 160px;
-  }
-  .socialBar {
-    justify-content: center;
+    max-width: 220px;
+    margin: 0 auto;
+    height: 240px;
   }
 }
 
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: 3.2rem;
+  }
+
+  .bottomProfileRow {
+    grid-template-columns: 1fr;
+  }
+
+  .bioCard {
+    padding: 1.4rem;
+  }
+}
