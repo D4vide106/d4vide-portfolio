@@ -7,15 +7,10 @@ import DraggableTerminal from "@/components/DraggableTerminal";
 
 export default function WikiPage() {
   return (
-    <main style={{ minHeight: "100vh", backgroundColor: "#07070a", overflowX: "hidden" }}>
+    <main style={{ minHeight: "100vh", backgroundColor: "#0b0b0f", overflowX: "hidden" }}>
       <TopBar />
-
-      <div style={{ paddingTop: "80px" }}>
-        <WikiSection standalone={true} />
-      </div>
-
+      <WikiSection standalone={true} />
       <Footer />
-
       <DraggableTerminal />
     </main>
   );

@@ -97,13 +97,6 @@ export default function TopBar({ dict: propDict }: { dict?: any; currentLang?: s
 
     if (targetId === "wiki") {
       e.preventDefault();
-      const wikiElem = document.getElementById("wiki");
-      if (wikiElem && !window.location.pathname.includes("/wiki")) {
-        const yOffset = -100;
-        const y = wikiElem.getBoundingClientRect().top + window.pageYOffset + yOffset;
-        window.scrollTo({ top: y, behavior: "smooth" });
-        return;
-      }
       window.location.href = `${repoPrefix}/wiki/`;
       return;
     }
