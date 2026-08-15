@@ -18,6 +18,7 @@ import styles from "./Hero.module.css";
 import TotalDownloads from "./TotalDownloads";
 import CipherCarousel from "./CipherCarousel";
 import { useLanguage } from "@/context/LanguageContext";
+import { useLiveStats } from "@/context/LiveStatsContext";
 import { UnifiedProject } from "@/data/projectsData";
 import AnimatedNumber from "./AnimatedNumber";
 
