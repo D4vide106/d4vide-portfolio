@@ -63,6 +63,68 @@
     "plugin": "Plugin",
     "server": "Servidor"
   },
+  "projectData": {
+    "project-boss-rpg": {
+      "title": "PROJECT BOSS RPG",
+      "description": "Um modpack de RPG épico com progressão de chefes única, equipamentos personalizados e missões."
+    },
+    "sdob": {
+      "title": "SPIRAL DUNGEON OF BABEL",
+      "description": "Explore a maior torre de masmorra já criada! Disponível para Minecraft Java, Bedrock e Datapack."
+    },
+    "structural-beyond": {
+      "title": "STRUCTURAL BEYOND",
+      "description": "Adiciona dezenas de estruturas únicas e impressionantes ao seu mundo no Java, Bedrock e Datapacks!"
+    },
+    "project-horror": {
+      "title": "PROJECT HORROR",
+      "description": "Aterrorizante experiência de survival horror repleta de entidades assustadoras, atmosfera e mecânicas personalizadas."
+    },
+    "project-the-rpg-reborn": {
+      "title": "PROJECT THE RPG REBORN",
+      "description": "Incrível experiência de RPG sozinho ou com amigos com sistema de níveis, magia, masmorras e chefes."
+    },
+    "project-realistic-rpg": {
+      "title": "PROJECT REALISTIC RPG",
+      "description": "Experiência de sobrevivência realista com saúde, armas, kits médicos, temperatura e mecânicas imersivas."
+    },
+    "project-gunparty": {
+      "title": "PROJECT GUNPARTY",
+      "description": "Experiência multijogador de combate com armas e deathmatch repleta de ação no Minecraft."
+    },
+    "bosstweak-3d": {
+      "title": "BOSSTWEAK 3D+",
+      "description": "Pack de recursos oficial do Boss RPG: corrige problemas visuais, melhora texturas e adiciona modelos 3D."
+    },
+    "pmaintanceuniversal": {
+      "title": "PROJECT MAINTENANCE UNIVERSAL",
+      "description": "Plugin universal de manutenção de servidor para Minecraft Java com MOTDs personalizáveis."
+    },
+    "infinitysmart": {
+      "title": "INFINITYSMART SERVER",
+      "description": "Rede europeia multiplicativa de Minecraft Java e Bedrock com InfinitySMP e minijogos."
+    }
+  },
+  "terminal": {
+    "helpPrompt": "Digite help para ver os comandos disponíveis.",
+    "statusLabel": "Status:",
+    "onlineVal": "ONLINE 🟢 (99.99% Uptime)",
+    "kernelLabel": "Kernel:",
+    "kernelVal": "Núcleo de Mods de Minecraft e Motor Personalizado",
+    "downloadsLabel": "Downloads:",
+    "downloadsTotal": "TOTAIS",
+    "siteViewsLabel": "Visualizações do Site:",
+    "realsVal": "REAIS",
+    "availableCmdsHeader": "COMANDOS DISPONÍVEIS:",
+    "cmdNeofetch": "Exibir especificações do sistema D4VIDE106 e banner",
+    "cmdProjects": "Listar principais mods de Minecraft e links rápidos",
+    "cmdStats": "Exibir downloads totais em tempo real e visualizações do portfólio",
+    "cmdSocials": "Listar todos os canais sociais oficiais (@d4vide106)",
+    "cmdWhoami": "Exibir biografia do criador e stack tecnológica",
+    "cmdClear": "Limpar o histórico do terminal",
+    "topModsHeader": "PRINCIPAIS MODS CRIADOS:",
+    "whoamiBio": "D4VIDE106 — Designer de Sistemas e Criador de Mods de Minecraft.\nEspecializado em mecânicas de RPG procedurais, motores de dimensões, IA de chefes e aplicativos Web de alto desempenho."
+  },
   "stats": {
     "liveStatsHeader": "ESTATÍSTICAS E MÉTRICAS EM TEMPO REAL",
     "downloadsByPlatform": "DOWNLOADS POR PLATAFORMA"

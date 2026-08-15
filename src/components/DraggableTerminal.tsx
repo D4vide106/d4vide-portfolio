@@ -4,6 +4,7 @@ import styles from "./DraggableTerminal.module.css";
 import { FiTerminal } from "react-icons/fi";
 import { SiDiscord, SiGithub, SiYoutube, SiModrinth, SiCurseforge, SiInstagram, SiTiktok } from "react-icons/si";
 import { useLiveStats } from "@/context/LiveStatsContext";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface HistoryItem {
   type: "banner" | "cmd" | "output";
@@ -13,6 +14,8 @@ interface HistoryItem {
 
 export default function DraggableTerminal({ inlineMode = false }: { inlineMode?: boolean }) {
   const { totalDownloads, portfolioViews, projects } = useLiveStats();
+  const { dict: contextDict } = useLanguage();
+  const tDict = (contextDict as any)?.terminal || {};
   
   // Default position & state
   const [position, setPosition] = useState({ x: 40, y: 120 });
@@ -74,19 +77,19 @@ export default function DraggableTerminal({ inlineMode = false }: { inlineMode?:
  |____/   |_|  \\_/  |___|____/|_____|`}
             </pre>
             <div style={{ margin: "0.4rem 0 0.6rem 0", color: "#a1a1a6", fontSize: "0.76rem" }}>
-              [D4VIDE106 System OS Kernel v4.2.0] — Type <span style={{ color: "#30d158", fontWeight: 700 }}>help</span> for available commands.
+              [D4VIDE106 System OS Kernel v4.2.0] — {tDict.helpPrompt || "Type help for available commands."}
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: "0.3rem 0.8rem", fontSize: "0.75rem", background: "rgba(255, 255, 255, 0.04)", padding: "0.6rem 0.8rem", borderRadius: "10px", border: "1px solid rgba(255,255,255,0.08)" }}>
-              <span style={{ color: "#86868b" }}>Status:</span> <span style={{ color: "#30d158", fontWeight: 700 }}>ONLINE 🟢 (99.99% Uptime)</span>
-              <span style={{ color: "#86868b" }}>Kernel:</span> <span style={{ color: "#ffffff" }}>Minecraft Modding Core & Custom Engine</span>
-              <span style={{ color: "#86868b" }}>Downloads:</span> <span style={{ color: "#64d2ff", fontWeight: 700 }}>{totalDownloads.toLocaleString()} TOTAL</span>
-              <span style={{ color: "#86868b" }}>Site Views:</span> <span style={{ color: "#bf5af2", fontWeight: 700 }}>{portfolioViews.toLocaleString()} REALS</span>
+              <span style={{ color: "#86868b" }}>{tDict.statusLabel || "Status:"}</span> <span style={{ color: "#30d158", fontWeight: 700 }}>{tDict.onlineVal || "ONLINE 🟢 (99.99% Uptime)"}</span>
+              <span style={{ color: "#86868b" }}>{tDict.kernelLabel || "Kernel:"}</span> <span style={{ color: "#ffffff" }}>{tDict.kernelVal || "Minecraft Modding Core & Custom Engine"}</span>
+              <span style={{ color: "#86868b" }}>{tDict.downloadsLabel || "Downloads:"}</span> <span style={{ color: "#64d2ff", fontWeight: 700 }}>{totalDownloads.toLocaleString()} {tDict.downloadsTotal || "TOTAL"}</span>
+              <span style={{ color: "#86868b" }}>{tDict.siteViewsLabel || "Site Views:"}</span> <span style={{ color: "#bf5af2", fontWeight: 700 }}>{portfolioViews.toLocaleString()} {tDict.realsVal || "REALS"}</span>
             </div>
           </div>
         )
       }
     ]);
-  }, [totalDownloads, portfolioViews]);
+  }, [totalDownloads, portfolioViews, contextDict]);
 
   // Auto-scroll terminal body on history change
   useEffect(() => {
@@ -215,13 +218,13 @@ export default function DraggableTerminal({ inlineMode = false }: { inlineMode?:
           type: "output",
           content: (
             <div style={{ color: "#e4e4e7", fontSize: "0.75rem", lineHeight: 1.6 }}>
-              <div style={{ color: "#64d2ff", fontWeight: 700, marginBottom: "0.2rem" }}>AVAILABLE COMMANDS:</div>
-              <div>• <span style={{ color: "#30d158", fontWeight: 700 }}>neofetch</span> — Show D4VIDE106 system specs & live banner</div>
-              <div>• <span style={{ color: "#30d158", fontWeight: 700 }}>projects</span> — List top Minecraft mods & quick launch links</div>
-              <div>• <span style={{ color: "#30d158", fontWeight: 700 }}>stats</span> — Display live total downloads & portfolio page views</div>
-              <div>• <span style={{ color: "#30d158", fontWeight: 700 }}>socials</span> — List all official social channels (@d4vide106)</div>
-              <div>• <span style={{ color: "#30d158", fontWeight: 700 }}>whoami</span> — Display creator bio & core technical stack</div>
-              <div>• <span style={{ color: "#30d158", fontWeight: 700 }}>clear</span> — Clear the terminal history</div>
+              <div style={{ color: "#64d2ff", fontWeight: 700, marginBottom: "0.2rem" }}>{tDict.availableCmdsHeader || "AVAILABLE COMMANDS:"}</div>
+              <div>• <span style={{ color: "#30d158", fontWeight: 700 }}>neofetch</span> — {tDict.cmdNeofetch || "Show D4VIDE106 system specs & live banner"}</div>
+              <div>• <span style={{ color: "#30d158", fontWeight: 700 }}>projects</span> — {tDict.cmdProjects || "List top Minecraft mods & quick launch links"}</div>
+              <div>• <span style={{ color: "#30d158", fontWeight: 700 }}>stats</span> — {tDict.cmdStats || "Display live total downloads & portfolio page views"}</div>
+              <div>• <span style={{ color: "#30d158", fontWeight: 700 }}>socials</span> — {tDict.cmdSocials || "List all official social channels (@d4vide106)"}</div>
+              <div>• <span style={{ color: "#30d158", fontWeight: 700 }}>whoami</span> — {tDict.cmdWhoami || "Display creator bio & core technical stack"}</div>
+              <div>• <span style={{ color: "#30d158", fontWeight: 700 }}>clear</span> — {tDict.cmdClear || "Clear the terminal history"}</div>
             </div>
           )
         });
@@ -249,10 +252,10 @@ export default function DraggableTerminal({ inlineMode = false }: { inlineMode?:
           type: "output",
           content: (
             <div style={{ fontSize: "0.75rem", color: "#e4e4e7" }}>
-              <div style={{ color: "#64d2ff", fontWeight: 700, marginBottom: "0.3rem" }}>TOP CREATED MODS:</div>
+              <div style={{ color: "#64d2ff", fontWeight: 700, marginBottom: "0.3rem" }}>{tDict.topModsHeader || "TOP CREATED MODS:"}</div>
               {projects.map((p, idx) => (
                 <div key={p.id} style={{ marginBottom: "0.2rem" }}>
-                  {idx + 1}. <span style={{ color: "#ffffff", fontWeight: 700 }}>{p.title}</span> ({p.downloads.toLocaleString()} DLs)
+                  {idx + 1}. <span style={{ color: "#ffffff", fontWeight: 700 }}>{(contextDict as any)?.projectData?.[p.id]?.title || p.title}</span> ({p.downloads.toLocaleString()} DLs)
                 </div>
               ))}
             </div>
@@ -293,9 +296,8 @@ export default function DraggableTerminal({ inlineMode = false }: { inlineMode?:
         newEntries.push({
           type: "output",
           content: (
-            <div style={{ fontSize: "0.75rem", color: "#e4e4e7" }}>
-              <span style={{ color: "#ffffff", fontWeight: 700 }}>D4VIDE106</span> — System Designer & Minecraft Mod Creator.<br />
-              Specialized in procedural RPG mechanics, custom dimension engines,boss AI, and high-performance Web apps.
+            <div style={{ fontSize: "0.75rem", color: "#e4e4e7", whiteSpace: "pre-line" }}>
+              {tDict.whoamiBio || "D4VIDE106 — System Designer & Minecraft Mod Creator.\nSpecialized in procedural RPG mechanics, custom dimension engines, boss AI, and high-performance Web apps."}
             </div>
           )
         });

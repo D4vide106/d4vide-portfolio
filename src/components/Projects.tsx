@@ -21,17 +21,30 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
   const { dict: contextDict } = useLanguage();
   const dict = contextDict.projects || propDict;
   const modalDict = contextDict.projectsModal || propDict;
+  const projectDataDict = (contextDict as any)?.projectData || {};
   const { projects, incrementProjectViews, getProjectViews, portfolioViews, incrementDownloadLink } = useLiveStats();
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState("All");
   const [selectedProject, setSelectedProject] = useState<UnifiedProject | null>(null);
 
+  const getProjectTitle = (p: UnifiedProject) => {
+    return projectDataDict[p.id]?.title || p.title;
+  };
+
+  const getProjectDescription = (p: UnifiedProject) => {
+    return projectDataDict[p.id]?.description || p.description;
+  };
+
   // Strict Filter projects by category and search
   const filteredProjects = useMemo(() => {
     return projects.filter((p) => {
+      const localizedTitle = getProjectTitle(p);
+      const localizedDesc = getProjectDescription(p);
       const matchesSearch =
         p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        localizedTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
         p.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        localizedDesc.toLowerCase().includes(searchQuery.toLowerCase()) ||
         (p.tags && p.tags.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase())));
       if (!matchesSearch) return false;
       if (filterType === "All") return true;
@@ -45,7 +58,7 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
       }
       return pType.includes(fType);
     });
-  }, [projects, searchQuery, filterType]);
+  }, [projects, searchQuery, filterType, projectDataDict]);
 
   // Determine if marquee animation should run (Only if 4 or more projects exist)
   const isMarqueeMode = filteredProjects.length >= 4;
@@ -142,6 +155,8 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
           <div className={styles.staticCenteredGrid}>
             {filteredProjects.map((project) => {
               const uniquePlatforms = getUniquePlatforms(project);
+              const pTitle = getProjectTitle(project);
+              const pDesc = getProjectDescription(project);
               return (
                 <div
                   key={project.id}
@@ -152,17 +167,17 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
                     <div className={styles.logoBox}>
                       <img
                         src={project.icon_url}
-                        alt={project.title}
+                        alt={pTitle}
                         className={styles.projectLogo}
                       />
                     </div>
                     <div className={styles.titleArea}>
                       <span className={styles.typeBadge}>{project.type}</span>
-                      <h4 className={styles.cardTitle}>{project.title}</h4>
+                      <h4 className={styles.cardTitle}>{pTitle}</h4>
                     </div>
                   </div>
 
-                  <p className={styles.cardDesc}>{project.description}</p>
+                  <p className={styles.cardDesc}>{pDesc}</p>
 
                   <div className={styles.cardFooter}>
                     <div className={styles.downloadStat}>
@@ -194,6 +209,8 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
             <div className={`${styles.marqueeTrack} ${styles.marqueeLeft}`}>
               {row1Projects.map((project, idx) => {
                 const uniquePlatforms = getUniquePlatforms(project);
+                const pTitle = getProjectTitle(project);
+                const pDesc = getProjectDescription(project);
                 return (
                   <div
                     key={`r1-${project.id}-${idx}`}
@@ -204,17 +221,17 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
                       <div className={styles.logoBox}>
                         <img
                           src={project.icon_url}
-                          alt={project.title}
+                          alt={pTitle}
                           className={styles.projectLogo}
                         />
                       </div>
                       <div className={styles.titleArea}>
                         <span className={styles.typeBadge}>{project.type}</span>
-                        <h4 className={styles.cardTitle}>{project.title}</h4>
+                        <h4 className={styles.cardTitle}>{pTitle}</h4>
                       </div>
                     </div>
 
-                    <p className={styles.cardDesc}>{project.description}</p>
+                    <p className={styles.cardDesc}>{pDesc}</p>
 
                     <div className={styles.cardFooter}>
                       <div className={styles.downloadStat}>
@@ -244,6 +261,8 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
             <div className={`${styles.marqueeTrack} ${styles.marqueeRight}`}>
               {row2Projects.map((project, idx) => {
                 const uniquePlatforms = getUniquePlatforms(project);
+                const pTitle = getProjectTitle(project);
+                const pDesc = getProjectDescription(project);
                 return (
                   <div
                     key={`r2-${project.id}-${idx}`}
@@ -254,17 +273,17 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
                       <div className={styles.logoBox}>
                         <img
                           src={project.icon_url}
-                          alt={project.title}
+                          alt={pTitle}
                           className={styles.projectLogo}
                         />
                       </div>
                       <div className={styles.titleArea}>
                         <span className={styles.typeBadge}>{project.type}</span>
-                        <h4 className={styles.cardTitle}>{project.title}</h4>
+                        <h4 className={styles.cardTitle}>{pTitle}</h4>
                       </div>
                     </div>
 
-                    <p className={styles.cardDesc}>{project.description}</p>
+                    <p className={styles.cardDesc}>{pDesc}</p>
 
                     <div className={styles.cardFooter}>
                       <div className={styles.downloadStat}>
@@ -295,6 +314,8 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
       {/* Project Detail Modal */}
       {selectedProject && (() => {
         const grouped = groupLinksByPlatform(selectedProject);
+        const modalTitle = getProjectTitle(selectedProject);
+        const modalDesc = getProjectDescription(selectedProject);
         return (
           <div className={styles.modalOverlay} onClick={() => setSelectedProject(null)}>
             <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
@@ -304,17 +325,17 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
                   <span className={`${styles.trafficDot} ${styles.dotYellow}`} />
                   <span className={`${styles.trafficDot} ${styles.dotGreen}`} />
                 </div>
-                <span className={styles.macHeaderTitle}>{selectedProject.title}</span>
+                <span className={styles.macHeaderTitle}>{modalTitle}</span>
                 <button className={styles.modalCloseBtn} onClick={() => setSelectedProject(null)}>×</button>
               </div>
 
               {/* Modal Main Header */}
               <div className={styles.modalHeader}>
-                <img src={selectedProject.icon_url} alt={selectedProject.title} className={styles.modalLogo} />
+                <img src={selectedProject.icon_url} alt={modalTitle} className={styles.modalLogo} />
                 <div className={styles.modalTitleArea}>
                   <span className={styles.modalCategoryBadge}>{selectedProject.type}</span>
-                  <h2>{selectedProject.title}</h2>
-                  <p>{selectedProject.description}</p>
+                  <h2>{modalTitle}</h2>
+                  <p>{modalDesc}</p>
                 </div>
               </div>
 

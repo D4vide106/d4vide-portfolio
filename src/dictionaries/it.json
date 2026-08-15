@@ -63,6 +63,68 @@
     "plugin": "Plugin",
     "server": "Server"
   },
+  "projectData": {
+    "project-boss-rpg": {
+      "title": "PROJECT BOSS RPG",
+      "description": "Un fantastico modpack RPG con progressione dei boss unica, equipaggiamento personalizzato e missioni."
+    },
+    "sdob": {
+      "title": "SPIRAL DUNGEON OF BABEL",
+      "description": "Esplora la torre dungeon più alta mai creata! Disponibile per Minecraft Java, Bedrock e Datapack."
+    },
+    "structural-beyond": {
+      "title": "STRUCTURAL BEYOND",
+      "description": "Aggiunge decine di strutture uniche e mozzafiato al tuo mondo su Java, Bedrock e Datapack!"
+    },
+    "project-horror": {
+      "title": "PROJECT HORROR",
+      "description": "Terrificante esperienza horror di sopravvivenza ricca di entità spaventose, atmosfere e meccaniche uniche."
+    },
+    "project-the-rpg-reborn": {
+      "title": "PROJECT THE RPG REBORN",
+      "description": "Incredibile esperienza RPG da solo o con amici con livellamento, magia, dungeon e boss."
+    },
+    "project-realistic-rpg": {
+      "title": "PROJECT REALISTIC RPG",
+      "description": "Esperienza di sopravvivenza realistica con salute, armi, kit medici, temperatura e meccaniche immersive."
+    },
+    "project-gunparty": {
+      "title": "PROJECT GUNPARTY",
+      "description": "Esperienza multiplayer di guerra e deathmatch ricca di azione all'interno di Minecraft."
+    },
+    "bosstweak-3d": {
+      "title": "BOSSTWEAK 3D+",
+      "description": "Resource pack ufficiale di Boss RPG: corregge problemi visivi, migliora le texture e aggiunge modelli 3D."
+    },
+    "pmaintanceuniversal": {
+      "title": "PROJECT MAINTENANCE UNIVERSAL",
+      "description": "Plugin universale di manutenzione server per server Minecraft Java con MOTD personalizzabili."
+    },
+    "infinitysmart": {
+      "title": "INFINITYSMART SERVER",
+      "description": "Network Minecraft Java & Bedrock europeo multipiattaforma con InfinitySMP e minigiochi."
+    }
+  },
+  "terminal": {
+    "helpPrompt": "Digita help per i comandi disponibili.",
+    "statusLabel": "Status:",
+    "onlineVal": "ONLINE 🟢 (99.99% Uptime)",
+    "kernelLabel": "Kernel:",
+    "kernelVal": "Core Modding Minecraft & Engine Personalizzato",
+    "downloadsLabel": "Downloads:",
+    "downloadsTotal": "TOTALI",
+    "siteViewsLabel": "Visite Sito:",
+    "realsVal": "REALI",
+    "availableCmdsHeader": "COMANDI DISPONIBILI:",
+    "cmdNeofetch": "Mostra le specifiche di sistema D4VIDE106 e il banner",
+    "cmdProjects": "Elenca le migliori mod di Minecraft e link rapidi",
+    "cmdStats": "Mostra i download totali in tempo reale e le visite al portfolio",
+    "cmdSocials": "Elenca tutti i canali social ufficiali (@d4vide106)",
+    "cmdWhoami": "Mostra la bio del creator e lo stack tecnologico",
+    "cmdClear": "Pulisci la cronologia del terminale",
+    "topModsHeader": "LE MIGLIORI MOD CREATE:",
+    "whoamiBio": "D4VIDE106 — System Designer & Creatore di Mod Minecraft.\nSpecializzato in meccaniche RPG procedurali, motori di dimensioni personalizzate, IA dei boss e app Web ad alte prestazioni."
+  },
   "stats": {
     "liveStatsHeader": "STATISTICHE & METRICHE IN TEMPO REALE",
     "downloadsByPlatform": "DOWNLOAD PER PIATTAFORMA"

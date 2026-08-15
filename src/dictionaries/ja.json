@@ -63,6 +63,68 @@
     "plugin": "プラグイン",
     "server": "サーバー"
   },
+  "projectData": {
+    "project-boss-rpg": {
+      "title": "PROJECT BOSS RPG",
+      "description": "ユニークなボス攻略、カスタム装備、クエストラインを備えた叙事詩的RPGモッドパック。"
+    },
+    "sdob": {
+      "title": "SPIRAL DUNGEON OF BABEL",
+      "description": "史上最も高いダンジョンタワーを探索しよう！Minecraft Java、Bedrock、データパックに対応。"
+    },
+    "structural-beyond": {
+      "title": "STRUCTURAL BEYOND",
+      "description": "Java、Bedrock、データパックで、あなたの世界に何十もの息をのむような建造物を追加！"
+    },
+    "project-horror": {
+      "title": "PROJECT HORROR",
+      "description": "最も恐ろしいエンティティ、カスタムな雰囲気、メカニクスを詰めた恐怖のサバイバルホラー体験。"
+    },
+    "project-the-rpg-reborn": {
+      "title": "PROJECT THE RPG REBORN",
+      "description": "レベルアップ、魔法、ダンジョン、ボス要素を備えた、ソロでも友達とでも楽しめる素晴らしいRPG体験。"
+    },
+    "project-realistic-rpg": {
+      "title": "PROJECT REALISTIC RPG",
+      "description": "体力、武器、メディキット、体温管理、没入感のあるメカニクスを備えたリアルなサバイバル体験。"
+    },
+    "project-gunparty": {
+      "title": "PROJECT GUNPARTY",
+      "description": "Minecraft内でのアクション満載のマルチプレイヤー銃撃戦＆デスマッチ体験。"
+    },
+    "bosstweak-3d": {
+      "title": "BOSSTWEAK 3D+",
+      "description": "Boss RPG公式リソースパック：視覚的バグを修正し、テクスチャを改善、3Dモデルを追加。"
+    },
+    "pmaintanceuniversal": {
+      "title": "PROJECT MAINTENANCE UNIVERSAL",
+      "description": "カスタマイズ可能なMOTDを備えたMinecraft Javaサーバー用ユニバーサルサーバーメンテナンスプラグイン。"
+    },
+    "infinitysmart": {
+      "title": "INFINITYSMART SERVER",
+      "description": "InfinitySMPやミニゲームを楽しめる、クロスプレイ対応の欧州Minecraft Java＆Bedrockネットワーク。"
+    }
+  },
+  "terminal": {
+    "helpPrompt": "使用可能なコマンドを表示するには help と入力してください。",
+    "statusLabel": "ステータス:",
+    "onlineVal": "ONLINE 🟢 (99.99% 稼働率)",
+    "kernelLabel": "カーネル:",
+    "kernelVal": "マインクラフトMod開発コア＆カスタムエンジン",
+    "downloadsLabel": "ダウンロード数:",
+    "downloadsTotal": "合計",
+    "siteViewsLabel": "サイト閲覧数:",
+    "realsVal": "リアル",
+    "availableCmdsHeader": "使用可能なコマンド:",
+    "cmdNeofetch": "D4VIDE106システムの仕様とライブバナーを表示",
+    "cmdProjects": "人気マインクラフトModとクイックリンクを一覧表示",
+    "cmdStats": "リアルタイム総ダウンロード数と閲覧数を表示",
+    "cmdSocials": "公式ソーシャルメディア（@d4vide106）一覧を表示",
+    "cmdWhoami": "クリエイターのプロフィールと技術スタックを表示",
+    "cmdClear": "ターミナル履歴をクリア",
+    "topModsHeader": "人気Mod作品:",
+    "whoamiBio": "D4VIDE106 — システムデザイナー＆マインクラフトModクリエイター。\nプロシージャルRPGメカニクス、カスタムディメンションエンジン、ボスAI、高性能Webアプリ開発を専門としています。"
+  },
   "stats": {
     "liveStatsHeader": "ライブ統計＆メトリクス",
     "downloadsByPlatform": "プラットフォーム別ダウンロード数"

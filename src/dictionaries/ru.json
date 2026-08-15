@@ -63,6 +63,68 @@
     "plugin": "Плагин",
     "server": "Сервер"
   },
+  "projectData": {
+    "project-boss-rpg": {
+      "title": "PROJECT BOSS RPG",
+      "description": "Эпический модпак RPG с уникальной прогрессией боссов, кастомным снаряжением и квестами."
+    },
+    "sdob": {
+      "title": "SPIRAL DUNGEON OF BABEL",
+      "description": "Исследуйте самую высокую башню-подземелье! Доступно для Minecraft Java, Bedrock и датапаков."
+    },
+    "structural-beyond": {
+      "title": "STRUCTURAL BEYOND",
+      "description": "Добавляет десятки уникальных захватывающих построек в ваш мир для Java, Bedrock и датапаков!"
+    },
+    "project-horror": {
+      "title": "PROJECT HORROR",
+      "description": "Ужасающий survival horror с самыми пугающими существами, атмосферными механиками и кастомными функциями."
+    },
+    "project-the-rpg-reborn": {
+      "title": "PROJECT THE RPG REBORN",
+      "description": "Невероятный RPG-опыт в одиночку или с друзьями с прокачкой, магией, подземельями и боссами."
+    },
+    "project-realistic-rpg": {
+      "title": "PROJECT REALISTIC RPG",
+      "description": "Реалистичное выживание со здоровьем, оружием, аптечками, температурой и иммерсивными механиками."
+    },
+    "project-gunparty": {
+      "title": "PROJECT GUNPARTY",
+      "description": "Динамичные многопользовательские сражения на огнестрельном оружии и режим дезматча в Minecraft."
+    },
+    "bosstweak-3d": {
+      "title": "BOSSTWEAK 3D+",
+      "description": "Официальный ресурспак для Boss RPG: исправляет графику, улучшает текстуры и добавляет 3D-модели."
+    },
+    "pmaintanceuniversal": {
+      "title": "PROJECT MAINTENANCE UNIVERSAL",
+      "description": "Универсальный плагин технического обслуживания для серверов Minecraft Java с настраиваемыми MOTD."
+    },
+    "infinitysmart": {
+      "title": "INFINITYSMART SERVER",
+      "description": "Кроссплатформенная европейская сеть серверов Minecraft Java и Bedrock с InfinitySMP и мини-играми."
+    }
+  },
+  "terminal": {
+    "helpPrompt": "Введите help для получения списка команд.",
+    "statusLabel": "Status:",
+    "onlineVal": "ONLINE 🟢 (99.99% Uptime)",
+    "kernelLabel": "Kernel:",
+    "kernelVal": "Ядро модификаций Minecraft и кастомный движок",
+    "downloadsLabel": "Downloads:",
+    "downloadsTotal": "ВСЕГО",
+    "siteViewsLabel": "Просмотры сайта:",
+    "realsVal": "РЕАЛЬНЫЕ",
+    "availableCmdsHeader": "ДОСТУПНЫЕ КОМАНДЫ:",
+    "cmdNeofetch": "Показать характеристики системы D4VIDE106 и баннер",
+    "cmdProjects": "Показать топ модов Minecraft и ссылки для запуска",
+    "cmdStats": "Показать общие скачивания в реальном времени и просмотры",
+    "cmdSocials": "Показать все официальные соцсети (@d4vide106)",
+    "cmdWhoami": "Показать биографию автора и стек технологий",
+    "cmdClear": "Очистить историю терминала",
+    "topModsHeader": "ТОП СОЗДАННЫХ МОДОВ:",
+    "whoamiBio": "D4VIDE106 — Дизайнер систем и разработчик модов Minecraft.\nСпециализируется на процедурных механиках RPG, движках измерений, ИИ боссов и высокопроизводительных веб-приложениях."
+  },
   "stats": {
     "liveStatsHeader": "СТАТИСТИКА И МЕТРИКИ В РЕАЛЬНОМ ВРЕМЕНИ",
     "downloadsByPlatform": "СКАЧИВАНИЯ ПО ПЛАТФОРМАМ"

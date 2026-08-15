@@ -63,6 +63,68 @@
     "plugin": "Plugin",
     "server": "Server"
   },
+  "projectData": {
+    "project-boss-rpg": {
+      "title": "PROJECT BOSS RPG",
+      "description": "Ein episches RPG-Modpack mit einzigartiger Boss-Progression, eigener Ausrüstung und Questreihen."
+    },
+    "sdob": {
+      "title": "SPIRAL DUNGEON OF BABEL",
+      "description": "Erforsche den höchsten Dungeon-Turm, der je erschaffen wurde! Verfügbar für Minecraft Java, Bedrock und Datapack."
+    },
+    "structural-beyond": {
+      "title": "STRUCTURAL BEYOND",
+      "description": "Fügt Dutzende einzigartiger, atemberaubender Strukturen zu deiner Welt in Java, Bedrock und Datapacks hinzu!"
+    },
+    "project-horror": {
+      "title": "PROJECT HORROR",
+      "description": "Furchterregendes Survival-Horror-Erlebnis vollgepackt mit gruseligen Kreaturen, einzigartiger Atmosphäre und Mechaniken."
+    },
+    "project-the-rpg-reborn": {
+      "title": "PROJECT THE RPG REBORN",
+      "description": "Unglaubliches RPG-Erlebnis alleine oder mit Freunden mit Levelsystem, Magie, Dungeons und Bossen."
+    },
+    "project-realistic-rpg": {
+      "title": "PROJECT REALISTIC RPG",
+      "description": "Realistisches Survival-Erlebnis mit Gesundheit, Waffen, Medkits, Temperatur und immersiven Mechaniken."
+    },
+    "project-gunparty": {
+      "title": "PROJECT GUNPARTY",
+      "description": "Actiongeladener Mehrspieler-Waffenkampf und Deathmatch-Erlebnis in Minecraft."
+    },
+    "bosstweak-3d": {
+      "title": "BOSSTWEAK 3D+",
+      "description": "Offizielles Ressourcenpaket für Boss RPG: korrigiert visuelle Fehler, verbessert Texturen und fügt 3D-Modelle hinzu."
+    },
+    "pmaintanceuniversal": {
+      "title": "PROJECT MAINTENANCE UNIVERSAL",
+      "description": "Universelles Server-Wartungs-Plugin für Minecraft Java-Server mit anpassbaren MOTDs."
+    },
+    "infinitysmart": {
+      "title": "INFINITYSMART SERVER",
+      "description": "Plattformübergreifendes europäisches Minecraft Java & Bedrock-Netzwerk mit InfinitySMP und Minispielen."
+    }
+  },
+  "terminal": {
+    "helpPrompt": "Gib help ein, um verfügbare Befehle anzuzeigen.",
+    "statusLabel": "Status:",
+    "onlineVal": "ONLINE 🟢 (99.99% Uptime)",
+    "kernelLabel": "Kernel:",
+    "kernelVal": "Minecraft Modding Core & Eigene Engine",
+    "downloadsLabel": "Downloads:",
+    "downloadsTotal": "GESAMT",
+    "siteViewsLabel": "Website-Aufrufe:",
+    "realsVal": "ECHT",
+    "availableCmdsHeader": "VERFÜGBARE BEFEHLE:",
+    "cmdNeofetch": "Zeige D4VIDE106 Systemspezifikationen & Banner",
+    "cmdProjects": "Liste die besten Minecraft-Mods & Schnellstart-Links auf",
+    "cmdStats": "Zeige Live-Downloads & Portfolio-Aufrufe an",
+    "cmdSocials": "Liste alle offiziellen Social-Media-Kanäle (@d4vide106) auf",
+    "cmdWhoami": "Zeige Creator-Bio & Tech-Stack an",
+    "cmdClear": "Lösche den Terminal-Verlauf",
+    "topModsHeader": "BESTE ERSTELLTE MODS:",
+    "whoamiBio": "D4VIDE106 — Systemdesigner & Minecraft-Mod-Entwickler.\nSpezialisiert auf prozedurale RPG-Mechaniken, Dimensionen-Engines, Boss-KI und leistungsstarke Web-Apps."
+  },
   "stats": {
     "liveStatsHeader": "LIVE-STATISTIKEN & METRIKEN",
     "downloadsByPlatform": "DOWNLOADS NACH PLATTFORM"
