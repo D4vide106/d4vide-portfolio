@@ -2,12 +2,20 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { Language, Dictionary, getDictionarySync } from "@/dictionaries";
+import { FiX } from "react-icons/fi";
+import styles from "./LanguageToast.module.css";
 
 interface LanguageContextType {
   lang: Language;
   setLang: (lang: Language) => void;
   dict: Dictionary;
 }
+
+const FLAG_URLS: Record<Language, string> = {
+  it: "/flags/it.png",
+  en: "/flags/gb.png",
+  es: "/flags/es.png",
+};
 
 const LanguageContext = createContext<LanguageContextType>({
   lang: "it",
@@ -17,9 +25,12 @@ const LanguageContext = createContext<LanguageContextType>({
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode; initialLang?: Language }> = ({
   children,
-  initialLang = "it",
+  initialLang = "en",
 }) => {
   const [lang, setLangState] = useState<Language>(initialLang);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [toastFlagUrl, setToastFlagUrl] = useState<string>("/flags/gb.svg");
+  const [toastVisible, setToastVisible] = useState(false);
 
   useEffect(() => {
     try {
@@ -28,9 +39,43 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode; initialLang
         setLangState(saved);
       } else if (typeof navigator !== "undefined") {
         const userLang = navigator.language.toLowerCase();
-        if (userLang.startsWith("es")) setLangState("es");
-        else if (userLang.startsWith("en")) setLangState("en");
-        else setLangState("it");
+        let detected: Language = "en";
+        let isSupported = false;
+
+        if (userLang.startsWith("it")) {
+          detected = "it";
+          isSupported = true;
+        } else if (userLang.startsWith("es")) {
+          detected = "es";
+          isSupported = true;
+        } else if (userLang.startsWith("en")) {
+          detected = "en";
+          isSupported = true;
+        }
+
+        setLangState(detected);
+        setToastFlagUrl(FLAG_URLS[detected]);
+
+        const currentDict = getDictionarySync(detected);
+        const toastDict = currentDict.toast;
+
+        let msg = "";
+        if (isSupported) {
+          if (detected === "it") msg = toastDict.detectedIt;
+          else if (detected === "es") msg = toastDict.detectedEs;
+          else msg = toastDict.detectedEn;
+        } else {
+          msg = toastDict.fallback;
+        }
+
+        setToastMessage(msg);
+        setToastVisible(true);
+
+        const timer = setTimeout(() => {
+          setToastVisible(false);
+        }, 6000);
+
+        return () => clearTimeout(timer);
       }
     } catch {}
   }, []);
@@ -47,6 +92,29 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode; initialLang
   return (
     <LanguageContext.Provider value={{ lang, setLang, dict }}>
       {children}
+      
+      {/* Sleek Floating Glass Toast Notification */}
+      {toastVisible && toastMessage && (
+        <div className={styles.toastContainer} role="alert">
+          <div className={styles.toastCard}>
+            <div className={styles.toastIconWrap}>
+              <img
+                src={toastFlagUrl}
+                alt="Flag"
+                style={{ width: 18, height: 13, objectFit: "cover", borderRadius: 3 }}
+              />
+            </div>
+            <p className={styles.toastText}>{toastMessage}</p>
+            <button
+              onClick={() => setToastVisible(false)}
+              className={styles.toastCloseBtn}
+              aria-label="Close notification"
+            >
+              <FiX size={14} />
+            </button>
+          </div>
+        </div>
+      )}
     </LanguageContext.Provider>
   );
 };

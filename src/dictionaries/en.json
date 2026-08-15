@@ -40,5 +40,11 @@
   "footer": {
     "rights": "All rights reserved.",
     "tagline": "FOR CREATORS AND GAMERS"
+  },
+  "toast": {
+    "detectedIt": "Language set to Italian (detected from browser)",
+    "detectedEs": "Language set to Spanish (detected from browser)",
+    "detectedEn": "Language set to English (detected from browser)",
+    "fallback": "Language defaulted to English (browser language not supported)"
   }
 }

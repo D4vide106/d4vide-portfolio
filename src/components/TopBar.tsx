@@ -7,10 +7,10 @@ import styles from "./TopBar.module.css";
 import { useLanguage } from "@/context/LanguageContext";
 import { Language } from "@/dictionaries";
 
-const LANGUAGES: { code: Language; name: string; flag: string }[] = [
-  { code: "it", name: "Italiano", flag: "🇮🇹" },
-  { code: "en", name: "English", flag: "🇬🇧" },
-  { code: "es", name: "Español", flag: "🇪🇸" },
+export const LANGUAGES: { code: Language; name: string; flagUrl: string }[] = [
+  { code: "it", name: "Italiano", flagUrl: "/flags/it.png" },
+  { code: "en", name: "English", flagUrl: "/flags/gb.png" },
+  { code: "es", name: "Español", flagUrl: "/flags/es.png" },
 ];
 
 export default function TopBar({ dict: propDict }: { dict?: any; currentLang?: string }) {
@@ -119,7 +119,11 @@ export default function TopBar({ dict: propDict }: { dict?: any; currentLang?: s
               aria-label="Select Language"
             >
               <FiGlobe size={14} className={styles.globeIcon} />
-              <span className={styles.currentFlag}>{currentLangObj.flag}</span>
+              <img
+                src={currentLangObj.flagUrl}
+                alt={currentLangObj.name}
+                className={styles.flagIconImg}
+              />
               <FiChevronDown
                 size={12}
                 className={`${styles.chevronIcon} ${
@@ -138,7 +142,11 @@ export default function TopBar({ dict: propDict }: { dict?: any; currentLang?: s
                       lang === item.code ? styles.langMenuItemActive : ""
                     }`}
                   >
-                    <span className={styles.itemFlag}>{item.flag}</span>
+                    <img
+                      src={item.flagUrl}
+                      alt={item.name}
+                      className={styles.flagIconImgItem}
+                    />
                     <span className={styles.itemName}>{item.name}</span>
                     {lang === item.code && (
                       <FiCheck size={13} className={styles.checkIcon} />
@@ -196,7 +204,11 @@ export default function TopBar({ dict: propDict }: { dict?: any; currentLang?: s
                     lang === item.code ? styles.mobileLangPillActive : ""
                   }`}
                 >
-                  <span>{item.flag}</span>
+                  <img
+                    src={item.flagUrl}
+                    alt={item.name}
+                    className={styles.flagIconImgItem}
+                  />
                   <span>{item.name}</span>
                 </button>
               ))}

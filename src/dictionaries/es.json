@@ -40,5 +40,11 @@
   "footer": {
     "rights": "Todos los derechos reservados.",
     "tagline": "PARA CREADORES Y JUGADORES"
+  },
+  "toast": {
+    "detectedIt": "Idioma configurado en Italiano (detectado del navegador)",
+    "detectedEs": "Idioma configurado en Español (detectado del navegador)",
+    "detectedEn": "Idioma configurado en Inglés (detectado del navegador)",
+    "fallback": "Idioma predeterminado establecido en Inglés (idioma no soportado)"
   }
 }
