@@ -256,7 +256,7 @@ export default function Hero({ dict: propDict, aboutDict: propAboutDict }: { dic
                   <div style={{ fontFamily: "var(--font-body)", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.12em", color: "#86868b", display: "flex", alignItems: "center", gap: "0.4rem" }}>
                     <FiGlobe style={{ color: "#bf5af2" }} /> {modalDict?.portfolioViews || "PORTFOLIO VIEWS"}
                   </div>
-                  <div style={{ fontFamily: "var(--font-heading)", fontSize: "1.4rem", fontWeight 800, color: "#ffffff" }}>
+                  <div style={{ fontFamily: "var(--font-heading)", fontSize: "1.4rem", fontWeight: 800, color: "#ffffff" }}>
                     <AnimatedNumber value={portfolioViews} />
                   </div>
                 </div>
