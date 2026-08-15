@@ -1,11 +1,13 @@
 /* Wiki Section Root Container */
 .wikiContainer {
   width: 100%;
-  max-width: 1400px;
-  margin: 1.5rem auto 4rem auto;
-  padding: 0 1.5rem;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
   font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   color: #e4e4e7;
+  background-color: #0b0b0f;
+  min-height: calc(100vh - 80px);
 }
 
 /* 1. Top Wiki Header Navbar */
@@ -14,14 +16,15 @@
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  background: rgba(18, 18, 24, 0.85);
+  background: rgba(12, 12, 16, 0.95);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 18px;
-  padding: 0.75rem 1.25rem;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
-  margin-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.75rem 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  position: sticky;
+  top: 80px;
+  z-index: 8000;
   flex-wrap: wrap;
 }
 
@@ -329,12 +332,12 @@
   color: #86868b;
 }
 
-/* 2. Main Three-Column Layout */
+/* 2. Main Three-Column Layout (Full Viewport Edge-to-Edge) */
 .wikiMainBody {
   display: grid;
-  grid-template-columns: 260px 1fr 220px;
-  gap: 1.5rem;
-  align-items: start;
+  grid-template-columns: 280px 1fr 240px;
+  gap: 0;
+  min-height: calc(100vh - 130px);
 }
 
 @media (max-width: 1100px) {
@@ -351,19 +354,24 @@
     grid-template-columns: 1fr;
   }
   .wikiSidebar {
-    margin-bottom: 1.5rem;
+    position: relative !important;
+    height: auto !important;
+    max-height: none !important;
+    border-right: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
 }
 
-/* Left Sidebar */
+/* Left Sidebar (Stationary / Fixed on Scroll) */
 .wikiSidebar {
-  background: rgba(18, 18, 24, 0.65);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 18px;
-  padding: 1.25rem;
+  background: #08080c;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0;
+  padding: 1.5rem 1.25rem;
   position: sticky;
-  top: 100px;
+  top: 130px;
+  max-height: calc(100vh - 130px);
+  overflow-y: auto;
 }
 
 .sidebarHeader {
@@ -458,12 +466,11 @@
 
 /* Center Main Article Content */
 .wikiArticleCenter {
-  background: rgba(18, 18, 24, 0.75);
-  backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 20px;
-  padding: 2rem;
-  min-height: 600px;
+  background: #0b0b10;
+  border-radius: 0;
+  border: none;
+  padding: 2.5rem 3.5rem;
+  min-height: calc(100vh - 130px);
 }
 
 .breadcrumbBar {
@@ -1110,15 +1117,16 @@
   color: #86868b;
 }
 
-/* Right TOC Sidebar */
+/* Right TOC Sidebar (Stationary / Fixed on Scroll) */
 .wikiTocSidebar {
-  background: rgba(18, 18, 24, 0.5);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  padding: 1rem;
+  background: #08080c;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0;
+  padding: 1.5rem 1.25rem;
   position: sticky;
-  top: 100px;
+  top: 130px;
+  max-height: calc(100vh - 130px);
+  overflow-y: auto;
 }
 
 .tocHeader {

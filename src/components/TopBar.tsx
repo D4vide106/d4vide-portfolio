@@ -91,15 +91,29 @@ export default function TopBar({ dict: propDict }: { dict?: any; currentLang?: s
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     setMobileMenuOpen(false);
+    const repoPrefix = window.location.pathname.startsWith("/d4vide-portfolio")
+      ? "/d4vide-portfolio"
+      : "";
+
     if (targetId === "wiki") {
       e.preventDefault();
-      window.location.href = "/wiki";
+      const wikiElem = document.getElementById("wiki");
+      if (wikiElem && !window.location.pathname.includes("/wiki")) {
+        const yOffset = -100;
+        const y = wikiElem.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: "smooth" });
+        return;
+      }
+      window.location.href = `${repoPrefix}/wiki/`;
       return;
     }
+
     if (window.location.pathname.includes("/wiki")) {
-      window.location.href = `/#${targetId}`;
+      e.preventDefault();
+      window.location.href = `${repoPrefix}/#${targetId}`;
       return;
     }
+
     e.preventDefault();
     if (targetId === "hero") {
       window.scrollTo({ top: 0, behavior: "smooth" });

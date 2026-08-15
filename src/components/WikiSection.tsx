@@ -104,7 +104,7 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
     setEditorOpen(true);
   };
 
-  // Load custom wiki articles from localStorage
+  // Load custom wiki articles from localStorage & read URL query parameters
   useEffect(() => {
     try {
       const saved = localStorage.getItem("d4v_custom_wikis_v1");
@@ -117,8 +117,33 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
           }));
         }
       }
+      if (typeof window !== "undefined") {
+        const params = new URLSearchParams(window.location.search);
+        const urlProj = params.get("project");
+        const urlArt = params.get("article");
+        if (urlProj) {
+          setSelectedProjectId(urlProj);
+        }
+        if (urlArt) {
+          setActiveArticleId(urlArt);
+        }
+      }
     } catch {}
   }, []);
+
+  // Sync URL query string when project or article changes
+  useEffect(() => {
+    try {
+      if (typeof window !== "undefined") {
+        const url = new URL(window.location.href);
+        url.searchParams.set("project", selectedProjectId);
+        if (activeArticleId) {
+          url.searchParams.set("article", activeArticleId);
+        }
+        window.history.replaceState(null, "", url.toString());
+      }
+    } catch {}
+  }, [selectedProjectId, activeArticleId]);
 
   // Save new/edited article to state and localStorage
   const handleSaveArticle = (newArt: {
