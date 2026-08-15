@@ -1,10 +1,29 @@
 "use client";
-import { useEffect } from "react";
+
+import TopBar from "@/components/TopBar";
+import Hero from "@/components/Hero";
+import Projects from "@/components/Projects";
+import Footer from "@/components/Footer";
+import HackerIntro from "@/components/HackerIntro";
+import DraggableTerminal from "@/components/DraggableTerminal";
 
 export default function Home() {
-  useEffect(() => {
-    window.location.replace("/d4vide-portfolio/en");
-  }, []);
-  
-  return null;
+  return (
+    <main style={{ minHeight: "100vh", backgroundColor: "#07070a", overflowX: "hidden" }}>
+      <HackerIntro />
+      <TopBar />
+      
+      {/* 1. Hero: Title, 3D Constellation & Profile/About Showcase */}
+      <Hero />
+
+      {/* 2. Standalone Full-Bleed Edge-to-Edge Modrinth Marquee Showcase */}
+      <Projects />
+
+      {/* 3. Footer */}
+      <Footer />
+
+      {/* Floating Standalone Draggable Terminal Window */}
+      <DraggableTerminal />
+    </main>
+  );
 }

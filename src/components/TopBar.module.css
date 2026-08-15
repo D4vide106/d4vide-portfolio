@@ -165,29 +165,132 @@
   box-shadow: 0 4px 14px rgba(255, 255, 255, 0.25);
 }
 
-.langBtn {
+/* EnderClub-inspired Language Dropdown */
+.langDropdownWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.langDropdownBtn {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.4rem 0.85rem;
+  padding: 0.4rem 0.75rem;
   background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 9999px;
   color: #f5f5f7;
   font-family: var(--font-heading);
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.langBtn:hover {
-  background: #ffffff;
-  color: #000000;
-  border-color: #ffffff;
-  transform: scale(1.04);
-  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.25);
+.langDropdownBtn:hover,
+.langDropdownBtnActive {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+
+.globeIcon {
+  color: #a1a1a6;
+  transition: color 0.2s;
+}
+
+.langDropdownBtn:hover .globeIcon {
+  color: #ffffff;
+}
+
+.currentFlag {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.chevronIcon {
+  color: #86868b;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s;
+}
+
+.chevronRotated {
+  transform: rotate(180deg);
+  color: #ffffff;
+}
+
+/* Dropdown Floating Glass Menu */
+.langMenu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 155px;
+  background: rgba(14, 14, 20, 0.94);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 16px;
+  padding: 6px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  animation: dropdownFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.langMenuItem {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: #c7c7cc;
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  text-align: left;
+}
+
+.langMenuItem:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.langMenuItemActive {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.16) !important;
+}
+
+.itemFlag {
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+.itemName {
+  flex: 1;
+}
+
+.checkIcon {
+  color: #bf5af2;
 }
 
 /* Mobile Toggle Button (Hidden on Desktop) */
@@ -287,13 +390,19 @@
   text-decoration: none;
 }
 
-.mobileLangBtn {
+.mobileLangRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.mobileLangPill {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.6rem;
-  height: 46px;
-  border-radius: 9999px;
+  gap: 6px;
+  height: 42px;
+  border-radius: 12px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: #a1a1a6;
@@ -301,6 +410,13 @@
   font-size: 0.74rem;
   font-weight: 700;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mobileLangPillActive {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
 }
 
 /* Tablet & iPad Responsive Media Queries (769px - 1024px) */
@@ -338,15 +454,6 @@
     width: 36px;
     height: 36px;
     justify-content: center;
-  }
-  .langBtn {
-    padding: 0.4rem;
-    width: 36px;
-    height: 36px;
-    justify-content: center;
-  }
-  .langBtn span {
-    display: none;
   }
   .mobileToggleBtn {
     display: flex;

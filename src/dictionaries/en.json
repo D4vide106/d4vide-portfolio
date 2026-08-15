@@ -1,14 +1,20 @@
 {
   "nav": {
     "home": "Home",
-    "projects": "Minecraft Projects",
-    "journey": "IT Journey",
-    "about": "About Me"
+    "projects": "WORKS",
+    "about": "ABOUT",
+    "media": "MEDIA",
+    "community": "Community"
   },
   "hero": {
     "greeting": "Hi, I'm",
     "role": "Content Creator & Minecraft Specialist",
-    "scroll": "Scroll Down"
+    "scroll": "Scroll Down",
+    "viewsGenerated": "Views generated",
+    "serversPromoted": "Servers promoted",
+    "activePlatforms": "Active platforms",
+    "getStarted": "Get started",
+    "seeWork": "See our work"
   },
   "aboutSection": {
     "aboutTitle": "Who the hell am I?",
@@ -25,9 +31,14 @@
   "projects": {
     "title": "My",
     "highlight": "Projects",
-    "viewProject": "View Project"
+    "viewProject": "View Project",
+    "all": "All",
+    "mods": "Mods",
+    "datapacks": "Datapacks",
+    "resourcepacks": "Resource Packs"
   },
   "footer": {
-    "rights": "All rights reserved."
+    "rights": "All rights reserved.",
+    "tagline": "FOR CREATORS AND GAMERS"
   }
 }

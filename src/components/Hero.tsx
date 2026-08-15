@@ -17,7 +17,7 @@ import { FaCube } from "react-icons/fa";
 import styles from "./Hero.module.css";
 import TotalDownloads from "./TotalDownloads";
 import CipherCarousel from "./CipherCarousel";
-import { useLiveStats } from "@/context/LiveStatsContext";
+import { useLanguage } from "@/context/LanguageContext";
 import { UnifiedProject } from "@/data/projectsData";
 import AnimatedNumber from "./AnimatedNumber";
 
@@ -40,7 +40,10 @@ const SOCIAL_LINKS = [
   { name: "GitHub", handle: "@D4vide106", url: "https://github.com/D4vide106", icon: SiGithub, color: "#ffffff" },
 ];
 
-export default function Hero({ dict, aboutDict }: { dict: any; aboutDict: any }) {
+export default function Hero({ dict: propDict, aboutDict: propAboutDict }: { dict?: any; aboutDict?: any }) {
+  const { dict: contextDict } = useLanguage();
+  const dict = contextDict.hero || propDict;
+  const aboutDict = contextDict.aboutSection || propAboutDict;
   const { projects, incrementProjectViews, getProjectViews, portfolioViews, incrementDownloadLink } = useLiveStats();
   const [selectedConstellationProject, setSelectedConstellationProject] = useState<UnifiedProject | null>(null);
 

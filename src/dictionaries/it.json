@@ -1,14 +1,20 @@
 {
   "nav": {
     "home": "Home",
-    "projects": "Progetti Minecraft",
-    "journey": "Percorso Informatico",
-    "about": "Chi Sono"
+    "projects": "PROGETTI",
+    "about": "CHI SONO",
+    "media": "MEDIA",
+    "community": "Community"
   },
   "hero": {
     "greeting": "Ciao, sono",
     "role": "Content Creator & Specialista Minecraft",
-    "scroll": "Scorri Giù"
+    "scroll": "Scorri Giù",
+    "viewsGenerated": "Visualizzazioni generate",
+    "serversPromoted": "Server promossi",
+    "activePlatforms": "Piattaforme attive",
+    "getStarted": "Inizia ora",
+    "seeWork": "Vedi i nostri lavori"
   },
   "aboutSection": {
     "aboutTitle": "Chi diavolo sono?",
@@ -25,9 +31,14 @@
   "projects": {
     "title": "I miei",
     "highlight": "Progetti",
-    "viewProject": "Vedi Progetto"
+    "viewProject": "Vedi Progetto",
+    "all": "Tutti",
+    "mods": "Mod",
+    "datapacks": "Datapack",
+    "resourcepacks": "Resource Pack"
   },
   "footer": {
-    "rights": "Tutti i diritti riservati."
+    "rights": "Tutti i diritti riservati.",
+    "tagline": "PER CREATOR E GIOCATORI"
   }
 }

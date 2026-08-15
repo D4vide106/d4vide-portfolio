@@ -1,0 +1,44 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "projects": "TRABAJOS",
+    "about": "SOBRE MÍ",
+    "media": "MEDIOS",
+    "community": "Comunidad"
+  },
+  "hero": {
+    "greeting": "Hola, soy",
+    "role": "Creador de Contenido y Especialista de Minecraft",
+    "scroll": "Desliza Hacia Abajo",
+    "viewsGenerated": "Visualizaciones generadas",
+    "serversPromoted": "Servidores promovidos",
+    "activePlatforms": "Plataformas activas",
+    "getStarted": "Empezar ahora",
+    "seeWork": "Ver nuestros trabajos"
+  },
+  "aboutSection": {
+    "aboutTitle": "¿Quién demonios soy?",
+    "aboutStats": {
+      "bornIn": "Nacido en",
+      "livingIn": "Vivo en",
+      "age": "Edad",
+      "gender": "Género"
+    },
+    "aboutDesc1": "Soy muchas cosas, pero lo más relevante para ti: un desarrollador de mods de Minecraft y creador de contenido.",
+    "aboutDesc2": "Tengo una pasión especial por crear experiencias RPG inmersivas, estructuras y herramientas. La mayor parte de mi experiencia consiste en llevar al límite lo que es posible dentro del juego.",
+    "aboutDesc3": "Hoy en día me puedes encontrar en mi servidor de Discord, donde hablo de todo y anuncio los nuevos avances de mis proyectos. ¡También puedes ver mis videos en mi canal de YouTube, donde publico actualizaciones y gameplays!"
+  },
+  "projects": {
+    "title": "Mis",
+    "highlight": "Proyectos",
+    "viewProject": "Ver Proyecto",
+    "all": "Todos",
+    "mods": "Mods",
+    "datapacks": "Datapacks",
+    "resourcepacks": "Packs de Recursos"
+  },
+  "footer": {
+    "rights": "Todos los derechos reservados.",
+    "tagline": "PARA CREADORES Y JUGADORES"
+  }
+}

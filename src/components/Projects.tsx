@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import { FiDownload, FiSearch, FiEye, FiGlobe, FiTag, FiExternalLink } from "react-icons/fi";
 import { SiCurseforge, SiModrinth, SiGamejolt, SiItchdotio } from "react-icons/si";
 import { FaCube } from "react-icons/fa";
+import { useLanguage } from "@/context/LanguageContext";
 import styles from "./Projects.module.css";
 import { useLiveStats } from "@/context/LiveStatsContext";
 import { UnifiedProject } from "@/data/projectsData";
@@ -16,7 +17,9 @@ const PLATFORM_NAMES: Record<string, string> = {
   itch: "Itch.io",
 };
 
-export default function Projects({ dict }: { dict?: any }) {
+export default function Projects({ dict: propDict }: { dict?: any }) {
+  const { dict: contextDict } = useLanguage();
+  const dict = contextDict.projects || propDict;
   const { projects, incrementProjectViews, getProjectViews, portfolioViews, incrementDownloadLink } = useLiveStats();
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState("All");

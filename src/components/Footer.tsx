@@ -1,16 +1,21 @@
+"use client";
+
 import { SiYoutube, SiDiscord, SiGithub, SiCurseforge, SiModrinth } from "react-icons/si";
 import styles from "./Footer.module.css";
+import { useLanguage } from "@/context/LanguageContext";
 
-export default function Footer({ dict }: { dict: any }) {
+export default function Footer({ dict: propDict }: { dict?: any }) {
+  const { dict: contextDict } = useLanguage();
+  const dict = contextDict.footer || propDict;
+
   return (
     <footer className={styles.footer}>
       <div className={styles.container}>
         <div className={styles.metaLeft}>
           <span className={styles.brandText}>D4VIDE106</span>
-          <span className={styles.subText}>FOR CREATORS AND GAMERS</span>
+          <span className={styles.subText}>{dict?.tagline || "FOR CREATORS AND GAMERS"}</span>
         </div>
 
-        
         <div className={styles.socials}>
           <a href="https://youtube.com/@d4vide106" target="_blank" rel="noreferrer" className={styles.socialLink} aria-label="YouTube">
             <SiYoutube size={16} />
@@ -30,10 +35,9 @@ export default function Footer({ dict }: { dict: any }) {
         </div>
         
         <p className={styles.copyright}>
-          &copy; {new Date().getFullYear()} D4VIDE106. ALL RIGHTS RESERVED.
+          &copy; {new Date().getFullYear()} D4VIDE106. {dict?.rights ? dict.rights.toUpperCase() : "ALL RIGHTS RESERVED."}
         </p>
       </div>
     </footer>
   );
 }
-

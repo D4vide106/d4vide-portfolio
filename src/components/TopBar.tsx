@@ -1,13 +1,27 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { FiGlobe, FiMenu, FiX } from "react-icons/fi";
+import { useState, useEffect, useRef } from "react";
+import { FiGlobe, FiMenu, FiX, FiChevronDown, FiCheck } from "react-icons/fi";
 import { SiDiscord } from "react-icons/si";
 import styles from "./TopBar.module.css";
+import { useLanguage } from "@/context/LanguageContext";
+import { Language } from "@/dictionaries";
 
-export default function TopBar({ dict, currentLang }: { dict: any; currentLang: string }) {
+const LANGUAGES: { code: Language; name: string; flag: string }[] = [
+  { code: "it", name: "Italiano", flag: "🇮🇹" },
+  { code: "en", name: "English", flag: "🇬🇧" },
+  { code: "es", name: "Español", flag: "🇪🇸" },
+];
+
+export default function TopBar({ dict: propDict }: { dict?: any; currentLang?: string }) {
+  const { lang, setLang, dict: contextDict } = useLanguage();
+  const dict = contextDict.nav || propDict;
+
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [langDropdownOpen, setLangDropdownOpen] = useState(false);
+
+  const langRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,17 +31,34 @@ export default function TopBar({ dict, currentLang }: { dict: any; currentLang: 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const toggleLang = () => {
-    const nextLang = currentLang === "en" ? "it" : "en";
-    window.location.href = `/d4vide-portfolio/${nextLang}`;
+  // Close language dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (langRef.current && !langRef.current.contains(e.target as Node)) {
+        setLangDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleSelectLang = (code: Language) => {
+    setLang(code);
+    setLangDropdownOpen(false);
   };
 
   const handleLinkClick = () => {
     setMobileMenuOpen(false);
   };
 
+  const currentLangObj = LANGUAGES.find((l) => l.code === lang) || LANGUAGES[0];
+
   return (
-    <header className={`${styles.topBar} ${scrolled ? styles.topBarScrolled : ""} ${mobileMenuOpen ? styles.topBarExpanded : ""}`}>
+    <header
+      className={`${styles.topBar} ${scrolled ? styles.topBarScrolled : ""} ${
+        mobileMenuOpen ? styles.topBarExpanded : ""
+      }`}
+    >
       <div className={styles.container}>
         {/* Left: Brand with avatar & live status dot */}
         <div className={styles.logo}>
@@ -49,23 +80,23 @@ export default function TopBar({ dict, currentLang }: { dict: any; currentLang: 
           <ul className={styles.menuList}>
             <li>
               <a href="#projects" className={styles.menuLink} onClick={handleLinkClick}>
-                WORKS
+                {dict.projects || "WORKS"}
               </a>
             </li>
             <li>
               <a href="#about" className={styles.menuLink} onClick={handleLinkClick}>
-                ABOUT
+                {dict.about || "ABOUT"}
               </a>
             </li>
             <li>
               <a href="#youtube" className={styles.menuLink} onClick={handleLinkClick}>
-                MEDIA
+                {dict.media || "MEDIA"}
               </a>
             </li>
           </ul>
         </nav>
 
-        {/* Right: Quick Community CTA, Language Switcher & Mobile Toggle */}
+        {/* Right: Quick Community CTA, Language Switcher Dropdown & Mobile Toggle */}
         <div className={styles.actions}>
           <a
             href="https://discord.gg/7T3u9a9"
@@ -75,13 +106,48 @@ export default function TopBar({ dict, currentLang }: { dict: any; currentLang: 
             title="Join Discord Community"
           >
             <SiDiscord size={14} />
-            <span className={styles.actionText}>Community</span>
+            <span className={styles.actionText}>{dict.community || "Community"}</span>
           </a>
 
-          <button onClick={toggleLang} className={styles.langBtn} aria-label="Switch Language">
-            <FiGlobe size={13} />
-            <span>{currentLang.toUpperCase()}</span>
-          </button>
+          {/* EnderClub-Inspired Dropdown Switcher */}
+          <div className={styles.langDropdownWrapper} ref={langRef}>
+            <button
+              onClick={() => setLangDropdownOpen(!langDropdownOpen)}
+              className={`${styles.langDropdownBtn} ${
+                langDropdownOpen ? styles.langDropdownBtnActive : ""
+              }`}
+              aria-label="Select Language"
+            >
+              <FiGlobe size={14} className={styles.globeIcon} />
+              <span className={styles.currentFlag}>{currentLangObj.flag}</span>
+              <FiChevronDown
+                size={12}
+                className={`${styles.chevronIcon} ${
+                  langDropdownOpen ? styles.chevronRotated : ""
+                }`}
+              />
+            </button>
+
+            {langDropdownOpen && (
+              <div className={styles.langMenu}>
+                {LANGUAGES.map((item) => (
+                  <button
+                    key={item.code}
+                    onClick={() => handleSelectLang(item.code)}
+                    className={`${styles.langMenuItem} ${
+                      lang === item.code ? styles.langMenuItemActive : ""
+                    }`}
+                  >
+                    <span className={styles.itemFlag}>{item.flag}</span>
+                    <span className={styles.itemName}>{item.name}</span>
+                    {lang === item.code && (
+                      <FiCheck size={13} className={styles.checkIcon} />
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -98,16 +164,16 @@ export default function TopBar({ dict, currentLang }: { dict: any; currentLang: 
         <div className={styles.mobileDrawer}>
           <nav className={styles.mobileNav}>
             <a href="#projects" className={styles.mobileNavLink} onClick={handleLinkClick}>
-              WORKS
+              {dict.projects || "WORKS"}
             </a>
             <a href="#about" className={styles.mobileNavLink} onClick={handleLinkClick}>
-              ABOUT
+              {dict.about || "ABOUT"}
             </a>
             <a href="#youtube" className={styles.mobileNavLink} onClick={handleLinkClick}>
-              MEDIA
+              {dict.media || "MEDIA"}
             </a>
           </nav>
-          
+
           <div className={styles.mobileActionsRow}>
             <a
               href="https://discord.gg/7T3u9a9"
@@ -119,11 +185,22 @@ export default function TopBar({ dict, currentLang }: { dict: any; currentLang: 
               <SiDiscord size={15} />
               <span>Discord Community</span>
             </a>
-            
-            <button onClick={toggleLang} className={styles.mobileLangBtn}>
-              <FiGlobe size={15} />
-              <span>Language: {currentLang.toUpperCase()}</span>
-            </button>
+
+            {/* Mobile Language Selector Row */}
+            <div className={styles.mobileLangRow}>
+              {LANGUAGES.map((item) => (
+                <button
+                  key={item.code}
+                  onClick={() => handleSelectLang(item.code)}
+                  className={`${styles.mobileLangPill} ${
+                    lang === item.code ? styles.mobileLangPillActive : ""
+                  }`}
+                >
+                  <span>{item.flag}</span>
+                  <span>{item.name}</span>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       )}
