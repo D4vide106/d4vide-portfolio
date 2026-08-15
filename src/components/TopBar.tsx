@@ -21,7 +21,7 @@ export const LANGUAGES: { code: Language; name: string; flagUrl: string }[] = [
   {
     code: "es",
     name: "Español",
-    flagUrl: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 500"><rect width="750" height="500" fill="%23c60b1e"/><rect y="125" width="750" height="250" fill="%23ffc400"/></svg>`,
+    flagUrl: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2"><rect width="3" height="2" fill="%23c60b1e"/><rect y="0.5" width="3" height="1" fill="%23ffc400"/></svg>`,
   },
 ];
 
@@ -59,8 +59,19 @@ export default function TopBar({ dict: propDict }: { dict?: any; currentLang?: s
     setLangDropdownOpen(false);
   };
 
-  const handleLinkClick = () => {
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
     setMobileMenuOpen(false);
+    if (targetId === "hero") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    const element = document.getElementById(targetId);
+    if (element) {
+      const yOffset = -100;
+      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
   };
 
   const currentLangObj = LANGUAGES.find((l) => l.code === lang) || LANGUAGES[0];
@@ -74,7 +85,7 @@ export default function TopBar({ dict: propDict }: { dict?: any; currentLang?: s
       <div className={styles.container}>
         {/* Left: Brand with avatar & live status dot */}
         <div className={styles.logo}>
-          <a href="#hero" className={styles.brandLink} onClick={handleLinkClick}>
+          <a href="#hero" className={styles.brandLink} onClick={(e) => handleNavClick(e, "hero")}>
             <div className={styles.avatarWrap}>
               <img
                 src="https://mc-heads.net/avatar/_D4vide106_/32"
@@ -91,17 +102,17 @@ export default function TopBar({ dict: propDict }: { dict?: any; currentLang?: s
         <nav className={styles.nav}>
           <ul className={styles.menuList}>
             <li>
-              <a href="#projects" className={styles.menuLink} onClick={handleLinkClick}>
+              <a href="#projects" className={styles.menuLink} onClick={(e) => handleNavClick(e, "projects")}>
                 {dict.projects || "WORKS"}
               </a>
             </li>
             <li>
-              <a href="#about" className={styles.menuLink} onClick={handleLinkClick}>
+              <a href="#about" className={styles.menuLink} onClick={(e) => handleNavClick(e, "about")}>
                 {dict.about || "ABOUT"}
               </a>
             </li>
             <li>
-              <a href="#youtube" className={styles.menuLink} onClick={handleLinkClick}>
+              <a href="#youtube" className={styles.menuLink} onClick={(e) => handleNavClick(e, "youtube")}>
                 {dict.media || "MEDIA"}
               </a>
             </li>
@@ -183,13 +194,13 @@ export default function TopBar({ dict: propDict }: { dict?: any; currentLang?: s
       {mobileMenuOpen && (
         <div className={styles.mobileDrawer}>
           <nav className={styles.mobileNav}>
-            <a href="#projects" className={styles.mobileNavLink} onClick={handleLinkClick}>
+            <a href="#projects" className={styles.mobileNavLink} onClick={(e) => handleNavClick(e, "projects")}>
               {dict.projects || "WORKS"}
             </a>
-            <a href="#about" className={styles.mobileNavLink} onClick={handleLinkClick}>
+            <a href="#about" className={styles.mobileNavLink} onClick={(e) => handleNavClick(e, "about")}>
               {dict.about || "ABOUT"}
             </a>
-            <a href="#youtube" className={styles.mobileNavLink} onClick={handleLinkClick}>
+            <a href="#youtube" className={styles.mobileNavLink} onClick={(e) => handleNavClick(e, "youtube")}>
               {dict.media || "MEDIA"}
             </a>
           </nav>
@@ -200,7 +211,7 @@ export default function TopBar({ dict: propDict }: { dict?: any; currentLang?: s
               target="_blank"
               rel="noreferrer"
               className={styles.mobileDiscordBtn}
-              onClick={handleLinkClick}
+              onClick={() => setMobileMenuOpen(false)}
             >
               <SiDiscord size={15} />
               <span>Discord Community</span>
