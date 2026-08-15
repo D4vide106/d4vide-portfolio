@@ -1,31 +1,33 @@
-/* Stonecutter / VitePress v2 Aesthetic CSS */
+/* D4VIDE WIKIS & DOCS - Pristine Modern CSS */
 .wikiRoot {
   width: 100%;
-  min-height: calc(100vh - 80px);
-  background-color: #0d0d11;
+  min-height: 100vh;
+  background-color: #0b0b0f;
   color: #e4e4e7;
   font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   overflow-x: hidden;
+  padding-top: 80px;
 }
 
-/* 1. StoneNavbar Header Bar */
-.stoneNavbar {
+/* 1. Header Control Bar (Sub-Header below TopBar) */
+.wikiHeaderBar {
   position: sticky;
   top: 80px;
-  z-index: 8000;
+  z-index: 7000;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  background: rgba(13, 13, 17, 0.95);
+  background: rgba(12, 12, 16, 0.95);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   padding: 0.7rem 2rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  flex-wrap: wrap;
 }
 
-.navLeftBrand {
+.headerLeftBrand {
   display: flex;
   align-items: center;
   gap: 0.6rem;
@@ -35,66 +37,32 @@
   color: #3b82f6;
 }
 
-.brandName {
-  font-size: 0.92rem;
+.brandTitle {
+  font-size: 0.9rem;
   font-weight: 800;
   color: #ffffff;
   letter-spacing: -0.01em;
 }
 
-.navCenterSearch {
-  display: flex;
-  align-items: center;
-  flex: 1;
-  max-width: 320px;
-}
-
-.searchBoxInputWrap {
-  position: relative;
-  width: 100%;
-  display: flex;
-  align-items: center;
-}
-
-.searchIcon {
-  position: absolute;
-  left: 0.75rem;
-  color: #71717a;
-}
-
-.stoneSearchInput {
-  width: 100%;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+.versionBadge {
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: #34d399;
+  background: rgba(52, 211, 153, 0.15);
+  border: 1px solid rgba(52, 211, 153, 0.3);
+  padding: 0.15rem 0.45rem;
   border-radius: 9999px;
-  padding: 0.4rem 1rem 0.4rem 2.2rem;
-  color: #ffffff;
-  font-size: 0.78rem;
-  outline: none;
-  transition: all 0.25s ease;
 }
 
-.stoneSearchInput:focus {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(59, 130, 246, 0.5);
-  box-shadow: 0 0 12px rgba(59, 130, 246, 0.25);
-}
-
-.navRightActions {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-/* Project Selector Dropdown */
-.stoneProjDropdownWrap {
+/* Project Dropdown Selector */
+.projectDropdownWrap {
   position: relative;
 }
 
-.stoneProjBtn {
+.projectSelectBtn {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.55rem;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 8px;
@@ -106,26 +74,26 @@
   transition: all 0.2s ease;
 }
 
-.stoneProjBtn:hover {
+.projectSelectBtn:hover {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.25);
 }
 
-.stoneProjIcon {
+.projBtnLogo {
   width: 18px;
   height: 18px;
   border-radius: 4px;
   object-fit: cover;
 }
 
-.stoneProjName {
+.projBtnTitle {
   color: #ffffff;
 }
 
-.stoneProjMenu {
+.projectSelectMenu {
   position: absolute;
   top: calc(100% + 6px);
-  right: 0;
+  left: 0;
   width: 260px;
   max-height: 320px;
   overflow-y: auto;
@@ -134,21 +102,21 @@
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 14px;
   padding: 0.5rem;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.95);
   z-index: 9999;
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.menuLabel {
+.menuHeaderLabel {
   font-size: 0.65rem;
   font-weight: 800;
   color: #71717a;
   padding: 0.3rem 0.5rem;
 }
 
-.stoneProjMenuItem {
+.projectMenuItem {
   display: flex;
   align-items: center;
   gap: 0.6rem;
@@ -165,49 +133,69 @@
   transition: all 0.2s ease;
 }
 
-.stoneProjMenuItem:hover {
+.projectMenuItem:hover {
   background: rgba(255, 255, 255, 0.08);
 }
 
-.stoneProjMenuItemActive {
+.projectMenuItemActive {
   background: rgba(59, 130, 246, 0.15);
   border-color: rgba(59, 130, 246, 0.3);
   color: #60a5fa;
 }
 
-.menuProjLogo {
+.menuItemLogo {
   width: 22px;
   height: 22px;
   border-radius: 4px;
   object-fit: cover;
 }
 
-.stoneIconLink {
-  display: inline-flex;
+/* Header Search */
+.headerSearchWrap {
+  position: relative;
+  display: flex;
   align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.05);
+  width: 260px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 0.75rem;
+  color: #71717a;
+}
+
+.headerSearchInput {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #a1a1a6;
-  transition: all 0.2s ease;
-}
-
-.stoneIconLink:hover {
-  background: rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+  padding: 0.38rem 1rem 0.38rem 2.2rem;
   color: #ffffff;
+  font-size: 0.78rem;
+  outline: none;
+  transition: all 0.25s ease;
 }
 
-/* Creator Control Buttons */
-.creatorWrap {
+.headerSearchInput:focus {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(59, 130, 246, 0.5);
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.25);
+}
+
+/* Header Right Actions */
+.headerRightActions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.creatorGroup {
   display: flex;
   align-items: center;
   gap: 0.4rem;
 }
 
-.creatorTag {
+.creatorBadge {
   font-size: 0.65rem;
   font-weight: 800;
   color: #34d399;
@@ -217,38 +205,58 @@
   border-radius: 6px;
 }
 
-.stoneNewBtn {
+.newGuideBtn {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
+  gap: 0.35rem;
   background: #2563eb;
   border: none;
+  border-radius: 8px;
+  padding: 0.35rem 0.75rem;
   color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
   cursor: pointer;
   transition: background 0.2s;
 }
 
-.stoneNewBtn:hover {
+.newGuideBtn:hover {
   background: #1d4ed8;
 }
 
-.stoneLogoutBtn {
+.logoutIconBtn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
   background: rgba(239, 68, 68, 0.15);
   border: 1px solid rgba(239, 68, 68, 0.3);
   color: #f87171;
   cursor: pointer;
 }
 
-.stoneLockBtn {
+.creatorLockBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  padding: 0.35rem 0.7rem;
+  color: #a1a1a6;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.creatorLockBtn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.actionIconBtn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -258,24 +266,24 @@
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.12);
   color: #a1a1a6;
-  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.stoneLockBtn:hover {
+.actionIconBtn:hover {
   background: rgba(255, 255, 255, 0.12);
   color: #ffffff;
 }
 
-/* Layout Switch & Spotlight Control Menu (Matching Screenshots #2, #3, #4!) */
+/* Layout Switch & Spotlight Menu */
 .layoutSwitchWrap {
   position: relative;
 }
 
-.stoneLayoutBtn {
+.layoutToggleBtn {
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  padding: 0.4rem 0.6rem;
+  padding: 0.35rem 0.6rem;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 8px;
@@ -284,30 +292,29 @@
   transition: all 0.2s ease;
 }
 
-.stoneLayoutBtn:hover,
-.stoneLayoutBtnActive {
+.layoutToggleBtn:hover,
+.layoutToggleBtnActive {
   background: rgba(255, 255, 255, 0.12);
   color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.25);
 }
 
 .layoutMenuCard {
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  width: 280px;
+  width: 270px;
   background: #121218;
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 16px;
-  padding: 1.1rem;
+  padding: 1rem;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.95);
   z-index: 9999;
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 0.75rem;
 }
 
-.layoutSecHeader {
+.menuSecTitle {
   display: flex;
   align-items: center;
   gap: 0.45rem;
@@ -316,7 +323,7 @@
   color: #ffffff;
 }
 
-.layoutBtnsGrid {
+.layoutGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
@@ -327,7 +334,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
-  padding: 0.45rem;
+  padding: 0.4rem;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
@@ -335,12 +342,6 @@
   font-size: 0.72rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.layoutSegBtn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
 }
 
 .layoutSegBtnActive {
@@ -353,7 +354,6 @@
   border: none;
   height: 1px;
   background: rgba(255, 255, 255, 0.08);
-  margin: 0.2rem 0;
 }
 
 .spotlightToggleRow {
@@ -366,7 +366,7 @@
   padding: 3px;
 }
 
-.spotToggleBtn {
+.spotBtn {
   padding: 0.35rem;
   background: transparent;
   border: none;
@@ -375,13 +375,11 @@
   font-size: 0.72rem;
   font-weight: 800;
   cursor: pointer;
-  transition: all 0.2s ease;
 }
 
-.spotToggleBtnActive {
+.spotBtnActive {
   background: #ffffff;
   color: #000000;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
 /* Search Overlay */
@@ -459,17 +457,17 @@
   color: #71717a;
 }
 
-/* 2. Main Grid Layout (Original vs Expand All) */
+/* 2. Main Three-Column Grid Layout */
 .wikiBodyGrid {
   display: grid;
   grid-template-columns: 280px 1fr 240px;
   gap: 0;
   max-width: 1400px;
   margin: 0 auto;
-  min-height: calc(100vh - 130px);
+  min-height: calc(100vh - 135px);
 }
 
-.wikiGridExpand {
+.gridExpand {
   max-width: 100% !important;
 }
 
@@ -477,7 +475,7 @@
   .wikiBodyGrid {
     grid-template-columns: 240px 1fr;
   }
-  .stoneTocSidebar {
+  .rightTocSidebar {
     display: none;
   }
 }
@@ -486,7 +484,7 @@
   .wikiBodyGrid {
     grid-template-columns: 1fr;
   }
-  .stoneSidebar {
+  .leftSidebar {
     position: relative !important;
     height: auto !important;
     max-height: none !important;
@@ -495,15 +493,23 @@
   }
 }
 
-/* Left Sidebar (With Vertical Active Indicator Line matching Stonecutter!) */
-.stoneSidebar {
-  background: #09090d;
+/* Left Sidebar (With Precise Vertical Indicator Lines) */
+.leftSidebar {
+  background: #08080c;
   border-right: 1px solid rgba(255, 255, 255, 0.08);
   padding: 1.75rem 1.25rem;
   position: sticky;
-  top: 130px;
-  height: calc(100vh - 130px);
+  top: 135px;
+  height: calc(100vh - 135px);
   overflow-y: auto;
+}
+
+.sidebarTitle {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #71717a;
+  letter-spacing: 0.08em;
+  margin-bottom: 1.25rem;
 }
 
 .sidebarTree {
@@ -512,13 +518,13 @@
   gap: 1.5rem;
 }
 
-.sidebarCategoryGroup {
+.categoryBlock {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
 }
 
-.sidebarCategoryTitle {
+.categoryHeader {
   font-size: 0.72rem;
   font-weight: 800;
   color: #ffffff;
@@ -527,7 +533,7 @@
   margin-bottom: 0.2rem;
 }
 
-.sidebarCategoryList {
+.categoryGuideLines {
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
@@ -535,7 +541,7 @@
   border-left: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.sidebarItem {
+.categoryItemBtn {
   position: relative;
   display: flex;
   align-items: center;
@@ -544,7 +550,7 @@
   background: transparent;
   border: none;
   border-radius: 6px;
-  color: #a1a1a6;
+  color: #86868b;
   font-size: 0.82rem;
   font-weight: 500;
   text-align: left;
@@ -552,17 +558,16 @@
   transition: all 0.2s ease;
 }
 
-.sidebarItem:hover {
+.categoryItemBtn:hover {
   color: #ffffff;
 }
 
-.sidebarItemActive {
+.categoryItemBtnActive {
   color: #60a5fa !important;
   font-weight: 700 !important;
 }
 
-/* Vertical glowing active line on left side */
-.activeLine {
+.activeVerticalLine {
   position: absolute;
   left: -0.55rem;
   top: 50%;
@@ -574,19 +579,19 @@
   transition: all 0.2s ease;
 }
 
-.sidebarItemActive .activeLine {
+.categoryItemBtnActive .activeVerticalLine {
   background: #3b82f6;
   box-shadow: 0 0 10px #3b82f6;
 }
 
 /* Center Main Content Area */
-.stoneContentArea {
-  background: #0d0d12;
+.centerArticlePane {
+  background: #0b0b10;
   padding: 2.5rem 3.5rem;
-  min-height: calc(100vh - 130px);
+  min-height: calc(100vh - 135px);
 }
 
-.stoneBreadcrumb {
+.breadcrumbBar {
   display: flex;
   align-items: center;
   gap: 0.4rem;
@@ -599,7 +604,7 @@
   color: rgba(255, 255, 255, 0.15);
 }
 
-.breadProject {
+.breadProj {
   color: #60a5fa;
   font-weight: 700;
 }
@@ -609,8 +614,8 @@
   font-weight: 700;
 }
 
-/* Article Header Bar */
-.stoneArticleHeader {
+/* Article Title & Meta */
+.articleTitleMetaRow {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -619,13 +624,13 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.tagTitleRow {
+.titleCatCol {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
 }
 
-.categoryBadge {
+.categoryTag {
   align-self: flex-start;
   font-size: 0.65rem;
   font-weight: 800;
@@ -645,7 +650,7 @@
   letter-spacing: -0.01em;
 }
 
-.metaRow {
+.metaActionRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -667,8 +672,8 @@
   gap: 0.5rem;
 }
 
-.editBtn,
-.githubBtn {
+.editPageBtn,
+.githubPageBtn {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
@@ -684,18 +689,18 @@
   transition: all 0.2s ease;
 }
 
-.editBtn:hover,
-.githubBtn:hover {
+.editPageBtn:hover,
+.githubPageBtn:hover {
   background: rgba(255, 255, 255, 0.1);
   color: #ffffff;
 }
 
-.renderedMarkdown {
+.renderedMarkdownBody {
   margin-bottom: 2.5rem;
 }
 
 /* Nav Footer Row */
-.navFooterRow {
+.prevNextNavRow {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
@@ -704,8 +709,8 @@
   border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.prevBtn,
-.nextBtn {
+.prevNavBtn,
+.nextNavBtn {
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -719,18 +724,18 @@
   transition: all 0.2s ease;
 }
 
-.nextBtn {
+.nextNavBtn {
   justify-content: flex-end;
   text-align: right;
 }
 
-.prevBtn:hover,
-.nextBtn:hover {
+.prevNavBtn:hover,
+.nextNavBtn:hover {
   background: rgba(59, 130, 246, 0.08);
   border-color: rgba(59, 130, 246, 0.3);
 }
 
-.subLabel {
+.navSubLabel {
   display: block;
   font-size: 0.65rem;
   font-weight: 700;
@@ -738,7 +743,7 @@
   text-transform: uppercase;
 }
 
-.btnTitle {
+.navTitleLabel {
   display: block;
   font-size: 0.85rem;
   font-weight: 700;
@@ -758,13 +763,13 @@
   font-weight: 700;
 }
 
-.reactBtns {
+.reactGroup {
   display: flex;
   gap: 0.4rem;
   margin-left: auto;
 }
 
-.rBtn {
+.reactBtn {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 9999px;
@@ -775,7 +780,7 @@
   cursor: pointer;
 }
 
-.emptyState {
+.emptyArticleState {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -784,25 +789,25 @@
 }
 
 /* Right TOC Sidebar (With Vertical Active Line) */
-.stoneTocSidebar {
-  background: #09090d;
+.rightTocSidebar {
+  background: #08080c;
   border-left: 1px solid rgba(255, 255, 255, 0.08);
   padding: 1.75rem 1.25rem;
   position: sticky;
-  top: 130px;
-  height: calc(100vh - 130px);
+  top: 135px;
+  height: calc(100vh - 135px);
   overflow-y: auto;
 }
 
-.tocTitle {
-  font-size: 0.72rem;
+.tocHeaderTitle {
+  font-size: 0.7rem;
   font-weight: 800;
   color: #ffffff;
-  letter-spacing: 0.05em;
-  margin-bottom: 0.85rem;
+  letter-spacing: 0.08em;
+  margin-bottom: 1rem;
 }
 
-.tocTree {
+.tocGuideLines {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
@@ -810,10 +815,10 @@
   border-left: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.tocLink {
+.tocItemLink {
   position: relative;
   display: block;
-  color: #a1a1a6;
+  color: #86868b;
   font-size: 0.78rem;
   text-decoration: none;
   padding: 0.25rem 0.5rem;
@@ -823,11 +828,11 @@
   white-space: nowrap;
 }
 
-.tocLink:hover {
+.tocItemLink:hover {
   color: #60a5fa;
 }
 
-.tocLinkActive {
+.tocItemLinkActive {
   color: #60a5fa !important;
   font-weight: 700;
 }
@@ -842,13 +847,13 @@
   background: transparent;
 }
 
-.tocLinkActive .tocActiveLine {
+.tocItemLinkActive .tocActiveLine {
   background: #3b82f6;
   box-shadow: 0 0 10px #3b82f6;
 }
 
-.tocLevel2 { padding-left: 0.5rem; }
-.tocLevel3 { padding-left: 1rem; font-size: 0.72rem; }
+.tocLvl2 { padding-left: 0.5rem; }
+.tocLvl3 { padding-left: 1rem; font-size: 0.72rem; }
 
 .tocEmpty {
   font-size: 0.72rem;
@@ -856,7 +861,7 @@
   font-style: italic;
 }
 
-/* Spotlight Hover Focus Mode */
+/* Spotlight Focus Hover */
 .spotlightActive p {
   opacity: 0.5;
   transition: opacity 0.2s ease;
@@ -867,7 +872,7 @@
   color: #ffffff;
 }
 
-/* Passcode Modal */
+/* Creator Passcode Modal */
 .passcodeOverlay {
   position: fixed;
   top: 0;

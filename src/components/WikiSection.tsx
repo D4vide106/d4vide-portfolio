@@ -1,17 +1,15 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   FiBookOpen,
   FiSearch,
   FiEdit3,
   FiGithub,
   FiChevronDown,
-  FiChevronRight,
   FiClock,
   FiExternalLink,
   FiPlus,
-  FiLayers,
   FiArrowLeft,
   FiArrowRight,
   FiSmile,
@@ -26,7 +24,6 @@ import {
   FiMinimize2,
   FiSun,
   FiHelpCircle,
-  FiFileText,
 } from "react-icons/fi";
 import styles from "./WikiSection.module.css";
 import { useLanguage } from "@/context/LanguageContext";
@@ -55,7 +52,7 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
   // Search Query State
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  // Layout & Spotlight Control State (Matching Stonecutter Screenshots)
+  // Layout & Spotlight Control State
   const [layoutMode, setLayoutMode] = useState<"original" | "expand">("original");
   const [spotlightOn, setSpotlightOn] = useState<boolean>(false);
   const [layoutMenuOpen, setLayoutMenuOpen] = useState<boolean>(false);
@@ -302,144 +299,142 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
 
   return (
     <section id="wiki" className={`${styles.wikiRoot} ${spotlightOn ? styles.spotlightActive : ""}`}>
-      {/* 1. Stonecutter / VitePress-Grade Top Navbar */}
-      <header className={styles.stoneNavbar}>
-        <div className={styles.navLeftBrand}>
+      {/* 1. D4VIDE WIKIS Header Control Bar */}
+      <div className={styles.wikiHeaderBar}>
+        <div className={styles.headerLeftBrand}>
           <FiBookOpen size={18} className={styles.brandIcon} />
-          <span className={styles.brandName}>Stonecutter Wiki</span>
+          <span className={styles.brandTitle}>D4VIDE WIKIS & DOCS</span>
+          <span className={styles.versionBadge}>v4.2</span>
         </div>
 
-        {/* Center: Search Box */}
-        <div className={styles.navCenterSearch}>
-          <div className={styles.searchBoxInputWrap}>
-            <FiSearch size={14} className={styles.searchIcon} />
-            <input
-              type="text"
-              placeholder={wikiDict?.searchPlaceholder || "Search Ctrl+K"}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className={styles.stoneSearchInput}
-            />
-          </div>
+        {/* Project Dropdown Selector */}
+        <div className={styles.projectDropdownWrap}>
+          <button
+            onClick={() => setProjectDropdownOpen(!projectDropdownOpen)}
+            className={styles.projectSelectBtn}
+          >
+            <img src={currentProject.icon_url} alt="" className={styles.projBtnLogo} />
+            <span className={styles.projBtnTitle}>{getLocalizedProjectTitle(currentProject)}</span>
+            <FiChevronDown size={14} />
+          </button>
+
+          {projectDropdownOpen && (
+            <div className={styles.projectSelectMenu}>
+              <div className={styles.menuHeaderLabel}>SELECT PROJECT WIKI:</div>
+              {projects.map((p) => (
+                <button
+                  key={p.id}
+                  onClick={() => {
+                    setSelectedProjectId(p.id);
+                    setProjectDropdownOpen(false);
+                  }}
+                  className={`${styles.projectMenuItem} ${
+                    selectedProjectId === p.id ? styles.projectMenuItemActive : ""
+                  }`}
+                >
+                  <img src={p.icon_url} alt="" className={styles.menuItemLogo} />
+                  <span>{getLocalizedProjectTitle(p)}</span>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* Right Actions: Links, Project Selector, Layout & Spotlight Popup */}
-        <div className={styles.navRightActions}>
-          {/* Project Dropdown Selector (Stonecutter style: 0.9.7 ˅) */}
-          <div className={styles.stoneProjDropdownWrap}>
-            <button
-              onClick={() => setProjectDropdownOpen(!projectDropdownOpen)}
-              className={styles.stoneProjBtn}
-            >
-              <img src={currentProject.icon_url} alt="" className={styles.stoneProjIcon} />
-              <span className={styles.stoneProjName}>{getLocalizedProjectTitle(currentProject)}</span>
-              <FiChevronDown size={14} />
+        {/* Search Bar */}
+        <div className={styles.headerSearchWrap}>
+          <FiSearch size={14} className={styles.searchIcon} />
+          <input
+            type="text"
+            placeholder={wikiDict?.searchPlaceholder || "Search wiki guides... (Ctrl+K)"}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className={styles.headerSearchInput}
+          />
+        </div>
+
+        {/* Actions: Creator Mode & Layout Switcher */}
+        <div className={styles.headerRightActions}>
+          {isCreator ? (
+            <div className={styles.creatorGroup}>
+              <span className={styles.creatorBadge}>CREATOR ACTIVE</span>
+              <button onClick={() => handleOpenEditor()} className={styles.newGuideBtn}>
+                <FiPlus size={14} />
+                <span>New Guide</span>
+              </button>
+              <button onClick={handleLogoutCreator} className={styles.logoutIconBtn} title="Logout Creator">
+                <FiLogOut size={13} />
+              </button>
+            </div>
+          ) : (
+            <button onClick={() => setPasscodeModalOpen(true)} className={styles.creatorLockBtn} title="Creator Passcode">
+              <FiLock size={14} />
+              <span>Creator Access</span>
             </button>
-
-            {projectDropdownOpen && (
-              <div className={styles.stoneProjMenu}>
-                <div className={styles.menuLabel}>PROJECT VERSION WIKIS</div>
-                {projects.map((p) => (
-                  <button
-                    key={p.id}
-                    onClick={() => {
-                      setSelectedProjectId(p.id);
-                      setProjectDropdownOpen(false);
-                    }}
-                    className={`${styles.stoneProjMenuItem} ${
-                      selectedProjectId === p.id ? styles.stoneProjMenuItemActive : ""
-                    }`}
-                  >
-                    <img src={p.icon_url} alt="" className={styles.menuProjLogo} />
-                    <span>{getLocalizedProjectTitle(p)}</span>
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
+          )}
 
           {/* GitHub Link */}
           <a
             href="https://github.com/D4vide106"
             target="_blank"
             rel="noreferrer"
-            className={styles.stoneIconLink}
+            className={styles.actionIconBtn}
             title="GitHub Repository"
           >
             <FiGithub size={16} />
           </a>
 
-          {/* Creator Control Button */}
-          {isCreator ? (
-            <div className={styles.creatorWrap}>
-              <span className={styles.creatorTag}>CREATOR</span>
-              <button onClick={() => handleOpenEditor()} className={styles.stoneNewBtn}>
-                <FiPlus size={14} />
-              </button>
-              <button onClick={handleLogoutCreator} className={styles.stoneLogoutBtn} title="Logout">
-                <FiLogOut size={13} />
-              </button>
-            </div>
-          ) : (
-            <button onClick={() => setPasscodeModalOpen(true)} className={styles.stoneLockBtn} title="Creator Passcode">
-              <FiLock size={14} />
-            </button>
-          )}
-
-          {/* Layout & Spotlight Control Menu Button (Matching Screenshots #2, #3, #4!) */}
+          {/* Layout & Spotlight Switcher Popup */}
           <div className={styles.layoutSwitchWrap}>
             <button
               onClick={() => setLayoutMenuOpen(!layoutMenuOpen)}
-              className={`${styles.stoneLayoutBtn} ${layoutMenuOpen ? styles.stoneLayoutBtnActive : ""}`}
+              className={`${styles.layoutToggleBtn} ${layoutMenuOpen ? styles.layoutToggleBtnActive : ""}`}
               title="Layout Switch & Spotlight Settings"
             >
-              <FiSliders size={16} />
+              <FiSliders size={15} />
               <FiChevronDown size={12} />
             </button>
 
             {layoutMenuOpen && (
               <div className={styles.layoutMenuCard}>
-                {/* Layout Switch Section */}
-                <div className={styles.layoutSecHeader}>
+                <div className={styles.menuSecTitle}>
                   <FiSliders size={14} />
                   <span>Layout Switch</span>
                   <FiHelpCircle size={13} color="#86868b" />
                 </div>
-                <div className={styles.layoutBtnsGrid}>
+                <div className={styles.layoutGrid}>
                   <button
                     onClick={() => setLayoutMode("original")}
                     className={`${styles.layoutSegBtn} ${layoutMode === "original" ? styles.layoutSegBtnActive : ""}`}
                   >
-                    <FiMinimize2 size={14} />
+                    <FiMinimize2 size={13} />
                     <span>Original</span>
                   </button>
                   <button
                     onClick={() => setLayoutMode("expand")}
                     className={`${styles.layoutSegBtn} ${layoutMode === "expand" ? styles.layoutSegBtnActive : ""}`}
                   >
-                    <FiMaximize2 size={14} />
+                    <FiMaximize2 size={13} />
                     <span>Expand All</span>
                   </button>
                 </div>
 
                 <hr className={styles.menuDivider} />
 
-                {/* Spotlight Section */}
-                <div className={styles.layoutSecHeader}>
+                <div className={styles.menuSecTitle}>
                   <FiSun size={14} />
-                  <span>Spotlight</span>
+                  <span>Spotlight Focus</span>
                   <FiHelpCircle size={13} color="#86868b" />
                 </div>
                 <div className={styles.spotlightToggleRow}>
                   <button
                     onClick={() => setSpotlightOn(true)}
-                    className={`${styles.spotToggleBtn} ${spotlightOn ? styles.spotToggleBtnActive : ""}`}
+                    className={`${styles.spotBtn} ${spotlightOn ? styles.spotBtnActive : ""}`}
                   >
                     ON
                   </button>
                   <button
                     onClick={() => setSpotlightOn(false)}
-                    className={`${styles.spotToggleBtn} ${!spotlightOn ? styles.spotToggleBtnActive : ""}`}
+                    className={`${styles.spotBtn} ${!spotlightOn ? styles.spotBtnActive : ""}`}
                   >
                     OFF
                   </button>
@@ -448,7 +443,7 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
             )}
           </div>
         </div>
-      </header>
+      </div>
 
       {/* Search Overlay Results */}
       {searchQuery.trim() !== "" && (
@@ -481,24 +476,25 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
         </div>
       )}
 
-      {/* 2. Main Documentation View (Left Sidebar, Article Body, Right TOC) */}
-      <div className={`${styles.wikiBodyGrid} ${layoutMode === "expand" ? styles.wikiGridExpand : ""}`}>
-        {/* Left Sidebar Navigation (With Vertical Indicator Lines like Stonecutter) */}
-        <aside className={styles.stoneSidebar}>
+      {/* 2. Main Three-Column Grid View */}
+      <div className={`${styles.wikiBodyGrid} ${layoutMode === "expand" ? styles.gridExpand : ""}`}>
+        {/* Left Sidebar Navigation (With Vertical Indicator Lines) */}
+        <aside className={styles.leftSidebar}>
+          <div className={styles.sidebarTitle}>CATEGORIES</div>
           <div className={styles.sidebarTree}>
             {Object.entries(categoriesMap).map(([categoryName, articles]) => (
-              <div key={categoryName} className={styles.sidebarCategoryGroup}>
-                <div className={styles.sidebarCategoryTitle}>{categoryName}</div>
-                <div className={styles.sidebarCategoryList}>
+              <div key={categoryName} className={styles.categoryBlock}>
+                <div className={styles.categoryHeader}>{categoryName}</div>
+                <div className={styles.categoryGuideLines}>
                   {articles.map((art) => {
                     const isActive = art.id === activeArticleId;
                     return (
                       <button
                         key={art.id}
                         onClick={() => setActiveArticleId(art.id)}
-                        className={`${styles.sidebarItem} ${isActive ? styles.sidebarItemActive : ""}`}
+                        className={`${styles.categoryItemBtn} ${isActive ? styles.categoryItemBtnActive : ""}`}
                       >
-                        <span className={styles.activeLine} />
+                        <span className={styles.activeVerticalLine} />
                         <span className={styles.itemTitle}>{art.title}</span>
                       </button>
                     );
@@ -509,36 +505,36 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
           </div>
         </aside>
 
-        {/* Center Main Content Area */}
-        <main className={styles.stoneContentArea}>
+        {/* Center Main Article Display */}
+        <main className={styles.centerArticlePane}>
           {activeArticle ? (
             <>
               {/* Breadcrumb Navigation */}
-              <div className={styles.stoneBreadcrumb}>
+              <div className={styles.breadcrumbBar}>
                 <span>Wiki</span>
                 <span className={styles.breadSep}>/</span>
-                <span className={styles.breadProject}>{getLocalizedProjectTitle(currentProject)}</span>
+                <span className={styles.breadProj}>{getLocalizedProjectTitle(currentProject)}</span>
                 <span className={styles.breadSep}>/</span>
                 <span>{activeArticle.category}</span>
                 <span className={styles.breadSep}>/</span>
                 <span className={styles.breadCurrent}>{activeArticle.title}</span>
               </div>
 
-              {/* Main Article Title Bar */}
-              <div className={styles.stoneArticleHeader}>
-                <div className={styles.tagTitleRow}>
-                  <span className={styles.categoryBadge}>{activeArticle.category}</span>
+              {/* Article Top Title & Metadata Bar */}
+              <div className={styles.articleTitleMetaRow}>
+                <div className={styles.titleCatCol}>
+                  <span className={styles.categoryTag}>{activeArticle.category}</span>
                   <h1 className={styles.mainTitle}>{activeArticle.title}</h1>
                 </div>
 
-                <div className={styles.metaRow}>
+                <div className={styles.metaActionRow}>
                   <div className={styles.timeTag}>
                     <FiClock size={13} />
-                    <span>Last edited {activeArticle.lastUpdated}</span>
+                    <span>Last updated {activeArticle.lastUpdated}</span>
                   </div>
 
                   <div className={styles.actionBtns}>
-                    <button onClick={() => handleOpenEditor(activeArticle)} className={styles.editBtn}>
+                    <button onClick={() => handleOpenEditor(activeArticle)} className={styles.editPageBtn}>
                       <FiEdit3 size={13} />
                       <span>{isCreator ? "Edit this page" : "Unlock Editor"}</span>
                     </button>
@@ -546,7 +542,7 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
                       href="https://github.com/D4vide106"
                       target="_blank"
                       rel="noreferrer"
-                      className={styles.githubBtn}
+                      className={styles.githubPageBtn}
                     >
                       <FiExternalLink size={13} />
                       <span>GitHub Wiki</span>
@@ -556,55 +552,55 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
               </div>
 
               {/* Render Full Markdown Body */}
-              <div className={styles.renderedMarkdown}>
+              <div className={styles.renderedMarkdownBody}>
                 <MarkdownViewer content={activeArticle.content} />
               </div>
 
-              {/* Footer Previous / Next Navigation */}
-              <div className={styles.navFooterRow}>
+              {/* Previous / Next Article Navigation Footer */}
+              <div className={styles.prevNextNavRow}>
                 {prevArticle ? (
-                  <button onClick={() => setActiveArticleId(prevArticle.id)} className={styles.prevBtn}>
+                  <button onClick={() => setActiveArticleId(prevArticle.id)} className={styles.prevNavBtn}>
                     <FiArrowLeft size={14} />
                     <div>
-                      <span className={styles.subLabel}>Previous</span>
-                      <span className={styles.btnTitle}>{prevArticle.title}</span>
+                      <span className={styles.navSubLabel}>PREVIOUS</span>
+                      <span className={styles.navTitleLabel}>{prevArticle.title}</span>
                     </div>
                   </button>
                 ) : <div />}
 
                 {nextArticle ? (
-                  <button onClick={() => setActiveArticleId(nextArticle.id)} className={styles.nextBtn}>
+                  <button onClick={() => setActiveArticleId(nextArticle.id)} className={styles.nextNavBtn}>
                     <div>
-                      <span className={styles.subLabel}>Next</span>
-                      <span className={styles.btnTitle}>{nextArticle.title}</span>
+                      <span className={styles.navSubLabel}>NEXT</span>
+                      <span className={styles.navTitleLabel}>{nextArticle.title}</span>
                     </div>
                     <FiArrowRight size={14} />
                   </button>
                 ) : <div />}
               </div>
 
-              {/* Community Feedback Row */}
+              {/* Community Reaction Feedback */}
               <div className={styles.feedbackRow}>
                 <FiSmile size={16} color="#eab308" />
-                <span>Was this page helpful?</span>
-                <div className={styles.reactBtns}>
-                  <button className={styles.rBtn}>👍 14</button>
-                  <button className={styles.rBtn}>❤️ 9</button>
-                  <button className={styles.rBtn}>🚀 22</button>
+                <span>Was this wiki page helpful?</span>
+                <div className={styles.reactGroup}>
+                  <button className={styles.reactBtn}>👍 Useful (14)</button>
+                  <button className={styles.reactBtn}>❤️ Amazing (9)</button>
+                  <button className={styles.reactBtn}>🚀 Epic (22)</button>
                 </div>
               </div>
             </>
           ) : (
-            <div className={styles.emptyState}>
-              <p>No articles found for this project.</p>
+            <div className={styles.emptyArticleState}>
+              <p>No wiki articles available for this project.</p>
             </div>
           )}
         </main>
 
         {/* Right Sidebar: Table of Contents ("On this page") */}
-        <aside className={styles.stoneTocSidebar}>
-          <div className={styles.tocTitle}>On this page</div>
-          <div className={styles.tocTree}>
+        <aside className={styles.rightTocSidebar}>
+          <div className={styles.tocHeaderTitle}>ON THIS PAGE</div>
+          <div className={styles.tocGuideLines}>
             {tableOfContents.length === 0 ? (
               <span className={styles.tocEmpty}>No headings on page</span>
             ) : (
@@ -613,9 +609,9 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
                   key={idx}
                   href={`#${head.slug}`}
                   onClick={() => setActiveHeadingSlug(head.slug)}
-                  className={`${styles.tocLink} ${
-                    activeHeadingSlug === head.slug ? styles.tocLinkActive : ""
-                  } ${head.level === 2 ? styles.tocLevel2 : head.level === 3 ? styles.tocLevel3 : ""}`}
+                  className={`${styles.tocItemLink} ${
+                    activeHeadingSlug === head.slug ? styles.tocItemLinkActive : ""
+                  } ${head.level === 2 ? styles.tocLvl2 : head.level === 3 ? styles.tocLvl3 : ""}`}
                 >
                   <span className={styles.tocActiveLine} />
                   <span>{head.text}</span>
@@ -648,7 +644,7 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
               <FiShield size={30} color="#64d2ff" />
             </div>
 
-            <h3 className={styles.passcodeTitle}>Creator Authentication</h3>
+            <h3 className={styles.passcodeTitle}>Creator Access Verification</h3>
             <p className={styles.passcodeSubtitle}>
               The Wiki Markdown Editor is restricted exclusively to the site owner <strong>D4VIDE106</strong>.
               Enter your Creator Secret Passcode to unlock authoring tools.
