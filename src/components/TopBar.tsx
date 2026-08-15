@@ -137,6 +137,11 @@ export default function TopBar({ dict: propDict }: { dict?: any; currentLang?: s
               </a>
             </li>
             <li>
+              <a href="#wiki" className={styles.menuLink} onClick={(e) => handleNavClick(e, "wiki")}>
+                {dict.wiki || "WIKI"}
+              </a>
+            </li>
+            <li>
               <a href="#about" className={styles.menuLink} onClick={(e) => handleNavClick(e, "about")}>
                 {dict.about || "ABOUT"}
               </a>
@@ -226,6 +231,9 @@ export default function TopBar({ dict: propDict }: { dict?: any; currentLang?: s
           <nav className={styles.mobileNav}>
             <a href="#projects" className={styles.mobileNavLink} onClick={(e) => handleNavClick(e, "projects")}>
               {dict.projects || "WORKS"}
+            </a>
+            <a href="#wiki" className={styles.mobileNavLink} onClick={(e) => handleNavClick(e, "wiki")}>
+              {dict.wiki || "WIKI"}
             </a>
             <a href="#about" className={styles.mobileNavLink} onClick={(e) => handleNavClick(e, "about")}>
               {dict.about || "ABOUT"}
