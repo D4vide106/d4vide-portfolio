@@ -4,11 +4,16 @@ import { useState } from "react";
 import { FiDownloadCloud, FiEye } from "react-icons/fi";
 import { SiCurseforge, SiModrinth, SiGamejolt, SiItchdotio } from "react-icons/si";
 import { useLiveStats } from "@/context/LiveStatsContext";
+import { useLanguage } from "@/context/LanguageContext";
 import AnimatedNumber from "./AnimatedNumber";
 import styles from "./TotalDownloads.module.css";
 
 export default function TotalDownloads() {
   const { totalDownloads, portfolioViews, platformTotals } = useLiveStats();
+  const { dict: contextDict } = useLanguage();
+  const modalDict = contextDict.projectsModal || {};
+  const statsDict = contextDict.stats || {};
+
   const [showTooltip, setShowTooltip] = useState(false);
 
   return (
@@ -20,14 +25,14 @@ export default function TotalDownloads() {
       >
         <FiDownloadCloud className={styles.icon} />
         <span>
-          <strong><AnimatedNumber value={totalDownloads} /></strong> TOTAL DOWNLOADS
+          <strong><AnimatedNumber value={totalDownloads} /></strong> {modalDict.totalDownloads || "TOTAL DOWNLOADS"}
         </span>
-        <span className={styles.liveDot} title="Download aggiornati in tempo reale" />
+        <span className={styles.liveDot} />
 
         {/* Hover Platform Breakdown Tooltip */}
         {showTooltip && (
           <div className={styles.platformTooltip}>
-            <div className={styles.tooltipHeader}>DOWNLOAD PER PIATTAFORMA</div>
+            <div className={styles.tooltipHeader}>{statsDict.downloadsByPlatform || "DOWNLOADS BY PLATFORM"}</div>
             <div className={styles.tooltipRow}>
               <span className={styles.platformLabel}><SiModrinth color="#1bd96a" size={13} /> Modrinth</span>
               <span className={styles.platformVal}><AnimatedNumber value={platformTotals.modrinth || 0} /></span>
@@ -48,16 +53,13 @@ export default function TotalDownloads() {
         )}
       </div>
 
-      <div className={styles.viewsBadge} title="Visitatori reali unici del portfolio tracciati via API">
+      <div className={styles.viewsBadge}>
         <FiEye className={styles.viewIcon} />
         <span>
-          <strong><AnimatedNumber value={portfolioViews} /></strong> PORTFOLIO VIEWS
+          <strong><AnimatedNumber value={portfolioViews} /></strong> {modalDict.portfolioViews || "PORTFOLIO VIEWS"}
         </span>
         <span className={styles.liveDotBlue} />
       </div>
     </div>
   );
 }
-
-
-

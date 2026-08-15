@@ -14,7 +14,9 @@
     "serversPromoted": "Servidores promovidos",
     "activePlatforms": "Plataformas activas",
     "getStarted": "Empezar ahora",
-    "seeWork": "Ver nuestros trabajos"
+    "seeWork": "Ver nuestros trabajos",
+    "creatorProfile": "PERFIL DEL CREADOR",
+    "systemRole": "Diseñador de Sistemas y Creador de Mods de Minecraft"
   },
   "aboutSection": {
     "aboutTitle": "¿Quién demonios soy?",
@@ -36,6 +38,27 @@
     "mods": "Mods",
     "datapacks": "Datapacks",
     "resourcepacks": "Packs de Recursos"
+  },
+  "projectsModal": {
+    "totalDownloads": "DESCARGAS TOTALES",
+    "projectViews": "VISUALIZACIONES DEL PROYECTO",
+    "portfolioViews": "VISUALIZACIONES DEL PORTFOLIO",
+    "tagsAndSpecs": "ETIQUETAS Y ESPECIFICACIONES",
+    "platformsAndDownloads": "PLATAFORMAS Y DESCARGAS",
+    "searchPlaceholder": "BUSCAR PROYECTOS...",
+    "all": "Todos",
+    "modpack": "Modpack",
+    "mod": "Mod",
+    "resourcepack": "Pack de Recursos",
+    "plugin": "Plugin",
+    "server": "Servidor"
+  },
+  "stats": {
+    "liveStatsHeader": "ESTADÍSTICAS Y MÉTRICAS EN VIVO",
+    "downloadsByPlatform": "DESCARGAS POR PLATAFORMA"
+  },
+  "youtube": {
+    "latestBroadcast": "ÚLTIMO VIDEO"
   },
   "footer": {
     "rights": "Todos los derechos reservados.",

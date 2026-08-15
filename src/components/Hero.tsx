@@ -45,6 +45,9 @@ export default function Hero({ dict: propDict, aboutDict: propAboutDict }: { dic
   const { dict: contextDict } = useLanguage();
   const dict = contextDict.hero || propDict;
   const aboutDict = contextDict.aboutSection || propAboutDict;
+  const modalDict = contextDict.projectsModal || {};
+  const statsDict = contextDict.stats || {};
+  const ytDict = contextDict.youtube || {};
   const { projects, incrementProjectViews, getProjectViews, portfolioViews, incrementDownloadLink } = useLiveStats();
   const [selectedConstellationProject, setSelectedConstellationProject] = useState<UnifiedProject | null>(null);
 
@@ -104,9 +107,9 @@ export default function Hero({ dict: propDict, aboutDict: propAboutDict }: { dic
             </div>
 
             <div className={styles.pyramidTitleGroup}>
-              <span className={styles.pyramidTag}>CREATOR PROFILE</span>
+              <span className={styles.pyramidTag}>{dict.creatorProfile || "CREATOR PROFILE"}</span>
               <h2 className={styles.pyramidName}>D4VIDE106</h2>
-              <span className={styles.pyramidRole}>System Designer & Minecraft Mod Creator</span>
+              <span className={styles.pyramidRole}>{dict.systemRole || "System Designer & Minecraft Mod Creator"}</span>
             </div>
 
             <p className={styles.pyramidBioText}>
@@ -143,7 +146,7 @@ export default function Hero({ dict: propDict, aboutDict: propAboutDict }: { dic
           <div className={styles.transparentMetricsContainer}>
             <div className={styles.metricsLabelHeader}>
               <span className={styles.greenDot} />
-              <span className={styles.cardTag}>LIVE STATS & METRICS</span>
+              <span className={styles.cardTag}>{statsDict.liveStatsHeader || "LIVE STATS & METRICS"}</span>
             </div>
             <TotalDownloads />
           </div>
@@ -154,7 +157,7 @@ export default function Hero({ dict: propDict, aboutDict: propAboutDict }: { dic
               <div className={styles.ytHeader}>
                 <div className={styles.ytTitle}>
                   <FiPlayCircle className={styles.ytIcon} />
-                  <span>LATEST BROADCAST</span>
+                  <span>{ytDict.latestBroadcast || "LATEST BROADCAST"}</span>
                 </div>
                 <a href="https://www.youtube.com/@d4vide106" target="_blank" rel="noreferrer" className={styles.ytBtn}>
                   YOUTUBE <FiArrowUpRight size={13} />
@@ -235,7 +238,7 @@ export default function Hero({ dict: propDict, aboutDict: propAboutDict }: { dic
               <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1rem", background: "rgba(255, 255, 255, 0.04)", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "16px", padding: "1.2rem", marginBottom: "1.5rem" }}>
                 <div>
                   <div style={{ fontFamily: "var(--font-body)", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.12em", color: "#86868b", display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                    <FiDownload style={{ color: "#30d158" }} /> TOTAL DOWNLOADS
+                    <FiDownload style={{ color: "#30d158" }} /> {modalDict?.totalDownloads || "TOTAL DOWNLOADS"}
                   </div>
                   <div style={{ fontFamily: "var(--font-heading)", fontSize: "1.4rem", fontWeight: 800, color: "#ffffff" }}>
                     <AnimatedNumber value={selectedConstellationProject.downloads} />
@@ -243,7 +246,7 @@ export default function Hero({ dict: propDict, aboutDict: propAboutDict }: { dic
                 </div>
                 <div>
                   <div style={{ fontFamily: "var(--font-body)", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.12em", color: "#86868b", display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                    <FiEye style={{ color: "#64d2ff" }} /> VIEWS PROGETTO
+                    <FiEye style={{ color: "#64d2ff" }} /> {modalDict?.projectViews || "PROJECT VIEWS"}
                   </div>
                   <div style={{ fontFamily: "var(--font-heading)", fontSize: "1.4rem", fontWeight: 800, color: "#ffffff" }}>
                     <AnimatedNumber value={getProjectViews(selectedConstellationProject.id)} />
@@ -251,9 +254,9 @@ export default function Hero({ dict: propDict, aboutDict: propAboutDict }: { dic
                 </div>
                 <div>
                   <div style={{ fontFamily: "var(--font-body)", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.12em", color: "#86868b", display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                    <FiGlobe style={{ color: "#bf5af2" }} /> VIEWS PORTFOLIO
+                    <FiGlobe style={{ color: "#bf5af2" }} /> {modalDict?.portfolioViews || "PORTFOLIO VIEWS"}
                   </div>
-                  <div style={{ fontFamily: "var(--font-heading)", fontSize: "1.4rem", fontWeight: 800, color: "#ffffff" }}>
+                  <div style={{ fontFamily: "var(--font-heading)", fontSize: "1.4rem", fontWeight 800, color: "#ffffff" }}>
                     <AnimatedNumber value={portfolioViews} />
                   </div>
                 </div>
@@ -263,7 +266,7 @@ export default function Hero({ dict: propDict, aboutDict: propAboutDict }: { dic
               {selectedConstellationProject.tags && selectedConstellationProject.tags.length > 0 && (
                 <div style={{ marginBottom: "1.5rem" }}>
                   <div style={{ fontFamily: "var(--font-body)", fontSize: "0.64rem", fontWeight: 700, letterSpacing: "0.18em", color: "#86868b", marginBottom: "0.6rem", display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                    <FiTag size={12} /> TAG & SPECIFICHE
+                    <FiTag size={12} /> {modalDict?.tagsAndSpecs || "TAGS & SPECS"}
                   </div>
                   <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
                     {selectedConstellationProject.tags.map((tag, idx) => (
@@ -276,7 +279,7 @@ export default function Hero({ dict: propDict, aboutDict: propAboutDict }: { dic
               {/* Platforms */}
               <div>
                 <div style={{ fontFamily: "var(--font-body)", fontSize: "0.64rem", fontWeight: 700, letterSpacing: "0.18em", color: "#86868b", marginBottom: "0.6rem", display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                  <FiExternalLink size={12} /> PIATTAFORME & DOWNLOAD
+                  <FiExternalLink size={12} /> {modalDict?.platformsAndDownloads || "PLATFORMS & DOWNLOADS"}
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem" }}>
                   {Object.entries(grouped).map(([platform, links]) => {

@@ -20,6 +20,7 @@ const PLATFORM_NAMES: Record<string, string> = {
 export default function Projects({ dict: propDict }: { dict?: any }) {
   const { dict: contextDict } = useLanguage();
   const dict = contextDict.projects || propDict;
+  const modalDict = contextDict.projectsModal || propDict;
   const { projects, incrementProjectViews, getProjectViews, portfolioViews, incrementDownloadLink } = useLiveStats();
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState("All");
@@ -104,13 +105,20 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
       <div className={styles.controlsWrapper}>
         <div className={styles.controlsBar}>
           <div className={styles.filtersGroup}>
-            {["All", "Modpack", "Mod", "Resource Pack", "Plugin", "Server"].map((type) => (
+            {[
+              { key: "All", label: modalDict?.all || "All" },
+              { key: "Modpack", label: modalDict?.modpack || "Modpack" },
+              { key: "Mod", label: modalDict?.mod || "Mod" },
+              { key: "Resource Pack", label: modalDict?.resourcepack || "Resource Pack" },
+              { key: "Plugin", label: modalDict?.plugin || "Plugin" },
+              { key: "Server", label: modalDict?.server || "Server" },
+            ].map((typeItem) => (
               <button
-                key={type}
-                className={`${styles.filterBtn} ${filterType === type ? styles.activeFilter : ""}`}
-                onClick={() => setFilterType(type)}
+                key={typeItem.key}
+                className={`${styles.filterBtn} ${filterType === typeItem.key ? styles.activeFilter : ""}`}
+                onClick={() => setFilterType(typeItem.key)}
               >
-                {type}
+                {typeItem.label}
               </button>
             ))}
           </div>
@@ -119,7 +127,7 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
             <FiSearch className={styles.searchIcon} />
             <input
               type="text"
-              placeholder="SEARCH PROJECTS..."
+              placeholder={modalDict?.searchPlaceholder || "SEARCH PROJECTS..."}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className={styles.searchInput}
@@ -314,7 +322,7 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
               <div className={styles.modalStatsRow}>
                 <div className={styles.modalStatBlock}>
                   <div className={styles.modalStatLabel}>
-                    <FiDownload style={{ color: "#30d158" }} /> TOTAL DOWNLOADS
+                    <FiDownload style={{ color: "#30d158" }} /> {modalDict?.totalDownloads || "TOTAL DOWNLOADS"}
                   </div>
                   <div className={styles.modalStatNumber}>
                     <AnimatedNumber value={selectedProject.downloads} />
@@ -322,7 +330,7 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
                 </div>
                 <div className={styles.modalStatBlock}>
                   <div className={styles.modalStatLabel}>
-                    <FiEye style={{ color: "#64d2ff" }} /> VIEWS PROGETTO
+                    <FiEye style={{ color: "#64d2ff" }} /> {modalDict?.projectViews || "PROJECT VIEWS"}
                   </div>
                   <div className={styles.modalStatNumber}>
                     <AnimatedNumber value={getProjectViews(selectedProject.id)} />
@@ -330,7 +338,7 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
                 </div>
                 <div className={styles.modalStatBlock}>
                   <div className={styles.modalStatLabel}>
-                    <FiGlobe style={{ color: "#bf5af2" }} /> VIEWS PORTFOLIO
+                    <FiGlobe style={{ color: "#bf5af2" }} /> {modalDict?.portfolioViews || "PORTFOLIO VIEWS"}
                   </div>
                   <div className={styles.modalStatNumber}>
                     <AnimatedNumber value={portfolioViews} />
@@ -342,7 +350,7 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
               {selectedProject.tags && selectedProject.tags.length > 0 && (
                 <div className={styles.modalTagsSection}>
                   <div className={styles.sectionLabel}>
-                    <FiTag size={12} /> TAG & SPECIFICHE
+                    <FiTag size={12} /> {modalDict?.tagsAndSpecs || "TAGS & SPECS"}
                   </div>
                   <div className={styles.modalTagsList}>
                     {selectedProject.tags.map((tag, idx) => (
@@ -355,7 +363,7 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
               {/* Platforms */}
               <div className={styles.modalPlatformsSection}>
                 <div className={styles.sectionLabel}>
-                  <FiExternalLink size={12} /> PIATTAFORME & DOWNLOAD
+                  <FiExternalLink size={12} /> {modalDict?.platformsAndDownloads || "PLATFORMS & DOWNLOADS"}
                 </div>
                 <div className={styles.platformGroupsGrid}>
                   {Object.entries(grouped).map(([platform, links]) => {
