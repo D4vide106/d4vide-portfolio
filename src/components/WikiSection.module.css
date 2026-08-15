@@ -1,10 +1,10 @@
 /* Wiki Section Root Container */
 .wikiContainer {
   width: 100%;
-  max-width: 1440px;
-  margin: 4rem auto;
+  max-width: 1400px;
+  margin: 1.5rem auto 4rem auto;
   padding: 0 1.5rem;
-  font-family: var(--font-body);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   color: #e4e4e7;
 }
 
@@ -585,8 +585,8 @@
 }
 
 .heading1 {
-  font-family: var(--font-heading);
-  font-size: 1.6rem;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 1.75rem;
   font-weight: 800;
   color: #ffffff;
   margin: 1.8rem 0 1rem 0;

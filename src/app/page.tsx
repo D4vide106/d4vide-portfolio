@@ -3,7 +3,6 @@
 import TopBar from "@/components/TopBar";
 import Hero from "@/components/Hero";
 import Projects from "@/components/Projects";
-import WikiSection from "@/components/WikiSection";
 import Footer from "@/components/Footer";
 import HackerIntro from "@/components/HackerIntro";
 import DraggableTerminal from "@/components/DraggableTerminal";
@@ -20,10 +19,7 @@ export default function Home() {
       {/* 2. Standalone Full-Bleed Edge-to-Edge Modrinth Marquee Showcase */}
       <Projects />
 
-      {/* 3. Professional Wiki Documentation & Markdown Editor Engine */}
-      <WikiSection />
-
-      {/* 4. Footer */}
+      {/* 3. Footer */}
       <Footer />
 
       {/* Floating Standalone Draggable Terminal Window */}

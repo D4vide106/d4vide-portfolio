@@ -90,8 +90,17 @@ export default function TopBar({ dict: propDict }: { dict?: any; currentLang?: s
   };
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
-    e.preventDefault();
     setMobileMenuOpen(false);
+    if (targetId === "wiki") {
+      e.preventDefault();
+      window.location.href = "/wiki";
+      return;
+    }
+    if (window.location.pathname.includes("/wiki")) {
+      window.location.href = `/#${targetId}`;
+      return;
+    }
+    e.preventDefault();
     if (targetId === "hero") {
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;

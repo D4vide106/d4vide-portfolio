@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { FiX, FiSave, FiDownload, FiCopy, FiCheck, FiEye, FiEdit3, FiColumns } from "react-icons/fi";
+import { FiX, FiSave, FiDownload, FiCopy, FiCheck, FiEye, FiEdit3, FiColumns, FiUpload } from "react-icons/fi";
 import styles from "./WikiSection.module.css";
 import MarkdownViewer from "./MarkdownViewer";
 import { UnifiedProject } from "@/data/projectsData";
@@ -65,6 +65,7 @@ npm run start
   const [editorViewMode, setEditorViewMode] = useState<"write" | "split" | "preview">("split");
   const [copied, setCopied] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   if (!isOpen) return null;
 
@@ -83,6 +84,30 @@ npm run start
         textareaRef.current.setSelectionRange(start + before.length, start + before.length + (selectedText.length || 4));
       }
     }, 50);
+  };
+
+  const handleImportMdFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const text = event.target?.result as string;
+      if (text) {
+        setContent(text);
+
+        // Auto-extract title from first '# Heading' or file name
+        const headingMatch = text.match(/^#\s+(.+)$/m);
+        if (headingMatch && headingMatch[1]) {
+          setTitle(headingMatch[1].trim());
+        } else {
+          const nameWithoutExt = file.name.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ");
+          setTitle(nameWithoutExt.charAt(0).toUpperCase() + nameWithoutExt.slice(1));
+        }
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = "";
   };
 
   const handleSave = () => {
@@ -240,6 +265,17 @@ npm run start
         {/* Footer Actions */}
         <div className={styles.editorFooter}>
           <div className={styles.leftFooterBtns}>
+            <button onClick={() => fileInputRef.current?.click()} className={styles.secondaryBtn}>
+              <FiUpload size={14} />
+              <span>Import .md File</span>
+            </button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".md,.markdown,.txt"
+              style={{ display: "none" }}
+              onChange={handleImportMdFile}
+            />
             <button onClick={handleCopyMd} className={styles.secondaryBtn}>
               {copied ? <FiCheck color="#30d158" size={14} /> : <FiCopy size={14} />}
               <span>{copied ? "Copied!" : "Copy Markdown"}</span>
