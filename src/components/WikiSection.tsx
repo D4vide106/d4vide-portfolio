@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import {
   FiBookOpen,
   FiSearch,
@@ -12,10 +12,8 @@ import {
   FiExternalLink,
   FiPlus,
   FiLayers,
-  FiCheckCircle,
   FiArrowLeft,
   FiArrowRight,
-  FiMessageSquare,
   FiSmile,
   FiLock,
   FiUnlock,
@@ -23,6 +21,12 @@ import {
   FiShield,
   FiLogOut,
   FiX,
+  FiSliders,
+  FiMaximize2,
+  FiMinimize2,
+  FiSun,
+  FiHelpCircle,
+  FiFileText,
 } from "react-icons/fi";
 import styles from "./WikiSection.module.css";
 import { useLanguage } from "@/context/LanguageContext";
@@ -38,18 +42,23 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
   const projectDataDict = (contextDict as any)?.projectData || {};
   const { projects } = useLiveStats();
 
-  // Active Project State
+  // Active Project & Dropdown State
   const [selectedProjectId, setSelectedProjectId] = useState<string>("project-boss-rpg");
   const [projectDropdownOpen, setProjectDropdownOpen] = useState<boolean>(false);
 
-  // Wiki Data State (Default + localStorage Custom Articles)
+  // Wiki Articles Data State
   const [allWikiArticles, setAllWikiArticles] = useState<Record<string, WikiArticle[]>>(DEFAULT_WIKI_DATA);
 
   // Active Selected Article State
   const [activeArticleId, setActiveArticleId] = useState<string>("pbr-getting-started");
 
-  // Search & Filter State
+  // Search Query State
   const [searchQuery, setSearchQuery] = useState<string>("");
+
+  // Layout & Spotlight Control State (Matching Stonecutter Screenshots)
+  const [layoutMode, setLayoutMode] = useState<"original" | "expand">("original");
+  const [spotlightOn, setSpotlightOn] = useState<boolean>(false);
+  const [layoutMenuOpen, setLayoutMenuOpen] = useState<boolean>(false);
 
   // Creator Access Control State (Restricted to D4VIDE106 Site Creator)
   const [isCreator, setIsCreator] = useState<boolean>(false);
@@ -60,6 +69,9 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
   // Editor Modal State
   const [editorOpen, setEditorOpen] = useState<boolean>(false);
   const [editingArticle, setEditingArticle] = useState<WikiArticle | undefined>(undefined);
+
+  // Active TOC heading tracker
+  const [activeHeadingSlug, setActiveHeadingSlug] = useState<string>("");
 
   // Check creator authentication on mount
   useEffect(() => {
@@ -74,7 +86,6 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
   // Handle Creator Authentication
   const handleVerifyCreatorPasscode = (e: React.FormEvent) => {
     e.preventDefault();
-    // Creator secret passcode validation (default: "d4vide106")
     if (inputPasscode.trim() === "d4vide106" || inputPasscode.trim() === "d4vide") {
       setIsCreator(true);
       setPasscodeModalOpen(false);
@@ -187,12 +198,12 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
     setActiveArticleId(newArt.id);
   };
 
-  // Get Current Active Project
+  // Current Active Project Object
   const currentProject: UnifiedProject = useMemo(() => {
     return projects.find((p) => p.id === selectedProjectId) || projects[0];
   }, [projects, selectedProjectId]);
 
-  // Get Current Project's Articles
+  // Current Project Articles List
   const currentProjectArticles: WikiArticle[] = useMemo(() => {
     return allWikiArticles[selectedProjectId] || DEFAULT_WIKI_DATA[selectedProjectId] || [];
   }, [allWikiArticles, selectedProjectId]);
@@ -208,7 +219,7 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
     return map;
   }, [currentProjectArticles]);
 
-  // Ensure activeArticleId belongs to current project, otherwise select first available
+  // Ensure activeArticleId belongs to current project
   useEffect(() => {
     if (currentProjectArticles.length > 0) {
       const exists = currentProjectArticles.some((a) => a.id === activeArticleId);
@@ -234,7 +245,7 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
     );
   }, [currentProjectArticles, activeArticleId, selectedProjectId]);
 
-  // Filtered Articles based on search query
+  // Search Results
   const searchResults = useMemo(() => {
     if (!searchQuery.trim()) return [];
     const query = searchQuery.toLowerCase();
@@ -290,120 +301,165 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
   };
 
   return (
-    <section id="wiki" className={styles.wikiContainer}>
-      {/* 1. Top Wiki Header Navbar */}
-      <div className={styles.wikiTopNavbar}>
-        <div className={styles.wikiBrandGroup}>
-          <FiBookOpen size={20} className={styles.wikiBrandIcon} />
-          <span className={styles.wikiBrandTitle}>PROJECT WIKIS & DOCS</span>
-          <span className={styles.wikiVersionBadge}>v4.2</span>
+    <section id="wiki" className={`${styles.wikiRoot} ${spotlightOn ? styles.spotlightActive : ""}`}>
+      {/* 1. Stonecutter / VitePress-Grade Top Navbar */}
+      <header className={styles.stoneNavbar}>
+        <div className={styles.navLeftBrand}>
+          <FiBookOpen size={18} className={styles.brandIcon} />
+          <span className={styles.brandName}>Stonecutter Wiki</span>
         </div>
 
-        {/* Center: Project Dropdown Selector */}
-        <div className={styles.projectDropdownWrapper}>
-          <button
-            onClick={() => setProjectDropdownOpen(!projectDropdownOpen)}
-            className={styles.projectDropdownBtn}
-          >
-            <img src={currentProject.icon_url} alt={currentProject.title} className={styles.projBtnLogo} />
-            <span className={styles.projBtnTitle}>{getLocalizedProjectTitle(currentProject)}</span>
-            <FiChevronDown size={14} className={styles.projBtnChevron} />
-          </button>
+        {/* Center: Search Box */}
+        <div className={styles.navCenterSearch}>
+          <div className={styles.searchBoxInputWrap}>
+            <FiSearch size={14} className={styles.searchIcon} />
+            <input
+              type="text"
+              placeholder={wikiDict?.searchPlaceholder || "Search Ctrl+K"}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className={styles.stoneSearchInput}
+            />
+          </div>
+        </div>
 
-          {projectDropdownOpen && (
-            <div className={styles.projectMenuModal}>
-              <div className={styles.menuTitleLabel}>SELECT PROJECT WIKI:</div>
-              {projects.map((p) => {
-                const localizedTitle = getLocalizedProjectTitle(p);
-                return (
+        {/* Right Actions: Links, Project Selector, Layout & Spotlight Popup */}
+        <div className={styles.navRightActions}>
+          {/* Project Dropdown Selector (Stonecutter style: 0.9.7 ˅) */}
+          <div className={styles.stoneProjDropdownWrap}>
+            <button
+              onClick={() => setProjectDropdownOpen(!projectDropdownOpen)}
+              className={styles.stoneProjBtn}
+            >
+              <img src={currentProject.icon_url} alt="" className={styles.stoneProjIcon} />
+              <span className={styles.stoneProjName}>{getLocalizedProjectTitle(currentProject)}</span>
+              <FiChevronDown size={14} />
+            </button>
+
+            {projectDropdownOpen && (
+              <div className={styles.stoneProjMenu}>
+                <div className={styles.menuLabel}>PROJECT VERSION WIKIS</div>
+                {projects.map((p) => (
                   <button
                     key={p.id}
                     onClick={() => {
                       setSelectedProjectId(p.id);
                       setProjectDropdownOpen(false);
                     }}
-                    className={`${styles.projectMenuItem} ${
-                      selectedProjectId === p.id ? styles.projectMenuItemActive : ""
+                    className={`${styles.stoneProjMenuItem} ${
+                      selectedProjectId === p.id ? styles.stoneProjMenuItemActive : ""
                     }`}
                   >
-                    <img src={p.icon_url} alt={localizedTitle} className={styles.menuItemLogo} />
-                    <div className={styles.menuItemText}>
-                      <span className={styles.menuItemName}>{localizedTitle}</span>
-                      <span className={styles.menuItemBadge}>{p.type}</span>
-                    </div>
+                    <img src={p.icon_url} alt="" className={styles.menuProjLogo} />
+                    <span>{getLocalizedProjectTitle(p)}</span>
                   </button>
-                );
-              })}
-            </div>
-          )}
-        </div>
-
-        {/* Right: Search, Creator Access / Editor & GitHub Link */}
-        <div className={styles.wikiTopActions}>
-          <div className={styles.wikiSearchBox}>
-            <FiSearch size={14} className={styles.searchIcon} />
-            <input
-              type="text"
-              placeholder={wikiDict?.searchPlaceholder || "Search wiki guides... (Ctrl+K)"}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className={styles.searchInput}
-            />
+                ))}
+              </div>
+            )}
           </div>
 
-          {isCreator ? (
-            <div className={styles.creatorActiveGroup}>
-              <span className={styles.creatorBadge}>
-                <span className={styles.creatorBadgeDot} /> CREATOR ACTIVE
-              </span>
-              <button
-                onClick={() => handleOpenEditor()}
-                className={styles.newWikiBtn}
-              >
-                <FiPlus size={15} />
-                <span>{wikiDict?.createWikiBtn || "New Wiki Guide"}</span>
-              </button>
-              <button
-                onClick={handleLogoutCreator}
-                className={styles.logoutBtn}
-                title="Lock Creator Mode"
-              >
-                <FiLogOut size={14} />
-              </button>
-            </div>
-          ) : (
-            <button
-              onClick={() => setPasscodeModalOpen(true)}
-              className={styles.creatorLockBtn}
-              title="Creator Authentication Required to Edit"
-            >
-              <FiLock size={14} />
-              <span>Creator Access</span>
-            </button>
-          )}
-
+          {/* GitHub Link */}
           <a
             href="https://github.com/D4vide106"
             target="_blank"
             rel="noreferrer"
-            className={styles.githubWikiBtn}
-            title="GitHub Wiki Repository"
+            className={styles.stoneIconLink}
+            title="GitHub Repository"
           >
             <FiGithub size={16} />
           </a>
-        </div>
-      </div>
 
-      {/* Search Overlay Results if user is typing */}
-      {searchQuery.trim() !== "" && (
-        <div className={styles.searchResultsOverlay}>
-          <div className={styles.searchResultsHeader}>
-            <span>SEARCH RESULTS FOR &quot;{searchQuery}&quot;:</span>
-            <button onClick={() => setSearchQuery("")} className={styles.clearSearchBtn}>Clear</button>
+          {/* Creator Control Button */}
+          {isCreator ? (
+            <div className={styles.creatorWrap}>
+              <span className={styles.creatorTag}>CREATOR</span>
+              <button onClick={() => handleOpenEditor()} className={styles.stoneNewBtn}>
+                <FiPlus size={14} />
+              </button>
+              <button onClick={handleLogoutCreator} className={styles.stoneLogoutBtn} title="Logout">
+                <FiLogOut size={13} />
+              </button>
+            </div>
+          ) : (
+            <button onClick={() => setPasscodeModalOpen(true)} className={styles.stoneLockBtn} title="Creator Passcode">
+              <FiLock size={14} />
+            </button>
+          )}
+
+          {/* Layout & Spotlight Control Menu Button (Matching Screenshots #2, #3, #4!) */}
+          <div className={styles.layoutSwitchWrap}>
+            <button
+              onClick={() => setLayoutMenuOpen(!layoutMenuOpen)}
+              className={`${styles.stoneLayoutBtn} ${layoutMenuOpen ? styles.stoneLayoutBtnActive : ""}`}
+              title="Layout Switch & Spotlight Settings"
+            >
+              <FiSliders size={16} />
+              <FiChevronDown size={12} />
+            </button>
+
+            {layoutMenuOpen && (
+              <div className={styles.layoutMenuCard}>
+                {/* Layout Switch Section */}
+                <div className={styles.layoutSecHeader}>
+                  <FiSliders size={14} />
+                  <span>Layout Switch</span>
+                  <FiHelpCircle size={13} color="#86868b" />
+                </div>
+                <div className={styles.layoutBtnsGrid}>
+                  <button
+                    onClick={() => setLayoutMode("original")}
+                    className={`${styles.layoutSegBtn} ${layoutMode === "original" ? styles.layoutSegBtnActive : ""}`}
+                  >
+                    <FiMinimize2 size={14} />
+                    <span>Original</span>
+                  </button>
+                  <button
+                    onClick={() => setLayoutMode("expand")}
+                    className={`${styles.layoutSegBtn} ${layoutMode === "expand" ? styles.layoutSegBtnActive : ""}`}
+                  >
+                    <FiMaximize2 size={14} />
+                    <span>Expand All</span>
+                  </button>
+                </div>
+
+                <hr className={styles.menuDivider} />
+
+                {/* Spotlight Section */}
+                <div className={styles.layoutSecHeader}>
+                  <FiSun size={14} />
+                  <span>Spotlight</span>
+                  <FiHelpCircle size={13} color="#86868b" />
+                </div>
+                <div className={styles.spotlightToggleRow}>
+                  <button
+                    onClick={() => setSpotlightOn(true)}
+                    className={`${styles.spotToggleBtn} ${spotlightOn ? styles.spotToggleBtnActive : ""}`}
+                  >
+                    ON
+                  </button>
+                  <button
+                    onClick={() => setSpotlightOn(false)}
+                    className={`${styles.spotToggleBtn} ${!spotlightOn ? styles.spotToggleBtnActive : ""}`}
+                  >
+                    OFF
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
-          <div className={styles.searchResultsList}>
+        </div>
+      </header>
+
+      {/* Search Overlay Results */}
+      {searchQuery.trim() !== "" && (
+        <div className={styles.searchOverlay}>
+          <div className={styles.searchHeader}>
+            <span>SEARCH RESULTS FOR &quot;{searchQuery}&quot;:</span>
+            <button onClick={() => setSearchQuery("")} className={styles.clearBtn}>Clear</button>
+          </div>
+          <div className={styles.searchList}>
             {searchResults.length === 0 ? (
-              <div className={styles.noResultsText}>No wiki articles match your query.</div>
+              <div className={styles.noResults}>No wiki articles match your query.</div>
             ) : (
               searchResults.map(({ article, projectTitle }) => (
                 <button
@@ -413,11 +469,11 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
                     setActiveArticleId(article.id);
                     setSearchQuery("");
                   }}
-                  className={styles.searchResultRow}
+                  className={styles.searchRow}
                 >
-                  <span className={styles.resProjectBadge}>{projectTitle}</span>
-                  <span className={styles.resCategory}>{article.category}</span>
-                  <span className={styles.resTitle}>{article.title}</span>
+                  <span className={styles.projTag}>{projectTitle}</span>
+                  <span className={styles.catTag}>{article.category}</span>
+                  <span className={styles.artTitle}>{article.title}</span>
                 </button>
               ))
             )}
@@ -425,35 +481,25 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
         </div>
       )}
 
-      {/* 2. Main Three-Column Layout (Sidebar, Content, TOC) */}
-      <div className={styles.wikiMainBody}>
-        {/* Left Navigation Sidebar */}
-        <aside className={styles.wikiSidebar}>
-          <div className={styles.sidebarHeader}>
-            <FiLayers size={14} />
-            <span>CATEGORIES</span>
-          </div>
-
-          <div className={styles.categoryTreeList}>
+      {/* 2. Main Documentation View (Left Sidebar, Article Body, Right TOC) */}
+      <div className={`${styles.wikiBodyGrid} ${layoutMode === "expand" ? styles.wikiGridExpand : ""}`}>
+        {/* Left Sidebar Navigation (With Vertical Indicator Lines like Stonecutter) */}
+        <aside className={styles.stoneSidebar}>
+          <div className={styles.sidebarTree}>
             {Object.entries(categoriesMap).map(([categoryName, articles]) => (
-              <div key={categoryName} className={styles.categoryBlock}>
-                <div className={styles.categoryHeader}>
-                  <FiChevronRight size={12} className={styles.catChevron} />
-                  <span>{categoryName}</span>
-                </div>
-                <div className={styles.categoryArticles}>
+              <div key={categoryName} className={styles.sidebarCategoryGroup}>
+                <div className={styles.sidebarCategoryTitle}>{categoryName}</div>
+                <div className={styles.sidebarCategoryList}>
                   {articles.map((art) => {
                     const isActive = art.id === activeArticleId;
                     return (
                       <button
                         key={art.id}
                         onClick={() => setActiveArticleId(art.id)}
-                        className={`${styles.sidebarArtItem} ${
-                          isActive ? styles.sidebarArtItemActive : ""
-                        }`}
+                        className={`${styles.sidebarItem} ${isActive ? styles.sidebarItemActive : ""}`}
                       >
-                        <span className={styles.artDot} />
-                        <span className={styles.artTitle}>{art.title}</span>
+                        <span className={styles.activeLine} />
+                        <span className={styles.itemTitle}>{art.title}</span>
                       </button>
                     );
                   })}
@@ -463,48 +509,44 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
           </div>
         </aside>
 
-        {/* Center Main Article Content */}
-        <main className={styles.wikiArticleCenter}>
+        {/* Center Main Content Area */}
+        <main className={styles.stoneContentArea}>
           {activeArticle ? (
             <>
               {/* Breadcrumb Navigation */}
-              <div className={styles.breadcrumbBar}>
+              <div className={styles.stoneBreadcrumb}>
                 <span>Wiki</span>
-                <span className={styles.breadDivider}>/</span>
-                <span className={styles.breadHighlight}>{getLocalizedProjectTitle(currentProject)}</span>
-                <span className={styles.breadDivider}>/</span>
+                <span className={styles.breadSep}>/</span>
+                <span className={styles.breadProject}>{getLocalizedProjectTitle(currentProject)}</span>
+                <span className={styles.breadSep}>/</span>
                 <span>{activeArticle.category}</span>
-                <span className={styles.breadDivider}>/</span>
-                <span className={styles.breadActive}>{activeArticle.title}</span>
+                <span className={styles.breadSep}>/</span>
+                <span className={styles.breadCurrent}>{activeArticle.title}</span>
               </div>
 
-              {/* Article Top Title & Metadata */}
-              <div className={styles.articleHeaderMeta}>
-                <div className={styles.titleCategoryRow}>
-                  <span className={styles.articleCatTag}>{activeArticle.category}</span>
-                  <h1 className={styles.articleMainTitle}>{activeArticle.title}</h1>
+              {/* Main Article Title Bar */}
+              <div className={styles.stoneArticleHeader}>
+                <div className={styles.tagTitleRow}>
+                  <span className={styles.categoryBadge}>{activeArticle.category}</span>
+                  <h1 className={styles.mainTitle}>{activeArticle.title}</h1>
                 </div>
 
-                <div className={styles.articleMetaActions}>
-                  <div className={styles.timeInfo}>
+                <div className={styles.metaRow}>
+                  <div className={styles.timeTag}>
                     <FiClock size={13} />
-                    <span>Last updated {activeArticle.lastUpdated}</span>
+                    <span>Last edited {activeArticle.lastUpdated}</span>
                   </div>
 
-                  <div className={styles.articleBtnsGroup}>
-                    <button
-                      onClick={() => handleOpenEditor(activeArticle)}
-                      className={styles.editPageBtn}
-                    >
+                  <div className={styles.actionBtns}>
+                    <button onClick={() => handleOpenEditor(activeArticle)} className={styles.editBtn}>
                       <FiEdit3 size={13} />
                       <span>{isCreator ? "Edit this page" : "Unlock Editor"}</span>
                     </button>
-
                     <a
                       href="https://github.com/D4vide106"
                       target="_blank"
                       rel="noreferrer"
-                      className={styles.githubPageBtn}
+                      className={styles.githubBtn}
                     >
                       <FiExternalLink size={13} />
                       <span>GitHub Wiki</span>
@@ -514,84 +556,69 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
               </div>
 
               {/* Render Full Markdown Body */}
-              <div className={styles.renderedContentArea}>
+              <div className={styles.renderedMarkdown}>
                 <MarkdownViewer content={activeArticle.content} />
               </div>
 
               {/* Footer Previous / Next Navigation */}
-              <div className={styles.prevNextNavRow}>
+              <div className={styles.navFooterRow}>
                 {prevArticle ? (
-                  <button
-                    onClick={() => setActiveArticleId(prevArticle.id)}
-                    className={styles.prevNavBtn}
-                  >
+                  <button onClick={() => setActiveArticleId(prevArticle.id)} className={styles.prevBtn}>
                     <FiArrowLeft size={14} />
                     <div>
-                      <span className={styles.navLabel}>Previous page</span>
-                      <span className={styles.navTitle}>{prevArticle.title}</span>
+                      <span className={styles.subLabel}>Previous</span>
+                      <span className={styles.btnTitle}>{prevArticle.title}</span>
                     </div>
                   </button>
                 ) : <div />}
 
                 {nextArticle ? (
-                  <button
-                    onClick={() => setActiveArticleId(nextArticle.id)}
-                    className={styles.nextNavBtn}
-                  >
+                  <button onClick={() => setActiveArticleId(nextArticle.id)} className={styles.nextBtn}>
                     <div>
-                      <span className={styles.navLabel}>Next page</span>
-                      <span className={styles.navTitle}>{nextArticle.title}</span>
+                      <span className={styles.subLabel}>Next</span>
+                      <span className={styles.btnTitle}>{nextArticle.title}</span>
                     </div>
                     <FiArrowRight size={14} />
                   </button>
                 ) : <div />}
               </div>
 
-              {/* Community Feedback Mockup (Identical to Screenshots) */}
-              <div className={styles.communityFeedbackBlock}>
-                <div className={styles.feedbackHeader}>
-                  <FiSmile size={18} color="#ffcc00" />
-                  <span>Was this wiki page helpful?</span>
-                </div>
-                <div className={styles.reactionsRow}>
-                  <button className={styles.reactBtn}>👍 Useful (14)</button>
-                  <button className={styles.reactBtn}>❤️ Amazing (9)</button>
-                  <button className={styles.reactBtn}>🚀 Epic (22)</button>
+              {/* Community Feedback Row */}
+              <div className={styles.feedbackRow}>
+                <FiSmile size={16} color="#eab308" />
+                <span>Was this page helpful?</span>
+                <div className={styles.reactBtns}>
+                  <button className={styles.rBtn}>👍 14</button>
+                  <button className={styles.rBtn}>❤️ 9</button>
+                  <button className={styles.rBtn}>🚀 22</button>
                 </div>
               </div>
             </>
           ) : (
-            <div className={styles.emptyArticleState}>
-              <p>No wiki articles available for this project yet.</p>
-              <button
-                onClick={() => handleOpenEditor()}
-                className={styles.newWikiBtn}
-              >
-                Create First Article
-              </button>
+            <div className={styles.emptyState}>
+              <p>No articles found for this project.</p>
             </div>
           )}
         </main>
 
         {/* Right Sidebar: Table of Contents ("On this page") */}
-        <aside className={styles.wikiTocSidebar}>
-          <div className={styles.tocHeader}>
-            <span>ON THIS PAGE</span>
-          </div>
-
-          <div className={styles.tocList}>
+        <aside className={styles.stoneTocSidebar}>
+          <div className={styles.tocTitle}>On this page</div>
+          <div className={styles.tocTree}>
             {tableOfContents.length === 0 ? (
-              <span className={styles.tocEmpty}>No headings on this page</span>
+              <span className={styles.tocEmpty}>No headings on page</span>
             ) : (
               tableOfContents.map((head, idx) => (
                 <a
                   key={idx}
                   href={`#${head.slug}`}
-                  className={`${styles.tocItem} ${
-                    head.level === 2 ? styles.tocLevel2 : head.level === 3 ? styles.tocLevel3 : ""
-                  }`}
+                  onClick={() => setActiveHeadingSlug(head.slug)}
+                  className={`${styles.tocLink} ${
+                    activeHeadingSlug === head.slug ? styles.tocLinkActive : ""
+                  } ${head.level === 2 ? styles.tocLevel2 : head.level === 3 ? styles.tocLevel3 : ""}`}
                 >
-                  {head.text}
+                  <span className={styles.tocActiveLine} />
+                  <span>{head.text}</span>
                 </a>
               ))
             )}
@@ -618,13 +645,13 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
             </button>
 
             <div className={styles.passcodeIconHeader}>
-              <FiShield size={32} color="#64d2ff" />
+              <FiShield size={30} color="#64d2ff" />
             </div>
 
-            <h3 className={styles.passcodeTitle}>Creator Access Verification</h3>
+            <h3 className={styles.passcodeTitle}>Creator Authentication</h3>
             <p className={styles.passcodeSubtitle}>
               The Wiki Markdown Editor is restricted exclusively to the site owner <strong>D4VIDE106</strong>.
-              Please enter your Creator Secret Passcode to unlock authoring tools.
+              Enter your Creator Secret Passcode to unlock authoring tools.
             </p>
 
             <form onSubmit={handleVerifyCreatorPasscode} className={styles.passcodeForm}>
