@@ -1,0 +1,88 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "projects": "PROJETS",
+    "about": "À PROPOS",
+    "media": "MÉDIA",
+    "community": "Communauté"
+  },
+  "languages": {
+    "it": "Italien",
+    "en": "Anglais",
+    "es": "Espagnol",
+    "fr": "Français",
+    "de": "Allemand",
+    "ja": "Japonais",
+    "ru": "Russe",
+    "pt": "Portugais"
+  },
+  "hero": {
+    "greeting": "Salut, je suis",
+    "role": "Créateur de Contenu & Spécialiste Minecraft",
+    "scroll": "Faire défiler",
+    "viewsGenerated": "Vues générées",
+    "serversPromoted": "Serveurs promus",
+    "activePlatforms": "Plateformes actives",
+    "getStarted": "Commencer",
+    "seeWork": "Voir mes projets",
+    "creatorProfile": "PROFIL DU CRÉATEUR",
+    "systemRole": "Concepteur de Systèmes & Créateur de Mods Minecraft"
+  },
+  "aboutSection": {
+    "aboutTitle": "Qui suis-je ?",
+    "aboutStats": {
+      "bornIn": "Né en",
+      "livingIn": "Vit en",
+      "age": "Âge",
+      "gender": "Genre"
+    },
+    "aboutDesc1": "Je suis développeur de mods Minecraft et créateur de contenu passionné par les mondes procéduraux et les systèmes de jeu captivants.",
+    "aboutDesc2": "J'adore concevoir des expériences RPG profondes, des structures complexes et des outils personnalisés pour la communauté.",
+    "aboutDesc3": "Retrouvez-moi sur mon serveur Discord ou sur ma chaîne YouTube où je partage mes mises à jour et gameplays !"
+  },
+  "projects": {
+    "title": "Mes",
+    "highlight": "Projets",
+    "viewProject": "Voir le projet",
+    "all": "Tous",
+    "mods": "Mods",
+    "datapacks": "Datapacks",
+    "resourcepacks": "Packs de ressources"
+  },
+  "projectsModal": {
+    "totalDownloads": "TÉLÉCHARGEMENTS TOTAUX",
+    "projectViews": "VUES DU PROJET",
+    "portfolioViews": "VUES DU PORTFOLIO",
+    "tagsAndSpecs": "TAGS & SPÉCIFICATIONS",
+    "platformsAndDownloads": "PLATEFORMES & TÉLÉCHARGEMENTS",
+    "searchPlaceholder": "RECHERCHER DES PROJETS...",
+    "all": "Tous",
+    "modpack": "Modpack",
+    "mod": "Mod",
+    "resourcepack": "Pack de ressources",
+    "plugin": "Plugin",
+    "server": "Serveur"
+  },
+  "stats": {
+    "liveStatsHeader": "STATISTIQUES & EN DIRECT",
+    "downloadsByPlatform": "TÉLÉCHARGEMENTS PAR PLATEFORME"
+  },
+  "youtube": {
+    "latestBroadcast": "DERNIÈRE VIDÉO"
+  },
+  "footer": {
+    "rights": "Tous droits réservés.",
+    "tagline": "POUR CRÉATEURS ET JOUEURS"
+  },
+  "toast": {
+    "detectedIt": "Langue réglée sur l'Italien",
+    "detectedEs": "Langue réglée sur l'Espagnol",
+    "detectedEn": "Langue réglée sur l'Anglais",
+    "detectedFr": "Langue réglée sur le Français (détectée du navigateur)",
+    "detectedDe": "Langue réglée sur l'Allemand",
+    "detectedJa": "Langue réglée sur le Japonais",
+    "detectedRu": "Langue réglée sur le Russe",
+    "detectedPt": "Langue réglée sur le Portugais",
+    "fallback": "Langue définie par défaut sur l'Anglais"
+  }
+}

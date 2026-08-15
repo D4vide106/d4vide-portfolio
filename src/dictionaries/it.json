@@ -6,6 +6,16 @@
     "media": "MEDIA",
     "community": "Community"
   },
+  "languages": {
+    "it": "Italiano",
+    "en": "Inglese",
+    "es": "Spagnolo",
+    "fr": "Francese",
+    "de": "Tedesco",
+    "ja": "Giapponese",
+    "ru": "Russo",
+    "pt": "Portoghese"
+  },
   "hero": {
     "greeting": "Ciao, sono",
     "role": "Content Creator & Specialista Minecraft",
@@ -66,8 +76,13 @@
   },
   "toast": {
     "detectedIt": "Lingua impostata su Italiano (rilevata dal browser)",
-    "detectedEs": "Idioma configurado en Español (detectado del navegador)",
-    "detectedEn": "Language set to English (detected from browser)",
+    "detectedEs": "Lingua impostata su Spagnolo (rilevata dal browser)",
+    "detectedEn": "Lingua impostata su Inglese (rilevata dal browser)",
+    "detectedFr": "Lingua impostata su Francese (rilevata dal browser)",
+    "detectedDe": "Lingua impostata su Tedesco (rilevata dal browser)",
+    "detectedJa": "Lingua impostata su Giapponese (rilevata dal browser)",
+    "detectedRu": "Lingua impostata su Russo (rilevata dal browser)",
+    "detectedPt": "Lingua impostata su Portoghese (rilevata dal browser)",
     "fallback": "Lingua impostata su Inglese di base (lingua browser non supportata)"
   }
 }

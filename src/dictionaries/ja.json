@@ -1,0 +1,88 @@
+{
+  "nav": {
+    "home": "ホーム",
+    "projects": "作品",
+    "about": "概要",
+    "media": "メディア",
+    "community": "コミュニティ"
+  },
+  "languages": {
+    "it": "イタリア語",
+    "en": "英語",
+    "es": "スペイン語",
+    "fr": "フランス語",
+    "de": "ドイツ語",
+    "ja": "日本語",
+    "ru": "ロシア語",
+    "pt": "ポルトガル語"
+  },
+  "hero": {
+    "greeting": "こんにちは、",
+    "role": "コンテンツクリエイター＆マインクラフトスペシャリスト",
+    "scroll": "スクロールダウン",
+    "viewsGenerated": "総再生回数",
+    "serversPromoted": "プロモートされたサーバー",
+    "activePlatforms": "アクティブなプラットフォーム",
+    "getStarted": "始める",
+    "seeWork": "作品を見る",
+    "creatorProfile": "クリエイタープロフィール",
+    "systemRole": "システムデザイナー＆マインクラフトModクリエイター"
+  },
+  "aboutSection": {
+    "aboutTitle": "私について",
+    "aboutStats": {
+      "bornIn": "出身地",
+      "livingIn": "居住地",
+      "age": "年齢",
+      "gender": "性別"
+    },
+    "aboutDesc1": "マインクラフトのMod開発者であり、プロシージャルワールドやカスタムRPG要素を追求するコンテンツクリエイターです。",
+    "aboutDesc2": "没入感のあるRPG体験、複雑な建築物、クリエイター向けのカスタムツール制作に情熱を注いでいます。",
+    "aboutDesc3": "DiscordサーバーやYouTubeチャンネルで最新アップデートやゲームプレイを公開しています！"
+  },
+  "projects": {
+    "title": "マイ",
+    "highlight": "プロジェクト",
+    "viewProject": "プロジェクトを見る",
+    "all": "すべて",
+    "mods": "Mod",
+    "datapacks": "データパック",
+    "resourcepacks": "リソースパック"
+  },
+  "projectsModal": {
+    "totalDownloads": "総ダウンロード数",
+    "projectViews": "プロジェクト閲覧数",
+    "portfolioViews": "ポートフォリオ閲覧数",
+    "tagsAndSpecs": "タグ＆仕様",
+    "platformsAndDownloads": "プラットフォーム＆ダウンロード",
+    "searchPlaceholder": "プロジェクトを検索...",
+    "all": "すべて",
+    "modpack": "Modパック",
+    "mod": "Mod",
+    "resourcepack": "リソースパック",
+    "plugin": "プラグイン",
+    "server": "サーバー"
+  },
+  "stats": {
+    "liveStatsHeader": "ライブ統計＆メトリクス",
+    "downloadsByPlatform": "プラットフォーム別ダウンロード数"
+  },
+  "youtube": {
+    "latestBroadcast": "最新動画"
+  },
+  "footer": {
+    "rights": "無断転載を禁じます。",
+    "tagline": "クリエイターとゲーマーのために"
+  },
+  "toast": {
+    "detectedIt": "言語がイタリア語に設定されました",
+    "detectedEs": "言語がスペイン語に設定されました",
+    "detectedEn": "言語が英語に設定されました",
+    "detectedFr": "言語がフランス語に設定されました",
+    "detectedDe": "言語がドイツ語に設定されました",
+    "detectedJa": "言語が日本語に設定されました（ブラウザから検出）",
+    "detectedRu": "言語がロシア語に設定されました",
+    "detectedPt": "言語がポルトガル語に設定されました",
+    "fallback": "サポートされていない言語のため英語がデフォルト設定されました"
+  }
+}

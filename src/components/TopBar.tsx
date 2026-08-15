@@ -23,11 +23,41 @@ export const LANGUAGES: { code: Language; name: string; flagUrl: string }[] = [
     name: "Español",
     flagUrl: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2"><rect width="3" height="2" fill="%23c60b1e"/><rect y="0.5" width="3" height="1" fill="%23ffc400"/></svg>`,
   },
+  {
+    code: "fr",
+    name: "Français",
+    flagUrl: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2"><rect width="1" height="2" fill="%23002395"/><rect x="1" width="1" height="2" fill="%23fff"/><rect x="2" width="1" height="2" fill="%23ed2939"/></svg>`,
+  },
+  {
+    code: "de",
+    name: "Deutsch",
+    flagUrl: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 3"><rect width="5" height="3" fill="%23000"/><rect y="1" width="5" height="2" fill="%23dd0000"/><rect y="2" width="5" height="1" fill="%23ffce00"/></svg>`,
+  },
+  {
+    code: "ja",
+    name: "日本語",
+    flagUrl: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2"><rect width="3" height="2" fill="%23fff"/><circle cx="1.5" cy="1" r="0.6" fill="%23bc002d"/></svg>`,
+  },
+  {
+    code: "ru",
+    name: "Русский",
+    flagUrl: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2"><rect width="3" height="2" fill="%23fff"/><rect y="0.666" width="3" height="1.334" fill="%230039a6"/><rect y="1.333" width="3" height="0.667" fill="%23d52b1e"/></svg>`,
+  },
+  {
+    code: "pt",
+    name: "Português",
+    flagUrl: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2"><rect width="3" height="2" fill="%23ff0000"/><rect width="1.2" height="2" fill="%23006600"/><circle cx="1.2" cy="1" r="0.4" fill="%23ffcc00"/></svg>`,
+  },
 ];
 
 export default function TopBar({ dict: propDict }: { dict?: any; currentLang?: string }) {
   const { lang, setLang, dict: contextDict } = useLanguage();
   const dict = contextDict.nav || propDict;
+  const langDict = (contextDict as any)?.languages || {};
+
+  const getLangName = (item: { code: Language; name: string }) => {
+    return langDict[item.code] || item.name;
+  };
 
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -167,10 +197,10 @@ export default function TopBar({ dict: propDict }: { dict?: any; currentLang?: s
                   >
                     <img
                       src={item.flagUrl}
-                      alt={item.name}
+                      alt={getLangName(item)}
                       className={styles.flagIconImgItem}
                     />
-                    <span className={styles.itemName}>{item.name}</span>
+                    <span className={styles.itemName}>{getLangName(item)}</span>
                     {lang === item.code && (
                       <FiCheck size={13} className={styles.checkIcon} />
                     )}
@@ -229,10 +259,10 @@ export default function TopBar({ dict: propDict }: { dict?: any; currentLang?: s
                 >
                   <img
                     src={item.flagUrl}
-                    alt={item.name}
+                    alt={getLangName(item)}
                     className={styles.flagIconImgItem}
                   />
-                  <span>{item.name}</span>
+                  <span>{getLangName(item)}</span>
                 </button>
               ))}
             </div>

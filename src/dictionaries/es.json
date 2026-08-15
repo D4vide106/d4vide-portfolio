@@ -6,6 +6,16 @@
     "media": "MEDIOS",
     "community": "Comunidad"
   },
+  "languages": {
+    "it": "Italiano",
+    "en": "Inglés",
+    "es": "Español",
+    "fr": "Francés",
+    "de": "Alemán",
+    "ja": "Japonés",
+    "ru": "Ruso",
+    "pt": "Portugués"
+  },
   "hero": {
     "greeting": "Hola, soy",
     "role": "Creador de Contenido y Especialista de Minecraft",
@@ -68,6 +78,11 @@
     "detectedIt": "Idioma configurado en Italiano (detectado del navegador)",
     "detectedEs": "Idioma configurado en Español (detectado del navegador)",
     "detectedEn": "Idioma configurado en Inglés (detectado del navegador)",
+    "detectedFr": "Idioma configurado en Francés (detectado del navegador)",
+    "detectedDe": "Idioma configurado en Alemán (detectado del navegador)",
+    "detectedJa": "Idioma configurado en Japonés (detectado del navegador)",
+    "detectedRu": "Idioma configurado en Ruso (detectado del navegador)",
+    "detectedPt": "Idioma configurado en Portugués (detectado del navegador)",
     "fallback": "Idioma predeterminado establecido en Inglés (idioma no soportado)"
   }
 }

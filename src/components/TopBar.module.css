@@ -239,11 +239,13 @@
   position: absolute;
   top: calc(100% + 10px);
   right: 0;
-  min-width: 155px;
-  background: rgba(14, 14, 20, 0.94);
+  min-width: 165px;
+  max-height: 320px;
+  overflow-y: auto;
+  background: rgba(14, 14, 20, 0.96);
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 16px;
   padding: 6px;
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05);
@@ -252,6 +254,14 @@
   flex-direction: column;
   gap: 4px;
   animation: dropdownFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.langMenu::-webkit-scrollbar {
+  width: 5px;
+}
+.langMenu::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
 }
 
 @keyframes dropdownFadeIn {
