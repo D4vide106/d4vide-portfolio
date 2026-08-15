@@ -32,7 +32,7 @@ import { DEFAULT_WIKI_DATA, WikiArticle } from "@/data/wikiData";
 import MarkdownViewer from "./MarkdownViewer";
 import WikiEditorModal from "./WikiEditorModal";
 
-export default function WikiSection({ dict: propDict }: { dict?: any }) {
+export default function WikiSection({ dict: propDict, standalone }: { dict?: any; standalone?: boolean }) {
   const { dict: contextDict } = useLanguage();
   const wikiDict = (contextDict as any)?.wiki || propDict;
   const projectDataDict = (contextDict as any)?.projectData || {};
