@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { FiGlobe, FiMenu, FiX, FiChevronDown, FiCheck } from "react-icons/fi";
+import { FiMenu, FiX, FiChevronDown, FiCheck } from "react-icons/fi";
 import { SiDiscord } from "react-icons/si";
 import styles from "./TopBar.module.css";
 import { useLanguage, LANGUAGES } from "@/context/LanguageContext";
@@ -175,14 +175,13 @@ export default function TopBar({ dict: propDict }: { dict?: any; currentLang?: s
               }`}
               aria-label="Select Language"
             >
-              <FiGlobe size={14} className={styles.globeIcon} />
               <img
                 src={currentLangObj.flagUrl}
                 alt={currentLangObj.name}
                 className={styles.flagIconImg}
               />
               <FiChevronDown
-                size={12}
+                size={11}
                 className={`${styles.chevronIcon} ${
                   langDropdownOpen ? styles.chevronRotated : ""
                 }`}
