@@ -22,6 +22,17 @@ const FLAG_URLS: Record<Language, string> = {
   pt: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2"><rect width="3" height="2" fill="%23ff0000"/><rect width="1.2" height="2" fill="%23006600"/><circle cx="1.2" cy="1" r="0.4" fill="%23ffcc00"/></svg>`,
 };
 
+export const LANGUAGES: { code: Language; name: string; flagUrl: string }[] = [
+  { code: "it", name: "Italiano", flagUrl: FLAG_URLS.it },
+  { code: "en", name: "English", flagUrl: FLAG_URLS.en },
+  { code: "es", name: "Español", flagUrl: FLAG_URLS.es },
+  { code: "fr", name: "Français", flagUrl: FLAG_URLS.fr },
+  { code: "de", name: "Deutsch", flagUrl: FLAG_URLS.de },
+  { code: "ja", name: "日本語", flagUrl: FLAG_URLS.ja },
+  { code: "ru", name: "Русский", flagUrl: FLAG_URLS.ru },
+  { code: "pt", name: "Português", flagUrl: FLAG_URLS.pt },
+];
+
 const LanguageContext = createContext<LanguageContextType>({
   lang: "it",
   setLang: () => {},

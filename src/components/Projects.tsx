@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { FiDownload, FiSearch, FiEye, FiGlobe, FiTag, FiExternalLink } from "react-icons/fi";
+import { FiDownload, FiSearch, FiEye, FiGlobe, FiTag, FiExternalLink, FiGithub } from "react-icons/fi";
 import { SiCurseforge, SiModrinth, SiGamejolt, SiItchdotio } from "react-icons/si";
 import { FaCube } from "react-icons/fa";
 import { useLanguage } from "@/context/LanguageContext";
@@ -15,6 +15,8 @@ const PLATFORM_NAMES: Record<string, string> = {
   modrinth: "Modrinth",
   gamejolt: "GameJolt",
   itch: "Itch.io",
+  github: "GitHub",
+  web: "Web App",
 };
 
 export default function Projects({ dict: propDict }: { dict?: any }) {
@@ -35,7 +37,7 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
     return projectDataDict[p.id]?.description || p.description;
   };
 
-  // Strict Filter projects by category and search
+  // Filter projects by category and search (Supports Minecraft, Games, Apps & Tools)
   const filteredProjects = useMemo(() => {
     return projects.filter((p) => {
       const localizedTitle = getProjectTitle(p);
@@ -52,7 +54,6 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
       const pType = p.type.toLowerCase();
       const fType = filterType.toLowerCase();
 
-      // Strict distinction: "Mod" matches mods but excludes "modpack"
       if (fType === "mod") {
         return pType.includes("mod") && !pType.includes("modpack");
       }
@@ -89,6 +90,8 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
       case "curseforge": return <SiCurseforge size={size} />;
       case "gamejolt": return <SiGamejolt size={size} />;
       case "itch": return <SiItchdotio size={size} />;
+      case "github": return <FiGithub size={size} />;
+      case "web": return <FiExternalLink size={size} />;
       default: return <FaCube size={size} />;
     }
   };
@@ -119,12 +122,12 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
         <div className={styles.controlsBar}>
           <div className={styles.filtersGroup}>
             {[
-              { key: "All", label: modalDict?.all || "All" },
+              { key: "All", label: modalDict?.all || "Tutti" },
               { key: "Modpack", label: modalDict?.modpack || "Modpack" },
-              { key: "Mod", label: modalDict?.mod || "Mod" },
-              { key: "Resource Pack", label: modalDict?.resourcepack || "Resource Pack" },
-              { key: "Plugin", label: modalDict?.plugin || "Plugin" },
-              { key: "Server", label: modalDict?.server || "Server" },
+              { key: "Mod", label: modalDict?.mod || "Mod & Datapack" },
+              { key: "Resource Pack", label: "Resource Pack" },
+              { key: "Plugin", label: "Plugin" },
+              { key: "Server", label: "Server" },
             ].map((typeItem) => (
               <button
                 key={typeItem.key}

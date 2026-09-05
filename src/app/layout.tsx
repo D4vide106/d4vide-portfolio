@@ -25,7 +25,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: "D4VIDE106 // CREATOR & DEVELOPER",
-  description: "Minecraft Mod Developer, Game Creator and Content Creator",
+  description: "Game Developer, Software Creator & Content Creator - Official Portfolio & Projects",
   icons: {
     icon: "https://mc-heads.net/avatar/_D4vide106_/64",
     shortcut: "https://mc-heads.net/avatar/_D4vide106_/64",
@@ -40,7 +40,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="it">
-      <body className={`${syne.variable} ${spaceGrotesk.variable} font-sans`}>
+      <body className="antialiased">
         <LanguageProvider>
           <LiveStatsProvider>{children}</LiveStatsProvider>
         </LanguageProvider>

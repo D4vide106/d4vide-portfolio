@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import {
   FiBookOpen,
   FiSearch,
@@ -25,31 +25,62 @@ import {
   FiSun,
   FiHelpCircle,
 } from "react-icons/fi";
+import { SiDiscord } from "react-icons/si";
 import styles from "./WikiSection.module.css";
-import { useLanguage } from "@/context/LanguageContext";
+import { useLanguage, LANGUAGES } from "@/context/LanguageContext";
 import { useLiveStats } from "@/context/LiveStatsContext";
 import { UnifiedProject } from "@/data/projectsData";
-import { DEFAULT_WIKI_DATA, WikiArticle } from "@/data/wikiData";
+import { DEFAULT_WIKI_DATA, WikiArticle, slugifyHeading, canonicalProjectId } from "@/data/wikiData";
 import MarkdownViewer from "./MarkdownViewer";
 import WikiEditorModal from "./WikiEditorModal";
 
+// Helper to localize article data based on selected language
+const getLocalizedArticle = (art: WikiArticle, targetLang: string): WikiArticle => {
+  if (targetLang === "it" && art.translations?.it) {
+    return {
+      ...art,
+      title: art.translations.it.title || art.title,
+      category: art.translations.it.category || art.category,
+      content: art.translations.it.content || art.content,
+    };
+  }
+  return art;
+};
+
 export default function WikiSection({ dict: propDict, standalone }: { dict?: any; standalone?: boolean }) {
-  const { dict: contextDict } = useLanguage();
+  const { dict: contextDict, lang, setLang } = useLanguage();
   const wikiDict = (contextDict as any)?.wiki || propDict;
+  const navDict = (contextDict as any)?.nav || {};
   const projectDataDict = (contextDict as any)?.projectData || {};
   const { projects } = useLiveStats();
 
+  const [wikiLangOpen, setWikiLangOpen] = useState<boolean>(false);
+  const currentLangObj = LANGUAGES.find((l) => l.code === lang) || LANGUAGES[0];
+
   // Active Project & Dropdown State
-  const [selectedProjectId, setSelectedProjectId] = useState<string>("project-boss-rpg");
+  const [selectedProjectId, setSelectedProjectId] = useState<string>(() => {
+    if (typeof window !== "undefined") {
+      const p = new URLSearchParams(window.location.search).get("project");
+      if (p) return canonicalProjectId(p);
+    }
+    return "project-boss-rpg";
+  });
   const [projectDropdownOpen, setProjectDropdownOpen] = useState<boolean>(false);
 
   // Wiki Articles Data State
   const [allWikiArticles, setAllWikiArticles] = useState<Record<string, WikiArticle[]>>(DEFAULT_WIKI_DATA);
 
   // Active Selected Article State
-  const [activeArticleId, setActiveArticleId] = useState<string>("pbr-getting-started");
+  const [activeArticleId, setActiveArticleId] = useState<string>(() => {
+    if (typeof window !== "undefined") {
+      const a = new URLSearchParams(window.location.search).get("article");
+      if (a) return a;
+    }
+    return "pbr-getting-started";
+  });
 
-  // Search Query State
+  // Command Palette & Search Query State
+  const [searchModalOpen, setSearchModalOpen] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   // Layout & Spotlight Control State
@@ -69,6 +100,51 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
 
   // Active TOC heading tracker
   const [activeHeadingSlug, setActiveHeadingSlug] = useState<string>("");
+
+  // Refs for outside click handling, scroll pane & keyboard shortcuts
+  const articlePaneRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const projectDropdownRef = useRef<HTMLDivElement>(null);
+  const langRef = useRef<HTMLDivElement>(null);
+  const layoutMenuRef = useRef<HTMLDivElement>(null);
+
+  // Determine repository base path
+  const repoPrefix =
+    typeof window !== "undefined" && window.location.pathname.startsWith("/d4vide-portfolio")
+      ? "/d4vide-portfolio"
+      : "";
+
+  // Close dropdowns on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (projectDropdownRef.current && !projectDropdownRef.current.contains(e.target as Node)) {
+        setProjectDropdownOpen(false);
+      }
+      if (langRef.current && !langRef.current.contains(e.target as Node)) {
+        setWikiLangOpen(false);
+      }
+      if (layoutMenuRef.current && !layoutMenuRef.current.contains(e.target as Node)) {
+        setLayoutMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Keyboard shortcut: Ctrl+K or Cmd+K to toggle Command Palette, Esc to close
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setSearchModalOpen((prev) => !prev);
+      }
+      if (e.key === "Escape") {
+        setSearchModalOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   // Check creator authentication on mount
   useEffect(() => {
@@ -92,7 +168,11 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
         sessionStorage.setItem("d4v_creator_auth", "true");
       } catch {}
     } else {
-      setPasscodeError("Invalid Creator Secret Passcode. Access denied.");
+      setPasscodeError(
+        lang === "it"
+          ? "Passcode Segreto non valido. Accesso negato."
+          : "Invalid Creator Secret Passcode. Access denied."
+      );
     }
   };
 
@@ -119,9 +199,19 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
       if (saved) {
         const parsed = JSON.parse(saved);
         if (typeof parsed === "object" && parsed !== null) {
+          const normalized: Record<string, WikiArticle[]> = {};
+          Object.entries(parsed).forEach(([key, arts]) => {
+            const normKey = canonicalProjectId(key);
+            if (Array.isArray(arts)) {
+              normalized[normKey] = arts.map((a: any) => ({
+                ...a,
+                projectId: normKey,
+              }));
+            }
+          });
           setAllWikiArticles((prev) => ({
             ...prev,
-            ...parsed,
+            ...normalized,
           }));
         }
       }
@@ -130,7 +220,7 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
         const urlProj = params.get("project");
         const urlArt = params.get("article");
         if (urlProj) {
-          setSelectedProjectId(urlProj);
+          setSelectedProjectId(canonicalProjectId(urlProj));
         }
         if (urlArt) {
           setActiveArticleId(urlArt);
@@ -144,7 +234,8 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
     try {
       if (typeof window !== "undefined") {
         const url = new URL(window.location.href);
-        url.searchParams.set("project", selectedProjectId);
+        const canonProj = canonicalProjectId(selectedProjectId);
+        url.searchParams.set("project", canonProj);
         if (activeArticleId) {
           url.searchParams.set("article", activeArticleId);
         }
@@ -162,13 +253,15 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
     slug: string;
     content: string;
   }) => {
+    const normProjId = canonicalProjectId(newArt.projectId);
     const updatedArticle: WikiArticle = {
       ...newArt,
+      projectId: normProjId,
       lastUpdated: new Date().toISOString().split("T")[0],
     };
 
     setAllWikiArticles((prev) => {
-      const projArticles = prev[newArt.projectId] || [];
+      const projArticles = prev[normProjId] || [];
       const existingIdx = projArticles.findIndex((a) => a.id === newArt.id);
       let updatedProjArticles: WikiArticle[] = [];
 
@@ -181,7 +274,7 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
 
       const next = {
         ...prev,
-        [newArt.projectId]: updatedProjArticles,
+        [normProjId]: updatedProjArticles,
       };
 
       try {
@@ -191,19 +284,27 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
       return next;
     });
 
-    setSelectedProjectId(newArt.projectId);
+    setSelectedProjectId(normProjId);
     setActiveArticleId(newArt.id);
   };
 
-  // Current Active Project Object
+  // Current Active Project Object (always resolved using canonical ID)
   const currentProject: UnifiedProject = useMemo(() => {
-    return projects.find((p) => p.id === selectedProjectId) || projects[0];
+    const canonId = canonicalProjectId(selectedProjectId);
+    return projects.find((p) => p.id === canonId) || projects[0];
   }, [projects, selectedProjectId]);
 
-  // Current Project Articles List
+  // Current Project Articles List (Fully localized for current language)
   const currentProjectArticles: WikiArticle[] = useMemo(() => {
-    return allWikiArticles[selectedProjectId] || DEFAULT_WIKI_DATA[selectedProjectId] || [];
-  }, [allWikiArticles, selectedProjectId]);
+    const canonId = canonicalProjectId(selectedProjectId);
+    const rawArticles =
+      allWikiArticles[canonId] ||
+      allWikiArticles[selectedProjectId] ||
+      DEFAULT_WIKI_DATA[canonId] ||
+      DEFAULT_WIKI_DATA[selectedProjectId] ||
+      [];
+    return rawArticles.map((art) => getLocalizedArticle({ ...art, projectId: canonId }, lang));
+  }, [allWikiArticles, selectedProjectId, lang]);
 
   // Group Articles by Category
   const categoriesMap = useMemo(() => {
@@ -228,11 +329,12 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
 
   // Active Selected Article Object
   const activeArticle: WikiArticle | undefined = useMemo(() => {
+    const canonId = canonicalProjectId(selectedProjectId);
     return (
       currentProjectArticles.find((a) => a.id === activeArticleId) ||
       currentProjectArticles[0] || {
         id: "default",
-        projectId: selectedProjectId,
+        projectId: canonId,
         category: "Getting Started",
         title: "Overview",
         slug: "overview",
@@ -242,28 +344,34 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
     );
   }, [currentProjectArticles, activeArticleId, selectedProjectId]);
 
-  // Search Results
+  // Search Results (Searches localized articles across all projects, deduplicated by article.id)
   const searchResults = useMemo(() => {
     if (!searchQuery.trim()) return [];
-    const query = searchQuery.toLowerCase();
+    const query = searchQuery.toLowerCase().trim();
+    const queryWords = query.split(/\s+/).filter(Boolean);
     const results: { article: WikiArticle; projectTitle: string }[] = [];
+    const seenArticleIds = new Set<string>();
 
-    Object.entries(allWikiArticles).forEach(([projId, articles]) => {
+    Object.entries(allWikiArticles).forEach(([rawProjId, rawArticles]) => {
+      const projId = canonicalProjectId(rawProjId);
       const proj = projects.find((p) => p.id === projId);
-      const projTitle = proj ? proj.title : projId;
-      articles.forEach((art) => {
-        if (
-          art.title.toLowerCase().includes(query) ||
-          art.content.toLowerCase().includes(query) ||
-          art.category.toLowerCase().includes(query)
-        ) {
+      const projTitle = proj ? (projectDataDict[proj.id]?.title || proj.title) : projId;
+
+      rawArticles.forEach((rawArt) => {
+        if (seenArticleIds.has(rawArt.id)) return;
+        const art = getLocalizedArticle({ ...rawArt, projectId: projId }, lang);
+        const searchableText = `${art.title} ${art.content} ${art.category} ${projTitle} ${projId}`.toLowerCase();
+        const matches = queryWords.every((word) => searchableText.includes(word));
+
+        if (matches) {
+          seenArticleIds.add(rawArt.id);
           results.push({ article: art, projectTitle: projTitle });
         }
       });
     });
 
     return results;
-  }, [searchQuery, allWikiArticles, projects]);
+  }, [searchQuery, allWikiArticles, projects, projectDataDict, lang]);
 
   // Extract Table of Contents (Headings) from active article content
   const tableOfContents = useMemo(() => {
@@ -274,13 +382,13 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
     lines.forEach((line) => {
       if (line.startsWith("# ")) {
         const text = line.replace(/^#\s+/, "").trim();
-        headings.push({ text, slug: text.toLowerCase().replace(/[^a-z0-9]+/g, "-"), level: 1 });
+        headings.push({ text, slug: slugifyHeading(text), level: 1 });
       } else if (line.startsWith("## ")) {
         const text = line.replace(/^##\s+/, "").trim();
-        headings.push({ text, slug: text.toLowerCase().replace(/[^a-z0-9]+/g, "-"), level: 2 });
+        headings.push({ text, slug: slugifyHeading(text), level: 2 });
       } else if (line.startsWith("### ")) {
         const text = line.replace(/^###\s+/, "").trim();
-        headings.push({ text, slug: text.toLowerCase().replace(/[^a-z0-9]+/g, "-"), level: 3 });
+        headings.push({ text, slug: slugifyHeading(text), level: 3 });
       }
     });
 
@@ -297,190 +405,402 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
     return projectDataDict[p.id]?.title || p.title;
   };
 
+  // Portfolio Section Smooth Navigation (no '#' in URL)
+  const handleNavToPortfolioSection = (e: React.MouseEvent, sectionId: string) => {
+    e.preventDefault();
+    if (sectionId === "wiki") return;
+    window.location.href = `${repoPrefix}/?section=${sectionId}`;
+  };
+
+  // Smoothly select an article from Categories, Prev/Next, or search
+  const handleSelectArticle = (artId: string) => {
+    if (artId === activeArticleId) return;
+    setActiveArticleId(artId);
+    setActiveHeadingSlug("");
+    if (articlePaneRef.current) {
+      articlePaneRef.current.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  // Smooth scroll to heading in center pane with glowing highlight & no '#' in URL
+  const handleTocClick = (e: React.MouseEvent, slug: string) => {
+    e.preventDefault();
+    setActiveHeadingSlug(slug);
+    const target = document.getElementById(slug);
+    const pane = articlePaneRef.current;
+    if (target && pane) {
+      const paneRect = pane.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+      const targetTop = targetRect.top - paneRect.top + pane.scrollTop - 24;
+      pane.scrollTo({
+        top: targetTop,
+        behavior: "smooth",
+      });
+
+      // Pulse glowing animation on target heading
+      document.querySelectorAll(`.${styles.headingHighlighted}`).forEach((el) => {
+        el.classList.remove(styles.headingHighlighted);
+      });
+      target.classList.add(styles.headingHighlighted);
+      setTimeout(() => {
+        target.classList.remove(styles.headingHighlighted);
+      }, 2000);
+    }
+  };
+
   return (
-    <section id="wiki" className={`${styles.wikiRoot} ${spotlightOn ? styles.spotlightActive : ""}`}>
-      {/* 1. D4VIDE WIKIS Header Control Bar */}
+    <section id="wiki" className={`${styles.wikiRoot} ${standalone ? styles.standaloneWiki : ""} ${spotlightOn ? styles.spotlightActive : ""}`}>
+      {/* 1. Modern Top Header Bar */}
       <div className={styles.wikiHeaderBar}>
-        <div className={styles.headerLeftBrand}>
-          <FiBookOpen size={18} className={styles.brandIcon} />
-          <span className={styles.brandTitle}>D4VIDE WIKIS & DOCS</span>
-          <span className={styles.versionBadge}>v4.2</span>
-        </div>
-
-        {/* Project Dropdown Selector */}
-        <div className={styles.projectDropdownWrap}>
-          <button
-            onClick={() => setProjectDropdownOpen(!projectDropdownOpen)}
-            className={styles.projectSelectBtn}
-          >
-            <img src={currentProject.icon_url} alt="" className={styles.projBtnLogo} />
-            <span className={styles.projBtnTitle}>{getLocalizedProjectTitle(currentProject)}</span>
-            <FiChevronDown size={14} />
-          </button>
-
-          {projectDropdownOpen && (
-            <div className={styles.projectSelectMenu}>
-              <div className={styles.menuHeaderLabel}>SELECT PROJECT WIKI:</div>
-              {projects.map((p) => (
-                <button
-                  key={p.id}
-                  onClick={() => {
-                    setSelectedProjectId(p.id);
-                    setProjectDropdownOpen(false);
-                  }}
-                  className={`${styles.projectMenuItem} ${
-                    selectedProjectId === p.id ? styles.projectMenuItemActive : ""
-                  }`}
-                >
-                  <img src={p.icon_url} alt="" className={styles.menuItemLogo} />
-                  <span>{getLocalizedProjectTitle(p)}</span>
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Search Bar */}
-        <div className={styles.headerSearchWrap}>
-          <FiSearch size={14} className={styles.searchIcon} />
-          <input
-            type="text"
-            placeholder={wikiDict?.searchPlaceholder || "Search wiki guides... (Ctrl+K)"}
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className={styles.headerSearchInput}
-          />
-        </div>
-
-        {/* Actions: Creator Mode & Layout Switcher */}
-        <div className={styles.headerRightActions}>
-          {isCreator ? (
-            <div className={styles.creatorGroup}>
-              <span className={styles.creatorBadge}>CREATOR ACTIVE</span>
-              <button onClick={() => handleOpenEditor()} className={styles.newGuideBtn}>
-                <FiPlus size={14} />
-                <span>New Guide</span>
-              </button>
-              <button onClick={handleLogoutCreator} className={styles.logoutIconBtn} title="Logout Creator">
-                <FiLogOut size={13} />
-              </button>
-            </div>
-          ) : (
-            <button onClick={() => setPasscodeModalOpen(true)} className={styles.creatorLockBtn} title="Creator Passcode">
-              <FiLock size={14} />
-              <span>Creator Access</span>
-            </button>
-          )}
-
-          {/* GitHub Link */}
+        <div className={`${styles.wikiHeaderInner} ${layoutMode === "expand" ? styles.headerExpand : ""}`}>
+          {/* Left: Brand Avatar + Nickname + Project Dropdown Selector */}
+          <div className={styles.headerLeftGroup}>
           <a
-            href="https://github.com/D4vide106"
-            target="_blank"
-            rel="noreferrer"
-            className={styles.actionIconBtn}
-            title="GitHub Repository"
+            href={repoPrefix + "/"}
+            className={styles.wikiBrandLink}
+            title="D4VIDE106 Portfolio"
           >
-            <FiGithub size={16} />
+            <div className={styles.wikiAvatarWrap}>
+              <img
+                src="https://mc-heads.net/avatar/_D4vide106_/32"
+                alt="_D4vide106_"
+                className={styles.wikiAvatarImg}
+              />
+              <span className={styles.wikiOnlineDot} />
+            </div>
+            <span className={styles.wikiBrandName}>D4VIDE106</span>
           </a>
 
-          {/* Layout & Spotlight Switcher Popup */}
-          <div className={styles.layoutSwitchWrap}>
+          <span className={styles.wikiDivider}>/</span>
+
+          {/* Project Dropdown Selector on the LEFT */}
+          <div className={styles.projectDropdownWrap} ref={projectDropdownRef}>
             <button
-              onClick={() => setLayoutMenuOpen(!layoutMenuOpen)}
-              className={`${styles.layoutToggleBtn} ${layoutMenuOpen ? styles.layoutToggleBtnActive : ""}`}
-              title="Layout Switch & Spotlight Settings"
+              onClick={() => setProjectDropdownOpen(!projectDropdownOpen)}
+              className={styles.projectSelectBtn}
+              aria-label="Select Project"
             >
-              <FiSliders size={15} />
-              <FiChevronDown size={12} />
+              <img src={currentProject.icon_url} alt="" className={styles.projBtnLogo} />
+              <span className={styles.projBtnTitle}>{getLocalizedProjectTitle(currentProject)}</span>
+              <FiChevronDown size={13} className={projectDropdownOpen ? styles.chevronRotated : ""} />
             </button>
 
-            {layoutMenuOpen && (
-              <div className={styles.layoutMenuCard}>
-                <div className={styles.menuSecTitle}>
-                  <FiSliders size={14} />
-                  <span>Layout Switch</span>
-                  <FiHelpCircle size={13} color="#86868b" />
+            {projectDropdownOpen && (
+              <div className={styles.projectSelectMenu}>
+                <div className={styles.menuHeaderLabel}>
+                  {lang === "it" ? "SELEZIONA PROGETTO:" : "SELECT PROJECT WIKI:"}
                 </div>
-                <div className={styles.layoutGrid}>
-                  <button
-                    onClick={() => setLayoutMode("original")}
-                    className={`${styles.layoutSegBtn} ${layoutMode === "original" ? styles.layoutSegBtnActive : ""}`}
-                  >
-                    <FiMinimize2 size={13} />
-                    <span>Original</span>
-                  </button>
-                  <button
-                    onClick={() => setLayoutMode("expand")}
-                    className={`${styles.layoutSegBtn} ${layoutMode === "expand" ? styles.layoutSegBtnActive : ""}`}
-                  >
-                    <FiMaximize2 size={13} />
-                    <span>Expand All</span>
-                  </button>
-                </div>
-
-                <hr className={styles.menuDivider} />
-
-                <div className={styles.menuSecTitle}>
-                  <FiSun size={14} />
-                  <span>Spotlight Focus</span>
-                  <FiHelpCircle size={13} color="#86868b" />
-                </div>
-                <div className={styles.spotlightToggleRow}>
-                  <button
-                    onClick={() => setSpotlightOn(true)}
-                    className={`${styles.spotBtn} ${spotlightOn ? styles.spotBtnActive : ""}`}
-                  >
-                    ON
-                  </button>
-                  <button
-                    onClick={() => setSpotlightOn(false)}
-                    className={`${styles.spotBtn} ${!spotlightOn ? styles.spotBtnActive : ""}`}
-                  >
-                    OFF
-                  </button>
-                </div>
+                {projects.map((p) => {
+                  const isCurrent = canonicalProjectId(selectedProjectId) === p.id;
+                  return (
+                    <button
+                      key={p.id}
+                      onClick={() => {
+                        setSelectedProjectId(p.id);
+                        setProjectDropdownOpen(false);
+                      }}
+                      className={`${styles.projectMenuItem} ${
+                        isCurrent ? styles.projectMenuItemActive : ""
+                      }`}
+                    >
+                      <img src={p.icon_url} alt="" className={styles.menuItemLogo} />
+                      <span>{getLocalizedProjectTitle(p)}</span>
+                    </button>
+                  );
+                })}
               </div>
             )}
           </div>
         </div>
+
+        {/* Center: Main Portfolio Navigation Buttons */}
+        <nav className={styles.headerCenterNav}>
+          <a
+            href={repoPrefix + "/?section=projects"}
+            onClick={(e) => handleNavToPortfolioSection(e, "projects")}
+            className={styles.headerNavLink}
+          >
+            {navDict.projects || (lang === "it" ? "PROGETTI" : "WORKS")}
+          </a>
+          <span className={`${styles.headerNavLink} ${styles.headerNavLinkActive}`}>
+            {navDict.wiki || "WIKI"}
+          </span>
+          <a
+            href={repoPrefix + "/?section=about"}
+            onClick={(e) => handleNavToPortfolioSection(e, "about")}
+            className={styles.headerNavLink}
+          >
+            {navDict.about || (lang === "it" ? "CHI SONO" : "ABOUT")}
+          </a>
+          <a
+            href={repoPrefix + "/?section=youtube"}
+            onClick={(e) => handleNavToPortfolioSection(e, "youtube")}
+            className={styles.headerNavLink}
+          >
+            {navDict.media || "MEDIA"}
+          </a>
+          <a
+            href={repoPrefix + "/?section=contact"}
+            onClick={(e) => handleNavToPortfolioSection(e, "contact")}
+            className={styles.headerNavLink}
+          >
+            {navDict.contact || (lang === "it" ? "CONTATTI" : "CONTACT")}
+          </a>
+        </nav>
+
+        {/* Right Actions: Search + Creator Access + Discord + GitHub + Language + Layout */}
+        {/* Right Actions: Command Palette Trigger + Creator Access + Unified Utility Capsule */}
+        <div className={styles.headerRightActions}>
+          {/* Sleek Command Palette Trigger Pill */}
+          <button
+            onClick={() => setSearchModalOpen(true)}
+            className={styles.headerSearchTrigger}
+            title={lang === "it" ? "Cerca guide (Ctrl+K)" : "Search docs (Ctrl+K)"}
+          >
+            <FiSearch size={13} className={styles.searchTriggerIcon} />
+            <span className={styles.searchTriggerText}>
+              {lang === "it" ? "Cerca..." : "Search..."}
+            </span>
+            <span className={styles.searchKbdShortcut}>Ctrl K</span>
+          </button>
+
+          {/* Creator Access Controls */}
+          {isCreator ? (
+            <div className={styles.creatorActivePill}>
+              <span className={styles.creatorStatusDot} title="Creator Authenticated" />
+              <button
+                onClick={() => handleOpenEditor()}
+                className={styles.newGuidePillBtn}
+                title={lang === "it" ? "Aggiungi Nuova Guida" : "Add New Guide"}
+              >
+                <FiPlus size={12} />
+                <span>{lang === "it" ? "Nuova Guida" : "New Guide"}</span>
+              </button>
+              <button
+                onClick={handleLogoutCreator}
+                className={styles.logoutPillBtn}
+                title={lang === "it" ? "Esci dalla modalità Creator" : "Logout Creator"}
+              >
+                <FiLogOut size={11} />
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => setPasscodeModalOpen(true)}
+              className={styles.creatorCompactBtn}
+              title={lang === "it" ? "Accesso Creator D4VIDE106" : "Creator Access D4VIDE106"}
+            >
+              <FiLock size={12} />
+              <span>Creator</span>
+            </button>
+          )}
+
+          {/* Unified Glass Utility Capsule: Discord + GitHub + Language + Layout */}
+          <div className={styles.headerUtilityPill}>
+            {/* Discord */}
+            <a
+              href="https://discord.gg/7T3u9a9"
+              target="_blank"
+              rel="noreferrer"
+              className={`${styles.utilPillBtn} ${styles.utilDiscordBtn}`}
+              title="Discord Community"
+              aria-label="Discord Community"
+            >
+              <SiDiscord size={14} />
+            </a>
+
+            {/* GitHub */}
+            <a
+              href="https://github.com/D4vide106"
+              target="_blank"
+              rel="noreferrer"
+              className={styles.utilPillBtn}
+              title="GitHub Profile"
+              aria-label="GitHub Profile"
+            >
+              <FiGithub size={14} />
+            </a>
+
+            <span className={styles.utilPillDivider} />
+
+            {/* Language Dropdown */}
+            <div className={styles.wikiLangWrap} ref={langRef}>
+              <button
+                onClick={() => setWikiLangOpen(!wikiLangOpen)}
+                className={styles.utilLangBtn}
+                title="Select Language"
+                aria-label="Select Language"
+              >
+                <img src={currentLangObj.flagUrl} alt={currentLangObj.name} className={styles.wikiFlagImg} />
+                <FiChevronDown size={11} className={wikiLangOpen ? styles.chevronRotated : ""} />
+              </button>
+              {wikiLangOpen && (
+                <div className={styles.wikiLangMenu}>
+                  {LANGUAGES.map((item) => (
+                    <button
+                      key={item.code}
+                      onClick={() => {
+                        setLang(item.code);
+                        setWikiLangOpen(false);
+                      }}
+                      className={`${styles.wikiLangItem} ${lang === item.code ? styles.wikiLangItemActive : ""}`}
+                    >
+                      <img src={item.flagUrl} alt="" className={styles.wikiFlagImg} />
+                      <span>{item.name}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <span className={styles.utilPillDivider} />
+
+            {/* Layout & Spotlight Switcher */}
+            <div className={styles.layoutSwitchWrap} ref={layoutMenuRef}>
+              <button
+                onClick={() => setLayoutMenuOpen(!layoutMenuOpen)}
+                className={`${styles.utilLayoutBtn} ${layoutMenuOpen ? styles.utilLayoutBtnActive : ""}`}
+                title="Layout & Spotlight"
+                aria-label="Layout & Spotlight"
+              >
+                <FiSliders size={13} />
+              </button>
+
+              {layoutMenuOpen && (
+                <div className={styles.layoutMenuCard}>
+                  <div className={styles.menuSecTitle}>
+                    <FiSliders size={13} />
+                    <span>Layout Switch</span>
+                  </div>
+                  <div className={styles.layoutGrid}>
+                    <button
+                      onClick={() => setLayoutMode("original")}
+                      className={`${styles.layoutSegBtn} ${layoutMode === "original" ? styles.layoutSegBtnActive : ""}`}
+                    >
+                      <FiMinimize2 size={12} />
+                      <span>Original</span>
+                    </button>
+                    <button
+                      onClick={() => setLayoutMode("expand")}
+                      className={`${styles.layoutSegBtn} ${layoutMode === "expand" ? styles.layoutSegBtnActive : ""}`}
+                    >
+                      <FiMaximize2 size={12} />
+                      <span>Expand All</span>
+                    </button>
+                  </div>
+
+                  <hr className={styles.menuDivider} />
+
+                  <div className={styles.menuSecTitle}>
+                    <FiSun size={13} />
+                    <span>Spotlight Focus</span>
+                  </div>
+                  <div className={styles.spotlightToggleRow}>
+                    <button
+                      onClick={() => setSpotlightOn(true)}
+                      className={`${styles.spotBtn} ${spotlightOn ? styles.spotBtnActive : ""}`}
+                    >
+                      ON
+                    </button>
+                    <button
+                      onClick={() => setSpotlightOn(false)}
+                      className={`${styles.spotBtn} ${!spotlightOn ? styles.spotBtnActive : ""}`}
+                    >
+                      OFF
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+        </div>
       </div>
 
-      {/* Search Overlay Results */}
-      {searchQuery.trim() !== "" && (
-        <div className={styles.searchOverlay}>
-          <div className={styles.searchHeader}>
-            <span>SEARCH RESULTS FOR &quot;{searchQuery}&quot;:</span>
-            <button onClick={() => setSearchQuery("")} className={styles.clearBtn}>Clear</button>
-          </div>
-          <div className={styles.searchList}>
-            {searchResults.length === 0 ? (
-              <div className={styles.noResults}>No wiki articles match your query.</div>
-            ) : (
-              searchResults.map(({ article, projectTitle }) => (
-                <button
-                  key={article.id}
-                  onClick={() => {
-                    setSelectedProjectId(article.projectId);
-                    setActiveArticleId(article.id);
-                    setSearchQuery("");
-                  }}
-                  className={styles.searchRow}
-                >
-                  <span className={styles.projTag}>{projectTitle}</span>
-                  <span className={styles.catTag}>{article.category}</span>
-                  <span className={styles.artTitle}>{article.title}</span>
+      {/* Command Palette Spotlight Search Modal */}
+      {searchModalOpen && (
+        <div className={styles.commandPaletteOverlay} onClick={() => setSearchModalOpen(false)}>
+          <div className={styles.commandPaletteDialog} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.commandPaletteInputRow}>
+              <FiSearch size={16} className={styles.cmdSearchIcon} />
+              <input
+                ref={searchInputRef}
+                type="text"
+                placeholder={lang === "it" ? "Cerca guide, comandi, categorie... (Esc per uscire)" : "Search docs, commands, guides... (Esc to exit)"}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className={styles.cmdSearchInput}
+                autoFocus
+              />
+              {searchQuery ? (
+                <button onClick={() => setSearchQuery("")} className={styles.cmdClearBtn}>
+                  <FiX size={14} />
                 </button>
-              ))
-            )}
+              ) : (
+                <span className={styles.cmdEscBadge}>ESC</span>
+              )}
+            </div>
+
+            <div className={styles.cmdResultsList}>
+              {searchResults.length === 0 && searchQuery.trim() !== "" ? (
+                <div className={styles.cmdNoResults}>
+                  {lang === "it"
+                    ? "Nessuna guida wiki corrisponde alla tua ricerca."
+                    : "No documentation found matching your query."}
+                </div>
+              ) : searchResults.length === 0 ? (
+                <div className={styles.cmdNoResults}>
+                  {lang === "it"
+                    ? "Digita per cercare in tutte le documentazioni e progetti..."
+                    : "Type to search all guides and project documentation..."}
+                </div>
+              ) : (
+                searchResults.map(({ article, projectTitle }) => (
+                  <button
+                    key={article.id}
+                    onClick={() => {
+                      const canonProj = canonicalProjectId(article.projectId);
+                      setSelectedProjectId(canonProj);
+                      handleSelectArticle(article.id);
+                      setSearchModalOpen(false);
+                      setSearchQuery("");
+                    }}
+                    className={styles.cmdResultItem}
+                  >
+                    <div className={styles.cmdItemIcon}>
+                      <FiBookOpen size={14} />
+                    </div>
+                    <div className={styles.cmdItemContent}>
+                      <div className={styles.cmdTitleRow}>
+                        <span className={styles.cmdItemTitle}>{article.title}</span>
+                        <span className={styles.cmdProjectBadge}>{projectTitle}</span>
+                      </div>
+                      <span className={styles.cmdItemSub}>{article.category}</span>
+                    </div>
+                  </button>
+                ))
+              )}
+            </div>
+
+            <div className={styles.cmdFooter}>
+              <div className={styles.cmdFooterHints}>
+                <span><kbd>Esc</kbd> {lang === "it" ? "Chiudi" : "Close"}</span>
+              </div>
+            </div>
           </div>
         </div>
       )}
 
-      {/* 2. Main Three-Column Grid View */}
+      {/* 2. Main Three-Column Layout: Left (Categories), Center (Article), Right (TOC) */}
       <div className={`${styles.wikiBodyGrid} ${layoutMode === "expand" ? styles.gridExpand : ""}`}>
-        {/* Left Sidebar Navigation (With Vertical Indicator Lines) */}
+        {/* Left Sidebar: Categories Navigation (Fixed on screen) */}
         <aside className={styles.leftSidebar}>
-          <div className={styles.sidebarTitle}>CATEGORIES</div>
+          <div className={styles.sidebarTitle}>
+            {lang === "it" ? "CATEGORIE" : "CATEGORIES"}
+          </div>
           <div className={styles.sidebarTree}>
             {Object.entries(categoriesMap).map(([categoryName, articles]) => (
               <div key={categoryName} className={styles.categoryBlock}>
@@ -491,7 +811,7 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
                     return (
                       <button
                         key={art.id}
-                        onClick={() => setActiveArticleId(art.id)}
+                        onClick={() => handleSelectArticle(art.id)}
                         className={`${styles.categoryItemBtn} ${isActive ? styles.categoryItemBtnActive : ""}`}
                       >
                         <span className={styles.activeVerticalLine} />
@@ -505,10 +825,10 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
           </div>
         </aside>
 
-        {/* Center Main Article Display */}
-        <main className={styles.centerArticlePane}>
+        {/* Center Main Article Display (Only this area scrolls independently) */}
+        <main ref={articlePaneRef} className={styles.centerArticlePane}>
           {activeArticle ? (
-            <>
+            <div key={activeArticle.id} className={`${styles.articleContainer} ${layoutMode === "expand" ? styles.articleContainerExpand : ""}`}>
               {/* Breadcrumb Navigation */}
               <div className={styles.breadcrumbBar}>
                 <span>Wiki</span>
@@ -530,13 +850,20 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
                 <div className={styles.metaActionRow}>
                   <div className={styles.timeTag}>
                     <FiClock size={13} />
-                    <span>Last updated {activeArticle.lastUpdated}</span>
+                    <span>
+                      {lang === "it" ? "Ultimo aggiornamento" : "Last updated"}{" "}
+                      {activeArticle.lastUpdated}
+                    </span>
                   </div>
 
                   <div className={styles.actionBtns}>
                     <button onClick={() => handleOpenEditor(activeArticle)} className={styles.editPageBtn}>
                       <FiEdit3 size={13} />
-                      <span>{isCreator ? "Edit this page" : "Unlock Editor"}</span>
+                      <span>
+                        {isCreator
+                          ? (lang === "it" ? "Modifica pagina" : "Edit this page")
+                          : (lang === "it" ? "Sblocca Editor" : "Unlock Editor")}
+                      </span>
                     </button>
                     <a
                       href="https://github.com/D4vide106"
@@ -559,19 +886,23 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
               {/* Previous / Next Article Navigation Footer */}
               <div className={styles.prevNextNavRow}>
                 {prevArticle ? (
-                  <button onClick={() => setActiveArticleId(prevArticle.id)} className={styles.prevNavBtn}>
+                  <button onClick={() => handleSelectArticle(prevArticle.id)} className={styles.prevNavBtn}>
                     <FiArrowLeft size={14} />
                     <div>
-                      <span className={styles.navSubLabel}>PREVIOUS</span>
+                      <span className={styles.navSubLabel}>
+                        {lang === "it" ? "PRECEDENTE" : "PREVIOUS"}
+                      </span>
                       <span className={styles.navTitleLabel}>{prevArticle.title}</span>
                     </div>
                   </button>
                 ) : <div />}
 
                 {nextArticle ? (
-                  <button onClick={() => setActiveArticleId(nextArticle.id)} className={styles.nextNavBtn}>
+                  <button onClick={() => handleSelectArticle(nextArticle.id)} className={styles.nextNavBtn}>
                     <div>
-                      <span className={styles.navSubLabel}>NEXT</span>
+                      <span className={styles.navSubLabel}>
+                        {lang === "it" ? "SUCCESSIVO" : "NEXT"}
+                      </span>
                       <span className={styles.navTitleLabel}>{nextArticle.title}</span>
                     </div>
                     <FiArrowRight size={14} />
@@ -582,40 +913,57 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
               {/* Community Reaction Feedback */}
               <div className={styles.feedbackRow}>
                 <FiSmile size={16} color="#eab308" />
-                <span>Was this wiki page helpful?</span>
+                <span>
+                  {lang === "it"
+                    ? "Questa guida ti è stata utile?"
+                    : "Was this wiki page helpful?"}
+                </span>
                 <div className={styles.reactGroup}>
-                  <button className={styles.reactBtn}>👍 Useful (14)</button>
-                  <button className={styles.reactBtn}>❤️ Amazing (9)</button>
-                  <button className={styles.reactBtn}>🚀 Epic (22)</button>
+                  <button className={styles.reactBtn}>
+                    {lang === "it" ? "👍 Utile (14)" : "👍 Useful (14)"}
+                  </button>
+                  <button className={styles.reactBtn}>
+                    {lang === "it" ? "❤️ Fantastica (9)" : "❤️ Amazing (9)"}
+                  </button>
+                  <button className={styles.reactBtn}>
+                    {lang === "it" ? "🚀 Epica (22)" : "🚀 Epic (22)"}
+                  </button>
                 </div>
               </div>
-            </>
+            </div>
           ) : (
             <div className={styles.emptyArticleState}>
-              <p>No wiki articles available for this project.</p>
+              <p>
+                {lang === "it"
+                  ? "Nessuna guida wiki disponibile per questo progetto."
+                  : "No wiki articles available for this project."}
+              </p>
             </div>
           )}
         </main>
 
-        {/* Right Sidebar: Table of Contents ("On this page") */}
+        {/* Right Sidebar: Table of Contents ("On this page" - Fixed on screen) */}
         <aside className={styles.rightTocSidebar}>
-          <div className={styles.tocHeaderTitle}>ON THIS PAGE</div>
+          <div className={styles.tocHeaderTitle}>
+            {lang === "it" ? "IN QUESTA PAGINA" : "ON THIS PAGE"}
+          </div>
           <div className={styles.tocGuideLines}>
             {tableOfContents.length === 0 ? (
-              <span className={styles.tocEmpty}>No headings on page</span>
+              <span className={styles.tocEmpty}>
+                {lang === "it" ? "Nessuna intestazione" : "No headings on page"}
+              </span>
             ) : (
               tableOfContents.map((head, idx) => (
-                <a
+                <button
                   key={idx}
-                  href={`#${head.slug}`}
-                  onClick={() => setActiveHeadingSlug(head.slug)}
+                  onClick={(e) => handleTocClick(e, head.slug)}
                   className={`${styles.tocItemLink} ${
                     activeHeadingSlug === head.slug ? styles.tocItemLinkActive : ""
                   } ${head.level === 2 ? styles.tocLvl2 : head.level === 3 ? styles.tocLvl3 : ""}`}
                 >
                   <span className={styles.tocActiveLine} />
                   <span>{head.text}</span>
-                </a>
+                </button>
               ))
             )}
           </div>
@@ -636,7 +984,11 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
       {passcodeModalOpen && (
         <div className={styles.passcodeOverlay} onClick={() => setPasscodeModalOpen(false)}>
           <div className={styles.passcodeCard} onClick={(e) => e.stopPropagation()}>
-            <button className={styles.passcodeCloseBtn} onClick={() => setPasscodeModalOpen(false)}>
+            <button
+              className={styles.passcodeCloseBtn}
+              onClick={() => setPasscodeModalOpen(false)}
+              aria-label="Close"
+            >
               <FiX size={18} />
             </button>
 
@@ -644,10 +996,21 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
               <FiShield size={30} color="#64d2ff" />
             </div>
 
-            <h3 className={styles.passcodeTitle}>Creator Access Verification</h3>
+            <h3 className={styles.passcodeTitle}>
+              {lang === "it" ? "Verifica Accesso Creator" : "Creator Access Verification"}
+            </h3>
             <p className={styles.passcodeSubtitle}>
-              The Wiki Markdown Editor is restricted exclusively to the site owner <strong>D4VIDE106</strong>.
-              Enter your Creator Secret Passcode to unlock authoring tools.
+              {lang === "it" ? (
+                <>
+                  L&apos;editor Markdown della Wiki è riservato esclusivamente al creatore del sito{" "}
+                  <strong>D4VIDE106</strong>. Inserisci il passcode segreto per sbloccare gli strumenti di authoring.
+                </>
+              ) : (
+                <>
+                  The Wiki Markdown Editor is restricted exclusively to the site owner{" "}
+                  <strong>D4VIDE106</strong>. Enter your Creator Secret Passcode to unlock authoring tools.
+                </>
+              )}
             </p>
 
             <form onSubmit={handleVerifyCreatorPasscode} className={styles.passcodeForm}>
@@ -655,7 +1018,7 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
                 <FiKey size={15} className={styles.keyIcon} />
                 <input
                   type="password"
-                  placeholder="Enter Secret Key..."
+                  placeholder={lang === "it" ? "Inserisci Passcode Segreto..." : "Enter Secret Key..."}
                   value={inputPasscode}
                   onChange={(e) => setInputPasscode(e.target.value)}
                   className={styles.passcodeInput}
@@ -667,7 +1030,7 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
 
               <button type="submit" className={styles.unlockBtn}>
                 <FiUnlock size={14} />
-                <span>Unlock Creator Mode</span>
+                <span>{lang === "it" ? "Sblocca Modalità Creator" : "Unlock Creator Mode"}</span>
               </button>
             </form>
           </div>

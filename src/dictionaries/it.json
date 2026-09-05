@@ -5,6 +5,7 @@
     "wiki": "WIKI",
     "about": "CHI SONO",
     "media": "MEDIA",
+    "contact": "CONTATTI",
     "community": "Community"
   },
   "languages": {
@@ -19,7 +20,7 @@
   },
   "hero": {
     "greeting": "Ciao, sono",
-    "role": "Content Creator & Specialista Minecraft",
+    "role": "Game Developer, Software Creator & Content Creator",
     "scroll": "Scorri Giù",
     "viewsGenerated": "Visualizzazioni generate",
     "serversPromoted": "Server promossi",
@@ -27,7 +28,7 @@
     "getStarted": "Inizia ora",
     "seeWork": "Vedi i nostri lavori",
     "creatorProfile": "PROFILO CREATOR",
-    "systemRole": "Sviluppatore di Mod Minecraft & Content Creator"
+    "systemRole": "Game Developer, Software Creator & Content Creator"
   },
   "aboutSection": {
     "aboutTitle": "Chi diavolo sono?",

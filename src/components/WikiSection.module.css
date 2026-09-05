@@ -1,57 +1,154 @@
-/* D4VIDE WIKIS & DOCS - Pristine Modern CSS */
+/* D4VIDE WIKIS & DOCS - Modern CSS */
 .wikiRoot {
   width: 100%;
-  min-height: 100vh;
-  background-color: #0b0b0f;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #08080c;
   color: #e4e4e7;
-  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  overflow-x: hidden;
-  padding-top: 80px;
+  font-family: var(--font-body);
+  overflow: hidden;
+  padding-top: 0 !important;
 }
 
-/* 1. Header Control Bar (Sub-Header below TopBar) */
+.standaloneWiki {
+  padding-top: 0 !important;
+}
+
+/* 1. Header Control Bar */
 .wikiHeaderBar {
+  flex-shrink: 0;
+  height: 60px;
   position: sticky;
-  top: 80px;
+  top: 0 !important;
   z-index: 7000;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+  justify-content: center;
   background: rgba(12, 12, 16, 0.95);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 0.7rem 2rem;
+  padding: 0 1.5rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-  flex-wrap: wrap;
 }
 
-.headerLeftBrand {
+.wikiHeaderInner {
+  width: 100%;
+  max-width: 1440px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  transition: max-width 0.25s ease;
+}
+
+.headerExpand {
+  max-width: 100% !important;
+}
+
+.standaloneWiki .wikiHeaderBar {
+  top: 0 !important;
+}
+
+/* Left Group: Avatar/Brand + Divider + Project Selector */
+.headerLeftGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-shrink: 0;
+}
+
+.wikiBrandLink {
   display: flex;
   align-items: center;
   gap: 0.6rem;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
 }
 
-.brandIcon {
-  color: #3b82f6;
+.wikiBrandLink:hover {
+  opacity: 0.85;
 }
 
-.brandTitle {
-  font-size: 0.9rem;
+.wikiAvatarWrap {
+  position: relative;
+  width: 28px;
+  height: 28px;
+}
+
+.wikiAvatarImg {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.wikiOnlineDot {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #22c55e;
+  border: 1.5px solid #08080c;
+}
+
+.wikiBrandName {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
   font-weight: 800;
   color: #ffffff;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 }
 
-.versionBadge {
-  font-size: 0.62rem;
-  font-weight: 800;
-  color: #34d399;
-  background: rgba(52, 211, 153, 0.15);
-  border: 1px solid rgba(52, 211, 153, 0.3);
-  padding: 0.15rem 0.45rem;
+.wikiDivider {
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 0.9rem;
+}
+
+/* Center Portfolio Navigation Links */
+.headerCenterNav {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 9999px;
+  padding: 0.25rem 0.4rem;
+}
+
+.headerNavLink {
+  background: transparent;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.35rem 0.85rem;
+  color: #a1a1a6;
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.headerNavLink:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.headerNavLinkActive {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.14) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: 950px) {
+  .headerCenterNav {
+    display: none;
+  }
 }
 
 /* Project Dropdown Selector */
@@ -150,43 +247,309 @@
   object-fit: cover;
 }
 
-/* Header Search */
-.headerSearchWrap {
-  position: relative;
-  display: flex;
+/* Sleek Compact Search Trigger Pill (Linear/Next.js/Raycast style) */
+.headerSearchTrigger {
+  display: inline-flex;
   align-items: center;
-  width: 260px;
-}
-
-.searchIcon {
-  position: absolute;
-  left: 0.75rem;
-  color: #71717a;
-}
-
-.headerSearchInput {
-  width: 100%;
+  gap: 0.55rem;
+  height: 32px;
   background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 9999px;
-  padding: 0.38rem 1rem 0.38rem 2.2rem;
-  color: #ffffff;
-  font-size: 0.78rem;
-  outline: none;
-  transition: all 0.25s ease;
+  padding: 0 0.65rem 0 0.75rem;
+  color: #a1a1a6;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.headerSearchInput:focus {
+.headerSearchTrigger:hover {
   background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(59, 130, 246, 0.5);
-  box-shadow: 0 0 12px rgba(59, 130, 246, 0.25);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.searchTriggerIcon {
+  color: #71717a;
+  flex-shrink: 0;
+  transition: color 0.2s ease;
+}
+
+.headerSearchTrigger:hover .searchTriggerIcon {
+  color: #60a5fa;
+}
+
+.searchTriggerText {
+  color: #86868b;
+  font-size: 0.74rem;
+  font-weight: 500;
+}
+
+.searchKbdShortcut {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  padding: 0.12rem 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #71717a;
+  line-height: 1;
 }
 
 /* Header Right Actions */
 .headerRightActions {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.55rem;
+}
+
+/* Compact Creator Access Button */
+.creatorCompactBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  padding: 0 0.75rem;
+  color: #a1a1a6;
+  font-size: 0.74rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.creatorCompactBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+}
+
+/* Creator Active Pill */
+.creatorActivePill {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  gap: 0.35rem;
+  background: rgba(52, 211, 153, 0.08);
+  border: 1px solid rgba(52, 211, 153, 0.25);
+  border-radius: 9999px;
+  padding: 0 0.45rem 0 0.65rem;
+}
+
+.creatorStatusDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 8px #34d399;
+}
+
+.newGuidePillBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: #2563eb;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.2rem 0.55rem;
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.newGuidePillBtn:hover {
+  background: #1d4ed8;
+}
+
+.logoutPillBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.logoutPillBtn:hover {
+  background: rgba(239, 68, 68, 0.3);
+  color: #ffffff;
+}
+
+/* Unified Utility Capsule (Discord, GitHub, Language, Layout) */
+.headerUtilityPill {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+  padding: 2px 4px;
+  gap: 2px;
+}
+
+.utilPillBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  background: transparent;
+  border: none;
+  color: #a1a1a6;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.utilPillBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.utilDiscordBtn:hover {
+  background: #5865f2 !important;
+  color: #ffffff !important;
+}
+
+.utilPillDivider {
+  width: 1px;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0 2px;
+}
+
+.utilLangBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.4rem;
+  background: transparent;
+  border: none;
+  border-radius: 9999px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.utilLangBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.utilLayoutBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  background: transparent;
+  border: none;
+  color: #a1a1a6;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.utilLayoutBtn:hover,
+.utilLayoutBtnActive {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+/* Language Dropdown in Header */
+.wikiLangWrap {
+  position: relative;
+}
+
+.wikiLangBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.65rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.wikiLangBtn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.wikiFlagImg {
+  width: 20px;
+  height: 14px;
+  object-fit: cover;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.wikiLangMenu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 155px;
+  max-height: 280px;
+  overflow-y: auto;
+  background: rgba(14, 14, 20, 0.98);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 12px;
+  padding: 5px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.95);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.wikiLangItem {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.4rem 0.6rem;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: #a1a1a6;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.wikiLangItem:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.wikiLangItemActive {
+  background: rgba(59, 130, 246, 0.15) !important;
+  color: #60a5fa !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
+  font-weight: 700 !important;
 }
 
 .creatorGroup {
@@ -382,93 +745,249 @@
   color: #000000;
 }
 
-/* Search Overlay */
-.searchOverlay {
-  background: rgba(14, 14, 20, 0.98);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 1rem 2rem;
-}
-
-.searchHeader {
+/* Command Palette Spotlight Search Modal */
+.commandPaletteOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   display: flex;
-  justify-content: space-between;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: #71717a;
-  margin-bottom: 0.5rem;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 12vh;
+  animation: cmdFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.clearBtn {
-  background: transparent;
-  border: none;
-  color: #60a5fa;
-  font-size: 0.75rem;
-  cursor: pointer;
+@keyframes cmdFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
-.searchList {
+.commandPaletteDialog {
+  width: 92%;
+  max-width: 580px;
+  background: #111116;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 16px;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-  max-height: 200px;
-  overflow-y: auto;
 }
 
-.searchRow {
+.commandPaletteInputRow {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.45rem 0.75rem;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 8px;
+  padding: 0.85rem 1.15rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  gap: 0.75rem;
+}
+
+.cmdSearchIcon {
+  color: #60a5fa;
+  flex-shrink: 0;
+}
+
+.cmdSearchInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.cmdSearchInput::placeholder {
+  color: #71717a;
+}
+
+.cmdClearBtn {
+  background: transparent;
+  border: none;
+  color: #71717a;
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.cmdClearBtn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.cmdEscBadge {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #71717a;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  padding: 0.15rem 0.4rem;
+}
+
+.cmdResultsList {
+  max-height: 380px;
+  overflow-y: auto;
+  padding: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.cmdSectionLabel {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #71717a;
+  letter-spacing: 0.06em;
+  padding: 0.4rem 0.6rem 0.2rem;
+  text-transform: uppercase;
+}
+
+.cmdResultItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 10px;
   color: #ffffff;
   text-align: left;
   cursor: pointer;
+  transition: all 0.15s ease;
 }
 
-.searchRow:hover {
+.cmdResultItem:hover,
+.cmdResultItem:focus {
   background: rgba(59, 130, 246, 0.12);
   border-color: rgba(59, 130, 246, 0.3);
 }
 
-.projTag {
-  font-size: 0.65rem;
-  font-weight: 800;
-  color: #34d399;
-  background: rgba(52, 211, 153, 0.15);
-  padding: 0.1rem 0.4rem;
-  border-radius: 4px;
+.cmdItemIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #60a5fa;
+  flex-shrink: 0;
 }
 
-.catTag {
-  font-size: 0.7rem;
-  color: #71717a;
+.cmdItemContent {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
 }
 
-.artTitle {
-  font-size: 0.8rem;
+.cmdTitleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.cmdItemTitle {
+  font-size: 0.82rem;
   font-weight: 700;
   color: #ffffff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.noResults {
-  font-size: 0.8rem;
+.cmdProjectBadge {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #34d399;
+  background: rgba(52, 211, 153, 0.12);
+  padding: 0.1rem 0.45rem;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.cmdItemSub {
+  font-size: 0.72rem;
   color: #71717a;
 }
 
-/* 2. Main Three-Column Grid Layout */
+.cmdNoResults {
+  padding: 2.5rem 1rem;
+  text-align: center;
+  color: #71717a;
+  font-size: 0.85rem;
+}
+
+.cmdFooter {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0.5rem 1.15rem;
+  background: rgba(0, 0, 0, 0.4);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.cmdFooterHints {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-size: 0.68rem;
+  color: #71717a;
+}
+
+.cmdFooterHints kbd {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  padding: 0.05rem 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: #a1a1a6;
+}
+
+/* 2. Main Three-Column Grid Layout (Centered in 'Original' mode, Full Width in 'Expand All') */
 .wikiBodyGrid {
+  flex: 1;
+  min-height: 0;
   display: grid;
-  grid-template-columns: 280px 1fr 240px;
+  grid-template-columns: 260px minmax(0, 1fr) 240px;
   gap: 0;
-  max-width: 1400px;
+  width: 100%;
+  max-width: 1440px;
   margin: 0 auto;
-  min-height: calc(100vh - 135px);
+  overflow: hidden;
+  border-left: 1px solid rgba(255, 255, 255, 0.06);
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  transition: max-width 0.25s ease;
 }
 
 .gridExpand {
   max-width: 100% !important;
+  grid-template-columns: 280px minmax(0, 1fr) !important;
+  border-left: none !important;
+  border-right: none !important;
+}
+
+.gridExpand .rightTocSidebar {
+  display: none !important;
 }
 
 @media (max-width: 1100px) {
@@ -484,24 +1003,16 @@
   .wikiBodyGrid {
     grid-template-columns: 1fr;
   }
-  .leftSidebar {
-    position: relative !important;
-    height: auto !important;
-    max-height: none !important;
-    border-right: none !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  }
 }
 
-/* Left Sidebar (With Precise Vertical Indicator Lines) */
+/* Left Sidebar (Fixed in screen, independent scroll) */
 .leftSidebar {
   background: #08080c;
   border-right: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 1.75rem 1.25rem;
-  position: sticky;
-  top: 135px;
-  height: calc(100vh - 135px);
+  padding: 1.5rem 1.25rem;
+  height: 100%;
   overflow-y: auto;
+  flex-shrink: 0;
 }
 
 .sidebarTitle {
@@ -546,25 +1057,45 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.35rem 0.6rem;
+  padding: 0.38rem 0.65rem;
   background: transparent;
-  border: none;
-  border-radius: 6px;
+  border: 1px solid transparent;
+  border-radius: 8px;
   color: #86868b;
   font-size: 0.82rem;
   font-weight: 500;
   text-align: left;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .categoryItemBtn:hover {
   color: #ffffff;
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .categoryItemBtnActive {
   color: #60a5fa !important;
   font-weight: 700 !important;
+  background: rgba(59, 130, 246, 0.12) !important;
+  border-color: rgba(59, 130, 246, 0.35) !important;
+  box-shadow: 0 0 16px rgba(59, 130, 246, 0.22), inset 0 0 8px rgba(59, 130, 246, 0.12);
+  animation: catBtnGlowPulse 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes catBtnGlowPulse {
+  0% {
+    transform: translateX(0) scale(0.98);
+    box-shadow: 0 0 24px rgba(59, 130, 246, 0.55), inset 0 0 14px rgba(59, 130, 246, 0.3);
+  }
+  50% {
+    transform: translateX(4px) scale(1.01);
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.5), inset 0 0 12px rgba(59, 130, 246, 0.2);
+  }
+  100% {
+    transform: translateX(0) scale(1);
+    box-shadow: 0 0 16px rgba(59, 130, 246, 0.22), inset 0 0 8px rgba(59, 130, 246, 0.12);
+  }
 }
 
 .activeVerticalLine {
@@ -573,22 +1104,83 @@
   top: 50%;
   transform: translateY(-50%);
   width: 2px;
-  height: 16px;
+  height: 18px;
   background: transparent;
   border-radius: 9999px;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
 }
 
 .categoryItemBtnActive .activeVerticalLine {
   background: #3b82f6;
-  box-shadow: 0 0 10px #3b82f6;
+  box-shadow: 0 0 10px #3b82f6, 0 0 18px #3b82f6;
 }
 
-/* Center Main Content Area */
+/* Center Main Content Area (Independent smooth scroll with bottom breathing room) */
 .centerArticlePane {
   background: #0b0b10;
-  padding: 2.5rem 3.5rem;
-  min-height: calc(100vh - 135px);
+  padding: 2.5rem 2.5rem 10rem 2.5rem;
+  height: 100%;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Article Content Container: Centered in 'Original' mode, full width in 'Expand All' */
+.articleContainer {
+  width: 100%;
+  max-width: 840px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  animation: articleFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: max-width 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes articleFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.995);
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Glowing Highlight Animation for Headings when clicked from TOC */
+.headingHighlighted {
+  animation: headingGlowPulse 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  border-radius: 8px;
+  padding: 0.25rem 0.65rem;
+  margin-left: -0.65rem;
+  scroll-margin-top: 1.5rem;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+@keyframes headingGlowPulse {
+  0% {
+    background: rgba(59, 130, 246, 0.28);
+    box-shadow: 0 0 28px rgba(59, 130, 246, 0.6), inset 0 0 14px rgba(59, 130, 246, 0.3);
+    color: #93c5fd;
+    text-shadow: 0 0 12px rgba(147, 197, 253, 0.7);
+  }
+  40% {
+    background: rgba(59, 130, 246, 0.15);
+    box-shadow: 0 0 18px rgba(59, 130, 246, 0.3);
+  }
+  100% {
+    background: transparent;
+    box-shadow: none;
+    text-shadow: none;
+  }
+}
+
+.articleContainerExpand {
+  max-width: 100% !important;
+  margin: 0 !important;
 }
 
 .breadcrumbBar {
@@ -788,15 +1380,40 @@
   color: #71717a;
 }
 
-/* Right TOC Sidebar (With Vertical Active Line) */
+/* Right TOC Sidebar (Fixed in screen, independent scroll) */
 .rightTocSidebar {
   background: #08080c;
   border-left: 1px solid rgba(255, 255, 255, 0.08);
   padding: 1.75rem 1.25rem;
-  position: sticky;
-  top: 135px;
-  height: calc(100vh - 135px);
+  height: 100%;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Sleek Apple-style Dark Scrollbars for Panes */
+.leftSidebar::-webkit-scrollbar,
+.centerArticlePane::-webkit-scrollbar,
+.rightTocSidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.leftSidebar::-webkit-scrollbar-track,
+.centerArticlePane::-webkit-scrollbar-track,
+.rightTocSidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.leftSidebar::-webkit-scrollbar-thumb,
+.centerArticlePane::-webkit-scrollbar-thumb,
+.rightTocSidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+}
+
+.leftSidebar::-webkit-scrollbar-thumb:hover,
+.centerArticlePane::-webkit-scrollbar-thumb:hover,
+.rightTocSidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
 }
 
 .tocHeaderTitle {
@@ -818,6 +1435,11 @@
 .tocItemLink {
   position: relative;
   display: block;
+  width: 100%;
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
   color: #86868b;
   font-size: 0.78rem;
   text-decoration: none;
@@ -835,6 +1457,23 @@
 .tocItemLinkActive {
   color: #60a5fa !important;
   font-weight: 700;
+  text-shadow: 0 0 12px rgba(96, 165, 250, 0.6);
+  animation: tocItemGlowPulse 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes tocItemGlowPulse {
+  0% {
+    transform: translateX(0);
+    text-shadow: 0 0 20px rgba(96, 165, 250, 0.9);
+  }
+  50% {
+    transform: translateX(3px);
+    text-shadow: 0 0 25px rgba(96, 165, 250, 1);
+  }
+  100% {
+    transform: translateX(0);
+    text-shadow: 0 0 12px rgba(96, 165, 250, 0.6);
+  }
 }
 
 .tocActiveLine {
@@ -845,11 +1484,14 @@
   width: 2px;
   height: 14px;
   background: transparent;
+  border-radius: 9999px;
+  transition: all 0.25s ease;
 }
 
 .tocItemLinkActive .tocActiveLine {
   background: #3b82f6;
-  box-shadow: 0 0 10px #3b82f6;
+  height: 18px;
+  box-shadow: 0 0 10px #3b82f6, 0 0 20px #60a5fa;
 }
 
 .tocLvl2 { padding-left: 0.5rem; }
@@ -990,3 +1632,409 @@
   font-size: 0.82rem;
   cursor: pointer;
 }
+
+/* ── MARKDOWN VIEWER STYLES (GitBook / Mintlify Aesthetic) ───────────────── */
+.markdownBody {
+  font-family: var(--font-body);
+  color: #e4e4e7;
+  line-height: 1.7;
+  font-size: 0.95rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.heading1 {
+  font-family: var(--font-heading);
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.heading2 {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+  margin-top: 1.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.heading3 {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #f4f4f5;
+  margin-top: 1rem;
+  margin-bottom: 0.3rem;
+}
+
+.markdownP {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: #d4d4d8;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.markdownUl {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-left: 1.5rem;
+  color: #d4d4d8;
+  list-style-type: disc;
+}
+
+.markdownUl li {
+  line-height: 1.6;
+}
+
+.markdownHr {
+  border: none;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 1.5rem 0;
+}
+
+.inlineCode {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  color: #93c5fd;
+  background: rgba(59, 130, 246, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  padding: 0.15rem 0.45rem;
+  border-radius: 6px;
+}
+
+.wikiLink {
+  color: #60a5fa;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s;
+}
+
+.wikiLink:hover {
+  color: #93c5fd;
+}
+
+/* ── CALLOUT ALERTS (NOTE, TIP, WARNING, IMPORTANT) ────────────────────────── */
+.alertBlock {
+  border-radius: 14px;
+  padding: 1.1rem 1.3rem;
+  margin: 1.25rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  backdrop-filter: blur(12px);
+  border-left-width: 4px;
+  border-left-style: solid;
+}
+
+.alertHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.alertContent {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.alertContent p {
+  margin: 0;
+}
+
+/* NOTE (Blue) */
+.alertNote {
+  background: rgba(59, 130, 246, 0.08);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  border-left: 4px solid #3b82f6;
+  color: #93c5fd;
+}
+
+.alertNote .alertHeader {
+  color: #60a5fa;
+}
+
+.alertNote .alertContent {
+  color: #dbeafe;
+}
+
+/* TIP (Emerald Green) */
+.alertTip {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-left: 4px solid #10b981;
+  color: #6ee7b7;
+}
+
+.alertTip .alertHeader {
+  color: #34d399;
+}
+
+.alertTip .alertContent {
+  color: #d1fae5;
+}
+
+/* WARNING (Amber Orange) */
+.alertWarning {
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-left: 4px solid #f59e0b;
+  color: #fcd34d;
+}
+
+.alertWarning .alertHeader {
+  color: #fbbf24;
+}
+
+.alertWarning .alertContent {
+  color: #fef3c7;
+}
+
+/* IMPORTANT (Purple / Red) */
+.alertImportant {
+  background: rgba(168, 85, 247, 0.08);
+  border: 1px solid rgba(168, 85, 247, 0.25);
+  border-left: 4px solid #a855f7;
+  color: #d8b4fe;
+}
+
+.alertImportant .alertHeader {
+  color: #c084fc;
+}
+
+.alertImportant .alertContent {
+  color: #f3e8ff;
+}
+
+/* ── CODE BLOCKS WITH SYNTAX & COPY ───────────────────────────────────────── */
+.codeBlockWrapper {
+  background: #0d0d14;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  overflow: hidden;
+  margin: 1.25rem 0;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+.codeHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.55rem 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.codeLang {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #818cf8;
+}
+
+.copyCodeBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.6rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: #a1a1aa;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.copyCodeBtn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.preCode {
+  padding: 1.1rem 1.25rem;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.65;
+  color: #e2e8f0;
+  margin: 0;
+}
+
+/* ── MARKDOWN TABLES ──────────────────────────────────────────────────────── */
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(18, 18, 24, 0.5);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.markdownTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+}
+
+.markdownTable thead tr {
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.markdownTable th {
+  padding: 0.85rem 1.2rem;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.markdownTable tbody tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background 0.15s ease;
+}
+
+.markdownTable tbody tr:last-child {
+  border-bottom: none;
+}
+
+.markdownTable tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.markdownTable td {
+  padding: 0.85rem 1.2rem;
+  color: #d4d4d8;
+}
+
+/* Back to Portfolio Button in Header */
+.backHomeBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+  color: #e4e4e7;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.backHomeBtn:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.brandDivider {
+  color: rgba(255, 255, 255, 0.2);
+  margin: 0 0.2rem;
+}
+
+.wikiLangWrap {
+  position: relative;
+}
+
+.wikiLangBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.6rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  cursor: pointer;
+  color: #e4e4e7;
+  transition: all 0.2s ease;
+}
+
+.wikiLangBtn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.wikiFlagImg {
+  width: 20px;
+  height: 14px;
+  object-fit: cover;
+  border-radius: 3px;
+  display: inline-block;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.wikiLangMenu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 140px;
+  max-height: 280px;
+  overflow-y: auto;
+  background: rgba(14, 14, 20, 0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 12px;
+  padding: 4px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.8);
+  z-index: 9999;
+}
+
+.wikiLangItem {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.65rem;
+  border: none;
+  background: transparent;
+  color: #a1a1a6;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+}
+
+.wikiLangItem:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.wikiLangItemActive {
+  background: rgba(59, 130, 246, 0.16);
+  color: #60a5fa;
+  font-weight: 700;
+}
+

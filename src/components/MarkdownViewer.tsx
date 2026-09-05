@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { FiCopy, FiCheck, FiInfo, FiAlertCircle, FiAlertTriangle, FiHelpCircle } from "react-icons/fi";
 import styles from "./WikiSection.module.css";
+import { slugifyHeading } from "@/data/wikiData";
 
 interface MarkdownViewerProps {
   content: string;
@@ -138,21 +139,21 @@ export default function MarkdownViewer({ content }: MarkdownViewerProps) {
     // 3. Headings (# H1, ## H2, ### H3)
     if (line.startsWith("# ")) {
       const title = line.replace(/^#\s+/, "");
-      const slugId = title.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+      const slugId = slugifyHeading(title);
       blocks.push(<h1 key={`h1-${i}`} id={slugId} className={styles.heading1}>{renderInline(title)}</h1>);
       i++;
       continue;
     }
     if (line.startsWith("## ")) {
       const title = line.replace(/^##\s+/, "");
-      const slugId = title.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+      const slugId = slugifyHeading(title);
       blocks.push(<h2 key={`h2-${i}`} id={slugId} className={styles.heading2}>{renderInline(title)}</h2>);
       i++;
       continue;
     }
     if (line.startsWith("### ")) {
       const title = line.replace(/^###\s+/, "");
-      const slugId = title.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+      const slugId = slugifyHeading(title);
       blocks.push(<h3 key={`h3-${i}`} id={slugId} className={styles.heading3}>{renderInline(title)}</h3>);
       i++;
       continue;

@@ -58,34 +58,36 @@
 /* 2D Flat Glass Cards */
 .card2D {
   position: absolute;
-  width: 135px;
-  height: 135px;
+  width: 130px;
+  height: 130px;
   aspect-ratio: 1 / 1;
-  border-radius: 20px;
-  overflow: hidden;
+  border-radius: 22px;
   cursor: pointer;
-  background: rgba(20, 20, 26, 0.82);
+  background: rgba(18, 18, 24, 0.9);
   backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.16);
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, filter 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .cardHovered {
-  border-color: rgba(255, 255, 255, 0.5) !important;
-  box-shadow: 0 25px 65px rgba(0, 0, 0, 0.9), 0 0 30px rgba(255, 255, 255, 0.3);
-  filter: brightness(1.15) !important;
+  border-color: rgba(255, 255, 255, 0.7) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 30px rgba(99, 102, 241, 0.35);
+  opacity: 1 !important;
 }
 
 .cardDimmed {
-  filter: grayscale(0.85) brightness(0.35);
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
 }
 
 .cardImageContainer {
   width: 100%;
   height: 100%;
   position: relative;
-  background: #141416;
+  background: #111116;
+  border-radius: 21px;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -95,6 +97,46 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 20px;
+}
+
+.cardTooltip {
+  position: absolute;
+  bottom: -44px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(12, 12, 18, 0.95);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+  padding: 0.35rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
+  animation: fadeInTooltip 0.2s ease-out;
+  z-index: 1000;
+}
+
+.tooltipTitle {
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.tooltipType {
+  font-family: var(--font-body);
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: #818cf8;
+}
+
+@keyframes fadeInTooltip {
+  from { opacity: 0; transform: translate(-50%, -6px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
 }
 
 .fallbackSquare {
@@ -103,7 +145,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #1c1c1e;
+  background: #1c1c22;
 }
 
 .hiddenFallback {
@@ -113,11 +155,11 @@
 @media (max-width: 768px) {
   .carouselSection {
     min-height: auto;
-    height: 240px;
+    height: 250px;
     padding: 0;
   }
   .stage2D {
-    height: 240px;
+    height: 250px;
   }
   .ringCenterEmblem {
     width: 44px;
@@ -128,16 +170,22 @@
     height: 80px;
     border-radius: 14px;
   }
+  .cardImageContainer {
+    border-radius: 13px;
+  }
+  .cardImg2D {
+    border-radius: 13px;
+  }
 }
 
 @media (max-width: 480px) {
   .carouselSection {
     min-height: auto;
-    height: 210px;
+    height: 220px;
     padding: 0;
   }
   .stage2D {
-    height: 210px;
+    height: 220px;
   }
   .ringCenterEmblem {
     width: 38px;
@@ -147,5 +195,11 @@
     width: 70px;
     height: 70px;
     border-radius: 12px;
+  }
+  .cardImageContainer {
+    border-radius: 11px;
+  }
+  .cardImg2D {
+    border-radius: 11px;
   }
 }

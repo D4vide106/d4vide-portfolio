@@ -1,0 +1,269 @@
+.contactSection {
+  padding: 6rem 0 5rem 0;
+  background: #050507;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.headerWrap {
+  text-align: center;
+  max-width: 680px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.sectionBadge {
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  color: #818cf8;
+  text-transform: uppercase;
+  background: rgba(99, 102, 241, 0.12);
+  border: 1px solid rgba(99, 102, 241, 0.28);
+  padding: 0.25rem 0.8rem;
+  border-radius: 9999px;
+}
+
+.sectionTitle {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.sectionDesc {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: #94949e;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Discord Main Feature Card */
+.discordCard {
+  width: 100%;
+  max-width: 760px;
+  background: linear-gradient(135deg, rgba(88, 101, 242, 0.15) 0%, rgba(18, 18, 26, 0.85) 100%);
+  border: 1px solid rgba(88, 101, 242, 0.35);
+  border-radius: 24px;
+  padding: 2.2rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 40px rgba(88, 101, 242, 0.12);
+  backdrop-filter: blur(24px) saturate(180%);
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.discordTopRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+}
+
+.discordProfileInfo {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.discordIconBox {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: #5865f2;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  box-shadow: 0 10px 25px rgba(88, 101, 242, 0.45);
+  flex-shrink: 0;
+}
+
+.discordDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.discordRole {
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #818cf8;
+  text-transform: uppercase;
+}
+
+.discordUsername {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.discordStatusRow {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-body);
+  font-size: 0.76rem;
+  color: #a1a1aa;
+}
+
+.onlineDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 10px #22c55e;
+}
+
+.discordActionsRow {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.copyBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.25rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 9999px;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.copyBtn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.joinServerBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.4rem;
+  background: #5865f2;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 10px 25px rgba(88, 101, 242, 0.4);
+}
+
+.joinServerBtn:hover {
+  background: #4752c4;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(88, 101, 242, 0.55);
+}
+
+/* Secondary Social Contacts Grid */
+.linksGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  width: 100%;
+  max-width: 760px;
+}
+
+.linkCard {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1rem 1.25rem;
+  background: rgba(18, 18, 24, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  text-decoration: none;
+  color: #ffffff;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(16px);
+}
+
+.linkCard:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.linkIcon {
+  font-size: 1.35rem;
+  flex-shrink: 0;
+}
+
+.linkTextGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.linkLabel {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.linkHandle {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  color: #94949e;
+}
+
+@media (max-width: 600px) {
+  .contactSection {
+    padding: 4rem 0 3rem 0;
+  }
+  .discordCard {
+    padding: 1.5rem;
+  }
+  .discordIconBox {
+    width: 52px;
+    height: 52px;
+    font-size: 1.6rem;
+  }
+  .discordUsername {
+    font-size: 1.25rem;
+  }
+  .discordActionsRow {
+    width: 100%;
+  }
+  .copyBtn, .joinServerBtn {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -4,51 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import { FiGlobe, FiMenu, FiX, FiChevronDown, FiCheck } from "react-icons/fi";
 import { SiDiscord } from "react-icons/si";
 import styles from "./TopBar.module.css";
-import { useLanguage } from "@/context/LanguageContext";
+import { useLanguage, LANGUAGES } from "@/context/LanguageContext";
 import { Language } from "@/dictionaries";
-
-export const LANGUAGES: { code: Language; name: string; flagUrl: string }[] = [
-  {
-    code: "it",
-    name: "Italiano",
-    flagUrl: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2"><rect width="1" height="2" fill="%23009246"/><rect x="1" width="1" height="2" fill="%23fff"/><rect x="2" width="1" height="2" fill="%23ce2b37"/></svg>`,
-  },
-  {
-    code: "en",
-    name: "English",
-    flagUrl: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30"><clipPath id="s"><path d="M0 0v30h60V0z"/></clipPath><clipPath id="t"><path d="M30 15h30v15zH0zM0 0h30v15z"/></clipPath><g clip-path="url(%23s)"><path d="M0 0v30h60V0z" fill="%23012169"/><path d="M0 0l60 30m0-30L0 30" stroke="%23fff" stroke-width="6"/><path d="M0 0l60 30m0-30L0 30" clip-path="url(%23t)" stroke="%23C8102E" stroke-width="4"/><path d="M30 0v30M0 15h60" stroke="%23fff" stroke-width="10"/><path d="M30 0v30M0 15h60" stroke="%23C8102E" stroke-width="6"/></g></svg>`,
-  },
-  {
-    code: "es",
-    name: "Español",
-    flagUrl: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2"><rect width="3" height="2" fill="%23c60b1e"/><rect y="0.5" width="3" height="1" fill="%23ffc400"/></svg>`,
-  },
-  {
-    code: "fr",
-    name: "Français",
-    flagUrl: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2"><rect width="1" height="2" fill="%23002395"/><rect x="1" width="1" height="2" fill="%23fff"/><rect x="2" width="1" height="2" fill="%23ed2939"/></svg>`,
-  },
-  {
-    code: "de",
-    name: "Deutsch",
-    flagUrl: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 3"><rect width="5" height="3" fill="%23000"/><rect y="1" width="5" height="2" fill="%23dd0000"/><rect y="2" width="5" height="1" fill="%23ffce00"/></svg>`,
-  },
-  {
-    code: "ja",
-    name: "日本語",
-    flagUrl: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2"><rect width="3" height="2" fill="%23fff"/><circle cx="1.5" cy="1" r="0.6" fill="%23bc002d"/></svg>`,
-  },
-  {
-    code: "ru",
-    name: "Русский",
-    flagUrl: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2"><rect width="3" height="2" fill="%23fff"/><rect y="0.666" width="3" height="1.334" fill="%230039a6"/><rect y="1.333" width="3" height="0.667" fill="%23d52b1e"/></svg>`,
-  },
-  {
-    code: "pt",
-    name: "Português",
-    flagUrl: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2"><rect width="3" height="2" fill="%23ff0000"/><rect width="1.2" height="2" fill="%23006600"/><circle cx="1.2" cy="1" r="0.4" fill="%23ffcc00"/></svg>`,
-  },
-];
 
 export default function TopBar({ dict: propDict }: { dict?: any; currentLang?: string }) {
   const { lang, setLang, dict: contextDict } = useLanguage();
@@ -84,40 +41,61 @@ export default function TopBar({ dict: propDict }: { dict?: any; currentLang?: s
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Handle incoming section scroll from Wiki navigation (e.g., ?section=projects)
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const sec = params.get("section");
+      if (sec) {
+        setTimeout(() => {
+          const el = document.getElementById(sec);
+          if (el) {
+            const yOffset = -90;
+            const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+            window.scrollTo({ top: y, behavior: "smooth" });
+          }
+          window.history.replaceState(null, "", window.location.pathname);
+        }, 350);
+      }
+    }
+  }, []);
+
   const handleSelectLang = (code: Language) => {
     setLang(code);
     setLangDropdownOpen(false);
   };
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
     setMobileMenuOpen(false);
     const repoPrefix = window.location.pathname.startsWith("/d4vide-portfolio")
       ? "/d4vide-portfolio"
       : "";
 
     if (targetId === "wiki") {
-      e.preventDefault();
       window.location.href = `${repoPrefix}/wiki/`;
       return;
     }
 
     if (window.location.pathname.includes("/wiki")) {
-      e.preventDefault();
-      window.location.href = `${repoPrefix}/#${targetId}`;
+      window.location.href = `${repoPrefix}/`;
       return;
     }
 
-    e.preventDefault();
     if (targetId === "hero") {
       window.scrollTo({ top: 0, behavior: "smooth" });
-      return;
+    } else {
+      const element = document.getElementById(targetId);
+      if (element) {
+        const yOffset = -90;
+        const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: "smooth" });
+      }
     }
-    const element = document.getElementById(targetId);
-    if (element) {
-      const yOffset = -100;
-      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-      window.scrollTo({ top: y, behavior: "smooth" });
-    }
+
+    try {
+      window.history.replaceState(null, "", window.location.pathname);
+    } catch {}
   };
 
   const currentLangObj = LANGUAGES.find((l) => l.code === lang) || LANGUAGES[0];
@@ -167,20 +145,25 @@ export default function TopBar({ dict: propDict }: { dict?: any; currentLang?: s
                 {dict.media || "MEDIA"}
               </a>
             </li>
+            <li>
+              <a href="#contact" className={styles.menuLink} onClick={(e) => handleNavClick(e, "contact")}>
+                {dict.contact || "CONTATTI"}
+              </a>
+            </li>
           </ul>
         </nav>
 
-        {/* Right: Quick Community CTA, Language Switcher Dropdown & Mobile Toggle */}
+        {/* Right: Discord Quick CTA, Language Switcher Dropdown & Mobile Toggle */}
         <div className={styles.actions}>
           <a
             href="https://discord.gg/7T3u9a9"
             target="_blank"
             rel="noreferrer"
-            className={styles.discordBtn}
-            title="Join Discord Community"
+            className={styles.discordIconBtn}
+            title="Discord Community"
+            aria-label="Discord Community"
           >
-            <SiDiscord size={14} />
-            <span className={styles.actionText}>{dict.community || "Community"}</span>
+            <SiDiscord size={18} />
           </a>
 
           {/* EnderClub-Inspired Dropdown Switcher */}
@@ -256,6 +239,9 @@ export default function TopBar({ dict: propDict }: { dict?: any; currentLang?: s
             </a>
             <a href="#youtube" className={styles.mobileNavLink} onClick={(e) => handleNavClick(e, "youtube")}>
               {dict.media || "MEDIA"}
+            </a>
+            <a href="#contact" className={styles.mobileNavLink} onClick={(e) => handleNavClick(e, "contact")}>
+              {dict.contact || "CONTATTI"}
             </a>
           </nav>
 

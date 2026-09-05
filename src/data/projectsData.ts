@@ -1,11 +1,13 @@
 export interface ProjectLink {
   label: string;
   url: string;
-  platform: "modrinth" | "curseforge" | "gamejolt" | "itch";
+  platform: "modrinth" | "curseforge" | "gamejolt" | "itch" | "github" | "web";
   mrId?: string;
   cfPath?: string;
   initialDownloads?: number;
 }
+
+export type ProjectCategory = "all" | "minecraft" | "games" | "apps";
 
 export interface UnifiedProject {
   id: string;
@@ -14,6 +16,7 @@ export interface UnifiedProject {
   description: string;
   icon_url: string;
   type: string;
+  category: "minecraft" | "games" | "apps";
   tags: string[];
   downloads: number;
   updated: string;
@@ -28,6 +31,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     description: "An epic RPG modpack with unique boss progression, custom gear, and questlines.",
     icon_url: "https://cdn.modrinth.com/data/6qXHHAYn/365235145c0d9cc2cd208c674761ade3f3d1b825.png",
     type: "Modpack",
+    category: "minecraft",
     tags: ["Modpack", "RPG", "Bosses", "Quests", "1.20.1", "Forge"],
     downloads: 45510,
     updated: "2025-06-12",
@@ -55,6 +59,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     description: "Explore the tallest dungeon tower ever created! Available for Minecraft Java, Bedrock, and Datapack.",
     icon_url: "https://cdn.modrinth.com/data/5Zdqv8rG/22f82f9f215c73845bedc57059c0c8143977d76f.png",
     type: "Mod / Datapack / Addon",
+    category: "minecraft",
     tags: ["Mod", "Datapack", "Bedrock Addon", "Java & Bedrock", "Dungeon", "Adventure", "Structures"],
     downloads: 33148,
     updated: "2026-07-18",
@@ -108,6 +113,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     description: "Adds dozens of unique, breathtaking structures to your world across Java, Bedrock, and Datapacks!",
     icon_url: "https://cdn.modrinth.com/data/6Yica65F/6a4532c2cd308d8791e5ba2afc12d4aca1d07d65.png",
     type: "Mod / Datapack / Addon",
+    category: "minecraft",
     tags: ["Mod", "Datapack", "Bedrock Addon", "Resourcepack", "Java & Bedrock", "Structures", "World Gen"],
     downloads: 24750,
     updated: "2026-07-17",
@@ -148,13 +154,6 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
         initialDownloads: 6363
       },
       {
-        label: "Modrinth (Datapack)",
-        url: "https://modrinth.com/datapack/structural-beyond-sbd",
-        platform: "modrinth",
-        mrId: "structural-beyond-sbd",
-        initialDownloads: 0
-      },
-      {
         label: "GameJolt",
         url: "https://gamejolt.com/games/structural_beyond_mc/944658",
         platform: "gamejolt",
@@ -173,8 +172,9 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     title: "PROJECT HORROR",
     slug: "project-horror",
     description: "Terrifying survival horror experience packed with scariest entities, custom atmosphere, and mechanics.",
-    icon_url: "https://media.forgecdn.net/avatars/thumbnails/994/340/256/256/638509827334101640.png",
+    icon_url: "https://media.forgecdn.net/avatars/994/340/638509827334101640.png",
     type: "Modpack",
+    category: "minecraft",
     tags: ["Modpack", "Horror", "Survival", "Entities", "Atmosphere", "Forge"],
     downloads: 4911,
     updated: "2023-11-11",
@@ -193,8 +193,9 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     title: "PROJECT THE RPG REBORN",
     slug: "project-the-rpg-reborn",
     description: "Incredible RPG experience alone or with friends featuring leveling, magic, dungeons, and bosses.",
-    icon_url: "https://media.forgecdn.net/avatars/thumbnails/965/108/256/256/638463726503298813.png",
+    icon_url: "https://media.forgecdn.net/avatars/965/108/638463726503298813.png",
     type: "Modpack",
+    category: "minecraft",
     tags: ["Modpack", "RPG", "Magic", "Dungeons", "Leveling", "Forge"],
     downloads: 178,
     updated: "2024-11-21",
@@ -213,8 +214,9 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     title: "PROJECT REALISTIC RPG",
     slug: "project-realistic-rpg",
     description: "Realistic survival experience with health, weapons, medkits, temperature, and immersive mechanics.",
-    icon_url: "https://media.forgecdn.net/avatars/thumbnails/1172/959/256/256/638744641399341869.png",
+    icon_url: "https://media.forgecdn.net/avatars/1172/959/638744641399341869.png",
     type: "Modpack",
+    category: "minecraft",
     tags: ["Modpack", "Realistic", "Survival", "Weapons", "Temperature", "Forge"],
     downloads: 321,
     updated: "2025-03-24",
@@ -233,8 +235,9 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     title: "PROJECT GUNPARTY",
     slug: "project-gunparty",
     description: "Action-packed multiplayer gun warfare and deathmatch experience inside Minecraft.",
-    icon_url: "https://media.forgecdn.net/avatars/thumbnails/1408/864/256/256/638912980924519123.png",
+    icon_url: "https://media.forgecdn.net/avatars/1408/864/638912980924519123.png",
     type: "Modpack",
+    category: "minecraft",
     tags: ["Modpack", "Guns", "Multiplayer", "PvP", "Deathmatch", "Forge"],
     downloads: 148,
     updated: "2024-08-15",
@@ -253,8 +256,9 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     title: "BOSSTWEAK 3D+",
     slug: "bosstweak-3d",
     description: "Official resource pack of Boss RPG: corrects visual problems, improves textures, and adds 3D models.",
-    icon_url: "https://media.forgecdn.net/avatars/thumbnails/1221/657/256/256/638800200916334761.png",
+    icon_url: "https://media.forgecdn.net/avatars/1221/657/638800200916334761.png",
     type: "Resource Pack",
+    category: "minecraft",
     tags: ["Resource Pack", "3D Models", "Textures", "Boss RPG Companion"],
     downloads: 354,
     updated: "2025-04-13",
@@ -275,6 +279,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     description: "Universal server maintenance plugin for Minecraft Java servers with customizable MOTDs.",
     icon_url: "https://cdn.modrinth.com/data/y11fODQe/99a1f5300424ed796792d9454768eaff5d5b7b98.png",
     type: "Plugin",
+    category: "minecraft",
     tags: ["Plugin", "Server", "Paper", "Spigot", "MOTD", "Maintenance"],
     downloads: 483,
     updated: "2025-02-10",
@@ -295,6 +300,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     description: "Crossplatform European Minecraft Java & Bedrock network featuring InfinitySMP and minigames.",
     icon_url: "https://cdn.modrinth.com/data/c2w1TKgN/4da379944f5c563294a488f7738950ebc6a68c74.png",
     type: "Minecraft Server",
+    category: "minecraft",
     tags: ["Minecraft Server", "Java & Bedrock", "Crossplatform", "Minigames", "SMP"],
     downloads: 0,
     updated: "2026-08-01",

@@ -3,8 +3,6 @@
 import React, { createContext, useContext, useState, useEffect, useMemo } from "react";
 import { MAIN_PROJECTS, UnifiedProject } from "@/data/projectsData";
 
-const COUNTER_NS = "d4vide106-portfolio-pure-v4";
-
 interface LiveStatsContextType {
   projects: UnifiedProject[];
   totalDownloads: number;
@@ -29,24 +27,26 @@ const LiveStatsContext = createContext<LiveStatsContextType>({
   isLiveUpdating: false,
 });
 
-// ── Reliable Global Counter API Helpers with Failover ────────────────────────
-async function counterUp(key: string): Promise<number | null> {
+// ── Reliable Global CountAPI Helpers with Failover ────────────────────────
+const COUNT_API_BASE = "https://countapi.mileshilliard.com/api/v1";
+
+async function countHit(key: string): Promise<number | null> {
   try {
-    const res = await fetch(`https://api.counterapi.dev/v1/${COUNTER_NS}/${key}/up`);
+    const res = await fetch(`${COUNT_API_BASE}/hit/${key}`);
     if (!res.ok) return null;
     const data = await res.json();
-    return typeof data.count === "number" ? data.count : null;
+    return typeof data.value === "number" ? data.value : null;
   } catch {
     return null;
   }
 }
 
-async function counterGet(key: string): Promise<number | null> {
+async function countGet(key: string): Promise<number | null> {
   try {
-    const res = await fetch(`https://api.counterapi.dev/v1/${COUNTER_NS}/${key}/get`);
+    const res = await fetch(`${COUNT_API_BASE}/get/${key}`);
     if (!res.ok) return null;
     const data = await res.json();
-    return typeof data.count === "number" ? data.count : null;
+    return typeof data.value === "number" ? data.value : null;
   } catch {
     return null;
   }
@@ -58,84 +58,102 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [projectViewsMap, setProjectViewsMap] = useState<Record<string, number>>({});
   const [isLiveUpdating, setIsLiveUpdating] = useState<boolean>(false);
 
-  // ── 100% PURE REAL PORTFOLIO VIEWS (Starts at 1, increments on real visits) ──
+  // ── 1. REAL UNIQUE PORTFOLIO VIEWS (Per-person unique visit) ──
   useEffect(() => {
-    let isTracked = false;
+    const GLOBAL_PORTFOLIO_KEY = "d4vide106_portfolio_views_v5";
+    const VISITOR_RECORDED_KEY = "d4v_unique_visitor_v5";
 
-    async function initPortfolioViews() {
-      if (isTracked) return;
-      isTracked = true;
+    async function trackPortfolioVisit() {
+      let isRecorded = false;
+      try {
+        isRecorded = localStorage.getItem(VISITOR_RECORDED_KEY) === "true";
+      } catch {}
 
-      const DEVICE_KEY = "d4v_port_dev_v4";
-      const isDeviceTracked = localStorage.getItem(DEVICE_KEY);
-
-      let localAddon = parseInt(localStorage.getItem("d4v_port_addon_v4") || "0", 10);
-
-      if (!isDeviceTracked) {
-        localAddon += 1;
-        try {
-          localStorage.setItem(DEVICE_KEY, "1");
-          localStorage.setItem("d4v_port_addon_v4", localAddon.toString());
-        } catch {}
-
-        const apiCount = await counterUp("site-views");
-        const total = Math.max(apiCount !== null ? apiCount : localAddon, 1);
-        setPortfolioViews(total);
+      if (!isRecorded) {
+        // First time this unique user visits the site: increment global counter
+        const hitVal = await countHit(GLOBAL_PORTFOLIO_KEY);
+        if (hitVal !== null) {
+          setPortfolioViews(hitVal);
+          try {
+            localStorage.setItem(VISITOR_RECORDED_KEY, "true");
+          } catch {}
+        } else {
+          // Fallback if offline
+          setPortfolioViews((prev) => Math.max(prev, 1));
+        }
       } else {
-        const apiCount = await counterGet("site-views");
-        const total = Math.max(apiCount !== null ? apiCount : localAddon, 1);
-        setPortfolioViews(total);
+        // Returning visitor: retrieve current global count without re-incrementing
+        const getVal = await countGet(GLOBAL_PORTFOLIO_KEY);
+        if (getVal !== null) {
+          setPortfolioViews(getVal);
+        }
       }
     }
 
-    initPortfolioViews();
+    trackPortfolioVisit();
 
-    // Live polling for cross-visitor view updates
+    // Live polling for cross-visitor updates every 15 seconds
     const interval = setInterval(async () => {
-      const apiCount = await counterGet("site-views");
-      if (apiCount !== null) {
-        setPortfolioViews(apiCount);
+      const liveCount = await countGet(GLOBAL_PORTFOLIO_KEY);
+      if (liveCount !== null) {
+        setPortfolioViews(liveCount);
       }
-    }, 4_000);
+    }, 15_000);
 
     return () => clearInterval(interval);
   }, []);
 
-  // ── 100% PURE REAL PROJECT VIEWS (Starts at 1, increments when visitors view a project) ──
+  // ── 2. REAL PROJECT VIEWS INITIALIZATION ──
   useEffect(() => {
-    async function loadProjectViews() {
+    async function loadAllProjectViews() {
       const map: Record<string, number> = {};
 
       await Promise.all(
         projects.map(async (project) => {
-          const localAddon = parseInt(localStorage.getItem(`d4v_pv_addon_v4_${project.id}`) || "0", 10);
-          const cloudCount = await counterGet(`pv-${project.id}`);
-
-          const finalViews = Math.max(cloudCount !== null ? cloudCount : localAddon, 1);
-          map[project.id] = finalViews;
+          const key = `d4vide106_pv5_${project.id}`;
+          const val = await countGet(key);
+          map[project.id] = val !== null ? Math.max(val, 1) : 1;
         })
       );
 
       setProjectViewsMap(map);
     }
 
-    loadProjectViews();
+    loadAllProjectViews();
   }, [projects]);
 
-  // Real-time live increment when a project modal or card is clicked by a visitor
+  // ── 3. REAL UNIQUE PROJECT VIEW INCREMENT (1 view per unique person) ──
   const incrementProjectViews = async (projectId: string) => {
-    const localAddon = parseInt(localStorage.getItem(`d4v_pv_addon_v4_${projectId}`) || "0", 10) + 1;
+    const STORAGE_KEY = `d4v_proj_viewed_v5_${projectId}`;
+    let alreadyViewed = false;
     try {
-      localStorage.setItem(`d4v_pv_addon_v4_${projectId}`, localAddon.toString());
+      alreadyViewed = localStorage.getItem(STORAGE_KEY) === "true";
     } catch {}
 
-    const apiCount = await counterUp(`pv-${projectId}`);
-    const nextViews = Math.max(apiCount !== null ? apiCount : localAddon, 1);
+    const key = `d4vide106_pv5_${projectId}`;
 
-    setProjectViewsMap((prev) => ({
-      ...prev,
-      [projectId]: nextViews,
-    }));
+    if (!alreadyViewed) {
+      // First time this visitor views this specific project: increment
+      const nextVal = await countHit(key);
+      if (nextVal !== null) {
+        try {
+          localStorage.setItem(STORAGE_KEY, "true");
+        } catch {}
+        setProjectViewsMap((prev) => ({
+          ...prev,
+          [projectId]: nextVal,
+        }));
+      }
+    } else {
+      // Returning view: get live count without inflating
+      const liveVal = await countGet(key);
+      if (liveVal !== null) {
+        setProjectViewsMap((prev) => ({
+          ...prev,
+          [projectId]: liveVal,
+        }));
+      }
+    }
   };
 
   const getProjectViews = (projectId: string) => {
@@ -148,15 +166,13 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         if (p.id !== projectId) return p;
         const updatedLinks = p.links.map((l) => {
           if (l.url === linkUrl) {
-            const currentClicks = parseInt(localStorage.getItem(`d4v_clicks_v4_${p.id}_${l.platform}`) || "0", 10);
+            const currentClicks = parseInt(localStorage.getItem(`d4v_clicks_v5_${p.id}_${l.platform}`) || "0", 10);
             const nextClicks = currentClicks + 1;
             try {
-              localStorage.setItem(`d4v_clicks_v4_${p.id}_${l.platform}`, nextClicks.toString());
+              localStorage.setItem(`d4v_clicks_v5_${p.id}_${l.platform}`, nextClicks.toString());
             } catch {}
 
-            if (l.platform === "gamejolt" || l.platform === "itch") {
-              counterUp(`dl-${l.platform}-${p.id}`);
-            }
+            countHit(`d4v_dl_${l.platform}_${p.id}`);
 
             return { ...l, initialDownloads: (l.initialDownloads || 0) + 1 };
           }
@@ -170,10 +186,10 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         };
       })
     );
-    counterUp(`dl-${projectId}`);
+    countHit(`d4v_dl_total_${projectId}`);
   };
 
-  // ── Live download fetching (Modrinth + Official CurseForge API + GameJolt + Itch) ──
+  // ── 4. Live download fetching (Modrinth + Official CurseForge API + GameJolt + Itch) ──
   useEffect(() => {
     let isMounted = true;
 
@@ -226,7 +242,11 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
           const updatedLinks = await Promise.all(
             project.links.map(async (link) => {
               const baseCount = link.initialDownloads ?? 0;
-              const localClicks = parseInt(localStorage.getItem(`d4v_clicks_v4_${project.id}_${link.platform}`) || "0", 10);
+              let localClicks = 0;
+              try {
+                localClicks = parseInt(localStorage.getItem(`d4v_clicks_v5_${project.id}_${link.platform}`) || "0", 10);
+              } catch {}
+
               let liveApiCount: number | null = null;
 
               if (link.mrId) {
@@ -253,10 +273,6 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
                     if (!res.ok) {
                       res = await fetch(`https://corsproxy.io/?${encodeURIComponent(`https://api.cfwidget.com/${link.cfPath}`)}`);
                     }
-                    if (!res.ok) {
-                      res = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(`https://api.cfwidget.com/${link.cfPath}`)}`);
-                    }
-
                     if (res.ok) {
                       const d = await res.json();
                       if (d.downloads?.total && typeof d.downloads.total === "number") {
@@ -266,8 +282,8 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
                   } catch {}
                 }
               } else if (link.platform === "gamejolt" || link.platform === "itch") {
-                const cloudKey = `dl-${link.platform}-${project.id}`;
-                const cloudCount = await counterGet(cloudKey);
+                const cloudKey = `d4v_dl_${link.platform}_${project.id}`;
+                const cloudCount = await countGet(cloudKey);
                 if (cloudCount !== null) {
                   liveApiCount = baseCount + cloudCount;
                 }
@@ -312,6 +328,8 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       modrinth: 0,
       gamejolt: 0,
       itch: 0,
+      github: 0,
+      web: 0,
     };
     projects.forEach((p) => {
       p.links.forEach((l) => {

@@ -12,9 +12,14 @@ export default function CipherCarousel({
   projects: UnifiedProject[];
   onSelectProject?: (project: UnifiedProject) => void;
 }) {
+  const [mounted, setMounted] = useState(false);
   const [rotationAngle, setRotationAngle] = useState(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [dimensions, setDimensions] = useState({ radiusX: 340, radiusY: 160 });
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const reqIdRef = useRef<number | null>(null);
@@ -64,7 +69,7 @@ export default function CipherCarousel({
         velocityRef.current = 0.15 * Math.sign(velocityRef.current || 1);
       }
 
-      const activeVel = isHoveredRef.current ? velocityRef.current * 0.1 : velocityRef.current;
+      const activeVel = isHoveredRef.current ? velocityRef.current * 0.08 : velocityRef.current;
       angleRef.current += activeVel * delta;
 
       setRotationAngle(angleRef.current);
@@ -135,7 +140,7 @@ export default function CipherCarousel({
         </div>
 
         <div className={styles.constellationTrack}>
-          {projects.map((project, idx) => {
+          {mounted && projects.map((project, idx) => {
             const count = projects.length;
             const stepAngle = 360 / count;
             const currentItemAngle = (stepAngle * idx + rotationAngle) % 360;
@@ -157,10 +162,9 @@ export default function CipherCarousel({
                 } ${isAnyHovered && !isCurrentHovered ? styles.cardDimmed : ""}`}
                 style={{
                   transform: `translate3d(${x}px, ${y}px, 0px) scale(${
-                    isCurrentHovered ? 1.25 : 1
+                    isCurrentHovered ? 1.2 : 1
                   })`,
                   zIndex: isCurrentHovered ? 999 : Math.round((Math.sin(rad) + 1) * 100),
-                  opacity: isAnyHovered ? (isCurrentHovered ? 1 : 0.3) : 0.85,
                   cursor: "pointer"
                 }}
                 onMouseEnter={() => {
@@ -195,6 +199,13 @@ export default function CipherCarousel({
                     <FaCube size={32} color="#ffffff" />
                   </div>
                 </div>
+
+                {isCurrentHovered && (
+                  <div className={styles.cardTooltip}>
+                    <span className={styles.tooltipTitle}>{project.title}</span>
+                    <span className={styles.tooltipType}>{project.type}</span>
+                  </div>
+                )}
               </div>
             );
           })}

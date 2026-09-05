@@ -5,6 +5,7 @@
     "wiki": "WIKI",
     "about": "ABOUT",
     "media": "MEDIA",
+    "contact": "CONTACT",
     "community": "Community"
   },
   "languages": {
@@ -19,7 +20,7 @@
   },
   "hero": {
     "greeting": "Hi, I'm",
-    "role": "Content Creator & Minecraft Specialist",
+    "role": "Game Developer, Software Creator & Content Creator",
     "scroll": "Scroll Down",
     "viewsGenerated": "Views generated",
     "serversPromoted": "Servers promoted",
@@ -27,7 +28,7 @@
     "getStarted": "Get started",
     "seeWork": "See our work",
     "creatorProfile": "CREATOR PROFILE",
-    "systemRole": "System Designer & Minecraft Mod Creator"
+    "systemRole": "Game Developer, Software Creator & Content Creator"
   },
   "aboutSection": {
     "aboutTitle": "Who the hell am I?",
