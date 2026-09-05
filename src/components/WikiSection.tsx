@@ -24,6 +24,8 @@ import {
   FiMinimize2,
   FiSun,
   FiHelpCircle,
+  FiList,
+  FiMenu,
 } from "react-icons/fi";
 import { SiDiscord } from "react-icons/si";
 import styles from "./WikiSection.module.css";
@@ -100,6 +102,10 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
 
   // Active TOC heading tracker
   const [activeHeadingSlug, setActiveHeadingSlug] = useState<string>("");
+
+  // Mobile Drawer State for Categories & TOC
+  const [mobileDrawerOpen, setMobileDrawerOpen] = useState<boolean>(false);
+  const [mobileDrawerTab, setMobileDrawerTab] = useState<"guides" | "toc">("guides");
 
   // Refs for outside click handling, scroll pane & keyboard shortcuts
   const articlePaneRef = useRef<HTMLDivElement>(null);
@@ -716,6 +722,19 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
               )}
             </div>
           </div>
+
+          {/* Mobile Guides Index Toggle Button (Visible on screens <= 768px) */}
+          <button
+            onClick={() => {
+              setMobileDrawerTab("guides");
+              setMobileDrawerOpen(!mobileDrawerOpen);
+            }}
+            className={styles.mobileWikiHeaderMenuBtn}
+            title={lang === "it" ? "Indice Guide" : "Guides Menu"}
+            aria-label="Toggle Guides Menu"
+          >
+            {mobileDrawerOpen ? <FiX size={18} /> : <FiMenu size={18} />}
+          </button>
         </div>
         </div>
       </div>
@@ -827,6 +846,47 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
 
         {/* Center Main Article Display (Only this area scrolls independently) */}
         <main ref={articlePaneRef} className={styles.centerArticlePane}>
+          {/* Mobile Sticky Sub-Bar for Quick Guide & Indice Navigation (Only on mobile <= 768px) */}
+          <div className={styles.mobileWikiSubBar}>
+            <button
+              onClick={() => {
+                setMobileDrawerTab("guides");
+                setMobileDrawerOpen(true);
+              }}
+              className={styles.mobileDrawerBtn}
+              title={lang === "it" ? "Apri Indice Guide" : "Open Guides Index"}
+            >
+              <FiBookOpen size={14} className={styles.mobileSubIcon} />
+              <span className={styles.mobileSubText}>
+                {activeArticle ? activeArticle.title : (lang === "it" ? "Indice Guide" : "Guides Index")}
+              </span>
+              <FiChevronDown size={12} className={styles.mobileSubChev} />
+            </button>
+
+            <div className={styles.mobileSubRightActions}>
+              <button
+                onClick={() => setSearchModalOpen(true)}
+                className={styles.mobileSubActionBtn}
+                title={lang === "it" ? "Cerca guide" : "Search docs"}
+              >
+                <FiSearch size={14} />
+              </button>
+
+              {tableOfContents.length > 0 && (
+                <button
+                  onClick={() => {
+                    setMobileDrawerTab("toc");
+                    setMobileDrawerOpen(true);
+                  }}
+                  className={styles.mobileSubActionBtn}
+                  title={lang === "it" ? "Sommario dell'articolo" : "Page Contents"}
+                >
+                  <FiList size={14} />
+                </button>
+              )}
+            </div>
+          </div>
+
           {activeArticle ? (
             <div key={activeArticle.id} className={`${styles.articleContainer} ${layoutMode === "expand" ? styles.articleContainerExpand : ""}`}>
               {/* Breadcrumb Navigation */}
@@ -1033,6 +1093,140 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
                 <span>{lang === "it" ? "Sblocca Modalità Creator" : "Unlock Creator Mode"}</span>
               </button>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Mobile Off-Canvas Drawer for Categories & TOC (Screens <= 768px) */}
+      {mobileDrawerOpen && (
+        <div className={styles.mobileDrawerOverlay} onClick={() => setMobileDrawerOpen(false)}>
+          <div className={styles.mobileDrawerPanel} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.mobileDrawerHeader}>
+              <div className={styles.mobileDrawerTitleGroup}>
+                <img src={currentProject.icon_url} alt="" className={styles.drawerProjectLogo} />
+                <div className={styles.drawerProjectMeta}>
+                  <span className={styles.drawerProjectBadge}>{currentProject.type}</span>
+                  <span className={styles.drawerProjectTitle}>{getLocalizedProjectTitle(currentProject)}</span>
+                </div>
+              </div>
+              <button
+                onClick={() => setMobileDrawerOpen(false)}
+                className={styles.drawerCloseBtn}
+                aria-label="Close Drawer"
+              >
+                <FiX size={18} />
+              </button>
+            </div>
+
+            {/* Switch Tabs: Guides vs On this page */}
+            {tableOfContents.length > 0 && (
+              <div className={styles.drawerTabsRow}>
+                <button
+                  onClick={() => setMobileDrawerTab("guides")}
+                  className={`${styles.drawerTabBtn} ${mobileDrawerTab === "guides" ? styles.drawerTabBtnActive : ""}`}
+                >
+                  <FiBookOpen size={12} />
+                  <span>{lang === "it" ? "Tutte le Guide" : "All Guides"}</span>
+                </button>
+                <button
+                  onClick={() => setMobileDrawerTab("toc")}
+                  className={`${styles.drawerTabBtn} ${mobileDrawerTab === "toc" ? styles.drawerTabBtnActive : ""}`}
+                >
+                  <FiList size={12} />
+                  <span>{lang === "it" ? "In questa Pagina" : "On this Page"}</span>
+                </button>
+              </div>
+            )}
+
+            <div className={styles.drawerScrollBody}>
+              {mobileDrawerTab === "guides" ? (
+                <div className={styles.sidebarTree}>
+                  {Object.entries(categoriesMap).map(([categoryName, articles]) => (
+                    <div key={categoryName} className={styles.categoryBlock}>
+                      <div className={styles.categoryHeader}>{categoryName}</div>
+                      <div className={styles.categoryGuideLines}>
+                        {articles.map((art) => {
+                          const isActive = art.id === activeArticleId;
+                          return (
+                            <button
+                              key={art.id}
+                              onClick={() => {
+                                handleSelectArticle(art.id);
+                                setMobileDrawerOpen(false);
+                              }}
+                              className={`${styles.categoryItemBtn} ${isActive ? styles.categoryItemBtnActive : ""}`}
+                            >
+                              <span className={styles.activeVerticalLine} />
+                              <span className={styles.itemTitle}>{art.title}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className={styles.tocDrawerList}>
+                  <div className={styles.sidebarTitle}>
+                    {lang === "it" ? "SOMMARIO DELL'ARTICOLO" : "PAGE CONTENTS"}
+                  </div>
+                  {tableOfContents.map((h, i) => (
+                    <a
+                      key={i}
+                      href={`#${h.slug}`}
+                      onClick={(e) => {
+                        handleTocClick(e, h.slug);
+                        setMobileDrawerOpen(false);
+                      }}
+                      className={`${styles.tocDrawerLink} ${h.level === 3 ? styles.tocDrawerSubLink : ""}`}
+                    >
+                      {h.text}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Drawer Bottom Footer (Quick Links & Back to Portfolio) */}
+            <div className={styles.drawerFooter}>
+              <button
+                onClick={() => {
+                  setMobileDrawerOpen(false);
+                  setSearchModalOpen(true);
+                }}
+                className={styles.drawerSearchBtn}
+              >
+                <FiSearch size={13} />
+                <span>{lang === "it" ? "Cerca guide..." : "Search docs..."}</span>
+              </button>
+
+              <div className={styles.drawerSocialRow}>
+                <a
+                  href="https://discord.gg/7T3u9a9"
+                  target="_blank"
+                  rel="noreferrer"
+                  className={styles.drawerSocialIcon}
+                  title="Discord"
+                >
+                  <SiDiscord size={15} />
+                </a>
+                <a
+                  href="https://github.com/D4vide106"
+                  target="_blank"
+                  rel="noreferrer"
+                  className={styles.drawerSocialIcon}
+                  title="GitHub"
+                >
+                  <FiGithub size={15} />
+                </a>
+                <a
+                  href={repoPrefix + "/"}
+                  className={styles.drawerHomeLink}
+                >
+                  {lang === "it" ? "← Torna al Portfolio" : "← Back to Portfolio"}
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       )}

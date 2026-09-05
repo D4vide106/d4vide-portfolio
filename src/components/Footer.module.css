@@ -75,7 +75,7 @@
 
 @media (max-width: 600px) {
   .footer {
-    padding: 2.2rem 0;
+    padding: 2.2rem 0 calc(2.2rem + env(safe-area-inset-bottom, 0px)) 0;
   }
   .container {
     flex-direction: column;

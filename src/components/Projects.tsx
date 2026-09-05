@@ -152,73 +152,70 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
         </div>
       </div>
 
-      {/* Conditional Display: Still Centered Grid (<4 projects) vs Marquee Showcase (>=4 projects) */}
-      {!isMarqueeMode ? (
-        <div className={styles.staticCenteredContainer}>
-          <div className={styles.staticCenteredGrid}>
-            {filteredProjects.map((project) => {
-              const uniquePlatforms = getUniquePlatforms(project);
-              const pTitle = getProjectTitle(project);
-              const pDesc = getProjectDescription(project);
-              return (
-                <div
-                  key={project.id}
-                  onClick={() => handleOpenProjectModal(project)}
-                  className={styles.modrinthCardStill}
-                >
-                  <div className={styles.cardHeader}>
-                    <div className={styles.logoBox}>
-                      <img
-                        src={project.icon_url}
-                        alt={pTitle}
-                        className={styles.projectLogo}
-                      />
-                    </div>
-                    <div className={styles.titleArea}>
-                      <span className={styles.typeBadge}>{project.type}</span>
-                      <h4 className={styles.cardTitle}>{pTitle}</h4>
-                    </div>
-                  </div>
-
-                  <p className={styles.cardDesc}>{pDesc}</p>
-
-                  <div className={styles.cardFooter}>
-                    <div className={styles.downloadStat}>
-                      <FiDownload size={13} />
-                      <span>{project.downloads.toLocaleString()}</span>
-                    </div>
-
-                    <div className={styles.platformsRow}>
-                      {uniquePlatforms.map((link, pIdx) => {
-                        const platformName = PLATFORM_NAMES[link.platform] || link.platform;
-                        return (
-                          <span key={pIdx} className={styles.platformIcon} title={platformName}>
-                            {getPlatformIcon(link.platform, 14)}
-                          </span>
-                        );
-                      })}
-                    </div>
-                  </div>
+      {/* MOBILE FEED (Clean, stable native cards for touch screens <= 768px) */}
+      <div className={styles.mobileProjectsContainer}>
+        {filteredProjects.map((project) => {
+          const uniquePlatforms = getUniquePlatforms(project);
+          const pTitle = getProjectTitle(project);
+          const pDesc = getProjectDescription(project);
+          return (
+            <div
+              key={`m-${project.id}`}
+              onClick={() => handleOpenProjectModal(project)}
+              className={styles.mobileCard}
+            >
+              <div className={styles.cardHeader}>
+                <div className={styles.logoBox}>
+                  <img
+                    src={project.icon_url}
+                    alt={pTitle}
+                    className={styles.projectLogo}
+                  />
                 </div>
-              );
-            })}
-          </div>
-        </div>
-      ) : (
-        <div className={styles.marqueeFullBleedSection}>
-          
-          {/* Marquee Row 1 (Scrolling Left) */}
-          <div className={styles.marqueeRowContainer}>
-            <div className={`${styles.marqueeTrack} ${styles.marqueeLeft}`}>
-              {row1Projects.map((project, idx) => {
+                <div className={styles.titleArea}>
+                  <span className={styles.typeBadge}>{project.type}</span>
+                  <h4 className={styles.cardTitle}>{pTitle}</h4>
+                </div>
+              </div>
+
+              <p className={styles.cardDesc}>{pDesc}</p>
+
+              <div className={styles.cardFooter}>
+                <div className={styles.downloadStat}>
+                  <FiDownload size={13} />
+                  <span>{project.downloads.toLocaleString()}</span>
+                </div>
+
+                <div className={styles.platformsRow}>
+                  {uniquePlatforms.map((link, pIdx) => {
+                    const platformName = PLATFORM_NAMES[link.platform] || link.platform;
+                    return (
+                      <span key={pIdx} className={styles.platformIcon} title={platformName}>
+                        {getPlatformIcon(link.platform, 14)}
+                      </span>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* DESKTOP VIEW: Still Centered Grid (<4 projects) vs Marquee Showcase (>=4 projects) */}
+      <div className={styles.desktopProjectsWrapper}>
+        {!isMarqueeMode ? (
+          <div className={styles.staticCenteredContainer}>
+            <div className={styles.staticCenteredGrid}>
+              {filteredProjects.map((project) => {
                 const uniquePlatforms = getUniquePlatforms(project);
                 const pTitle = getProjectTitle(project);
                 const pDesc = getProjectDescription(project);
                 return (
                   <div
-                    key={`r1-${project.id}-${idx}`}
+                    key={project.id}
                     onClick={() => handleOpenProjectModal(project)}
-                    className={styles.modrinthCard}
+                    className={styles.modrinthCardStill}
                   >
                     <div className={styles.cardHeader}>
                       <div className={styles.logoBox}>
@@ -258,61 +255,116 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
               })}
             </div>
           </div>
-
-          {/* Marquee Row 2 (Scrolling Right) */}
-          <div className={styles.marqueeRowContainer}>
-            <div className={`${styles.marqueeTrack} ${styles.marqueeRight}`}>
-              {row2Projects.map((project, idx) => {
-                const uniquePlatforms = getUniquePlatforms(project);
-                const pTitle = getProjectTitle(project);
-                const pDesc = getProjectDescription(project);
-                return (
-                  <div
-                    key={`r2-${project.id}-${idx}`}
-                    onClick={() => handleOpenProjectModal(project)}
-                    className={styles.modrinthCard}
-                  >
-                    <div className={styles.cardHeader}>
-                      <div className={styles.logoBox}>
-                        <img
-                          src={project.icon_url}
-                          alt={pTitle}
-                          className={styles.projectLogo}
-                        />
+        ) : (
+          <div className={styles.marqueeFullBleedSection}>
+            
+            {/* Marquee Row 1 (Scrolling Left) */}
+            <div className={styles.marqueeRowContainer}>
+              <div className={`${styles.marqueeTrack} ${styles.marqueeLeft}`}>
+                {row1Projects.map((project, idx) => {
+                  const uniquePlatforms = getUniquePlatforms(project);
+                  const pTitle = getProjectTitle(project);
+                  const pDesc = getProjectDescription(project);
+                  return (
+                    <div
+                      key={`r1-${project.id}-${idx}`}
+                      onClick={() => handleOpenProjectModal(project)}
+                      className={styles.modrinthCard}
+                    >
+                      <div className={styles.cardHeader}>
+                        <div className={styles.logoBox}>
+                          <img
+                            src={project.icon_url}
+                            alt={pTitle}
+                            className={styles.projectLogo}
+                          />
+                        </div>
+                        <div className={styles.titleArea}>
+                          <span className={styles.typeBadge}>{project.type}</span>
+                          <h4 className={styles.cardTitle}>{pTitle}</h4>
+                        </div>
                       </div>
-                      <div className={styles.titleArea}>
-                        <span className={styles.typeBadge}>{project.type}</span>
-                        <h4 className={styles.cardTitle}>{pTitle}</h4>
+
+                      <p className={styles.cardDesc}>{pDesc}</p>
+
+                      <div className={styles.cardFooter}>
+                        <div className={styles.downloadStat}>
+                          <FiDownload size={13} />
+                          <span>{project.downloads.toLocaleString()}</span>
+                        </div>
+
+                        <div className={styles.platformsRow}>
+                          {uniquePlatforms.map((link, pIdx) => {
+                            const platformName = PLATFORM_NAMES[link.platform] || link.platform;
+                            return (
+                              <span key={pIdx} className={styles.platformIcon} title={platformName}>
+                                {getPlatformIcon(link.platform, 14)}
+                              </span>
+                            );
+                          })}
+                        </div>
                       </div>
                     </div>
-
-                    <p className={styles.cardDesc}>{pDesc}</p>
-
-                    <div className={styles.cardFooter}>
-                      <div className={styles.downloadStat}>
-                        <FiDownload size={13} />
-                        <span>{project.downloads.toLocaleString()}</span>
-                      </div>
-
-                      <div className={styles.platformsRow}>
-                        {uniquePlatforms.map((link, pIdx) => {
-                          const platformName = PLATFORM_NAMES[link.platform] || link.platform;
-                          return (
-                            <span key={pIdx} className={styles.platformIcon} title={platformName}>
-                              {getPlatformIcon(link.platform, 14)}
-                            </span>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
-          </div>
 
-        </div>
-      )}
+            {/* Marquee Row 2 (Scrolling Right) */}
+            <div className={styles.marqueeRowContainer}>
+              <div className={`${styles.marqueeTrack} ${styles.marqueeRight}`}>
+                {row2Projects.map((project, idx) => {
+                  const uniquePlatforms = getUniquePlatforms(project);
+                  const pTitle = getProjectTitle(project);
+                  const pDesc = getProjectDescription(project);
+                  return (
+                    <div
+                      key={`r2-${project.id}-${idx}`}
+                      onClick={() => handleOpenProjectModal(project)}
+                      className={styles.modrinthCard}
+                    >
+                      <div className={styles.cardHeader}>
+                        <div className={styles.logoBox}>
+                          <img
+                            src={project.icon_url}
+                            alt={pTitle}
+                            className={styles.projectLogo}
+                          />
+                        </div>
+                        <div className={styles.titleArea}>
+                          <span className={styles.typeBadge}>{project.type}</span>
+                          <h4 className={styles.cardTitle}>{pTitle}</h4>
+                        </div>
+                      </div>
+
+                      <p className={styles.cardDesc}>{pDesc}</p>
+
+                      <div className={styles.cardFooter}>
+                        <div className={styles.downloadStat}>
+                          <FiDownload size={13} />
+                          <span>{project.downloads.toLocaleString()}</span>
+                        </div>
+
+                        <div className={styles.platformsRow}>
+                          {uniquePlatforms.map((link, pIdx) => {
+                            const platformName = PLATFORM_NAMES[link.platform] || link.platform;
+                            return (
+                              <span key={pIdx} className={styles.platformIcon} title={platformName}>
+                                {getPlatformIcon(link.platform, 14)}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+          </div>
+        )}
+      </div>
 
       {/* Project Detail Modal */}
       {selectedProject && (() => {

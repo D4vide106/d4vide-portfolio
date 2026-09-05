@@ -10,6 +10,7 @@
   overflow: visible;
   user-select: none;
   padding: 1.5rem 0;
+  touch-action: pan-y;
 }
 
 /* 2D Constellation Ring Stage */
@@ -20,6 +21,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  touch-action: pan-y;
 }
 
 .ringCenterEmblem {
