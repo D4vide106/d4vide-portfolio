@@ -285,7 +285,7 @@ export default function DraggableTerminal({ inlineMode = false }: { inlineMode?:
               <a href="https://youtube.com/@d4vide106" target="_blank" rel="noreferrer" style={{ color: "#ff453a", textDecoration: "none" }}><SiYoutube style={{ verticalAlign: "middle", marginRight: 4 }} /> YouTube (@d4vide106)</a>
               <a href="https://instagram.com/d4vide106" target="_blank" rel="noreferrer" style={{ color: "#e1306c", textDecoration: "none" }}><SiInstagram style={{ verticalAlign: "middle", marginRight: 4 }} /> Instagram (@d4vide106)</a>
               <a href="https://tiktok.com/@d4vide106" target="_blank" rel="noreferrer" style={{ color: "#00f2fe", textDecoration: "none" }}><SiTiktok style={{ verticalAlign: "middle", marginRight: 4 }} /> TikTok (@d4vide106)</a>
-              <a href="https://discord.gg/7T3u9a9" target="_blank" rel="noreferrer" style={{ color: "#5865f2", textDecoration: "none" }}><SiDiscord style={{ verticalAlign: "middle", marginRight: 4 }} /> Discord (@d4vide106)</a>
+              <a href="https://discord.gg/f8kP4WsVSW" target="_blank" rel="noreferrer" style={{ color: "#5865f2", textDecoration: "none" }}><SiDiscord style={{ verticalAlign: "middle", marginRight: 4 }} /> Discord (@d4vide106)</a>
               <a href="https://github.com/D4vide106" target="_blank" rel="noreferrer" style={{ color: "#ffffff", textDecoration: "none" }}><SiGithub style={{ verticalAlign: "middle", marginRight: 4 }} /> GitHub (@D4vide106)</a>
             </div>
           )

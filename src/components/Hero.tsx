@@ -35,7 +35,7 @@ const SOCIAL_LINKS = [
   { name: "YouTube", handle: "@d4vide106", url: "https://youtube.com/@d4vide106", icon: SiYoutube, color: "#ff453a" },
   { name: "Instagram", handle: "@d4vide106", url: "https://instagram.com/d4vide106", icon: SiInstagram, color: "#e1306c" },
   { name: "TikTok", handle: "@d4vide106", url: "https://tiktok.com/@d4vide106", icon: SiTiktok, color: "#00f2fe" },
-  { name: "Discord", handle: "@d4vide106", url: "https://discord.gg/7T3u9a9", icon: SiDiscord, color: "#5865f2" },
+  { name: "Discord", handle: "@d4vide106", url: "https://discord.gg/f8kP4WsVSW", icon: SiDiscord, color: "#5865f2" },
   { name: "Itch.io", handle: "@d4vide106", url: "https://d4vide106.itch.io", icon: SiItchdotio, color: "#fa5c5c" },
   { name: "GameJolt", handle: "@D4vide106", url: "https://gamejolt.com/@D4vide106", icon: SiGamejolt, color: "#2fcc71" },
   { name: "GitHub", handle: "@D4vide106", url: "https://github.com/D4vide106", icon: SiGithub, color: "#ffffff" },
@@ -112,13 +112,16 @@ export default function Hero({ dict: propDict, aboutDict: propAboutDict }: { dic
               <span className={styles.pyramidRole}>{dict.systemRole || "System Designer & Minecraft Mod Creator"}</span>
             </div>
 
-            <p className={styles.pyramidBioText}>
-              {aboutDict?.aboutDesc1 || "I am a Minecraft mod developer and content creator pushing the boundaries of procedural worlds, custom boss progression, RPG mechanics, and world generation."}
-              <br />
-              {aboutDict?.aboutDesc2 || "Passionate about building deep RPG experiences, intricate structures, and custom tools for creators worldwide."}
-            </p>
+            <div className={styles.pyramidBioText}>
+              <p className={styles.bioParagraph}>
+                {aboutDict?.aboutDesc1}
+              </p>
+              <p className={styles.bioParagraph}>
+                {aboutDict?.aboutDesc2}
+              </p>
+            </div>
 
-            {/* Inline Cross-Fading Fixed-Width Social Buttons (Zero Jitter, Zero Tooltips) */}
+            {/* Redesigned Sleek Dynamic Social Capsule Bar */}
             <div className={styles.socialHorizontalRow}>
               {SOCIAL_LINKS.map((soc) => {
                 const IconComp = soc.icon;
@@ -129,13 +132,13 @@ export default function Hero({ dict: propDict, aboutDict: propAboutDict }: { dic
                     target="_blank"
                     rel="noreferrer"
                     className={styles.socialPillBtn}
-                    style={{ "--hover-color": soc.color } as React.CSSProperties}
+                    style={{ "--brand-color": soc.color } as React.CSSProperties}
                   >
-                    <IconComp className={styles.socIcon} />
-                    <div className={styles.textContainer}>
-                      <span className={styles.socNameDefault}>{soc.name}</span>
-                      <span className={styles.socHandleHover}>{soc.handle}</span>
-                    </div>
+                    <span className={styles.socIconWrap}>
+                      <IconComp className={styles.socIcon} />
+                    </span>
+                    <span className={styles.socName}>{soc.name}</span>
+                    <FiArrowUpRight className={styles.socArrow} />
                   </a>
                 );
               })}

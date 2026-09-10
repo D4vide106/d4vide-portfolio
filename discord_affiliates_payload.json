@@ -1,0 +1,239 @@
+{
+  "flags": 32768,
+  "components": [
+    {
+      "type": 17,
+      "accent_color": 16752394,
+      "spoiler": false,
+      "components": [
+        {
+          "type": 9,
+          "accessory": {
+            "type": 11,
+            "media": {
+              "url": "https://cdn.discordapp.com/avatars/768071128999788555/f622e4ed7e91f9ea6dd476c42ff225fb.png?size=256"
+            },
+            "description": "D4vide106"
+          },
+          "components": [
+            {
+              "type": 10,
+              "content": "# 💎 Official Partners & Supporter Role\nSupport all my free mods, datapacks, and community projects at zero extra cost with guaranteed partner discounts!\n\n🎁 **Made a purchase?** Open a ticket in <#849652564994687048> with your receipt to claim your **Exclusive Supporter Role** and unlock VIP channels!"
+            }
+          ]
+        },
+        {
+          "type": 1,
+          "components": [
+            {
+              "type": 2,
+              "style": 5,
+              "label": "Open Ticket",
+              "emoji": {
+                "name": "🎫"
+              },
+              "url": "https://discord.com/channels/849652563803504700/849652564994687048"
+            },
+            {
+              "type": 2,
+              "style": 5,
+              "label": "Discord Server",
+              "emoji": {
+                "name": "🌐"
+              },
+              "url": "https://discord.gg/f8kP4WsVSW"
+            }
+          ]
+        },
+        {
+          "type": 14,
+          "divider": true,
+          "spacing": 1
+        },
+        {
+          "type": 9,
+          "accessory": {
+            "type": 11,
+            "media": {
+              "url": "https://images.opencollective.com/bisecthosting/e1e19d7/logo/256.png"
+            },
+            "description": "BisectHosting"
+          },
+          "components": [
+            {
+              "type": 10,
+              "content": "### 🛡️ **BisectHosting** · 24/7 Game & Minecraft Servers\nHigh-performance server hosting with 1-click modpack install, 24/7/365 live support, and automated DDoS protection.\n-# 🏷️ Use promo code **Projects** at checkout for **25% off** your first month!"
+            }
+          ]
+        },
+        {
+          "type": 1,
+          "components": [
+            {
+              "type": 2,
+              "style": 5,
+              "label": "BisectHosting",
+              "emoji": {
+                "name": "🛡️"
+              },
+              "url": "https://www.bisecthosting.com/Projects?r=LINKTREE"
+            }
+          ]
+        },
+        {
+          "type": 14,
+          "divider": true,
+          "spacing": 1
+        },
+        {
+          "type": 9,
+          "accessory": {
+            "type": 11,
+            "media": {
+              "url": "https://play-lh.googleusercontent.com/jcS7jtmoIDrszCNBZOoNDnO8J45SFhnJ5fj4c-410D4NZQ5AVr6bXlvC0_nnUODeuhiG6Po_QHykb1B5vNSk=s256"
+            },
+            "description": "Instant Gaming"
+          },
+          "components": [
+            {
+              "type": 10,
+              "content": "### ⚡ **Instant Gaming** · PC & Console Games\nTop game keys for Steam, PC, PlayStation, Xbox, and Nintendo discounted up to **-70%**.\n-# ⚡ 100% official, verified game keys with instant 24/7 digital delivery."
+            }
+          ]
+        },
+        {
+          "type": 1,
+          "components": [
+            {
+              "type": 2,
+              "style": 5,
+              "label": "Instant Gaming",
+              "emoji": {
+                "name": "⚡"
+              },
+              "url": "https://www.instant-gaming.com/it/?igr=D4vide106"
+            }
+          ]
+        },
+        {
+          "type": 14,
+          "divider": true,
+          "spacing": 1
+        },
+        {
+          "type": 9,
+          "accessory": {
+            "type": 11,
+            "media": {
+              "url": "https://play-lh.googleusercontent.com/UIYZ9hTFNg-zZUg_uzLS9YdyDpvoo1VHNFb6VlzHy5JqNMq9Uq-p2S1VPwzXCipHTFacfGKhJkyAuKL19VVlcWA=s256"
+            },
+            "description": "Amazon"
+          },
+          "components": [
+            {
+              "type": 10,
+              "content": "### 🛒 **Amazon Store** · Hardware, Setup & Gear\nUpgrading your PC setup, peripherals, or shopping daily essentials? Buying via these links supports my projects at zero extra cost!\n-# 🛒 Valid on any item purchased after clicking the links."
+            }
+          ]
+        },
+        {
+          "type": 1,
+          "components": [
+            {
+              "type": 2,
+              "style": 5,
+              "label": "Amazon.it",
+              "emoji": {
+                "name": "🇮🇹"
+              },
+              "url": "https://www.amazon.it/?tag=projectsdav-21"
+            },
+            {
+              "type": 2,
+              "style": 5,
+              "label": "Amazon.com",
+              "emoji": {
+                "name": "🌐"
+              },
+              "url": "https://www.amazon.com/?tag=projectsdaven-20"
+            }
+          ]
+        },
+        {
+          "type": 14,
+          "divider": true,
+          "spacing": 1
+        },
+        {
+          "type": 9,
+          "accessory": {
+            "type": 11,
+            "media": {
+              "url": "https://play-lh.googleusercontent.com/b1wfMa1lPkKcTqxOM3hB2ZgykgXKcQyHn74XJ3WZv1u-wbQ4F79xZ9rmoSTMEAfLxvDgtqJlnGqGWILWFWP-Pw=s256"
+            },
+            "description": "G2A"
+          },
+          "components": [
+            {
+              "type": 10,
+              "content": "### 🎮 **G2A Marketplace** · Gift Cards, Passes & Keys\nGlobal digital marketplace for Xbox Game Pass, PlayStation Plus, subscriptions, gift cards, and software.\n-# 🎮 Lowest prices with buyer protection and instant delivery."
+            }
+          ]
+        },
+        {
+          "type": 1,
+          "components": [
+            {
+              "type": 2,
+              "style": 5,
+              "label": "G2A",
+              "emoji": {
+                "name": "🎮"
+              },
+              "url": "https://www.g2a.com/n/d4vide106?gtag=48998ec5f1"
+            }
+          ]
+        },
+        {
+          "type": 14,
+          "divider": true,
+          "spacing": 1
+        },
+        {
+          "type": 9,
+          "accessory": {
+            "type": 11,
+            "media": {
+              "url": "https://play-lh.googleusercontent.com/OsXruAaZUhCAfzOClljZ00sS7U1TZ25V_y_PfWfxTBjlNRPByVlyPccYA3zeJ-Qgb_F3gtHiQg3lB0Vqua7b=s256"
+            },
+            "description": "Fiverr"
+          },
+          "components": [
+            {
+              "type": 10,
+              "content": "### ⭐ **Fiverr** · Custom Datapacks, Mods & Scripts\nLooking for a tailor-made Minecraft datapack, configured modpack, or dedicated server scripting?\n-# ⭐ Verified 5-star commission service with fast delivery and dedicated support."
+            }
+          ]
+        },
+        {
+          "type": 1,
+          "components": [
+            {
+              "type": 2,
+              "style": 5,
+              "label": "Fiverr",
+              "emoji": {
+                "name": "⭐"
+              },
+              "url": "https://www.fiverr.com/d4vide106"
+            }
+          ]
+        },
+        {
+          "type": 10,
+          "content": "-# ❤️ *Thank you for supporting all my projects! Remember to open a ticket in <#849652564994687048> with your receipt to claim your role.*"
+        }
+      ]
+    }
+  ]
+}

@@ -6,7 +6,8 @@
     "about": "ABOUT",
     "media": "MEDIA",
     "contact": "CONTACT",
-    "community": "Community"
+    "community": "Community",
+    "affiliates": "PARTNERS"
   },
   "languages": {
     "it": "Italian",
@@ -38,9 +39,9 @@
       "age": "Age",
       "gender": "Gender"
     },
-    "aboutDesc1": "I am many things, but of those most likely relevant to you - a Minecraft mod developer and content creator.",
-    "aboutDesc2": "I have a particular passion for creating immersive RPG experiences, structures, and tools. Most of my experience involves pushing the boundaries of what is possible within the game.",
-    "aboutDesc3": "These days you can find me tending to my Discord server, where I chat about all things human, as well as announce new developments in my projects. You can also check out my videos on my YouTube channel where I occasionally post updates and gameplay!"
+    "aboutDesc1": "Developer, software creator, and modder driven by an endless passion for code and innovation. I've built dozens of projects enjoyed by over 100,000+ players worldwide, continuously pushing game engines beyond their limits.",
+    "aboutDesc2": "I love designing deep RPG experiences, procedural structures, and above all, helping fellow creators and developers with custom tools, resources, and community support.",
+    "aboutDesc3": "Whether engineering custom mechanics or helping out fellow creators, my goal is always to build extraordinary things and share them with the world."
   },
   "projects": {
     "title": "My",
@@ -129,7 +130,16 @@
   },
   "stats": {
     "liveStatsHeader": "LIVE STATS & METRICS",
-    "downloadsByPlatform": "DOWNLOADS BY PLATFORM"
+    "downloadsByPlatform": "DOWNLOADS BY PLATFORM",
+    "certificateBadge": "CERTIFICATE",
+    "certificateTier": "CURSEFORGE LEGENDS · FORGEBORN",
+    "certificateSubtitle": "Official 100,000 Downloads Milestone",
+    "viewCertificate": "VIEW CERTIFICATE",
+    "clickToView": "Click to view full certificate",
+    "officialMilestone": "VERIFIED 100,000 DOWNLOADS MILESTONE",
+    "awardDetails": "In recognition of reaching 100,000 downloads, you have earned your place in the CurseForge Legends Forgeborn tier.",
+    "awardedBy": "Awarded by Alon Rabinovitz & Dror Haberman (CurseForge)",
+    "verifiedProtection": "PROTECTED // OFFICIAL PROPERTY OF D4VIDE106"
   },
   "youtube": {
     "latestBroadcast": "LATEST BROADCAST"
@@ -148,5 +158,52 @@
     "detectedRu": "Language set to Russian (detected from browser)",
     "detectedPt": "Language set to Portuguese (detected from browser)",
     "fallback": "Language defaulted to English (browser language not supported)"
+  },
+  "affiliates": {
+    "sectionTag": "OFFICIAL PARTNERS & SERVICES",
+    "title": "Support My Projects &",
+    "titleHighlight": "Exclusive Deals",
+    "description": "Buy games, Minecraft servers, tech gear, or order custom commissions using my official partner links. Get the best deals while supporting my free modding work at zero extra cost!",
+    "instantGaming": {
+      "name": "Instant Gaming",
+      "badge": "UP TO 70% OFF",
+      "title": "Game Keys & Subscriptions",
+      "desc": "All your PC, Steam, PlayStation, Xbox, and Nintendo games at the lowest prices with instant 24/7 digital delivery.",
+      "cta": "Explore Deals"
+    },
+    "bisect": {
+      "name": "BisectHosting",
+      "badge": "25% OFF · CODE: PROJECTS",
+      "title": "24/7 Game Servers (25% OFF)",
+      "desc": "Ultra-fast servers with 24/7/365 support, 1-click modpack installs, and DDoS protection. Use promo code Projects at checkout to save 25% on your server!",
+      "cta": "Claim 25% OFF & Rent Server",
+      "promoLabel": "PROMO CODE",
+      "promoCode": "Projects",
+      "copyCode": "Copy Code",
+      "codeCopied": "Copied!"
+    },
+    "g2a": {
+      "name": "G2A Marketplace",
+      "badge": "BEST DIGITAL DEALS",
+      "title": "Gift Cards, Games & Software",
+      "desc": "The world's largest digital gaming marketplace for gift cards, Game Pass, PSN subscriptions, software, and global game keys.",
+      "cta": "Visit G2A"
+    },
+    "amazon": {
+      "name": "Amazon Store",
+      "badge": "FREE SUPPORT",
+      "title": "Hardware, Gear & Tech Setup",
+      "desc": "Any purchase you make on Amazon through these links directly supports the development of my free mods at absolutely zero extra cost to you!",
+      "ctaIt": "Amazon.it",
+      "ctaGlobal": "Amazon.com"
+    },
+    "fiverr": {
+      "name": "Fiverr Commissions",
+      "badge": "CUSTOM COMMISSIONS",
+      "title": "Datapacks, Mods & Plugins",
+      "desc": "Need a custom datapack for your server, a tailored modpack, or exclusive game mechanics? Commission top-tier 5-star work directly from me.",
+      "cta": "Order a Commission"
+    },
+    "disclosure": "By purchasing through these affiliate links or commissioning custom work, you directly support the continuous development and updates of all my free mods and datapacks for the community, at no extra cost to you. Thank you for your support! ❤️"
   }
 }

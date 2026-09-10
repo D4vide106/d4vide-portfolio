@@ -6,7 +6,8 @@
     "about": "SOBRE MIM",
     "media": "MÍDIA",
     "contact": "CONTATO",
-    "community": "Comunidade"
+    "community": "Comunidade",
+    "affiliates": "PARCEIROS"
   },
   "languages": {
     "it": "Italiano",
@@ -38,9 +39,9 @@
       "age": "Idade",
       "gender": "Gênero"
     },
-    "aboutDesc1": "Sou desenvolvedor de mods para Minecraft e criador de conteúdo focado em mundos procedurais e mecânicas de RPG.",
-    "aboutDesc2": "Tenho paixão por criar experiências de RPG profundas, estruturas complexas e ferramentas personalizadas.",
-    "aboutDesc3": "Junte-se ao meu servidor do Discord ou confira meu canal no YouTube para ver atualizações e gameplays!"
+    "aboutDesc1": "Desenvolvedor, criador de software e modder com uma paixão incansável por código e inovação. Criei dezenas de projetos jogados por mais de 100.000 pessoas em todo o mundo, superando constantemente os limites do jogo.",
+    "aboutDesc2": "Adoro criar experiências RPG imersivas, estruturas procedurais complexas e, acima de tudo, ajudar outros criadores e desenvolvedores com ferramentas dedicadas, recursos e apoio comunitário.",
+    "aboutDesc3": "Seja projetando mecânicas inovadoras ou ajudando quem está começando, meu objetivo é sempre construir algo extraordinário e compartilhá-lo com todos."
   },
   "projects": {
     "title": "Meus",
@@ -129,7 +130,16 @@
   },
   "stats": {
     "liveStatsHeader": "ESTATÍSTICAS E MÉTRICAS EM TEMPO REAL",
-    "downloadsByPlatform": "DOWNLOADS POR PLATAFORMA"
+    "downloadsByPlatform": "DOWNLOADS POR PLATAFORMA",
+    "certificateBadge": "CERTIFICADO",
+    "certificateTier": "CURSEFORGE LEGENDS · FORGEBORN",
+    "certificateSubtitle": "Marco oficial de 100.000 downloads",
+    "viewCertificate": "VER CERTIFICADO",
+    "clickToView": "Clique para ampliar",
+    "officialMilestone": "MARCO DE 100.000 DOWNLOADS VERIFICADO",
+    "awardDetails": "Em reconhecimento pelo alcance de 100.000 downloads, você conquistou seu lugar no nível Forgeborn do CurseForge Legends.",
+    "awardedBy": "Concedido por Alon Rabinovitz & Dror Haberman (CurseForge)",
+    "verifiedProtection": "PROTEGIDO // PROPRIEDADE OFICIAL DE D4VIDE106"
   },
   "youtube": {
     "latestBroadcast": "ÚLTIMO VÍDEO"
@@ -148,5 +158,52 @@
     "detectedRu": "Idioma definido para Russo",
     "detectedPt": "Idioma definido para Português (detectado do navegador)",
     "fallback": "Idioma padrão definido para Inglês"
+  },
+  "affiliates": {
+    "sectionTag": "PARCEIROS OFICIAIS & SERVIÇOS",
+    "title": "Apoie os meus projetos &",
+    "titleHighlight": "Ofertas Exclusivas",
+    "description": "Compre jogos, servidores de Minecraft, equipamentos ou encomende comissões personalizadas com meus links oficiais. Garanta os melhores preços e apoie meu trabalho gratuito sem gastar nada a mais!",
+    "instantGaming": {
+      "name": "Instant Gaming",
+      "badge": "ATÉ -70% DE DESCONTO",
+      "title": "Chaves de Jogos & Assinaturas",
+      "desc": "Todos os seus jogos para PC, Steam, PlayStation, Xbox e Nintendo com os menores preços e entrega digital imediata 24/7.",
+      "cta": "Ver Ofertas"
+    },
+    "bisect": {
+      "name": "BisectHosting",
+      "badge": "25% OFF · CÓDIGO: PROJECTS",
+      "title": "Hospedagem de Servidores (25% OFF)",
+      "desc": "Servidores ultrarrápidos com suporte 24/7, modpacks com 1 clique e proteção DDoS. Use o código Projects no checkout para economizar 25%!",
+      "cta": "Ativar 25% OFF & Criar Servidor",
+      "promoLabel": "CÓDIGO PROMO",
+      "promoCode": "Projects",
+      "copyCode": "Copiar Código",
+      "codeCopied": "Copiado!"
+    },
+    "g2a": {
+      "name": "G2A Marketplace",
+      "badge": "MELHORES PREÇOS DIGITAIS",
+      "title": "Gift Cards, Jogos & Software",
+      "desc": "O maior marketplace digital de gift cards, assinaturas Game Pass, PSN, chaves de software e jogos globais.",
+      "cta": "Visitar G2A"
+    },
+    "amazon": {
+      "name": "Amazon Store",
+      "badge": "APOIO A CUSTO ZERO",
+      "title": "Hardware, Periféricos & Setup",
+      "desc": "Qualquer compra feita na Amazon através destes links apoia diretamente o desenvolvimento dos meus mods sem qualquer custo extra para você!",
+      "ctaIt": "Amazon.it",
+      "ctaGlobal": "Amazon.com"
+    },
+    "fiverr": {
+      "name": "Fiverr Commissions",
+      "badge": "COMISSÕES SOB MEDIDA",
+      "title": "Datapacks, Mods & Plugins",
+      "desc": "Precisa de um datapack exclusivo, um modpack personalizado ou mecânicas customizadas? Encomende um trabalho profissional com avaliação 5 estrelas.",
+      "cta": "Solicitar Serviço"
+    },
+    "disclosure": "Ao comprar através destes links de afiliados ou encomendar um serviço, você apoia diretamente o desenvolvimento contínuo de todos os meus mods e datapacks gratuitos para a comunidade, sem custo adicional para você. Muito obrigado pelo apoio! ❤️"
   }
 }

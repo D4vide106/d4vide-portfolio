@@ -146,6 +146,11 @@ export default function TopBar({ dict: propDict }: { dict?: any; currentLang?: s
               </a>
             </li>
             <li>
+              <a href="#affiliates" className={styles.menuLink} onClick={(e) => handleNavClick(e, "affiliates")}>
+                {dict.affiliates || "PARTNER"}
+              </a>
+            </li>
+            <li>
               <a href="#contact" className={styles.menuLink} onClick={(e) => handleNavClick(e, "contact")}>
                 {dict.contact || "CONTATTI"}
               </a>
@@ -156,7 +161,7 @@ export default function TopBar({ dict: propDict }: { dict?: any; currentLang?: s
         {/* Right: Discord Quick CTA, Language Switcher Dropdown & Mobile Toggle */}
         <div className={styles.actions}>
           <a
-            href="https://discord.gg/7T3u9a9"
+            href="https://discord.gg/f8kP4WsVSW"
             target="_blank"
             rel="noreferrer"
             className={styles.discordIconBtn}
@@ -239,6 +244,9 @@ export default function TopBar({ dict: propDict }: { dict?: any; currentLang?: s
             <a href="#youtube" className={styles.mobileNavLink} onClick={(e) => handleNavClick(e, "youtube")}>
               {dict.media || "MEDIA"}
             </a>
+            <a href="#affiliates" className={styles.mobileNavLink} onClick={(e) => handleNavClick(e, "affiliates")}>
+              {dict.affiliates || "PARTNER"}
+            </a>
             <a href="#contact" className={styles.mobileNavLink} onClick={(e) => handleNavClick(e, "contact")}>
               {dict.contact || "CONTATTI"}
             </a>
@@ -246,7 +254,7 @@ export default function TopBar({ dict: propDict }: { dict?: any; currentLang?: s
 
           <div className={styles.mobileActionsRow}>
             <a
-              href="https://discord.gg/7T3u9a9"
+              href="https://discord.gg/f8kP4WsVSW"
               target="_blank"
               rel="noreferrer"
               className={styles.mobileDiscordBtn}

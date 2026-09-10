@@ -6,7 +6,8 @@
     "about": "概要",
     "media": "メディア",
     "contact": "連絡先",
-    "community": "コミュニティ"
+    "community": "コミュニティ",
+    "affiliates": "パートナー"
   },
   "languages": {
     "it": "イタリア語",
@@ -38,9 +39,9 @@
       "age": "年齢",
       "gender": "性別"
     },
-    "aboutDesc1": "マインクラフトのMod開発者であり、プロシージャルワールドやカスタムRPG要素を追求するコンテンツクリエイターです。",
-    "aboutDesc2": "没入感のあるRPG体験、複雑な建築物、クリエイター向けのカスタムツール制作に情熱を注いでいます。",
-    "aboutDesc3": "DiscordサーバーやYouTubeチャンネルで最新アップデートやゲームプレイを公開しています！"
+    "aboutDesc1": "コードと革新への飽くなき情熱を持つ開発者・ソフトウェアクリエイター・モッダー。世界中で10万人以上のプレイヤーに親しまれる多数のプロジェクトを生み出し、常にエンジンの限界を押し広げています。",
+    "aboutDesc2": "重厚なRPG体験やプロシージャル構造の構築を追求するとともに、専用ツールやリソース、コミュニティ支援を通じて他のクリエイターや開発者を支援することに情熱を注いでいます。",
+    "aboutDesc3": "新しいメカニクスの設計であれ初心者へのサポートであれ、私の使命は常に最高の体験を創り出し、共有することです。"
   },
   "projects": {
     "title": "マイ",
@@ -129,7 +130,16 @@
   },
   "stats": {
     "liveStatsHeader": "ライブ統計＆メトリクス",
-    "downloadsByPlatform": "プラットフォーム別ダウンロード数"
+    "downloadsByPlatform": "プラットフォーム別ダウンロード数",
+    "certificateBadge": "認定証",
+    "certificateTier": "CURSEFORGE LEGENDS · FORGEBORN",
+    "certificateSubtitle": "公式100,000ダウンロード達成記念",
+    "viewCertificate": "認定証を表示",
+    "clickToView": "クリックして拡大表示",
+    "officialMilestone": "認定 100,000 ダウンロード達成",
+    "awardDetails": "100,000ダウンロード達成を称え、CurseForge Legends Forgebornティアへの認定を授与します。",
+    "awardedBy": "授与: Alon Rabinovitz & Dror Haberman (CurseForge)",
+    "verifiedProtection": "保護済み // D4VIDE106 公式所有"
   },
   "youtube": {
     "latestBroadcast": "最新動画"
@@ -148,5 +158,52 @@
     "detectedRu": "言語がロシア語に設定されました",
     "detectedPt": "言語がポルトガル語に設定されました",
     "fallback": "サポートされていない言語のため英語がデフォルト設定されました"
+  },
+  "affiliates": {
+    "sectionTag": "公式パートナー＆サービス",
+    "title": "プロジェクトの支援＆",
+    "titleHighlight": "限定お得情報",
+    "description": "公式パートナーリンクからゲーム、Minecraftサーバー、テック製品の購入や、特注オーダーが可能です。追加費用なしで無料MODの開発を直接サポートできます！",
+    "instantGaming": {
+      "name": "Instant Gaming",
+      "badge": "最大70%オフ",
+      "title": "ゲームキー＆サブスクリプション",
+      "desc": "PC、Steam、PlayStation、Xbox、Nintendoのすべてのゲームを、24時間365日の即時デジタル配信で最安値でお届けします。",
+      "cta": "セールを見る"
+    },
+    "bisect": {
+      "name": "BisectHosting",
+      "badge": "25%割引 · クーポン: PROJECTS",
+      "title": "高性能ゲームサーバー (25% OFF)",
+      "desc": "24時間年中無休サポート、1クリックMODパック導入、DDoS対策完備。購入時にプロモコード Projects を入力すると25%OFF！",
+      "cta": "25%OFFでサーバーを開設",
+      "promoLabel": "プロモコード",
+      "promoCode": "Projects",
+      "copyCode": "コードをコピー",
+      "codeCopied": "コピー完了!"
+    },
+    "g2a": {
+      "name": "G2A Marketplace",
+      "badge": "お得なデジタル価格",
+      "title": "ギフトカード、ゲーム＆ソフト",
+      "desc": "ギフトカード、Game Pass、PSNサブスクリプション、ソフトウェア、各種ゲームキーが揃う世界最大級のデジタルマーケットプレイス。",
+      "cta": "G2Aを見る"
+    },
+    "amazon": {
+      "name": "Amazon ストア",
+      "badge": "追加費用ゼロで支援",
+      "title": "ハードウェア・周辺機器＆機材",
+      "desc": "こちらのリンク経由でAmazonでお買い物をすると、追加負担ゼロで私の無料MOD制作を直接支援できます！",
+      "ctaIt": "Amazon.it",
+      "ctaGlobal": "Amazon.com"
+    },
+    "fiverr": {
+      "name": "Fiverr オーダー",
+      "badge": "特注コミッション",
+      "title": "データパック・MOD・プラグイン",
+      "desc": "カスタムデータパック、サーバー用MODパック、専用スクリプトが必要ですか？星5つ評価のプロフェッショナルな制作をご依頼いただけます。",
+      "cta": "制作を依頼する"
+    },
+    "disclosure": "アフィリエイトリンクからのご購入やカスタム制作のご依頼は、コミュニティ向け無料MODやデータパックの開発と継続的な更新を直接支援します。皆様の温かいご支援に心より感謝申し上げます！❤️"
   }
 }

@@ -608,7 +608,7 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
           <div className={styles.headerUtilityPill}>
             {/* Discord */}
             <a
-              href="https://discord.gg/7T3u9a9"
+              href="https://discord.gg/f8kP4WsVSW"
               target="_blank"
               rel="noreferrer"
               className={`${styles.utilPillBtn} ${styles.utilDiscordBtn}`}
@@ -1202,7 +1202,7 @@ export default function WikiSection({ dict: propDict, standalone }: { dict?: any
 
               <div className={styles.drawerSocialRow}>
                 <a
-                  href="https://discord.gg/7T3u9a9"
+                  href="https://discord.gg/f8kP4WsVSW"
                   target="_blank"
                   rel="noreferrer"
                   className={styles.drawerSocialIcon}

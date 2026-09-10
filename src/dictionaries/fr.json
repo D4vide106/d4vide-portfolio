@@ -6,7 +6,8 @@
     "about": "À PROPOS",
     "media": "MÉDIA",
     "contact": "CONTACT",
-    "community": "Communauté"
+    "community": "Communauté",
+    "affiliates": "PARTENAIRES"
   },
   "languages": {
     "it": "Italien",
@@ -38,9 +39,9 @@
       "age": "Âge",
       "gender": "Genre"
     },
-    "aboutDesc1": "Je suis développeur de mods Minecraft et créateur de contenu passionné par les mondes procéduraux et les systèmes de jeu captivants.",
-    "aboutDesc2": "J'adore concevoir des expériences RPG profondes, des structures complexes et des outils personnalisés pour la communauté.",
-    "aboutDesc3": "Retrouvez-moi sur mon serveur Discord ou sur ma chaîne YouTube où je partage mes mises à jour et gameplays !"
+    "aboutDesc1": "Développeur, créateur de logiciels et moddeur animé par une passion sans limite pour le code et l'innovation. J'ai créé des dizaines de projets joués par plus de 100 000 personnes à travers le monde, repoussant sans cesse les limites du jeu.",
+    "aboutDesc2": "J'adore concevoir des expériences RPG immersives, des structures procédurales et surtout aider les autres créateurs et développeurs avec des outils sur mesure, des ressources et un vrai soutien communautaire.",
+    "aboutDesc3": "Qu'il s'agisse de concevoir de nouvelles mécaniques ou d'accompagner ceux qui débutent, mon but est toujours de bâtir quelque chose d'extraordinaire et de le partager avec tous."
   },
   "projects": {
     "title": "Mes",
@@ -129,7 +130,16 @@
   },
   "stats": {
     "liveStatsHeader": "STATISTIQUES & EN DIRECT",
-    "downloadsByPlatform": "TÉLÉCHARGEMENTS PAR PLATEFORME"
+    "downloadsByPlatform": "TÉLÉCHARGEMENTS PAR PLATEFORME",
+    "certificateBadge": "CERTIFICAT",
+    "certificateTier": "CURSEFORGE LEGENDS · FORGEBORN",
+    "certificateSubtitle": "Étape officielle des 100 000 téléchargements",
+    "viewCertificate": "VOIR LE CERTIFICAT",
+    "clickToView": "Cliquez pour agrandir",
+    "officialMilestone": "ÉTAPE DE 100 000 TÉLÉCHARGEMENTS VÉRIFIÉE",
+    "awardDetails": "En reconnaissance de vos 100 000 téléchargements, vous avez mérité votre place au rang Forgeborn de CurseForge Legends.",
+    "awardedBy": "Décerné par Alon Rabinovitz & Dror Haberman (CurseForge)",
+    "verifiedProtection": "PROTÉGÉ // PROPRIÉTÉ OFFICIELLE DE D4VIDE106"
   },
   "youtube": {
     "latestBroadcast": "DERNIÈRE VIDÉO"
@@ -148,5 +158,52 @@
     "detectedRu": "Langue réglée sur le Russe",
     "detectedPt": "Langue réglée sur le Portugais",
     "fallback": "Langue définie par défaut sur l'Anglais"
+  },
+  "affiliates": {
+    "sectionTag": "PARTENAIRES OFFICIELS & SERVICES",
+    "title": "Soutenez mes projets &",
+    "titleHighlight": "Offres Exclusives",
+    "description": "Achetez des jeux, serveurs Minecraft, matériel informatique ou commandez des créations sur mesure avec mes liens officiels. Profitez des meilleurs prix tout en soutenant mon travail gratuit sans dépenser un centime de plus !",
+    "instantGaming": {
+      "name": "Instant Gaming",
+      "badge": "JUSQU'À -70%",
+      "title": "Clés de Jeux & Abonnements",
+      "desc": "Tous vos jeux vidéo PC, Steam, PlayStation, Xbox et Nintendo au meilleur prix avec livraison numérique instantanée 24/7.",
+      "cta": "Découvrir les Offres"
+    },
+    "bisect": {
+      "name": "BisectHosting",
+      "badge": "-25% RÉDUCTION · CODE: PROJECTS",
+      "title": "Hébergement Serveurs (25% OFF)",
+      "desc": "Serveurs ultra-rapides avec support 24/7, modpacks en 1 clic et protection DDoS. Utilisez le code promo Projects au paiement pour économiser 25% !",
+      "cta": "Profiter de -25% & Créer Serveur",
+      "promoLabel": "CODE PROMO",
+      "promoCode": "Projects",
+      "copyCode": "Copier le Code",
+      "codeCopied": "Copié !"
+    },
+    "g2a": {
+      "name": "G2A Marketplace",
+      "badge": "MEILLEURES OFFRES DIGITALES",
+      "title": "Cartes Cadeaux, Jeux & Logiciels",
+      "desc": "La plus grande plateforme digitale pour les cartes cadeaux, abonnements Game Pass, PSN, clés de logiciels et jeux mondiaux.",
+      "cta": "Visiter G2A"
+    },
+    "amazon": {
+      "name": "Boutique Amazon",
+      "badge": "SOUTIEN GRATUIT",
+      "title": "Hardware, Périphériques & Setup",
+      "desc": "Tout achat effectué sur Amazon via ces liens soutient directement le développement de mes mods gratuits sans aucun surcoût pour vous !",
+      "ctaIt": "Amazon.it",
+      "ctaGlobal": "Amazon.com"
+    },
+    "fiverr": {
+      "name": "Fiverr Commissions",
+      "badge": "COMMISSIONS SUR MESURE",
+      "title": "Datapacks, Mods & Plugins",
+      "desc": "Besoin d'un datapack sur mesure, d'un modpack dédié pour votre serveur ou d'un script personnalisé ? Commandez un travail professionnel noté 5 étoiles.",
+      "cta": "Commander un Projet"
+    },
+    "disclosure": "En achetant via ces liens d'affiliation ou en commandant un projet, vous soutenez directement le développement continu de tous mes mods et datapacks gratuits pour la communauté, sans aucun coût supplémentaire. Un immense merci pour votre soutien ! ❤️"
   }
 }

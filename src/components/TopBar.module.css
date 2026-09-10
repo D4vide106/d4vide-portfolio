@@ -452,13 +452,13 @@
     font-size: 0.95rem;
   }
   .menuLink {
-    padding: 0.35rem 0.8rem;
-    font-size: 0.7rem;
+    padding: 0.35rem 0.65rem;
+    font-size: 0.68rem;
   }
 }
 
-/* Mobile Devices (<= 768px: iPhone, Samsung Galaxy, portrait tablets) */
-@media (max-width: 768px) {
+/* Mobile & Small Tablet Devices (<= 860px) */
+@media (max-width: 860px) {
   .topBar {
     top: calc(0.5rem + env(safe-area-inset-top, 0px));
     width: calc(100% - 1.2rem);

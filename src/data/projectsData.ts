@@ -33,7 +33,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     type: "Modpack",
     category: "minecraft",
     tags: ["Modpack", "RPG", "Bosses", "Quests", "1.20.1", "Forge"],
-    downloads: 45510,
+    downloads: 47705,
     updated: "2025-06-12",
     links: [
       {
@@ -41,14 +41,14 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
         url: "https://www.curseforge.com/minecraft/modpacks/project-boss-rpg",
         platform: "curseforge",
         cfPath: "minecraft/modpacks/project-boss-rpg",
-        initialDownloads: 33454
+        initialDownloads: 33934
       },
       {
         label: "Modrinth (Modpack)",
         url: "https://modrinth.com/modpack/project-boss-rpg",
         platform: "modrinth",
         mrId: "6qXHHAYn",
-        initialDownloads: 12056
+        initialDownloads: 13771
       }
     ]
   },
@@ -61,7 +61,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     type: "Mod / Datapack / Addon",
     category: "minecraft",
     tags: ["Mod", "Datapack", "Bedrock Addon", "Java & Bedrock", "Dungeon", "Adventure", "Structures"],
-    downloads: 33148,
+    downloads: 33501,
     updated: "2026-07-18",
     links: [
       {
@@ -69,28 +69,28 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
         url: "https://www.curseforge.com/minecraft/mc-mods/sdob",
         platform: "curseforge",
         cfPath: "minecraft/mc-mods/sdob",
-        initialDownloads: 20562
+        initialDownloads: 22380
       },
       {
         label: "CurseForge (Datapack)",
         url: "https://www.curseforge.com/minecraft/texture-packs/spiral-dungeon-of-babel-sdob-datapack",
         platform: "curseforge",
         cfPath: "minecraft/texture-packs/spiral-dungeon-of-babel-sdob-datapack",
-        initialDownloads: 167
+        initialDownloads: 186
       },
       {
         label: "CurseForge (Bedrock Addon)",
         url: "https://www.curseforge.com/minecraft-bedrock/addons/spiral-dungeon-of-babel-sdob-bedrock",
         platform: "curseforge",
         cfPath: "minecraft-bedrock/addons/spiral-dungeon-of-babel-sdob-bedrock",
-        initialDownloads: 135
+        initialDownloads: 194
       },
       {
         label: "Modrinth (Mod)",
         url: "https://modrinth.com/mod/sdob",
         platform: "modrinth",
         mrId: "sdob",
-        initialDownloads: 11849
+        initialDownloads: 10306
       },
       {
         label: "GameJolt",
@@ -115,7 +115,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     type: "Mod / Datapack / Addon",
     category: "minecraft",
     tags: ["Mod", "Datapack", "Bedrock Addon", "Resourcepack", "Java & Bedrock", "Structures", "World Gen"],
-    downloads: 24750,
+    downloads: 56175,
     updated: "2026-07-17",
     links: [
       {
@@ -123,35 +123,35 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
         url: "https://www.curseforge.com/minecraft/mc-mods/structural-beyond",
         platform: "curseforge",
         cfPath: "minecraft/mc-mods/structural-beyond",
-        initialDownloads: 16180
+        initialDownloads: 40034
       },
       {
         label: "CurseForge (Datapack)",
         url: "https://www.curseforge.com/minecraft/data-packs/structural-beyond-sbd",
         platform: "curseforge",
         cfPath: "minecraft/data-packs/structural-beyond-sbd",
-        initialDownloads: 1159
+        initialDownloads: 1542
       },
       {
         label: "CurseForge (Resourcepack)",
         url: "https://www.curseforge.com/minecraft/texture-packs/structural-beyond-sbrd",
         platform: "curseforge",
         cfPath: "minecraft/texture-packs/structural-beyond-sbrd",
-        initialDownloads: 490
+        initialDownloads: 659
       },
       {
         label: "CurseForge (Bedrock Addon)",
         url: "https://www.curseforge.com/minecraft-bedrock/addons/structural-beyond-sb-bedrock",
         platform: "curseforge",
         cfPath: "minecraft-bedrock/addons/structural-beyond-sb-bedrock",
-        initialDownloads: 389
+        initialDownloads: 775
       },
       {
         label: "Modrinth (Mod)",
         url: "https://modrinth.com/mod/structural-beyond",
         platform: "modrinth",
         mrId: "structural-beyond",
-        initialDownloads: 6363
+        initialDownloads: 12535
       },
       {
         label: "GameJolt",
@@ -176,7 +176,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     type: "Modpack",
     category: "minecraft",
     tags: ["Modpack", "Horror", "Survival", "Entities", "Atmosphere", "Forge"],
-    downloads: 4911,
+    downloads: 4994,
     updated: "2023-11-11",
     links: [
       {
@@ -184,7 +184,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
         url: "https://www.curseforge.com/minecraft/modpacks/project-horror",
         platform: "curseforge",
         cfPath: "minecraft/modpacks/project-horror",
-        initialDownloads: 4911
+        initialDownloads: 4994
       }
     ]
   },
@@ -197,7 +197,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     type: "Modpack",
     category: "minecraft",
     tags: ["Modpack", "RPG", "Magic", "Dungeons", "Leveling", "Forge"],
-    downloads: 178,
+    downloads: 188,
     updated: "2024-11-21",
     links: [
       {
@@ -205,7 +205,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
         url: "https://www.curseforge.com/minecraft/modpacks/project-the-rpg-reborn",
         platform: "curseforge",
         cfPath: "minecraft/modpacks/project-the-rpg-reborn",
-        initialDownloads: 178
+        initialDownloads: 188
       }
     ]
   },
@@ -218,7 +218,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     type: "Modpack",
     category: "minecraft",
     tags: ["Modpack", "Realistic", "Survival", "Weapons", "Temperature", "Forge"],
-    downloads: 321,
+    downloads: 359,
     updated: "2025-03-24",
     links: [
       {
@@ -226,7 +226,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
         url: "https://www.curseforge.com/minecraft/modpacks/project-realistic-rpg",
         platform: "curseforge",
         cfPath: "minecraft/modpacks/project-realistic-rpg",
-        initialDownloads: 321
+        initialDownloads: 359
       }
     ]
   },
@@ -239,7 +239,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     type: "Modpack",
     category: "minecraft",
     tags: ["Modpack", "Guns", "Multiplayer", "PvP", "Deathmatch", "Forge"],
-    downloads: 148,
+    downloads: 180,
     updated: "2024-08-15",
     links: [
       {
@@ -247,7 +247,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
         url: "https://www.curseforge.com/minecraft/modpacks/project-gunparty",
         platform: "curseforge",
         cfPath: "minecraft/modpacks/project-gunparty",
-        initialDownloads: 148
+        initialDownloads: 180
       }
     ]
   },
@@ -260,7 +260,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     type: "Resource Pack",
     category: "minecraft",
     tags: ["Resource Pack", "3D Models", "Textures", "Boss RPG Companion"],
-    downloads: 354,
+    downloads: 359,
     updated: "2025-04-13",
     links: [
       {
@@ -268,7 +268,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
         url: "https://www.curseforge.com/minecraft/texture-packs/bosstweak-3d",
         platform: "curseforge",
         cfPath: "minecraft/texture-packs/bosstweak-3d",
-        initialDownloads: 354
+        initialDownloads: 359
       }
     ]
   },
@@ -281,7 +281,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     type: "Plugin",
     category: "minecraft",
     tags: ["Plugin", "Server", "Paper", "Spigot", "MOTD", "Maintenance"],
-    downloads: 483,
+    downloads: 162,
     updated: "2025-02-10",
     links: [
       {
@@ -289,7 +289,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
         url: "https://modrinth.com/plugin/pmaintanceuniversal",
         platform: "modrinth",
         mrId: "pmaintanceuniversal",
-        initialDownloads: 483
+        initialDownloads: 162
       }
     ]
   },

@@ -6,7 +6,8 @@
     "about": "SOBRE MÍ",
     "media": "MEDIOS",
     "contact": "CONTACTO",
-    "community": "Comunidad"
+    "community": "Comunidad",
+    "affiliates": "SOCIOS"
   },
   "languages": {
     "it": "Italiano",
@@ -38,9 +39,9 @@
       "age": "Edad",
       "gender": "Género"
     },
-    "aboutDesc1": "Soy muchas cosas, pero lo más relevante para ti: un desarrollador de mods de Minecraft y creador de contenido.",
-    "aboutDesc2": "Tengo una pasión especial por crear experiencias RPG inmersivas, estructuras y herramientas. La mayor parte de mi experiencia consiste en llevar al límite lo que es posible dentro del juego.",
-    "aboutDesc3": "Hoy en día me puedes encontrar en mi servidor de Discord, donde hablo de todo y anuncio los nuevos avances de mis proyectos. ¡También puedes ver mis videos en mi canal de YouTube, donde publico actualizaciones y gameplays!"
+    "aboutDesc1": "Desarrollador, creador de software y modder con una pasión incansable por el código y la innovación. He creado decenas de proyectos jugados por más de 100.000 personas en todo el mundo, superando constantemente los límites del motor.",
+    "aboutDesc2": "Me encanta crear experiencias RPG profundas, estructuras procedurales y, sobre todo, ayudar a otros creadores y desarrolladores con herramientas dedicadas, recursos y soporte comunitario.",
+    "aboutDesc3": "Ya sea diseñando nuevas mecánicas o ayudando a quienes están empezando, mi objetivo es siempre construir algo extraordinario y compartirlo con todos."
   },
   "projects": {
     "title": "Mis",
@@ -129,7 +130,16 @@
   },
   "stats": {
     "liveStatsHeader": "ESTADÍSTICAS Y MÉTRICAS EN VIVO",
-    "downloadsByPlatform": "DESCARGAS POR PLATAFORMA"
+    "downloadsByPlatform": "DESCARGAS POR PLATAFORMA",
+    "certificateBadge": "CERTIFICADO",
+    "certificateTier": "CURSEFORGE LEGENDS · FORGEBORN",
+    "certificateSubtitle": "Hito oficial de 100.000 descargas",
+    "viewCertificate": "VER CERTIFICADO",
+    "clickToView": "Haz clic para ampliar",
+    "officialMilestone": "HITO DE 100.000 DESCARGAS VERIFICADO",
+    "awardDetails": "En reconocimiento por alcanzar 100.000 descargas, has ganado tu lugar en el nivel Forgeborn de CurseForge Legends.",
+    "awardedBy": "Otorgado por Alon Rabinovitz & Dror Haberman (CurseForge)",
+    "verifiedProtection": "PROTEGIDO // PROPIEDAD OFICIAL DE D4VIDE106"
   },
   "youtube": {
     "latestBroadcast": "ÚLTIMO VIDEO"
@@ -148,5 +158,52 @@
     "detectedRu": "Idioma configurado en Ruso (detectado del navegador)",
     "detectedPt": "Idioma configurado en Portugués (detectado del navegador)",
     "fallback": "Idioma predeterminado establecido en Inglés (idioma no soportado)"
+  },
+  "affiliates": {
+    "sectionTag": "SOCIOS OFICIALES Y SERVICIOS",
+    "title": "Apoya mis proyectos y",
+    "titleHighlight": "Ofertas Exclusivas",
+    "description": "Compra juegos, servidores de Minecraft, hardware o encarga comisiones personalizadas con mis enlaces oficiales. ¡Consigue el mejor precio y apoya mis proyectos gratuitos sin gastar un céntimo de más!",
+    "instantGaming": {
+      "name": "Instant Gaming",
+      "badge": "HASTA -70% DTO",
+      "title": "Claves de Juegos y Suscripciones",
+      "desc": "Todos tus videojuegos para PC, Steam, PlayStation, Xbox y Nintendo al mejor precio con entrega digital instantánea 24/7.",
+      "cta": "Ver Ofertas"
+    },
+    "bisect": {
+      "name": "BisectHosting",
+      "badge": "25% DTO · CÓDIGO: PROJECTS",
+      "title": "Hosting de Servidores (25% DTO)",
+      "desc": "Servidores ultrarrápidos con soporte 24/7, modpacks en 1 clic y protección DDoS avanzada. ¡Usa el código Projects en el checkout para ahorrar un 25%!",
+      "cta": "Activar 25% DTO y Crear Servidor",
+      "promoLabel": "CÓDIGO PROMO",
+      "promoCode": "Projects",
+      "copyCode": "Copiar Código",
+      "codeCopied": "¡Copiado!"
+    },
+    "g2a": {
+      "name": "G2A Marketplace",
+      "badge": "MEJORES PRECIOS DIGITALES",
+      "title": "Tarjetas Regalo, Juegos y Software",
+      "desc": "El marketplace digital más grande para tarjetas de regalo, suscripciones Game Pass, PSN, claves de software y videojuegos globales.",
+      "cta": "Visitar G2A"
+    },
+    "amazon": {
+      "name": "Amazon Store",
+      "badge": "APOYO SIN COSTE EXTRA",
+      "title": "Hardware, Periféricos y Setup",
+      "desc": "Cualquier compra que realices en Amazon usando estos enlaces apoya directamente el desarrollo de mis mods sin coste adicional para ti.",
+      "ctaIt": "Amazon.it",
+      "ctaGlobal": "Amazon.com"
+    },
+    "fiverr": {
+      "name": "Fiverr Commissions",
+      "badge": "COMISIONES A MEDIDA",
+      "title": "Datapacks, Mods y Plugins",
+      "desc": "¿Necesitas un datapack personalizado, un modpack a medida o mecánicas exclusivas? Encarga un trabajo profesional con valoración de 5 estrellas.",
+      "cta": "Solicitar Trabajo"
+    },
+    "disclosure": "Al comprar a través de estos enlaces de afiliados o solicitar una comisión, apoyas directamente el desarrollo y la actualización continua de todos mis proyectos, mods y datapacks gratuitos para la comunidad, sin coste adicional. ¡Muchas gracias por el apoyo! ❤️"
   }
 }

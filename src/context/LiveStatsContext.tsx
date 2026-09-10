@@ -213,12 +213,15 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         }
       } catch {}
 
-      // Pre-fetch official CurseForge API projects with API Key
+      // Pre-fetch official CurseForge API projects with user's API Key / Token
       const curseforgeMap: Record<string, number> = {};
+      const cfToken = process.env.NEXT_PUBLIC_CURSEFORGE_API_TOKEN || "f1e674d8-a08d-4a3e-bbc3-472cd774bf8e";
+
       try {
         const cfRes = await fetch("https://api.curseforge.com/v1/mods/search?gameId=432&searchFilter=D4vide106", {
           headers: {
-            "x-api-key": "$2a$10$Dn9qGY8YZ6sbf5HnUpG0VOYbTcl1OAeGYri.LUdqUYxfHw8qTyeEi",
+            "x-api-key": cfToken,
+            "X-Api-Token": cfToken,
             "Accept": "application/json"
           }
         });

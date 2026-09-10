@@ -1,0 +1,247 @@
+{
+  "flags": 32768,
+  "components": [
+    {
+      "type": 17,
+      "accent_color": 15819830,
+      "spoiler": false,
+      "components": [
+        {
+          "type": 9,
+          "accessory": {
+            "type": 11,
+            "media": {
+              "url": "https://cdn.discordapp.com/avatars/768071128999788555/f622e4ed7e91f9ea6dd476c42ff225fb.png?size=256"
+            },
+            "description": "D4vide106"
+          },
+          "components": [
+            {
+              "type": 10,
+              "content": "## Partner Ufficiali & Sconti Esclusivi\nAcquistando tramite questi link supporti direttamente lo sviluppo dei miei progetti gratuiti, con sconti dedicati e a costo zero per te."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": 17,
+      "accent_color": 35071,
+      "spoiler": false,
+      "components": [
+        {
+          "type": 9,
+          "accessory": {
+            "type": 11,
+            "media": {
+              "url": "https://images.opencollective.com/bisecthosting/e1e19d7/logo/256.png"
+            },
+            "description": "BisectHosting"
+          },
+          "components": [
+            {
+              "type": 10,
+              "content": "### BisectHosting · Server 24/7\nServer per Minecraft, Palworld e oltre 100 giochi con installazione modpack 1-click.\nCodice sconto (-25%): `Projects`"
+            }
+          ]
+        },
+        {
+          "type": 14,
+          "divider": true,
+          "spacing": 1
+        },
+        {
+          "type": 1,
+          "components": [
+            {
+              "type": 2,
+              "style": 5,
+              "label": "Attiva 25% OFF & Crea Server",
+              "emoji": {
+                "name": "🛡️"
+              },
+              "url": "https://www.bisecthosting.com/Projects?r=LINKTREE"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": 17,
+      "accent_color": 16733184,
+      "spoiler": false,
+      "components": [
+        {
+          "type": 9,
+          "accessory": {
+            "type": 11,
+            "media": {
+              "url": "https://play-lh.googleusercontent.com/jcS7jtmoIDrszCNBZOoNDnO8J45SFhnJ5fj4c-410D4NZQ5AVr6bXlvC0_nnUODeuhiG6Po_QHykb1B5vNSk=s256"
+            },
+            "description": "Instant Gaming"
+          },
+          "components": [
+            {
+              "type": 10,
+              "content": "### Instant Gaming · Videogiochi\nChiavi Steam, PC, PlayStation, Xbox e Nintendo fino al -70% con consegna immediata 24/7."
+            }
+          ]
+        },
+        {
+          "type": 14,
+          "divider": true,
+          "spacing": 1
+        },
+        {
+          "type": 1,
+          "components": [
+            {
+              "type": 2,
+              "style": 5,
+              "label": "Scopri le Offerte Giochi (-70%)",
+              "emoji": {
+                "name": "⚡"
+              },
+              "url": "https://www.instant-gaming.com/it/?igr=D4vide106"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": 17,
+      "accent_color": 16750848,
+      "spoiler": false,
+      "components": [
+        {
+          "type": 9,
+          "accessory": {
+            "type": 11,
+            "media": {
+              "url": "https://play-lh.googleusercontent.com/UIYZ9hTFNg-zZUg_uzLS9YdyDpvoo1VHNFb6VlzHy5JqNMq9Uq-p2S1VPwzXCipHTFacfGKhJkyAuKL19VVlcWA=s256"
+            },
+            "description": "Amazon"
+          },
+          "components": [
+            {
+              "type": 10,
+              "content": "### Amazon Store · Hardware & Setup\nQualsiasi acquisto fatto su Amazon tramite questi link ufficiali supporta i miei progetti gratis per te."
+            }
+          ]
+        },
+        {
+          "type": 14,
+          "divider": true,
+          "spacing": 1
+        },
+        {
+          "type": 1,
+          "components": [
+            {
+              "type": 2,
+              "style": 5,
+              "label": "Amazon.it",
+              "emoji": {
+                "name": "🇮🇹"
+              },
+              "url": "https://www.amazon.it/?tag=projectsdav-21"
+            },
+            {
+              "type": 2,
+              "style": 5,
+              "label": "Amazon.com",
+              "emoji": {
+                "name": "🌐"
+              },
+              "url": "https://www.amazon.com/?tag=projectsdaven-20"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": 17,
+      "accent_color": 14909957,
+      "spoiler": false,
+      "components": [
+        {
+          "type": 9,
+          "accessory": {
+            "type": 11,
+            "media": {
+              "url": "https://play-lh.googleusercontent.com/b1wfMa1lPkKcTqxOM3hB2ZgykgXKcQyHn74XJ3WZv1u-wbQ4F79xZ9rmoSTMEAfLxvDgtqJlnGqGWILWFWP-Pw=s256"
+            },
+            "description": "G2A"
+          },
+          "components": [
+            {
+              "type": 10,
+              "content": "### G2A Marketplace · Gift Card & Key\nMarketplace per gift card, abbonamenti Game Pass, PSN, chiavi digitali e software al miglior prezzo."
+            }
+          ]
+        },
+        {
+          "type": 14,
+          "divider": true,
+          "spacing": 1
+        },
+        {
+          "type": 1,
+          "components": [
+            {
+              "type": 2,
+              "style": 5,
+              "label": "Visita G2A Marketplace",
+              "emoji": {
+                "name": "🎮"
+              },
+              "url": "https://www.g2a.com/n/d4vide106?gtag=48998ec5f1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": 17,
+      "accent_color": 1949555,
+      "spoiler": false,
+      "components": [
+        {
+          "type": 9,
+          "accessory": {
+            "type": 11,
+            "media": {
+              "url": "https://play-lh.googleusercontent.com/OsXruAaZUhCAfzOClljZ00sS7U1TZ25V_y_PfWfxTBjlNRPByVlyPccYA3zeJ-Qgb_F3gtHiQg3lB0Vqua7b=s256"
+            },
+            "description": "Fiverr"
+          },
+          "components": [
+            {
+              "type": 10,
+              "content": "### Fiverr · Commissioni su Misura\nHai bisogno di un datapack personalizzato, un modpack o uno script per il tuo server? Ordina una commissione verificata."
+            }
+          ]
+        },
+        {
+          "type": 14,
+          "divider": true,
+          "spacing": 1
+        },
+        {
+          "type": 1,
+          "components": [
+            {
+              "type": 2,
+              "style": 5,
+              "label": "Richiedi un Lavoro su Fiverr",
+              "emoji": {
+                "name": "⭐"
+              },
+              "url": "https://www.fiverr.com/d4vide106"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
