@@ -238,6 +238,46 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         }
       } catch {}
 
+      // Pre-fetch Roblox universe stats & votes
+      const robloxGamesMap: Record<number, { visits: number; playing: number }> = {};
+      const robloxVotesMap: Record<number, { upVotes: number; downVotes: number }> = {};
+      const robloxUids = [3266189000, 7239022329, 7330243159, 6963288939, 8934658965, 7853966833];
+
+      try {
+        const uidsQuery = robloxUids.join(",");
+        let rbxGamesRes = await fetch(`https://games.roblox.com/v1/games?universeIds=${uidsQuery}`);
+        if (!rbxGamesRes.ok) {
+          rbxGamesRes = await fetch(`https://corsproxy.io/?${encodeURIComponent(`https://games.roblox.com/v1/games?universeIds=${uidsQuery}`)}`);
+        }
+        if (rbxGamesRes.ok) {
+          const rbxData = await rbxGamesRes.json();
+          if (Array.isArray(rbxData?.data)) {
+            rbxData.data.forEach((g: { id: number; visits?: number; playing?: number }) => {
+              robloxGamesMap[g.id] = {
+                visits: typeof g.visits === "number" ? g.visits : 0,
+                playing: typeof g.playing === "number" ? g.playing : 0,
+              };
+            });
+          }
+        }
+
+        let rbxVotesRes = await fetch(`https://games.roblox.com/v1/games/votes?universeIds=${uidsQuery}`);
+        if (!rbxVotesRes.ok) {
+          rbxVotesRes = await fetch(`https://corsproxy.io/?${encodeURIComponent(`https://games.roblox.com/v1/games/votes?universeIds=${uidsQuery}`)}`);
+        }
+        if (rbxVotesRes.ok) {
+          const rbxVotesData = await rbxVotesRes.json();
+          if (Array.isArray(rbxVotesData?.data)) {
+            rbxVotesData.data.forEach((v: { id: number; upVotes?: number; downVotes?: number }) => {
+              robloxVotesMap[v.id] = {
+                upVotes: typeof v.upVotes === "number" ? v.upVotes : 0,
+                downVotes: typeof v.downVotes === "number" ? v.downVotes : 0,
+              };
+            });
+          }
+        }
+      } catch {}
+
       const updatedProjects = await Promise.all(
         MAIN_PROJECTS.map(async (project) => {
           let totalSum = 0;
@@ -290,6 +330,10 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
                 if (cloudCount !== null) {
                   liveApiCount = baseCount + cloudCount;
                 }
+              } else if (link.platform === "roblox" && link.robloxUniverseId) {
+                if (robloxGamesMap[link.robloxUniverseId]) {
+                  liveApiCount = robloxGamesMap[link.robloxUniverseId].visits;
+                }
               }
 
               const linkTotal = (liveApiCount !== null ? liveApiCount : baseCount) + localClicks;
@@ -298,10 +342,31 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
             })
           );
 
+          // Update robloxStats if live data available
+          let updatedRobloxStats = project.robloxStats;
+          if (project.robloxStats && robloxGamesMap[project.robloxStats.universeId]) {
+            const liveGame = robloxGamesMap[project.robloxStats.universeId];
+            const liveVote = robloxVotesMap[project.robloxStats.universeId];
+            const up = liveVote ? liveVote.upVotes : project.robloxStats.upVotes;
+            const down = liveVote ? liveVote.downVotes : project.robloxStats.downVotes;
+            const totalVotes = up + down;
+            const ratingPercent = totalVotes > 0 ? Math.round((up / totalVotes) * 100) : project.robloxStats.ratingPercent;
+
+            updatedRobloxStats = {
+              ...project.robloxStats,
+              visits: liveGame.visits,
+              playing: liveGame.playing,
+              upVotes: up,
+              downVotes: down,
+              ratingPercent,
+            };
+          }
+
           return {
             ...project,
             downloads: totalSum,
             links: updatedLinks,
+            robloxStats: updatedRobloxStats,
           };
         })
       );
@@ -333,6 +398,7 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       itch: 0,
       github: 0,
       web: 0,
+      roblox: 0,
     };
     projects.forEach((p) => {
       p.links.forEach((l) => {

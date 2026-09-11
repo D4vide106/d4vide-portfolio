@@ -1,14 +1,15 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { FiDownload, FiSearch, FiEye, FiGlobe, FiTag, FiExternalLink, FiGithub } from "react-icons/fi";
-import { SiCurseforge, SiModrinth, SiGamejolt, SiItchdotio } from "react-icons/si";
+import { useState, useMemo, useEffect } from "react";
+import { FiDownload, FiSearch, FiEye, FiGlobe, FiTag, FiExternalLink, FiGithub, FiUsers, FiStar } from "react-icons/fi";
+import { SiCurseforge, SiModrinth, SiGamejolt, SiItchdotio, SiRoblox } from "react-icons/si";
 import { FaCube } from "react-icons/fa";
 import { useLanguage } from "@/context/LanguageContext";
 import styles from "./Projects.module.css";
 import { useLiveStats } from "@/context/LiveStatsContext";
 import { UnifiedProject } from "@/data/projectsData";
 import AnimatedNumber from "./AnimatedNumber";
+import ProjectDetailModal from "./ProjectDetailModal";
 
 const PLATFORM_NAMES: Record<string, string> = {
   curseforge: "CurseForge",
@@ -17,6 +18,7 @@ const PLATFORM_NAMES: Record<string, string> = {
   itch: "Itch.io",
   github: "GitHub",
   web: "Web App",
+  roblox: "Roblox",
 };
 
 export default function Projects({ dict: propDict }: { dict?: any }) {
@@ -25,9 +27,29 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
   const modalDict = contextDict.projectsModal || propDict;
   const projectDataDict = (contextDict as any)?.projectData || {};
   const { projects, incrementProjectViews, getProjectViews, portfolioViews, incrementDownloadLink } = useLiveStats();
+  
+  const [selectedCategory, setSelectedCategory] = useState<"all" | "minecraft" | "roblox">("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState("All");
   const [selectedProject, setSelectedProject] = useState<UnifiedProject | null>(null);
+
+  const [assetPrefix, setAssetPrefix] = useState("/d4vide-portfolio");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (window.location.pathname.startsWith("/d4vide-portfolio")) {
+        setAssetPrefix("/d4vide-portfolio");
+      } else {
+        setAssetPrefix("");
+      }
+    }
+  }, []);
+
+  const getLogoUrl = (url?: string) => {
+    if (!url) return "";
+    if (url.startsWith("http://") || url.startsWith("https://")) return url;
+    return `${assetPrefix}${url.startsWith("/") ? url : `/${url}`}`;
+  };
 
   const getProjectTitle = (p: UnifiedProject) => {
     return projectDataDict[p.id]?.title || p.title;
@@ -37,29 +59,95 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
     return projectDataDict[p.id]?.description || p.description;
   };
 
-  // Filter projects by category and search (Supports Minecraft, Games, Apps & Tools)
+  // Category counts
+  const counts = useMemo(() => {
+    const all = projects.length;
+    const minecraft = projects.filter((p) => p.category === "minecraft").length;
+    const roblox = projects.filter((p) => p.category === "roblox").length;
+    return { all, minecraft, roblox };
+  }, [projects]);
+
+  // Contextual sub-filters based on selected macro category
+  const subFilterOptions = useMemo(() => {
+    if (selectedCategory === "minecraft") {
+      return [
+        { key: "All", label: modalDict?.all || "Tutti" },
+        { key: "Modpack", label: modalDict?.modpack || "Modpack" },
+        { key: "Mod", label: modalDict?.mod || "Mod & Datapack" },
+        { key: "Resource Pack", label: modalDict?.resourcepack || "Resource Pack" },
+        { key: "Plugin", label: modalDict?.plugin || "Plugin" },
+        { key: "Server", label: modalDict?.server || "Server" },
+      ];
+    }
+    if (selectedCategory === "roblox") {
+      return [
+        { key: "All", label: modalDict?.all || "Tutti" },
+        { key: "Obby", label: modalDict?.robloxObby || "Obby & Platformer" },
+        { key: "Social", label: modalDict?.robloxSocial || "Social Hangout" },
+        { key: "Runner", label: modalDict?.robloxRunner || "Endless Runner" },
+        { key: "Climber", label: modalDict?.robloxClimber || "Climber" },
+      ];
+    }
+    // "all"
+    return [
+      { key: "All", label: modalDict?.all || "Tutti" },
+      { key: "Minecraft", label: "Minecraft" },
+      { key: "Roblox", label: "Roblox" },
+      { key: "Modpack", label: modalDict?.modpack || "Modpack" },
+      { key: "Mod", label: modalDict?.mod || "Mod & Datapack" },
+      { key: "Obby", label: modalDict?.robloxObby || "Obby" },
+    ];
+  }, [selectedCategory, modalDict]);
+
+  // Filter projects by category, search and sub-filter
   const filteredProjects = useMemo(() => {
     return projects.filter((p) => {
+      // 1. Category Filter
+      if (selectedCategory !== "all" && p.category !== selectedCategory) {
+        return false;
+      }
+
+      // 2. Search Query
       const localizedTitle = getProjectTitle(p);
       const localizedDesc = getProjectDescription(p);
+      const q = searchQuery.toLowerCase().trim();
       const matchesSearch =
-        p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        localizedTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        localizedDesc.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (p.tags && p.tags.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase())));
+        !q ||
+        p.title.toLowerCase().includes(q) ||
+        localizedTitle.toLowerCase().includes(q) ||
+        p.description.toLowerCase().includes(q) ||
+        localizedDesc.toLowerCase().includes(q) ||
+        p.type.toLowerCase().includes(q) ||
+        (p.tags && p.tags.some((tag) => tag.toLowerCase().includes(q)));
+
       if (!matchesSearch) return false;
+
+      // 3. Sub-Filter
       if (filterType === "All") return true;
 
       const pType = p.type.toLowerCase();
       const fType = filterType.toLowerCase();
 
+      if (fType === "minecraft") return p.category === "minecraft";
+      if (fType === "roblox") return p.category === "roblox";
       if (fType === "mod") {
         return pType.includes("mod") && !pType.includes("modpack");
       }
+      if (fType === "obby") {
+        return pType.includes("obby") || (p.tags && p.tags.some((t) => t.toLowerCase().includes("obby")));
+      }
+      if (fType === "social") {
+        return pType.includes("social") || (p.tags && p.tags.some((t) => t.toLowerCase().includes("social")));
+      }
+      if (fType === "runner") {
+        return pType.includes("runner");
+      }
+      if (fType === "climber") {
+        return pType.includes("climber");
+      }
       return pType.includes(fType);
     });
-  }, [projects, searchQuery, filterType, projectDataDict]);
+  }, [projects, searchQuery, selectedCategory, filterType, projectDataDict]);
 
   // Determine if marquee animation should run (Only if 4 or more projects exist)
   const isMarqueeMode = filteredProjects.length >= 4;
@@ -92,6 +180,7 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
       case "itch": return <SiItchdotio size={size} />;
       case "github": return <FiGithub size={size} />;
       case "web": return <FiExternalLink size={size} />;
+      case "roblox": return <SiRoblox size={size} color="#ff3b30" />;
       default: return <FaCube size={size} />;
     }
   };
@@ -114,21 +203,137 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
     return groups;
   };
 
+  const renderProjectCard = (project: UnifiedProject, keyPrefix = "") => {
+    const uniquePlatforms = getUniquePlatforms(project);
+    const pTitle = getProjectTitle(project);
+    const pDesc = getProjectDescription(project);
+    const isRoblox = project.category === "roblox";
+
+    return (
+      <div
+        key={`${keyPrefix}${project.id}`}
+        onClick={() => handleOpenProjectModal(project)}
+        className={isMarqueeMode ? styles.modrinthCard : styles.modrinthCardStill}
+      >
+        <div className={styles.cardHeader}>
+          <div className={styles.logoBox}>
+            <img
+              src={getLogoUrl(project.icon_url)}
+              alt={pTitle}
+              className={styles.projectLogo}
+              onError={(e) => {
+                if (project.fallback_icon_url && (e.currentTarget as HTMLImageElement).src !== project.fallback_icon_url) {
+                  (e.currentTarget as HTMLImageElement).src = project.fallback_icon_url;
+                }
+              }}
+            />
+          </div>
+          <div className={styles.titleArea}>
+            <div className={styles.badgeRow}>
+              <span className={`${styles.typeBadge} ${isRoblox ? styles.robloxTypeBadge : ""}`}>
+                {project.type}
+              </span>
+              {isRoblox && (
+                <span className={styles.robloxBrandPill}>
+                  <SiRoblox size={10} /> Roblox
+                </span>
+              )}
+            </div>
+            <h4 className={styles.cardTitle}>{pTitle}</h4>
+            {isRoblox && project.robloxStats && (
+              <span className={styles.cardAuthor}>
+                by {project.robloxStats.creatorName}
+              </span>
+            )}
+          </div>
+        </div>
+
+        <p className={styles.cardDesc}>{pDesc}</p>
+
+        <div className={styles.cardFooter}>
+          {isRoblox ? (
+            <div className={styles.robloxCardStats}>
+              <div className={styles.visitStat} title="Visite totali">
+                <FiEye size={12} />
+                <span>{project.downloads.toLocaleString()}</span>
+              </div>
+              {project.robloxStats?.ratingPercent !== undefined && (
+                <span className={styles.ratingStat} title="Valutazione positiva">
+                  ⭐ {project.robloxStats.ratingPercent}%
+                </span>
+              )}
+            </div>
+          ) : (
+            <div className={styles.downloadStat} title="Download totali">
+              <FiDownload size={13} />
+              <span>{project.downloads.toLocaleString()}</span>
+            </div>
+          )}
+
+          <div className={styles.platformsRow}>
+            {uniquePlatforms.map((link, pIdx) => {
+              const platformName = PLATFORM_NAMES[link.platform] || link.platform;
+              return (
+                <span key={pIdx} className={styles.platformIcon} title={platformName}>
+                  {getPlatformIcon(link.platform, 14)}
+                </span>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <section id="projects" className={styles.projectsSection}>
       
       {/* Centered Controls Bar Container */}
       <div className={styles.controlsWrapper}>
+        
+        {/* 1. Macro Ecosystem Switch: Tutti | Minecraft | Roblox */}
+        <div className={styles.categoryPillsContainer}>
+          <button
+            className={`${styles.categoryPill} ${selectedCategory === "all" ? styles.activeCategoryPill : ""}`}
+            onClick={() => {
+              setSelectedCategory("all");
+              setFilterType("All");
+            }}
+          >
+            <FiGlobe size={13} />
+            <span>{modalDict?.allCategories || "Tutti"}</span>
+            <span className={styles.countBubble}>{counts.all}</span>
+          </button>
+
+          <button
+            className={`${styles.categoryPill} ${selectedCategory === "minecraft" ? styles.activeCategoryPillMinecraft : ""}`}
+            onClick={() => {
+              setSelectedCategory("minecraft");
+              setFilterType("All");
+            }}
+          >
+            <FaCube size={12} color="#30d158" />
+            <span>{modalDict?.minecraftCategory || "Minecraft"}</span>
+            <span className={styles.countBubble}>{counts.minecraft}</span>
+          </button>
+
+          <button
+            className={`${styles.categoryPill} ${selectedCategory === "roblox" ? styles.activeCategoryPillRoblox : ""}`}
+            onClick={() => {
+              setSelectedCategory("roblox");
+              setFilterType("All");
+            }}
+          >
+            <SiRoblox size={12} color="#ff3b30" />
+            <span>{modalDict?.robloxCategory || "Roblox"}</span>
+            <span className={styles.countBubble}>{counts.roblox}</span>
+          </button>
+        </div>
+
+        {/* 2. Sub-filters & Search Bar */}
         <div className={styles.controlsBar}>
           <div className={styles.filtersGroup}>
-            {[
-              { key: "All", label: modalDict?.all || "Tutti" },
-              { key: "Modpack", label: modalDict?.modpack || "Modpack" },
-              { key: "Mod", label: modalDict?.mod || "Mod & Datapack" },
-              { key: "Resource Pack", label: "Resource Pack" },
-              { key: "Plugin", label: "Plugin" },
-              { key: "Server", label: "Server" },
-            ].map((typeItem) => (
+            {subFilterOptions.map((typeItem) => (
               <button
                 key={typeItem.key}
                 className={`${styles.filterBtn} ${filterType === typeItem.key ? styles.activeFilter : ""}`}
@@ -152,12 +357,14 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
         </div>
       </div>
 
-      {/* MOBILE FEED (Clean, stable native cards for touch screens <= 768px) */}
+      {/* MOBILE FEED (Clean native cards for touch screens <= 768px) */}
       <div className={styles.mobileProjectsContainer}>
         {filteredProjects.map((project) => {
           const uniquePlatforms = getUniquePlatforms(project);
           const pTitle = getProjectTitle(project);
           const pDesc = getProjectDescription(project);
+          const isRoblox = project.category === "roblox";
+
           return (
             <div
               key={`m-${project.id}`}
@@ -167,24 +374,57 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
               <div className={styles.cardHeader}>
                 <div className={styles.logoBox}>
                   <img
-                    src={project.icon_url}
+                    src={getLogoUrl(project.icon_url)}
                     alt={pTitle}
                     className={styles.projectLogo}
+                    onError={(e) => {
+                      if (project.fallback_icon_url && (e.currentTarget as HTMLImageElement).src !== project.fallback_icon_url) {
+                        (e.currentTarget as HTMLImageElement).src = project.fallback_icon_url;
+                      }
+                    }}
                   />
                 </div>
                 <div className={styles.titleArea}>
-                  <span className={styles.typeBadge}>{project.type}</span>
+                  <div className={styles.badgeRow}>
+                    <span className={`${styles.typeBadge} ${isRoblox ? styles.robloxTypeBadge : ""}`}>
+                      {project.type}
+                    </span>
+                    {isRoblox && (
+                      <span className={styles.robloxBrandPill}>
+                        <SiRoblox size={10} /> Roblox
+                      </span>
+                    )}
+                  </div>
                   <h4 className={styles.cardTitle}>{pTitle}</h4>
+                  {isRoblox && project.robloxStats && (
+                    <span className={styles.cardAuthor}>
+                      by {project.robloxStats.creatorName}
+                    </span>
+                  )}
                 </div>
               </div>
 
               <p className={styles.cardDesc}>{pDesc}</p>
 
               <div className={styles.cardFooter}>
-                <div className={styles.downloadStat}>
-                  <FiDownload size={13} />
-                  <span>{project.downloads.toLocaleString()}</span>
-                </div>
+                {isRoblox ? (
+                  <div className={styles.robloxCardStats}>
+                    <div className={styles.visitStat} title="Visite totali">
+                      <FiEye size={12} />
+                      <span>{project.downloads.toLocaleString()}</span>
+                    </div>
+                    {project.robloxStats?.ratingPercent !== undefined && (
+                      <span className={styles.ratingStat}>
+                        ⭐ {project.robloxStats.ratingPercent}%
+                      </span>
+                    )}
+                  </div>
+                ) : (
+                  <div className={styles.downloadStat}>
+                    <FiDownload size={13} />
+                    <span>{project.downloads.toLocaleString()}</span>
+                  </div>
+                )}
 
                 <div className={styles.platformsRow}>
                   {uniquePlatforms.map((link, pIdx) => {
@@ -207,52 +447,7 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
         {!isMarqueeMode ? (
           <div className={styles.staticCenteredContainer}>
             <div className={styles.staticCenteredGrid}>
-              {filteredProjects.map((project) => {
-                const uniquePlatforms = getUniquePlatforms(project);
-                const pTitle = getProjectTitle(project);
-                const pDesc = getProjectDescription(project);
-                return (
-                  <div
-                    key={project.id}
-                    onClick={() => handleOpenProjectModal(project)}
-                    className={styles.modrinthCardStill}
-                  >
-                    <div className={styles.cardHeader}>
-                      <div className={styles.logoBox}>
-                        <img
-                          src={project.icon_url}
-                          alt={pTitle}
-                          className={styles.projectLogo}
-                        />
-                      </div>
-                      <div className={styles.titleArea}>
-                        <span className={styles.typeBadge}>{project.type}</span>
-                        <h4 className={styles.cardTitle}>{pTitle}</h4>
-                      </div>
-                    </div>
-
-                    <p className={styles.cardDesc}>{pDesc}</p>
-
-                    <div className={styles.cardFooter}>
-                      <div className={styles.downloadStat}>
-                        <FiDownload size={13} />
-                        <span>{project.downloads.toLocaleString()}</span>
-                      </div>
-
-                      <div className={styles.platformsRow}>
-                        {uniquePlatforms.map((link, pIdx) => {
-                          const platformName = PLATFORM_NAMES[link.platform] || link.platform;
-                          return (
-                            <span key={pIdx} className={styles.platformIcon} title={platformName}>
-                              {getPlatformIcon(link.platform, 14)}
-                            </span>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+              {filteredProjects.map((project) => renderProjectCard(project, "still-"))}
             </div>
           </div>
         ) : (
@@ -261,104 +456,14 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
             {/* Marquee Row 1 (Scrolling Left) */}
             <div className={styles.marqueeRowContainer}>
               <div className={`${styles.marqueeTrack} ${styles.marqueeLeft}`}>
-                {row1Projects.map((project, idx) => {
-                  const uniquePlatforms = getUniquePlatforms(project);
-                  const pTitle = getProjectTitle(project);
-                  const pDesc = getProjectDescription(project);
-                  return (
-                    <div
-                      key={`r1-${project.id}-${idx}`}
-                      onClick={() => handleOpenProjectModal(project)}
-                      className={styles.modrinthCard}
-                    >
-                      <div className={styles.cardHeader}>
-                        <div className={styles.logoBox}>
-                          <img
-                            src={project.icon_url}
-                            alt={pTitle}
-                            className={styles.projectLogo}
-                          />
-                        </div>
-                        <div className={styles.titleArea}>
-                          <span className={styles.typeBadge}>{project.type}</span>
-                          <h4 className={styles.cardTitle}>{pTitle}</h4>
-                        </div>
-                      </div>
-
-                      <p className={styles.cardDesc}>{pDesc}</p>
-
-                      <div className={styles.cardFooter}>
-                        <div className={styles.downloadStat}>
-                          <FiDownload size={13} />
-                          <span>{project.downloads.toLocaleString()}</span>
-                        </div>
-
-                        <div className={styles.platformsRow}>
-                          {uniquePlatforms.map((link, pIdx) => {
-                            const platformName = PLATFORM_NAMES[link.platform] || link.platform;
-                            return (
-                              <span key={pIdx} className={styles.platformIcon} title={platformName}>
-                                {getPlatformIcon(link.platform, 14)}
-                              </span>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
+                {row1Projects.map((project, idx) => renderProjectCard(project, `r1-${idx}-`))}
               </div>
             </div>
 
             {/* Marquee Row 2 (Scrolling Right) */}
             <div className={styles.marqueeRowContainer}>
               <div className={`${styles.marqueeTrack} ${styles.marqueeRight}`}>
-                {row2Projects.map((project, idx) => {
-                  const uniquePlatforms = getUniquePlatforms(project);
-                  const pTitle = getProjectTitle(project);
-                  const pDesc = getProjectDescription(project);
-                  return (
-                    <div
-                      key={`r2-${project.id}-${idx}`}
-                      onClick={() => handleOpenProjectModal(project)}
-                      className={styles.modrinthCard}
-                    >
-                      <div className={styles.cardHeader}>
-                        <div className={styles.logoBox}>
-                          <img
-                            src={project.icon_url}
-                            alt={pTitle}
-                            className={styles.projectLogo}
-                          />
-                        </div>
-                        <div className={styles.titleArea}>
-                          <span className={styles.typeBadge}>{project.type}</span>
-                          <h4 className={styles.cardTitle}>{pTitle}</h4>
-                        </div>
-                      </div>
-
-                      <p className={styles.cardDesc}>{pDesc}</p>
-
-                      <div className={styles.cardFooter}>
-                        <div className={styles.downloadStat}>
-                          <FiDownload size={13} />
-                          <span>{project.downloads.toLocaleString()}</span>
-                        </div>
-
-                        <div className={styles.platformsRow}>
-                          {uniquePlatforms.map((link, pIdx) => {
-                            const platformName = PLATFORM_NAMES[link.platform] || link.platform;
-                            return (
-                              <span key={pIdx} className={styles.platformIcon} title={platformName}>
-                                {getPlatformIcon(link.platform, 14)}
-                              </span>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
+                {row2Projects.map((project, idx) => renderProjectCard(project, `r2-${idx}-`))}
               </div>
             </div>
 
@@ -367,129 +472,15 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
       </div>
 
       {/* Project Detail Modal */}
-      {selectedProject && (() => {
-        const grouped = groupLinksByPlatform(selectedProject);
-        const modalTitle = getProjectTitle(selectedProject);
-        const modalDesc = getProjectDescription(selectedProject);
-        return (
-          <div className={styles.modalOverlay} onClick={() => setSelectedProject(null)}>
-            <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-              <div className={styles.modalMacHeader}>
-                <div className={styles.modalTrafficLights}>
-                  <span className={`${styles.trafficDot} ${styles.dotRed}`} onClick={() => setSelectedProject(null)} />
-                  <span className={`${styles.trafficDot} ${styles.dotYellow}`} />
-                  <span className={`${styles.trafficDot} ${styles.dotGreen}`} />
-                </div>
-                <span className={styles.macHeaderTitle}>{modalTitle}</span>
-                <button className={styles.modalCloseBtn} onClick={() => setSelectedProject(null)}>×</button>
-              </div>
-
-              {/* Modal Main Header */}
-              <div className={styles.modalHeader}>
-                <img src={selectedProject.icon_url} alt={modalTitle} className={styles.modalLogo} />
-                <div className={styles.modalTitleArea}>
-                  <span className={styles.modalCategoryBadge}>{selectedProject.type}</span>
-                  <h2>{modalTitle}</h2>
-                  <p>{modalDesc}</p>
-                </div>
-              </div>
-
-              {/* Stats Row */}
-              <div className={styles.modalStatsRow}>
-                <div className={styles.modalStatBlock}>
-                  <div className={styles.modalStatLabel}>
-                    <FiDownload style={{ color: "#30d158" }} /> {modalDict?.totalDownloads || "TOTAL DOWNLOADS"}
-                  </div>
-                  <div className={styles.modalStatNumber}>
-                    <AnimatedNumber value={selectedProject.downloads} />
-                  </div>
-                </div>
-                <div className={styles.modalStatBlock}>
-                  <div className={styles.modalStatLabel}>
-                    <FiEye style={{ color: "#64d2ff" }} /> {modalDict?.projectViews || "PROJECT VIEWS"}
-                  </div>
-                  <div className={styles.modalStatNumber}>
-                    <AnimatedNumber value={getProjectViews(selectedProject.id)} />
-                  </div>
-                </div>
-                <div className={styles.modalStatBlock}>
-                  <div className={styles.modalStatLabel}>
-                    <FiGlobe style={{ color: "#bf5af2" }} /> {modalDict?.portfolioViews || "PORTFOLIO VIEWS"}
-                  </div>
-                  <div className={styles.modalStatNumber}>
-                    <AnimatedNumber value={portfolioViews} />
-                  </div>
-                </div>
-              </div>
-
-              {/* Tags */}
-              {selectedProject.tags && selectedProject.tags.length > 0 && (
-                <div className={styles.modalTagsSection}>
-                  <div className={styles.sectionLabel}>
-                    <FiTag size={12} /> {modalDict?.tagsAndSpecs || "TAGS & SPECS"}
-                  </div>
-                  <div className={styles.modalTagsList}>
-                    {selectedProject.tags.map((tag, idx) => (
-                      <span key={idx} className={styles.modalTagBadge}>#{tag}</span>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Platforms */}
-              <div className={styles.modalPlatformsSection}>
-                <div className={styles.sectionLabel}>
-                  <FiExternalLink size={12} /> {modalDict?.platformsAndDownloads || "PLATFORMS & DOWNLOADS"}
-                </div>
-                <div className={styles.platformGroupsGrid}>
-                  {Object.entries(grouped).map(([platform, links]) => {
-                    const platformName = PLATFORM_NAMES[platform] || platform;
-                    const platformTotal = links.reduce((sum, l) => sum + (l.initialDownloads || 0), 0);
-                    return (
-                      <div key={platform} className={styles.platformGroup}>
-                        <div className={styles.platformGroupHeader}>
-                          <span className={styles.platformGroupIcon}>{getPlatformIcon(platform, 18)}</span>
-                          <span className={styles.platformGroupName}>{platformName}</span>
-                          {platformTotal > 0 && (
-                            <span className={styles.platformGroupTotal}>
-                              <FiDownload size={11} /> {platformTotal.toLocaleString()}
-                            </span>
-                          )}
-                        </div>
-                        <div className={styles.platformEditions}>
-                          {links.map((link, i) => (
-                            <a
-                              key={i}
-                              href={link.url}
-                              target="_blank"
-                              rel="noreferrer"
-                              className={styles.editionBtn}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                if (selectedProject) {
-                                  incrementDownloadLink(selectedProject.id, link.url);
-                                }
-                              }}
-                            >
-                              <span>{link.label.replace(`${platformName} `, "")}</span>
-                              {link.initialDownloads !== undefined && link.initialDownloads > 0 && (
-                                <span className={styles.editionDownloads}>
-                                  {link.initialDownloads.toLocaleString()}
-                                </span>
-                              )}
-                            </a>
-                          ))}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-            </div>
-          </div>
-        );
-      })()}
+      <ProjectDetailModal
+        project={selectedProject}
+        onClose={() => setSelectedProject(null)}
+        portfolioViews={portfolioViews}
+        getProjectViews={getProjectViews}
+        incrementDownloadLink={incrementDownloadLink}
+        projectDataDict={projectDataDict}
+        modalDict={modalDict}
+      />
     </section>
   );
 }

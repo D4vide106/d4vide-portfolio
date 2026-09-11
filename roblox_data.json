@@ -1,0 +1,331 @@
+{
+  "games": {
+    "data": [
+      {
+        "id": 3266189000,
+        "rootPlaceId": 8568254840,
+        "name": "[\ud83c\udf85UPD] Extreme Obby! ",
+        "description": "\ud83c\udf89 NOW IN OPEN BETA TESTING - VERSION 3.0! \ud83c\udf89\n\n\ud83c\udfc1 50+ Levels Released\n\ud83d\ude35 Complete the parkour with as few deaths as possible!\n\n\ud83d\udd10 COMING SOON v3.1:\n\n- \ud83c\udf0d New Worlds\n- \ud83d\udee1\ufe0f New Perks & Abilities\n- \ud83c\udfa5 Spectator Mode\n- \u270f\ufe0f New Guis\n\n\ud83d\udc4d & \u2b50 to support us!\n\ud83d\udc96 Thanks for all your support!\n\nTags: Obby, Parkour, Challenge, Levels, Fun, Multiplayer, Updates, Worlds, Skills, Spectator, Hardcore, Adventure, Speedrun, Deathrun, Stages, Strategy, Jump, Competitive, Platformer, Exploration, Creativity.",
+        "sourceName": null,
+        "sourceDescription": null,
+        "creator": {
+          "id": 33742489,
+          "name": "Infinity Project Studio's",
+          "type": "Group",
+          "isRNVAccount": false,
+          "hasVerifiedBadge": false
+        },
+        "price": null,
+        "allowedGearGenres": [
+          "All"
+        ],
+        "allowedGearCategories": [],
+        "isGenreEnforced": true,
+        "copyingAllowed": false,
+        "playing": 0,
+        "visits": 666,
+        "maxPlayers": 50,
+        "created": "2022-01-17T16:24:45.53Z",
+        "updated": "2026-08-27T18:52:07.844Z",
+        "studioAccessToApisAllowed": false,
+        "createVipServersAllowed": false,
+        "universeAvatarType": "MorphToR6",
+        "genre": "All",
+        "genre_l1": "Obby & Platformer",
+        "genre_l2": "Classic Obby",
+        "untranslated_genre_l1": "obby_and_platformer",
+        "isAllGenre": true,
+        "isFavoritedByUser": false,
+        "favoritedCount": 11,
+        "canonicalUrlPath": "/games/8568254840/Extreme-Obby",
+        "isContentRestricted": false
+      },
+      {
+        "id": 7239022329,
+        "rootPlaceId": 140410268649534,
+        "name": "[\u2b06\ufe0f] Stud Difficulty [ALPHA]",
+        "description": "Currently in public Alpha Testing\n\nThis is not just another obby, Studs Difficulty is a professional, well-designed challenge that pushes your skills to the limit! Every obstacle is crafted to test your precision and endurance.\n\n\ud83d\udd39 High Jumps & Long Jumps for extreme difficulty\n\ud83d\udd39 Quests with exclusive rewards\n\ud83d\udd39 Checkpoints to save your progress\n\n\ud83d\udd38Owner/Scripter/Ideator: @Alvini290mega (D4vide106)\n\ud83d\udd38Builder: @ethanolodjfann (Saiphh)\n\n\nTags: Obby, Parkour, Rainbow, Fun, Easy, Parkour Obby, Studs Obby, Rainbow Obby, Easy Obby, Obstacle Course, Platformer Obby, Fun Obby, Long Jump, Long Jump Obby, Stud Long Jumps Obby, Rainbow Parkour Obby, Admin",
+        "sourceName": null,
+        "sourceDescription": null,
+        "creator": {
+          "id": 33742489,
+          "name": "Infinity Project Studio's",
+          "type": "Group",
+          "isRNVAccount": false,
+          "hasVerifiedBadge": false
+        },
+        "price": null,
+        "allowedGearGenres": [
+          "All"
+        ],
+        "allowedGearCategories": [],
+        "isGenreEnforced": true,
+        "copyingAllowed": false,
+        "playing": 0,
+        "visits": 773,
+        "maxPlayers": 10,
+        "created": "2025-02-13T22:30:55.98Z",
+        "updated": "2026-08-27T18:55:21.337Z",
+        "studioAccessToApisAllowed": false,
+        "createVipServersAllowed": false,
+        "universeAvatarType": "MorphToR6",
+        "genre": "All",
+        "genre_l1": "Obby & Platformer",
+        "genre_l2": "",
+        "untranslated_genre_l1": "obby_and_platformer",
+        "isAllGenre": true,
+        "isFavoritedByUser": false,
+        "favoritedCount": 5,
+        "canonicalUrlPath": "/games/140410268649534/Stud-Difficulty",
+        "isContentRestricted": false
+      },
+      {
+        "id": 7330243159,
+        "rootPlaceId": 121996194682331,
+        "name": "\ud83c\udf99\ufe0f ITALIAN HANGOUT \ud83d\udd0a [BETA NEW]",
+        "description": "\ud83c\udf1f Welcome to \ud83c\udf99\ufe0f ITALIAN HANGOUT \ud83d\udd0a\nCreated with love by @Alvini290mega and @ethanolodjfann. Perfect for relaxing, having fun and making new friends. \ud83c\uddee\ud83c\uddf9\n\n\ud83c\udf06 Available Zones\n- \ud83d\udecb\ufe0f Chill Areas: Chatting in peace.\n- \ud83c\udfa4 Stage and Nightclub: Events and live music.\n- \ud83c\udfd6\ufe0f Italian beaches: Maritime atmosphere.\n- \ud83c\udf33 Natural Parks: Relax in nature.\n- \ud83d\ude97 Extra Zones: Discover new zones and unlock VIP vehicles!\n\n\ud83c\udfc6 Rewards\n- Earn badges, exclusive items and extraordinary means.\n\n\ud83d\udcac Support\n- Support the map by donating R$ (more updates!)\n- Join our community for support and news!",
+        "sourceName": null,
+        "sourceDescription": null,
+        "creator": {
+          "id": 33742489,
+          "name": "Infinity Project Studio's",
+          "type": "Group",
+          "isRNVAccount": false,
+          "hasVerifiedBadge": false
+        },
+        "price": null,
+        "allowedGearGenres": [
+          "All"
+        ],
+        "allowedGearCategories": [],
+        "isGenreEnforced": true,
+        "copyingAllowed": false,
+        "playing": 0,
+        "visits": 153,
+        "maxPlayers": 50,
+        "created": "2025-03-04T21:50:34.147Z",
+        "updated": "2026-09-04T15:26:51.446Z",
+        "studioAccessToApisAllowed": false,
+        "createVipServersAllowed": false,
+        "universeAvatarType": "MorphToR15",
+        "genre": "All",
+        "genre_l1": "Social",
+        "genre_l2": "",
+        "untranslated_genre_l1": "social",
+        "isAllGenre": true,
+        "isFavoritedByUser": false,
+        "favoritedCount": 7,
+        "canonicalUrlPath": "/games/121996194682331/ITALIAN-HANGOUT",
+        "isContentRestricted": false
+      },
+      {
+        "id": 6963288939,
+        "rootPlaceId": 101498791758910,
+        "name": "[\ud83c\udfafNEW] Infinity?? Obby? Record!",
+        "description": "\ud83c\udf89 GAME RELEASED - HOW FAR CAN YOU JUMP? \ud83c\udf89\n\n\ud83c\udfc3\u200d\u2642\ufe0f Jump further than ever before!\n\n\ud83c\udfc1 Keep jumping forward and beat your previous records!\n\ud83c\udfd3 Race against time and see how far you can go!\n\ud83c\udfaf Challenge your friends and see who can jump the farthest!\n\n\n\ud83d\ude80 COMING SOON:\n- New challenges and power-ups to help you jump even farther!\n- Leaderboards to track your progress and compete globally!\n\n\n\ud83d\udc4d and \u2b50 to support us!\n\ud83d\udc96 Thanks for playing and good luck beating your records!\n\n\ud83d\udd16 Tags: Jumping, Challenge, Record, Speedrun, Fun, Multiplayer, Leaderboards, Adventure, Competitive, Speed, Exploration, Friends, Endless Jump, Progress.",
+        "sourceName": null,
+        "sourceDescription": null,
+        "creator": {
+          "id": 33742489,
+          "name": "Infinity Project Studio's",
+          "type": "Group",
+          "isRNVAccount": false,
+          "hasVerifiedBadge": false
+        },
+        "price": null,
+        "allowedGearGenres": [
+          "All"
+        ],
+        "allowedGearCategories": [
+          "Ranged",
+          "PowerUps",
+          "Navigation",
+          "Social",
+          "Building",
+          "PersonalTransport"
+        ],
+        "isGenreEnforced": false,
+        "copyingAllowed": false,
+        "playing": 0,
+        "visits": 20,
+        "maxPlayers": 10,
+        "created": "2024-12-23T17:51:29.72Z",
+        "updated": "2025-11-12T21:59:02.497Z",
+        "studioAccessToApisAllowed": false,
+        "createVipServersAllowed": false,
+        "universeAvatarType": "MorphToR15",
+        "genre": "All",
+        "genre_l1": "Obby & Platformer",
+        "genre_l2": "Runner",
+        "untranslated_genre_l1": "obby_and_platformer",
+        "isAllGenre": true,
+        "isFavoritedByUser": false,
+        "favoritedCount": 1,
+        "canonicalUrlPath": "/games/101498791758910/Infinity-Obby-Record",
+        "isContentRestricted": false
+      },
+      {
+        "id": 8934658965,
+        "rootPlaceId": 92147363880035,
+        "name": "\u26f0\ufe0fDodger Climber",
+        "description": null,
+        "sourceName": null,
+        "sourceDescription": null,
+        "creator": {
+          "id": 33742489,
+          "name": "Infinity Project Studio's",
+          "type": "Group",
+          "isRNVAccount": false,
+          "hasVerifiedBadge": false
+        },
+        "price": null,
+        "allowedGearGenres": [
+          "All"
+        ],
+        "allowedGearCategories": [],
+        "isGenreEnforced": false,
+        "copyingAllowed": false,
+        "playing": 0,
+        "visits": 82,
+        "maxPlayers": 50,
+        "created": "2025-10-12T19:56:47.673Z",
+        "updated": "2026-09-04T15:35:16.013Z",
+        "studioAccessToApisAllowed": false,
+        "createVipServersAllowed": false,
+        "universeAvatarType": "MorphToR15",
+        "genre": "All",
+        "genre_l1": "",
+        "genre_l2": "",
+        "untranslated_genre_l1": "na",
+        "isAllGenre": true,
+        "isFavoritedByUser": false,
+        "favoritedCount": 1,
+        "canonicalUrlPath": "/games/92147363880035/Dodger-Climber",
+        "isContentRestricted": false
+      },
+      {
+        "id": 7853966833,
+        "rootPlaceId": 96607350124786,
+        "name": "Nycron [EARLY TESTING]",
+        "description": null,
+        "sourceName": null,
+        "sourceDescription": null,
+        "creator": {
+          "id": 33742489,
+          "name": "Infinity Project Studio's",
+          "type": "Group",
+          "isRNVAccount": false,
+          "hasVerifiedBadge": false
+        },
+        "price": null,
+        "allowedGearGenres": [
+          "All"
+        ],
+        "allowedGearCategories": [],
+        "isGenreEnforced": false,
+        "copyingAllowed": false,
+        "playing": 0,
+        "visits": 19,
+        "maxPlayers": 50,
+        "created": "2025-06-06T13:40:53.213Z",
+        "updated": "2026-07-31T17:41:03.995Z",
+        "studioAccessToApisAllowed": false,
+        "createVipServersAllowed": false,
+        "universeAvatarType": "MorphToR6",
+        "genre": "All",
+        "genre_l1": "Obby & Platformer",
+        "genre_l2": "Runner",
+        "untranslated_genre_l1": "obby_and_platformer",
+        "isAllGenre": true,
+        "isFavoritedByUser": false,
+        "favoritedCount": 1,
+        "canonicalUrlPath": "/games/96607350124786/Nycron",
+        "isContentRestricted": false
+      }
+    ]
+  },
+  "votes": {
+    "data": [
+      {
+        "id": 3266189000,
+        "upVotes": 8,
+        "downVotes": 2
+      },
+      {
+        "id": 7239022329,
+        "upVotes": 6,
+        "downVotes": 2
+      },
+      {
+        "id": 7330243159,
+        "upVotes": 2,
+        "downVotes": 0
+      },
+      {
+        "id": 6963288939,
+        "upVotes": 1,
+        "downVotes": 0
+      },
+      {
+        "id": 8934658965,
+        "upVotes": 0,
+        "downVotes": 0
+      },
+      {
+        "id": 7853966833,
+        "upVotes": 1,
+        "downVotes": 0
+      }
+    ]
+  },
+  "icons": {
+    "data": [
+      {
+        "targetId": 6963288939,
+        "state": "Completed",
+        "imageUrl": "https://tr.rbxcdn.com/180DAY-6dc8451d69e47d589f4791b327038a19/512/512/Image/Png/noFilter",
+        "version": "TN3"
+      },
+      {
+        "targetId": 7330243159,
+        "state": "Completed",
+        "imageUrl": "https://tr.rbxcdn.com/180DAY-1114d0b564d34ba68d6946d1581098e8/512/512/Image/Png/noFilter",
+        "version": "TN3"
+      },
+      {
+        "targetId": 3266189000,
+        "state": "Completed",
+        "imageUrl": "https://tr.rbxcdn.com/180DAY-83fb2d91121df9100add640107598e6d/512/512/Image/Png/noFilter",
+        "version": "TN3"
+      },
+      {
+        "targetId": 7239022329,
+        "state": "Completed",
+        "imageUrl": "https://tr.rbxcdn.com/180DAY-345d28dab47057bb1973e17a7872c781/512/512/Image/Png/noFilter",
+        "version": "TN3"
+      },
+      {
+        "targetId": 8934658965,
+        "state": "Completed",
+        "imageUrl": "https://t6.rbxcdn.com/180DAY-007dc222a830b5992e1a04073454e980",
+        "version": "TN3"
+      },
+      {
+        "targetId": 7853966833,
+        "state": "Completed",
+        "imageUrl": "https://t4.rbxcdn.com/180DAY-dc729135d7789ab11a92a9d761648577",
+        "version": "TN3"
+      }
+    ]
+  },
+  "group_icon": {
+    "data": [
+      {
+        "targetId": 33742489,
+        "state": "Completed",
+        "imageUrl": "https://tr.rbxcdn.com/180DAY-4ed5652c6445287484e24e35b0ba6235/420/420/Image/Png/noFilter",
+        "version": "TN3"
+      }
+    ]
+  }
+}

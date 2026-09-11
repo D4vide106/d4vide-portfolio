@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import styles from "./DraggableTerminal.module.css";
 import { FiTerminal } from "react-icons/fi";
-import { SiDiscord, SiGithub, SiYoutube, SiModrinth, SiCurseforge, SiInstagram, SiTiktok } from "react-icons/si";
+import { SiDiscord, SiGithub, SiYoutube, SiModrinth, SiCurseforge, SiInstagram, SiTiktok, SiRoblox } from "react-icons/si";
 import { useLiveStats } from "@/context/LiveStatsContext";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -238,9 +238,9 @@ export default function DraggableTerminal({ inlineMode = false }: { inlineMode?:
             <div style={{ fontSize: "0.75rem", color: "#e4e4e7" }}>
               <span style={{ color: "#30d158", fontWeight: 700 }}>OS:</span> D4VIDE106 Creator Kernel v4.2.0<br />
               <span style={{ color: "#30d158", fontWeight: 700 }}>Uptime:</span> 99.99% (Live Active)<br />
-              <span style={{ color: "#30d158", fontWeight: 700 }}>Total Downloads:</span> {totalDownloads.toLocaleString()}<br />
+              <span style={{ color: "#30d158", fontWeight: 700 }}>Total Downloads & Plays:</span> {totalDownloads.toLocaleString()}<br />
               <span style={{ color: "#30d158", fontWeight: 700 }}>Portfolio Views:</span> {portfolioViews.toLocaleString()}<br />
-              <span style={{ color: "#30d158", fontWeight: 700 }}>Active Projects:</span> {projects.length} Minecraft Mods & Modpacks
+              <span style={{ color: "#30d158", fontWeight: 700 }}>Active Projects:</span> {projects.length} Across Minecraft & Roblox
             </div>
           )
         });
@@ -252,10 +252,10 @@ export default function DraggableTerminal({ inlineMode = false }: { inlineMode?:
           type: "output",
           content: (
             <div style={{ fontSize: "0.75rem", color: "#e4e4e7" }}>
-              <div style={{ color: "#64d2ff", fontWeight: 700, marginBottom: "0.3rem" }}>{tDict.topModsHeader || "TOP CREATED MODS:"}</div>
+              <div style={{ color: "#64d2ff", fontWeight: 700, marginBottom: "0.3rem" }}>{tDict.topModsHeader || "PUBLISHED WORKS & GAMES:"}</div>
               {projects.map((p, idx) => (
                 <div key={p.id} style={{ marginBottom: "0.2rem" }}>
-                  {idx + 1}. <span style={{ color: "#ffffff", fontWeight: 700 }}>{(contextDict as any)?.projectData?.[p.id]?.title || p.title}</span> ({p.downloads.toLocaleString()} DLs)
+                  {idx + 1}. <span style={{ color: "#ffffff", fontWeight: 700 }}>{(contextDict as any)?.projectData?.[p.id]?.title || p.title}</span> [{p.type}] ({p.downloads.toLocaleString()} {p.category === "roblox" ? "Visits" : "DLs"})
                 </div>
               ))}
             </div>
@@ -268,7 +268,7 @@ export default function DraggableTerminal({ inlineMode = false }: { inlineMode?:
           type: "output",
           content: (
             <div style={{ fontSize: "0.75rem", color: "#e4e4e7" }}>
-              <div>🟢 <span style={{ color: "#30d158", fontWeight: 700 }}>Total Downloads:</span> {totalDownloads.toLocaleString()}</div>
+              <div>🟢 <span style={{ color: "#30d158", fontWeight: 700 }}>Total Downloads & Plays:</span> {totalDownloads.toLocaleString()}</div>
               <div>👀 <span style={{ color: "#64d2ff", fontWeight: 700 }}>Portfolio Real Views:</span> {portfolioViews.toLocaleString()}</div>
             </div>
           )
@@ -280,6 +280,7 @@ export default function DraggableTerminal({ inlineMode = false }: { inlineMode?:
           type: "output",
           content: (
             <div style={{ fontSize: "0.75rem", color: "#e4e4e7", display: "flex", flexDirection: "column", gap: "0.2rem" }}>
+              <a href="https://www.roblox.com/communities/33742489/Infinity-Project-Studios" target="_blank" rel="noreferrer" style={{ color: "#ff3b30", textDecoration: "none" }}><SiRoblox style={{ verticalAlign: "middle", marginRight: 4 }} /> Roblox Studio (Infinity Project Studio&apos;s)</a>
               <a href="https://modrinth.com/user/D4vide106" target="_blank" rel="noreferrer" style={{ color: "#1bd96a", textDecoration: "none" }}><SiModrinth style={{ verticalAlign: "middle", marginRight: 4 }} /> Modrinth (@D4vide106)</a>
               <a href="https://www.curseforge.com/members/d4vide106/projects" target="_blank" rel="noreferrer" style={{ color: "#f16436", textDecoration: "none" }}><SiCurseforge style={{ verticalAlign: "middle", marginRight: 4 }} /> CurseForge (@d4vide106)</a>
               <a href="https://youtube.com/@d4vide106" target="_blank" rel="noreferrer" style={{ color: "#ff453a", textDecoration: "none" }}><SiYoutube style={{ verticalAlign: "middle", marginRight: 4 }} /> YouTube (@d4vide106)</a>

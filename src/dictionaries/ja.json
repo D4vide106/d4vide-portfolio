@@ -64,7 +64,21 @@
     "mod": "Mod",
     "resourcepack": "リソースパック",
     "plugin": "プラグイン",
-    "server": "サーバー"
+    "server": "サーバー",
+    "allCategories": "All",
+    "minecraftCategory": "Minecraft",
+    "robloxCategory": "Roblox",
+    "totalVisits": "TOTAL VISITS",
+    "rating": "RATING",
+    "activePlayers": "ONLINE PLAYERS",
+    "serverCapacity": "SERVER CAPACITY",
+    "createdBy": "CREATED BY",
+    "playOnRoblox": "PLAY ON ROBLOX",
+    "visitGroup": "OFFICIAL GROUP",
+    "robloxObby": "Obby & Platformer",
+    "robloxSocial": "Social Hangout",
+    "robloxRunner": "Endless Runner",
+    "robloxClimber": "Climber"
   },
   "projectData": {
     "project-boss-rpg": {
@@ -106,6 +120,30 @@
     "infinitysmart": {
       "title": "INFINITYSMART SERVER",
       "description": "InfinitySMPやミニゲームを楽しめる、クロスプレイ対応の欧州Minecraft Java＆Bedrockネットワーク。"
+    },
+    "extreme-obby": {
+      "title": "Extreme Obby! [UPD]",
+      "description": "Intense 50+ level parkour obstacle challenge! Complete levels with as few deaths as possible in open beta v3.0."
+    },
+    "stud-difficulty": {
+      "title": "Stud Difficulty [ALPHA]",
+      "description": "Professional precision challenge pushing your skills to the limit. Features high jumps, long jumps, quests, and checkpoints."
+    },
+    "italian-hangout": {
+      "title": "ITALIAN HANGOUT [BETA NEW]",
+      "description": "The ultimate Italian social hangout hub. Relax, meet new friends, explore beaches, attend music events, and drive VIP vehicles."
+    },
+    "infinity-obby-record": {
+      "title": "Infinity Obby Record! [NEW]",
+      "description": "Endless jump challenge! Keep leaping forward, beat your previous high scores, race against the timer, and challenge friends globally."
+    },
+    "dodger-climber": {
+      "title": "Dodger Climber",
+      "description": "Scale challenging vertical cliffs and mountain paths while dodging hazards and testing your timing and reflexes."
+    },
+    "nycron": {
+      "title": "Nycron [EARLY TESTING]",
+      "description": "Experimental platformer featuring custom momentum mechanics, unique physics challenges, and world progression."
     }
   },
   "terminal": {

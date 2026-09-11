@@ -3,7 +3,7 @@
 import { createPortal } from "react-dom";
 import { useState, useEffect } from "react";
 import { FiDownloadCloud, FiEye, FiX, FiAward, FiShield } from "react-icons/fi";
-import { SiCurseforge, SiModrinth, SiGamejolt, SiItchdotio } from "react-icons/si";
+import { SiCurseforge, SiModrinth, SiGamejolt, SiItchdotio, SiRoblox } from "react-icons/si";
 import { useLiveStats } from "@/context/LiveStatsContext";
 import { useLanguage } from "@/context/LanguageContext";
 import AnimatedNumber from "./AnimatedNumber";
@@ -136,6 +136,14 @@ export default function TotalDownloads() {
                   </span>
                   <span className={styles.platformVal}>
                     <AnimatedNumber value={platformTotals.itch || 0} />
+                  </span>
+                </div>
+                <div className={styles.tooltipRow}>
+                  <span className={styles.platformLabel}>
+                    <SiRoblox color="#e2231a" size={13} /> Roblox
+                  </span>
+                  <span className={styles.platformVal}>
+                    <AnimatedNumber value={platformTotals.roblox || 0} />
                   </span>
                 </div>
               </div>

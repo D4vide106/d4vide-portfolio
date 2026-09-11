@@ -1,0 +1,717 @@
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modalContent {
+  background: rgba(18, 18, 24, 0.96);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 680px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 1.75rem;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.92), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  position: relative;
+  animation: scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.modalContent::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modalContent::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+/* Mac Header */
+.modalMacHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.modalTrafficLights {
+  display: flex;
+  gap: 6px;
+}
+
+.trafficDot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  transition: opacity 0.2s;
+}
+
+.dotRed {
+  background: #ff5f56;
+  cursor: pointer;
+}
+
+.dotRed:hover {
+  opacity: 0.8;
+}
+
+.dotYellow {
+  background: #ffbd2e;
+}
+
+.dotGreen {
+  background: #27c93f;
+}
+
+.macHeaderTitle {
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #86868b;
+  max-width: 60%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+.modalCloseBtn {
+  background: none;
+  border: none;
+  color: #86868b;
+  font-size: 1.4rem;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.2s;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalCloseBtn:hover {
+  color: #ffffff;
+}
+
+/* Widescreen Thumbnail Banner */
+.thumbnailBannerWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: 260px;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 1.35rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6);
+  background: #0d0d12;
+}
+
+.thumbnailBannerImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.thumbnailBannerWrapper:hover .thumbnailBannerImg {
+  transform: scale(1.02);
+}
+
+.thumbnailOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(18, 18, 24, 0) 40%,
+    rgba(18, 18, 24, 0.85) 100%
+  );
+  pointer-events: none;
+}
+
+.thumbnailBadge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.75rem;
+  background: rgba(15, 15, 20, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 9999px;
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.livePulseDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #e2231a;
+  box-shadow: 0 0 8px #e2231a;
+  animation: pulseRoblox 2s infinite;
+}
+
+@keyframes pulseRoblox {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+/* Modal Main Info Header */
+.modalHeader {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  margin-bottom: 1.4rem;
+}
+
+.modalLogoBox {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.modalLogo {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+  display: block;
+}
+
+.modalTitleArea {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 1;
+}
+
+.modalCategoryBadge {
+  font-family: var(--font-body);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #64d2ff;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.robloxModalBadge {
+  color: #ff5f56;
+}
+
+.modalTitle {
+  font-family: var(--font-heading);
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.modalDesc {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: #a1a1a6;
+  margin: 0.2rem 0 0 0;
+}
+
+/* Roblox Creator Studio Card */
+.modalCreatorCard {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin: 0.35rem 0 0.15rem 0;
+  padding: 0.35rem 0.75rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  width: fit-content;
+}
+
+.creatorGroupAvatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.creatorDetails {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.76rem;
+}
+
+.creatorLabel {
+  font-family: var(--font-body);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #86868b;
+  text-transform: uppercase;
+}
+
+.creatorGroupLink {
+  font-family: var(--font-heading);
+  color: #ffffff;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-weight: 700;
+  transition: color 0.2s;
+}
+
+.creatorGroupLink:hover {
+  color: #64d2ff;
+}
+
+/* ── STATS SECTION (REDESIGNED PREMIUM FROSTED CARDS) ── */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.85rem;
+  margin-bottom: 1.4rem;
+}
+
+.statCard {
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 0.95rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.6rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.statCard:hover {
+  background: rgba(255, 255, 255, 0.055);
+  border-color: rgba(255, 255, 255, 0.16);
+  transform: translateY(-2px);
+}
+
+.statHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.statIconBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+}
+
+.badgeEmerald {
+  background: rgba(48, 209, 88, 0.15);
+  color: #30d158;
+}
+
+.badgeGold {
+  background: rgba(255, 189, 46, 0.15);
+  color: #ffbd2e;
+}
+
+.badgeCyan {
+  background: rgba(100, 210, 255, 0.15);
+  color: #64d2ff;
+}
+
+.badgePurple {
+  background: rgba(191, 90, 242, 0.15);
+  color: #bf5af2;
+}
+
+.statLabel {
+  font-family: var(--font-body);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #8e8e93;
+  text-transform: uppercase;
+}
+
+.statMainValue {
+  font-family: var(--font-heading);
+  font-size: 1.55rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.1;
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+
+.statStarIcon {
+  font-size: 1.15rem;
+  color: #ffbd2e;
+}
+
+/* Rating Progress Bar */
+.ratingProgressTrack {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  overflow: hidden;
+  margin-top: 0.15rem;
+}
+
+.ratingProgressBar {
+  height: 100%;
+  background: linear-gradient(90deg, #30d158 0%, #34c759 100%);
+  border-radius: 9999px;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Bottom Sub-chips in Stat Cards */
+.statFooterChip {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  color: #8e8e93;
+}
+
+.subPillGreen {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.68rem;
+  color: #30d158;
+  font-weight: 600;
+}
+
+.microDotLive {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #30d158;
+  box-shadow: 0 0 6px rgba(48, 209, 88, 0.8);
+}
+
+.microDotOffline {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #636366;
+}
+
+/* Votes Breakdown Chips */
+.votesRow {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.voteChipPositive {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 6px;
+  background: rgba(48, 209, 88, 0.12);
+  border: 1px solid rgba(48, 209, 88, 0.25);
+  color: #30d158;
+  font-size: 0.66rem;
+  font-weight: 700;
+}
+
+.voteChipNegative {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 6px;
+  background: rgba(255, 69, 58, 0.12);
+  border: 1px solid rgba(255, 69, 58, 0.25);
+  color: #ff453a;
+  font-size: 0.66rem;
+  font-weight: 700;
+}
+
+.serverCapacityChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.18rem 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  font-size: 0.66rem;
+  color: #a1a1a6;
+  font-weight: 600;
+}
+
+/* Tags Section */
+.modalTagsSection {
+  margin-bottom: 1.4rem;
+}
+
+.sectionLabel {
+  font-family: var(--font-body);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #86868b;
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-transform: uppercase;
+}
+
+.modalTagsList {
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.modalTagBadge {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: #64d2ff;
+  background: rgba(100, 210, 255, 0.08);
+  border: 1px solid rgba(100, 210, 255, 0.18);
+  padding: 0.25rem 0.7rem;
+  border-radius: 9999px;
+  transition: all 0.2s;
+}
+
+.modalTagBadge:hover {
+  background: rgba(100, 210, 255, 0.15);
+  border-color: rgba(100, 210, 255, 0.35);
+}
+
+/* Platforms / Action Buttons */
+.modalPlatformsSection {
+  margin-top: 0.5rem;
+}
+
+.modalRobloxActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.robloxPrimaryPlayBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.95rem 1.4rem;
+  background: linear-gradient(135deg, #e2231a 0%, #b3140c 100%);
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 24px rgba(226, 35, 26, 0.35);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.robloxPrimaryPlayBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(226, 35, 26, 0.55);
+  background: linear-gradient(135deg, #f02c22 0%, #c41810 100%);
+}
+
+.robloxGroupBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  width: 100%;
+  padding: 0.8rem 1.2rem;
+  background: rgba(255, 255, 255, 0.05);
+  color: #e4e4e7;
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.25s;
+}
+
+.robloxGroupBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+.groupBtnIcon {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  object-fit: cover;
+}
+
+/* Minecraft Platform Groups */
+.platformGroupsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.platformGroup {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 0.9rem 1.1rem;
+}
+
+.platformGroupHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.6rem;
+}
+
+.platformGroupName {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.platformGroupTotal {
+  margin-left: auto;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: #30d158;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-weight: 700;
+}
+
+.platformEditions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.editionBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.85rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+  color: #e4e4e7;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.editionBtn:hover {
+  background: #ffffff;
+  color: #000000;
+}
+
+.editionDownloads {
+  font-weight: 700;
+  color: #30d158;
+}
+
+/* Responsive styles */
+@media (max-width: 640px) {
+  .modalContent {
+    padding: 1.25rem;
+    border-radius: 20px;
+  }
+
+  .thumbnailBannerWrapper {
+    max-height: 190px;
+    margin-bottom: 1rem;
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+  }
+
+  .statCard {
+    padding: 0.85rem 0.95rem;
+  }
+
+  .statMainValue {
+    font-size: 1.35rem;
+  }
+
+  .modalHeader {
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .modalTitle {
+    font-size: 1.25rem;
+  }
+}

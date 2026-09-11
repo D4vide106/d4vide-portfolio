@@ -691,3 +691,285 @@
     padding: 0.5rem 0.9rem;
   }
 }
+
+/* ── CATEGORY PILLS (ALL / MINECRAFT / ROBLOX) ─────────────────── */
+.categoryPillsContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.3rem 0.35rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  margin-bottom: 1rem;
+  width: fit-content;
+  flex-wrap: wrap;
+}
+
+.categoryPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 1.1rem;
+  border-radius: 9999px;
+  font-family: var(--font-heading);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #a1a1a6;
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.categoryPill:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.activeCategoryPill {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.activeCategoryPillRoblox {
+  color: #ffffff !important;
+  background: rgba(226, 35, 26, 0.2) !important;
+  border-color: rgba(226, 35, 26, 0.4) !important;
+  box-shadow: 0 4px 16px rgba(226, 35, 26, 0.25);
+}
+
+.activeCategoryPillMinecraft {
+  color: #ffffff !important;
+  background: rgba(48, 209, 88, 0.18) !important;
+  border-color: rgba(48, 209, 88, 0.35) !important;
+  box-shadow: 0 4px 16px rgba(48, 209, 88, 0.2);
+}
+
+.countBubble {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.1rem 0.45rem;
+  font-size: 0.65rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #d1d1d6;
+}
+
+.badgeRow {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.robloxTypeBadge {
+  color: #ff6961 !important;
+}
+
+.robloxBrandPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: var(--font-body);
+  font-size: 0.56rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #ffffff;
+  background: rgba(226, 35, 26, 0.25);
+  border: 1px solid rgba(226, 35, 26, 0.4);
+  padding: 0.12rem 0.45rem;
+  border-radius: 9999px;
+}
+
+.cardAuthor {
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  color: #86868b;
+  font-weight: 500;
+  display: block;
+  margin-top: 0.1rem;
+}
+
+.robloxCardStats {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.visitStat {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #30d158;
+}
+
+.ratingStat {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #ffbd2e;
+  background: rgba(255, 189, 46, 0.1);
+  border: 1px solid rgba(255, 189, 46, 0.2);
+  padding: 0.1rem 0.4rem;
+  border-radius: 6px;
+}
+
+/* Modal Creator Card */
+.modalCreatorCard {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin: 0.4rem 0 0.6rem 0;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.35rem 0.75rem;
+  border-radius: 12px;
+  width: fit-content;
+}
+
+.creatorGroupAvatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.creatorDetails {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.creatorLabel {
+  font-family: var(--font-body);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #86868b;
+  text-transform: uppercase;
+}
+
+.creatorGroupLink {
+  color: #ffffff;
+  text-decoration: none;
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: color 0.2s;
+}
+
+.creatorGroupLink:hover {
+  color: #ff6961;
+}
+
+.ratingNumber {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.votesBreakdown {
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: #86868b;
+  font-family: var(--font-body);
+}
+
+.playersNumber {
+  display: flex;
+  align-items: baseline;
+  gap: 0.3rem;
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.serverCap {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: #86868b;
+}
+
+/* Modal Roblox Actions */
+.modalRobloxActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.robloxPrimaryPlayBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  width: 100%;
+  padding: 0.9rem 1.4rem;
+  background: linear-gradient(135deg, #e2231a 0%, #b3140c 100%);
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 24px rgba(226, 35, 26, 0.35);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.robloxPrimaryPlayBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(226, 35, 26, 0.55);
+  background: linear-gradient(135deg, #f02c22 0%, #c41810 100%);
+}
+
+.robloxGroupBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.75rem 1.2rem;
+  background: rgba(255, 255, 255, 0.05);
+  color: #e4e4e7;
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.25s;
+}
+
+.robloxGroupBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.groupBtnIcon {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  object-fit: cover;
+}

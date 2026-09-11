@@ -64,7 +64,21 @@
     "mod": "Mod",
     "resourcepack": "Resource Pack",
     "plugin": "Plugin",
-    "server": "Server"
+    "server": "Server",
+    "allCategories": "Tutti",
+    "minecraftCategory": "Minecraft",
+    "robloxCategory": "Roblox",
+    "totalVisits": "VISITE TOTALI",
+    "rating": "VALUTAZIONE",
+    "activePlayers": "GIOCATORI ONLINE",
+    "serverCapacity": "CAPIENZA SERVER",
+    "createdBy": "CREATO DA",
+    "playOnRoblox": "GIOCA SU ROBLOX",
+    "visitGroup": "GRUPPO UFFICIALE",
+    "robloxObby": "Obby & Platformer",
+    "robloxSocial": "Social Hangout",
+    "robloxRunner": "Endless Runner",
+    "robloxClimber": "Climber"
   },
   "projectData": {
     "project-boss-rpg": {
@@ -106,6 +120,30 @@
     "infinitysmart": {
       "title": "INFINITYSMART SERVER",
       "description": "Network Minecraft Java & Bedrock europeo multipiattaforma con InfinitySMP e minigiochi."
+    },
+    "extreme-obby": {
+      "title": "Extreme Obby! [UPD]",
+      "description": "Sfida parkour hardcore con oltre 50 livelli! Completa gli ostacoli con il minor numero di morti nella beta aperta v3.0."
+    },
+    "stud-difficulty": {
+      "title": "Stud Difficulty [ALPHA]",
+      "description": "Percorso a ostacoli di precisione professionale che spinge le tue abilità al limite. Con salti alti, salti lunghi, missioni e checkpoint."
+    },
+    "italian-hangout": {
+      "title": "ITALIAN HANGOUT [BETA NEW]",
+      "description": "L'hub di ritrovo social italiano definitivo. Rilassati, fai nuove amicizie, esplora spiagge, partecipa a serate musicali e guida veicoli VIP."
+    },
+    "infinity-obby-record": {
+      "title": "Infinity Obby Record! [NEW]",
+      "description": "Sfida di salti infiniti! Continua a saltare in avanti, batti i tuoi record personali, corri contro il tempo e sfida gli amici in classifica."
+    },
+    "dodger-climber": {
+      "title": "Dodger Climber",
+      "description": "Scala pareti e percorsi montani verticali schivando pericoli e ostacoli per mettere alla prova riflessi e tempismo."
+    },
+    "nycron": {
+      "title": "Nycron [EARLY TESTING]",
+      "description": "Platform sperimentale con meccaniche di movimento personalizzate, sfide fisiche uniche e progressione nel mondo di gioco."
     }
   },
   "terminal": {

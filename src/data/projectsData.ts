@@ -1,13 +1,33 @@
 export interface ProjectLink {
   label: string;
   url: string;
-  platform: "modrinth" | "curseforge" | "gamejolt" | "itch" | "github" | "web";
+  platform: "modrinth" | "curseforge" | "gamejolt" | "itch" | "github" | "web" | "roblox";
   mrId?: string;
   cfPath?: string;
+  robloxUniverseId?: number;
+  robloxPlaceId?: number;
   initialDownloads?: number;
 }
 
-export type ProjectCategory = "all" | "minecraft" | "games" | "apps";
+export type ProjectCategory = "all" | "minecraft" | "roblox" | "games" | "apps";
+
+export interface RobloxStats {
+  universeId: number;
+  placeId: number;
+  creatorName: string;
+  creatorType: string;
+  creatorId: number;
+  creatorUrl: string;
+  visits: number;
+  playing: number;
+  maxPlayers: number;
+  upVotes: number;
+  downVotes: number;
+  ratingPercent: number;
+  favorites: number;
+  groupLogo?: string;
+  fallbackIconUrl?: string;
+}
 
 export interface UnifiedProject {
   id: string;
@@ -15,12 +35,25 @@ export interface UnifiedProject {
   slug: string;
   description: string;
   icon_url: string;
+  fallback_icon_url?: string;
+  thumbnail_url?: string;
+  fallback_thumbnail_url?: string;
   type: string;
-  category: "minecraft" | "games" | "apps";
+  category: "minecraft" | "roblox" | "games" | "apps";
   tags: string[];
   downloads: number;
   updated: string;
   links: ProjectLink[];
+  robloxStats?: RobloxStats;
+}
+
+export function resolveAssetUrl(url?: string): string {
+  if (!url) return "";
+  if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("data:")) return url;
+  const basePath = "/d4vide-portfolio";
+  const cleanUrl = url.startsWith("/") ? url : `/${url}`;
+  if (cleanUrl.startsWith(basePath)) return cleanUrl;
+  return `${basePath}${cleanUrl}`;
 }
 
 export const MAIN_PROJECTS: UnifiedProject[] = [
@@ -311,6 +344,288 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
         platform: "modrinth",
         mrId: "infinitysmart",
         initialDownloads: 0
+      }
+    ]
+  },
+  {
+    id: "extreme-obby",
+    title: "Extreme Obby! [UPD]",
+    slug: "extreme-obby",
+    description: "Intense 50+ level parkour obstacle challenge! Complete levels with as few deaths as possible in open beta v3.0.",
+    icon_url: "https://tr.rbxcdn.com/180DAY-83fb2d91121df9100add640107598e6d/512/512/Image/Png/noFilter",
+    fallback_icon_url: "/images/roblox/extreme-obby.png",
+    thumbnail_url: "https://tr.rbxcdn.com/180DAY-1f21c39edd0a217a8f3d59799f5c425d/768/432/Image/Png/noFilter",
+    fallback_thumbnail_url: "/images/roblox/extreme-obby-thumb.png",
+    type: "Roblox Obby",
+    category: "roblox",
+    tags: ["Roblox", "Obby", "Parkour", "50+ Levels", "Hardcore", "Speedrun", "Beta 3.0", "Multiplayer"],
+    downloads: 666,
+    updated: "2026-08-27",
+    robloxStats: {
+      universeId: 3266189000,
+      placeId: 8568254840,
+      creatorName: "Infinity Project Studio's",
+      creatorType: "Group",
+      creatorId: 33742489,
+      creatorUrl: "https://www.roblox.com/communities/33742489/Infinity-Project-Studios",
+      visits: 666,
+      playing: 0,
+      maxPlayers: 50,
+      upVotes: 8,
+      downVotes: 2,
+      ratingPercent: 80,
+      favorites: 11,
+      groupLogo: "https://tr.rbxcdn.com/180DAY-4ed5652c6445287484e24e35b0ba6235/420/420/Image/Png/noFilter",
+      fallbackIconUrl: "https://tr.rbxcdn.com/180DAY-83fb2d91121df9100add640107598e6d/512/512/Image/Png/noFilter"
+    },
+    links: [
+      {
+        label: "Gioca su Roblox",
+        url: "https://www.roblox.com/games/8568254840/Extreme-Obby",
+        platform: "roblox",
+        robloxUniverseId: 3266189000,
+        robloxPlaceId: 8568254840,
+        initialDownloads: 666
+      },
+      {
+        label: "Infinity Project Studio's",
+        url: "https://www.roblox.com/communities/33742489/Infinity-Project-Studios",
+        platform: "roblox"
+      }
+    ]
+  },
+  {
+    id: "stud-difficulty",
+    title: "Stud Difficulty [ALPHA]",
+    slug: "stud-difficulty",
+    description: "Professional precision challenge pushing your skills to the limit. Features high jumps, long jumps, quests, and checkpoints.",
+    icon_url: "https://tr.rbxcdn.com/180DAY-345d28dab47057bb1973e17a7872c781/512/512/Image/Png/noFilter",
+    fallback_icon_url: "/images/roblox/stud-difficulty.png",
+    thumbnail_url: "https://tr.rbxcdn.com/180DAY-38d051e294d848c54603dc9d727e1759/768/432/Image/Png/noFilter",
+    fallback_thumbnail_url: "/images/roblox/stud-difficulty-thumb.png",
+    type: "Roblox Obby",
+    category: "roblox",
+    tags: ["Roblox", "Obby", "Studs", "Parkour", "Precision", "Long Jump", "Alpha", "Quests"],
+    downloads: 773,
+    updated: "2026-08-27",
+    robloxStats: {
+      universeId: 7239022329,
+      placeId: 140410268649534,
+      creatorName: "Infinity Project Studio's",
+      creatorType: "Group",
+      creatorId: 33742489,
+      creatorUrl: "https://www.roblox.com/communities/33742489/Infinity-Project-Studios",
+      visits: 773,
+      playing: 0,
+      maxPlayers: 10,
+      upVotes: 6,
+      downVotes: 2,
+      ratingPercent: 75,
+      favorites: 5,
+      groupLogo: "https://tr.rbxcdn.com/180DAY-4ed5652c6445287484e24e35b0ba6235/420/420/Image/Png/noFilter",
+      fallbackIconUrl: "https://tr.rbxcdn.com/180DAY-345d28dab47057bb1973e17a7872c781/512/512/Image/Png/noFilter"
+    },
+    links: [
+      {
+        label: "Gioca su Roblox",
+        url: "https://www.roblox.com/games/140410268649534/Stud-Difficulty",
+        platform: "roblox",
+        robloxUniverseId: 7239022329,
+        robloxPlaceId: 140410268649534,
+        initialDownloads: 773
+      },
+      {
+        label: "Infinity Project Studio's",
+        url: "https://www.roblox.com/communities/33742489/Infinity-Project-Studios",
+        platform: "roblox"
+      }
+    ]
+  },
+  {
+    id: "italian-hangout",
+    title: "ITALIAN HANGOUT [BETA NEW]",
+    slug: "italian-hangout",
+    description: "The ultimate Italian social hangout hub. Relax, meet new friends, explore beaches, attend music events, and drive VIP vehicles.",
+    icon_url: "https://tr.rbxcdn.com/180DAY-1114d0b564d34ba68d6946d1581098e8/512/512/Image/Png/noFilter",
+    fallback_icon_url: "/images/roblox/italian-hangout.png",
+    thumbnail_url: "https://tr.rbxcdn.com/180DAY-34e9515a125af11ecc8561edab43e16f/768/432/Image/Png/noFilter",
+    fallback_thumbnail_url: "/images/roblox/italian-hangout-thumb.png",
+    type: "Roblox Social",
+    category: "roblox",
+    tags: ["Roblox", "Social", "Hangout", "Italian", "Music", "Events", "Roleplay", "Vehicles"],
+    downloads: 153,
+    updated: "2026-09-04",
+    robloxStats: {
+      universeId: 7330243159,
+      placeId: 121996194682331,
+      creatorName: "Infinity Project Studio's",
+      creatorType: "Group",
+      creatorId: 33742489,
+      creatorUrl: "https://www.roblox.com/communities/33742489/Infinity-Project-Studios",
+      visits: 153,
+      playing: 0,
+      maxPlayers: 50,
+      upVotes: 2,
+      downVotes: 0,
+      ratingPercent: 100,
+      favorites: 7,
+      groupLogo: "https://tr.rbxcdn.com/180DAY-4ed5652c6445287484e24e35b0ba6235/420/420/Image/Png/noFilter",
+      fallbackIconUrl: "https://tr.rbxcdn.com/180DAY-1114d0b564d34ba68d6946d1581098e8/512/512/Image/Png/noFilter"
+    },
+    links: [
+      {
+        label: "Gioca su Roblox",
+        url: "https://www.roblox.com/games/121996194682331/ITALIAN-HANGOUT",
+        platform: "roblox",
+        robloxUniverseId: 7330243159,
+        robloxPlaceId: 121996194682331,
+        initialDownloads: 153
+      },
+      {
+        label: "Infinity Project Studio's",
+        url: "https://www.roblox.com/communities/33742489/Infinity-Project-Studios",
+        platform: "roblox"
+      }
+    ]
+  },
+  {
+    id: "infinity-obby-record",
+    title: "Infinity Obby Record! [NEW]",
+    slug: "infinity-obby-record",
+    description: "Endless jump challenge! Keep leaping forward, beat your previous high scores, race against the timer, and challenge friends globally.",
+    icon_url: "https://tr.rbxcdn.com/180DAY-6dc8451d69e47d589f4791b327038a19/512/512/Image/Png/noFilter",
+    fallback_icon_url: "/images/roblox/infinity-obby-record.png",
+    thumbnail_url: "https://tr.rbxcdn.com/180DAY-a630ab167a064309bee9f967649a3c2e/768/432/Image/Png/noFilter",
+    fallback_thumbnail_url: "/images/roblox/infinity-obby-record-thumb.png",
+    type: "Roblox Runner",
+    category: "roblox",
+    tags: ["Roblox", "Obby", "Runner", "Endless Jump", "High Scores", "Speedrun", "Multiplayer"],
+    downloads: 20,
+    updated: "2025-11-12",
+    robloxStats: {
+      universeId: 6963288939,
+      placeId: 101498791758910,
+      creatorName: "Infinity Project Studio's",
+      creatorType: "Group",
+      creatorId: 33742489,
+      creatorUrl: "https://www.roblox.com/communities/33742489/Infinity-Project-Studios",
+      visits: 20,
+      playing: 0,
+      maxPlayers: 10,
+      upVotes: 1,
+      downVotes: 0,
+      ratingPercent: 100,
+      favorites: 1,
+      groupLogo: "https://tr.rbxcdn.com/180DAY-4ed5652c6445287484e24e35b0ba6235/420/420/Image/Png/noFilter",
+      fallbackIconUrl: "https://tr.rbxcdn.com/180DAY-6dc8451d69e47d589f4791b327038a19/512/512/Image/Png/noFilter"
+    },
+    links: [
+      {
+        label: "Gioca su Roblox",
+        url: "https://www.roblox.com/games/101498791758910/Infinity-Obby-Record",
+        platform: "roblox",
+        robloxUniverseId: 6963288939,
+        robloxPlaceId: 101498791758910,
+        initialDownloads: 20
+      },
+      {
+        label: "Infinity Project Studio's",
+        url: "https://www.roblox.com/communities/33742489/Infinity-Project-Studios",
+        platform: "roblox"
+      }
+    ]
+  },
+  {
+    id: "dodger-climber",
+    title: "Dodger Climber",
+    slug: "dodger-climber",
+    description: "Scale challenging vertical cliffs and mountain paths while dodging hazards and testing your timing and reflexes.",
+    icon_url: "https://t6.rbxcdn.com/180DAY-007dc222a830b5992e1a04073454e980",
+    fallback_icon_url: "/images/roblox/dodger-climber.png",
+    thumbnail_url: "https://tr.rbxcdn.com/180DAY-e0736769672017234e02eb8938cb684d/768/432/GameMediaItem12/Png/noFilter",
+    fallback_thumbnail_url: "/images/roblox/dodger-climber-thumb.png",
+    type: "Roblox Climber",
+    category: "roblox",
+    tags: ["Roblox", "Climber", "Action", "Dodger", "Precision", "Vertical", "Multiplayer"],
+    downloads: 82,
+    updated: "2026-09-04",
+    robloxStats: {
+      universeId: 8934658965,
+      placeId: 92147363880035,
+      creatorName: "Infinity Project Studio's",
+      creatorType: "Group",
+      creatorId: 33742489,
+      creatorUrl: "https://www.roblox.com/communities/33742489/Infinity-Project-Studios",
+      visits: 82,
+      playing: 0,
+      maxPlayers: 50,
+      upVotes: 0,
+      downVotes: 0,
+      ratingPercent: 100,
+      favorites: 1,
+      groupLogo: "https://tr.rbxcdn.com/180DAY-4ed5652c6445287484e24e35b0ba6235/420/420/Image/Png/noFilter",
+      fallbackIconUrl: "https://t6.rbxcdn.com/180DAY-007dc222a830b5992e1a04073454e980"
+    },
+    links: [
+      {
+        label: "Gioca su Roblox",
+        url: "https://www.roblox.com/games/92147363880035/Dodger-Climber",
+        platform: "roblox",
+        robloxUniverseId: 8934658965,
+        robloxPlaceId: 92147363880035,
+        initialDownloads: 82
+      },
+      {
+        label: "Infinity Project Studio's",
+        url: "https://www.roblox.com/communities/33742489/Infinity-Project-Studios",
+        platform: "roblox"
+      }
+    ]
+  },
+  {
+    id: "nycron",
+    title: "Nycron [EARLY TESTING]",
+    slug: "nycron",
+    description: "Experimental platformer featuring custom momentum mechanics, unique physics challenges, and world progression.",
+    icon_url: "https://t4.rbxcdn.com/180DAY-dc729135d7789ab11a92a9d761648577",
+    fallback_icon_url: "/images/roblox/nycron.png",
+    thumbnail_url: "https://tr.rbxcdn.com/180DAY-181dd0532816faa51a071e6f17e29010/768/432/GameMediaItem11/Png/noFilter",
+    fallback_thumbnail_url: "/images/roblox/nycron-thumb.png",
+    type: "Roblox Platformer",
+    category: "roblox",
+    tags: ["Roblox", "Platformer", "Early Testing", "Runner", "Physics", "Mechanics", "Exploration"],
+    downloads: 19,
+    updated: "2026-07-31",
+    robloxStats: {
+      universeId: 7853966833,
+      placeId: 96607350124786,
+      creatorName: "Infinity Project Studio's",
+      creatorType: "Group",
+      creatorId: 33742489,
+      creatorUrl: "https://www.roblox.com/communities/33742489/Infinity-Project-Studios",
+      visits: 19,
+      playing: 0,
+      maxPlayers: 50,
+      upVotes: 1,
+      downVotes: 0,
+      ratingPercent: 100,
+      favorites: 1,
+      groupLogo: "https://tr.rbxcdn.com/180DAY-4ed5652c6445287484e24e35b0ba6235/420/420/Image/Png/noFilter",
+      fallbackIconUrl: "https://t4.rbxcdn.com/180DAY-dc729135d7789ab11a92a9d761648577"
+    },
+    links: [
+      {
+        label: "Gioca su Roblox",
+        url: "https://www.roblox.com/games/96607350124786/Nycron",
+        platform: "roblox",
+        robloxUniverseId: 7853966833,
+        robloxPlaceId: 96607350124786,
+        initialDownloads: 19
+      },
+      {
+        label: "Infinity Project Studio's",
+        url: "https://www.roblox.com/communities/33742489/Infinity-Project-Studios",
+        platform: "roblox"
       }
     ]
   }

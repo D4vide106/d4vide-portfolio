@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { FaCube } from "react-icons/fa";
 import styles from "./CipherCarousel.module.css";
-import { UnifiedProject } from "@/data/projectsData";
+import { UnifiedProject, resolveAssetUrl } from "@/data/projectsData";
 
 export default function CipherCarousel({
   projects,
@@ -182,11 +182,18 @@ export default function CipherCarousel({
               >
                 <div className={styles.cardImageContainer}>
                   <img
-                    src={project.icon_url}
+                    src={resolveAssetUrl(project.icon_url)}
                     alt={project.title}
                     className={styles.cardImg2D}
                     referrerPolicy="no-referrer"
                     onError={(e) => {
+                      if (project.fallback_icon_url) {
+                        const fallback = resolveAssetUrl(project.fallback_icon_url);
+                        if (e.currentTarget.src !== fallback) {
+                          e.currentTarget.src = fallback;
+                          return;
+                        }
+                      }
                       e.currentTarget.style.display = "none";
                       const parent = e.currentTarget.parentElement;
                       if (parent) {
