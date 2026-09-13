@@ -42,8 +42,15 @@ export default function HackerIntro() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const hasRun = useRef(false);
 
-  // Check localStorage on mount
+  // Check localStorage on mount or ?skipIntro=true
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("skipIntro") === "true" || params.get("noIntro") === "true") {
+        setFinished(true);
+        return;
+      }
+    }
     const seen = localStorage.getItem("d4v_intro_seen");
     if (seen === "true") {
       setFinished(true);

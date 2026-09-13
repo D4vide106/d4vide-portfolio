@@ -52,10 +52,12 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
   };
 
   const getProjectTitle = (p: UnifiedProject) => {
+    if (p.category === "roblox") return p.title;
     return projectDataDict[p.id]?.title || p.title;
   };
 
   const getProjectDescription = (p: UnifiedProject) => {
+    if (p.category === "roblox" && p.description) return p.description;
     return projectDataDict[p.id]?.description || p.description;
   };
 
@@ -82,6 +84,7 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
     if (selectedCategory === "roblox") {
       return [
         { key: "All", label: modalDict?.all || "Tutti" },
+        { key: "Racing", label: modalDict?.robloxRacing || "Racing & Drift" },
         { key: "Obby", label: modalDict?.robloxObby || "Obby & Platformer" },
         { key: "Social", label: modalDict?.robloxSocial || "Social Hangout" },
         { key: "Runner", label: modalDict?.robloxRunner || "Endless Runner" },
@@ -130,6 +133,13 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
 
       if (fType === "minecraft") return p.category === "minecraft";
       if (fType === "roblox") return p.category === "roblox";
+      if (fType === "racing") {
+        return (
+          pType.includes("racing") ||
+          pType.includes("drift") ||
+          (p.tags && p.tags.some((t) => t.toLowerCase().includes("racing") || t.toLowerCase().includes("drift")))
+        );
+      }
       if (fType === "mod") {
         return pType.includes("mod") && !pType.includes("modpack");
       }

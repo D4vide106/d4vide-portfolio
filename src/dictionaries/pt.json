@@ -78,7 +78,8 @@
     "robloxObby": "Obby & Platformer",
     "robloxSocial": "Social Hangout",
     "robloxRunner": "Endless Runner",
-    "robloxClimber": "Climber"
+    "robloxClimber": "Climber",
+    "robloxRacing": "Racing & Drift"
   },
   "projectData": {
     "project-boss-rpg": {
@@ -144,6 +145,10 @@
     "nycron": {
       "title": "Nycron [EARLY TESTING]",
       "description": "Experimental platformer featuring custom momentum mechanics, unique physics challenges, and world progression."
+    },
+    "slip-and-drift": {
+      "title": "SLIP & DRIFT [OPENBETA]",
+      "description": "Sinta cada curva. Dirija, corra e domine o drifting com fisica de veiculos responsiva em corridas velozes."
     }
   },
   "terminal": {

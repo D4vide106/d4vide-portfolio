@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, useMemo } from "react";
-import { MAIN_PROJECTS, UnifiedProject } from "@/data/projectsData";
+import { MAIN_PROJECTS, UnifiedProject, ROBLOX_GROUP_ID, KNOWN_ROBLOX_UNIVERSE_IDS } from "@/data/projectsData";
 
 interface LiveStatsContextType {
   projects: UnifiedProject[];
@@ -57,6 +57,33 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [portfolioViews, setPortfolioViews] = useState<number>(1);
   const [projectViewsMap, setProjectViewsMap] = useState<Record<string, number>>({});
   const [isLiveUpdating, setIsLiveUpdating] = useState<boolean>(false);
+
+  // Restore latest cached Roblox & project data on initial mount to eliminate flicker
+  useEffect(() => {
+    try {
+      const cached = localStorage.getItem("d4v_roblox_live_cache_v2");
+      if (cached) {
+        const cachedProjects: UnifiedProject[] = JSON.parse(cached);
+        if (Array.isArray(cachedProjects) && cachedProjects.length > 0) {
+          setProjects((prev) => {
+            const merged = prev.map((p) => {
+              const match = cachedProjects.find(
+                (c) => c.id === p.id || (p.robloxStats && c.robloxStats && c.robloxStats.universeId === p.robloxStats.universeId)
+              );
+              return match ? { ...p, ...match } : p;
+            });
+            // Include newly discovered cached Roblox projects not in initial MAIN_PROJECTS
+            for (const cp of cachedProjects) {
+              if (cp.category === "roblox" && !merged.some((m) => m.id === cp.id || (m.robloxStats && cp.robloxStats && m.robloxStats.universeId === cp.robloxStats.universeId))) {
+                merged.push(cp);
+              }
+            }
+            return merged;
+          });
+        }
+      }
+    } catch {}
+  }, []);
 
   // ── 1. REAL UNIQUE PORTFOLIO VIEWS (Per-person unique visit) ──
   useEffect(() => {
@@ -238,47 +265,158 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         }
       } catch {}
 
-      // Pre-fetch Roblox universe stats & votes
-      const robloxGamesMap: Record<number, { visits: number; playing: number }> = {};
-      const robloxVotesMap: Record<number, { upVotes: number; downVotes: number }> = {};
-      const robloxUids = [3266189000, 7239022329, 7330243159, 6963288939, 8934658965, 7853966833];
+      // ── Real-Time Roblox Group Games, Icons, Thumbnails & Stats Fetcher ──
+      interface LiveRobloxMeta {
+        id: number;
+        rootPlaceId?: number;
+        name: string;
+        description?: string;
+        visits: number;
+        playing: number;
+        maxPlayers?: number;
+        genre_l1?: string;
+        iconUrl?: string;
+        thumbnailUrl?: string;
+        upVotes?: number;
+        downVotes?: number;
+        ratingPercent?: number;
+        updated?: string;
+        creator?: { id: number; name: string; type: string };
+      }
+
+      const robloxDataMap: Record<number, LiveRobloxMeta> = {};
+      const activeUniverseIds = new Set<number>(KNOWN_ROBLOX_UNIVERSE_IDS);
 
       try {
-        const uidsQuery = robloxUids.join(",");
-        let rbxGamesRes = await fetch(`https://games.roblox.com/v1/games?universeIds=${uidsQuery}`);
-        if (!rbxGamesRes.ok) {
-          rbxGamesRes = await fetch(`https://corsproxy.io/?${encodeURIComponent(`https://games.roblox.com/v1/games?universeIds=${uidsQuery}`)}`);
-        }
-        if (rbxGamesRes.ok) {
-          const rbxData = await rbxGamesRes.json();
-          if (Array.isArray(rbxData?.data)) {
-            rbxData.data.forEach((g: { id: number; visits?: number; playing?: number }) => {
-              robloxGamesMap[g.id] = {
-                visits: typeof g.visits === "number" ? g.visits : 0,
-                playing: typeof g.playing === "number" ? g.playing : 0,
-              };
-            });
+        // 1. Discover all public games published under Infinity Project Studio's (33742489)
+        let groupGames: any[] = [];
+        try {
+          const groupRes = await fetch(
+            `https://games.roproxy.com/v2/groups/${ROBLOX_GROUP_ID}/games?accessFilter=Public&sortOrder=Desc&limit=100`
+          );
+          if (groupRes.ok) {
+            const gData = await groupRes.json();
+            if (Array.isArray(gData?.data)) groupGames = gData.data;
           }
+        } catch {
+          try {
+            const fallbackRes = await fetch(
+              `https://games.roblox.com/v2/groups/${ROBLOX_GROUP_ID}/games?accessFilter=Public&sortOrder=Desc&limit=100`
+            );
+            if (fallbackRes.ok) {
+              const gData = await fallbackRes.json();
+              if (Array.isArray(gData?.data)) groupGames = gData.data;
+            }
+          } catch {}
         }
 
-        let rbxVotesRes = await fetch(`https://games.roblox.com/v1/games/votes?universeIds=${uidsQuery}`);
-        if (!rbxVotesRes.ok) {
-          rbxVotesRes = await fetch(`https://corsproxy.io/?${encodeURIComponent(`https://games.roblox.com/v1/games/votes?universeIds=${uidsQuery}`)}`);
+        for (const g of groupGames) {
+          if (g.id) activeUniverseIds.add(g.id);
         }
-        if (rbxVotesRes.ok) {
-          const rbxVotesData = await rbxVotesRes.json();
-          if (Array.isArray(rbxVotesData?.data)) {
-            rbxVotesData.data.forEach((v: { id: number; upVotes?: number; downVotes?: number }) => {
-              robloxVotesMap[v.id] = {
-                upVotes: typeof v.upVotes === "number" ? v.upVotes : 0,
-                downVotes: typeof v.downVotes === "number" ? v.downVotes : 0,
-              };
-            });
-          }
-        }
-      } catch {}
 
-      const updatedProjects = await Promise.all(
+        const uidsArray = Array.from(activeUniverseIds);
+        const uidsQuery = uidsArray.join(",");
+
+        // 2. Fetch live game details (name, description, visits, playing, maxPlayers)
+        let rawGames: any[] = [];
+        try {
+          const gamesRes = await fetch(`https://games.roproxy.com/v1/games?universeIds=${uidsQuery}`);
+          if (gamesRes.ok) {
+            const d = await gamesRes.json();
+            if (Array.isArray(d?.data)) rawGames = d.data;
+          }
+        } catch {
+          try {
+            const gamesRes = await fetch(`https://games.roblox.com/v1/games?universeIds=${uidsQuery}`);
+            if (gamesRes.ok) {
+              const d = await gamesRes.json();
+              if (Array.isArray(d?.data)) rawGames = d.data;
+            }
+          } catch {}
+        }
+
+        // 3. Fetch live icons (512x512)
+        const iconsMap: Record<number, string> = {};
+        try {
+          const iconsRes = await fetch(
+            `https://thumbnails.roproxy.com/v1/games/icons?universeIds=${uidsQuery}&returnPolicy=PlaceHolder&size=512x512&format=Png&isCircular=false`
+          );
+          if (iconsRes.ok) {
+            const iData = await iconsRes.json();
+            if (Array.isArray(iData?.data)) {
+              for (const item of iData.data) {
+                if (item.targetId && item.imageUrl && item.state === "Completed") {
+                  iconsMap[item.targetId] = item.imageUrl;
+                }
+              }
+            }
+          }
+        } catch {}
+
+        // 4. Fetch live thumbnails (768x432 widescreen banners)
+        const thumbsMap: Record<number, string> = {};
+        try {
+          const thumbsRes = await fetch(
+            `https://thumbnails.roproxy.com/v1/games/multiget/thumbnails?universeIds=${uidsQuery}&countPerUniverse=1&defaults=true&size=768x432&format=Png`
+          );
+          if (thumbsRes.ok) {
+            const tData = await thumbsRes.json();
+            if (Array.isArray(tData?.data)) {
+              for (const item of tData.data) {
+                if (item.universeId && item.thumbnails?.[0]?.imageUrl && item.thumbnails[0].state === "Completed") {
+                  thumbsMap[item.universeId] = item.thumbnails[0].imageUrl;
+                }
+              }
+            }
+          }
+        } catch {}
+
+        // 5. Fetch votes
+        const votesMap: Record<number, { up: number; down: number }> = {};
+        try {
+          const votesRes = await fetch(`https://games.roblox.com/v1/games/votes?universeIds=${uidsQuery}`);
+          if (votesRes.ok) {
+            const vData = await votesRes.json();
+            if (Array.isArray(vData?.data)) {
+              for (const v of vData.data) {
+                if (v.id) votesMap[v.id] = { up: v.upVotes || 0, down: v.downVotes || 0 };
+              }
+            }
+          }
+        } catch {}
+
+        // Populate composite robloxDataMap
+        for (const g of rawGames) {
+          const v = votesMap[g.id];
+          const up = v ? v.up : 0;
+          const down = v ? v.down : 0;
+          const totalVotes = up + down;
+          const ratingPercent = totalVotes > 0 ? Math.round((up / totalVotes) * 100) : 100;
+
+          robloxDataMap[g.id] = {
+            id: g.id,
+            rootPlaceId: g.rootPlaceId,
+            name: g.name,
+            description: g.description,
+            visits: typeof g.visits === "number" ? g.visits : 0,
+            playing: typeof g.playing === "number" ? g.playing : 0,
+            maxPlayers: g.maxPlayers || 50,
+            genre_l1: g.genre_l1 || g.genre,
+            iconUrl: iconsMap[g.id],
+            thumbnailUrl: thumbsMap[g.id],
+            upVotes: up,
+            downVotes: down,
+            ratingPercent,
+            updated: g.updated,
+            creator: g.creator,
+          };
+        }
+      } catch (err) {
+        console.warn("⚠️ Error updating live Roblox games:", err);
+      }
+
+      // Update existing MAIN_PROJECTS
+      const updatedProjects: UnifiedProject[] = await Promise.all(
         MAIN_PROJECTS.map(async (project) => {
           let totalSum = 0;
 
@@ -331,8 +469,8 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
                   liveApiCount = baseCount + cloudCount;
                 }
               } else if (link.platform === "roblox" && link.robloxUniverseId) {
-                if (robloxGamesMap[link.robloxUniverseId]) {
-                  liveApiCount = robloxGamesMap[link.robloxUniverseId].visits;
+                if (robloxDataMap[link.robloxUniverseId]) {
+                  liveApiCount = robloxDataMap[link.robloxUniverseId].visits;
                 }
               }
 
@@ -342,38 +480,115 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
             })
           );
 
-          // Update robloxStats if live data available
+          // Update Roblox-specific details (title, description, icon, thumbnail, stats)
+          let updatedTitle = project.title;
+          let updatedDesc = project.description;
+          let updatedIcon = project.icon_url;
+          let updatedThumb = project.thumbnail_url;
           let updatedRobloxStats = project.robloxStats;
-          if (project.robloxStats && robloxGamesMap[project.robloxStats.universeId]) {
-            const liveGame = robloxGamesMap[project.robloxStats.universeId];
-            const liveVote = robloxVotesMap[project.robloxStats.universeId];
-            const up = liveVote ? liveVote.upVotes : project.robloxStats.upVotes;
-            const down = liveVote ? liveVote.downVotes : project.robloxStats.downVotes;
-            const totalVotes = up + down;
-            const ratingPercent = totalVotes > 0 ? Math.round((up / totalVotes) * 100) : project.robloxStats.ratingPercent;
+
+          if (project.category === "roblox" && project.robloxStats && robloxDataMap[project.robloxStats.universeId]) {
+            const liveGame = robloxDataMap[project.robloxStats.universeId];
+            if (liveGame.name) updatedTitle = liveGame.name;
+            if (liveGame.description) updatedDesc = liveGame.description;
+            if (liveGame.iconUrl) updatedIcon = liveGame.iconUrl;
+            if (liveGame.thumbnailUrl) updatedThumb = liveGame.thumbnailUrl;
 
             updatedRobloxStats = {
               ...project.robloxStats,
               visits: liveGame.visits,
               playing: liveGame.playing,
-              upVotes: up,
-              downVotes: down,
-              ratingPercent,
+              maxPlayers: liveGame.maxPlayers || project.robloxStats.maxPlayers,
+              upVotes: liveGame.upVotes ?? project.robloxStats.upVotes,
+              downVotes: liveGame.downVotes ?? project.robloxStats.downVotes,
+              ratingPercent: liveGame.ratingPercent ?? project.robloxStats.ratingPercent,
+              fallbackIconUrl: liveGame.iconUrl || project.robloxStats.fallbackIconUrl,
             };
           }
 
           return {
             ...project,
-            downloads: totalSum,
+            title: updatedTitle,
+            description: updatedDesc,
+            icon_url: updatedIcon,
+            thumbnail_url: updatedThumb,
+            downloads: project.category === "roblox" && updatedRobloxStats ? updatedRobloxStats.visits : totalSum,
             links: updatedLinks,
             robloxStats: updatedRobloxStats,
           };
         })
       );
 
+      // Auto-detect newly created public Roblox games from group not in MAIN_PROJECTS
+      const existingUids = new Set(
+        updatedProjects.map((p) => p.robloxStats?.universeId).filter(Boolean)
+      );
+
+      for (const [uIdStr, liveGame] of Object.entries(robloxDataMap)) {
+        const uId = Number(uIdStr);
+        if (!existingUids.has(uId)) {
+          const slug = (liveGame.name || `roblox-${uId}`)
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/(^-|-$)/g, "");
+
+          const newRobloxProject: UnifiedProject = {
+            id: slug,
+            title: liveGame.name,
+            slug,
+            description: liveGame.description || "Roblox experience by Infinity Project Studio's",
+            icon_url: liveGame.iconUrl || "/images/roblox/infinity-group.png",
+            fallback_icon_url: liveGame.iconUrl || "/images/roblox/infinity-group.png",
+            thumbnail_url: liveGame.thumbnailUrl,
+            type: liveGame.genre_l1 ? `Roblox ${liveGame.genre_l1}` : "Roblox Experience",
+            category: "roblox",
+            tags: ["Roblox", "Infinity Project Studio's", liveGame.genre_l1 || "Game", "Multiplayer"],
+            downloads: liveGame.visits,
+            updated: liveGame.updated ? liveGame.updated.split("T")[0] : new Date().toISOString().split("T")[0],
+            robloxStats: {
+              universeId: liveGame.id,
+              placeId: liveGame.rootPlaceId || liveGame.id,
+              creatorName: liveGame.creator?.name || "Infinity Project Studio's",
+              creatorType: liveGame.creator?.type || "Group",
+              creatorId: liveGame.creator?.id || ROBLOX_GROUP_ID,
+              creatorUrl: `https://www.roblox.com/communities/${liveGame.creator?.id || ROBLOX_GROUP_ID}/Infinity-Project-Studios`,
+              visits: liveGame.visits,
+              playing: liveGame.playing,
+              maxPlayers: liveGame.maxPlayers || 50,
+              upVotes: liveGame.upVotes || 0,
+              downVotes: liveGame.downVotes || 0,
+              ratingPercent: liveGame.ratingPercent || 100,
+              favorites: 1,
+              groupLogo: "https://tr.rbxcdn.com/180DAY-4ed5652c6445287484e24e35b0ba6235/420/420/Image/Png/noFilter",
+              fallbackIconUrl: liveGame.iconUrl,
+            },
+            links: [
+              {
+                label: "Gioca su Roblox",
+                url: `https://www.roblox.com/games/${liveGame.rootPlaceId || liveGame.id}`,
+                platform: "roblox",
+                robloxUniverseId: liveGame.id,
+                robloxPlaceId: liveGame.rootPlaceId || liveGame.id,
+                initialDownloads: liveGame.visits,
+              },
+              {
+                label: "Infinity Project Studio's",
+                url: `https://www.roblox.com/communities/${liveGame.creator?.id || ROBLOX_GROUP_ID}/Infinity-Project-Studios`,
+                platform: "roblox",
+              },
+            ],
+          };
+
+          updatedProjects.push(newRobloxProject);
+        }
+      }
+
       if (isMounted) {
         setProjects(updatedProjects);
         setIsLiveUpdating(false);
+        try {
+          localStorage.setItem("d4v_roblox_live_cache_v2", JSON.stringify(updatedProjects));
+        } catch {}
       }
     }
 

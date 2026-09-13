@@ -628,6 +628,64 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
         platform: "roblox"
       }
     ]
+  },
+  {
+    id: "slip-and-drift",
+    title: "SLIP & DRIFT [OPENBETA]",
+    slug: "slip-and-drift",
+    description: "Feel every turn. Drive, race and master smooth drifting with responsive car physics. Push your car to the limit, take corners sideways and compete with other players in fast-paced races.",
+    icon_url: "https://tr.rbxcdn.com/180DAY-e1bfeff5f9b65b9b79559d56c1c8fbee/512/512/Image/Png/noFilter",
+    fallback_icon_url: "/images/roblox/slip-and-drift.png",
+    thumbnail_url: "https://tr.rbxcdn.com/180DAY-b303a2540c0e02856bd3a2abc2146e90/768/432/Image/Png/noFilter",
+    fallback_thumbnail_url: "/images/roblox/slip-and-drift-thumb.png",
+    type: "Roblox Racing",
+    category: "roblox",
+    tags: ["Roblox", "Drifting", "Racing", "Cars", "Car Physics", "Multiplayer", "Competitive", "Open Beta"],
+    downloads: 26,
+    updated: "2026-09-13",
+    robloxStats: {
+      universeId: 8054104811,
+      placeId: 83340091085271,
+      creatorName: "Infinity Project Studio's",
+      creatorType: "Group",
+      creatorId: 33742489,
+      creatorUrl: "https://www.roblox.com/communities/33742489/Infinity-Project-Studios",
+      visits: 26,
+      playing: 0,
+      maxPlayers: 50,
+      upVotes: 3,
+      downVotes: 0,
+      ratingPercent: 100,
+      favorites: 1,
+      groupLogo: "https://tr.rbxcdn.com/180DAY-4ed5652c6445287484e24e35b0ba6235/420/420/Image/Png/noFilter",
+      fallbackIconUrl: "/images/roblox/slip-and-drift.png"
+    },
+    links: [
+      {
+        label: "Gioca su Roblox",
+        url: "https://www.roblox.com/games/83340091085271/SLIP-DRIFT",
+        platform: "roblox",
+        robloxUniverseId: 8054104811,
+        robloxPlaceId: 83340091085271,
+        initialDownloads: 26
+      },
+      {
+        label: "Infinity Project Studio's",
+        url: "https://www.roblox.com/communities/33742489/Infinity-Project-Studios",
+        platform: "roblox"
+      }
+    ]
   }
+];
+
+export const ROBLOX_GROUP_ID = 33742489;
+export const KNOWN_ROBLOX_UNIVERSE_IDS = [
+  8934658965, // Dodger Climber
+  8054104811, // SLIP & DRIFT
+  7853966833, // Nycron
+  7330243159, // Italian Hangout
+  7239022329, // Stud Difficulty
+  6963288939, // Infinity Obby Record
+  3266189000  // Extreme Obby
 ];
 

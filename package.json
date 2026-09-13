@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "npm run sync:roblox",
     "build": "next build",
+    "sync:roblox": "node scripts/sync-roblox.mjs",
     "start": "next start",
     "lint": "eslint"
   },

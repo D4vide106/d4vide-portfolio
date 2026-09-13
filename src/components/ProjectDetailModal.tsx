@@ -74,8 +74,8 @@ export default function ProjectDetailModal({
   if (!project) return null;
 
   const isRoblox = project.category === "roblox";
-  const pTitle = projectDataDict[project.id]?.title || project.title;
-  const pDesc = projectDataDict[project.id]?.description || project.description;
+  const pTitle = isRoblox ? project.title : (projectDataDict[project.id]?.title || project.title);
+  const pDesc = isRoblox && project.description ? project.description : (projectDataDict[project.id]?.description || project.description);
   const robloxStats = project.robloxStats;
   const robloxGameUrl =
     project.links.find((l) => l.url.includes("/games/"))?.url || project.links[0]?.url;
