@@ -263,17 +263,13 @@
   text-transform: uppercase;
 }
 
-/* ── 4. CENTERED MEDIA SHOWCASE: YOUTUBE + TIKTOK ────────────────── */
-.mediaShowcaseWrapper {
+/* ── 4. CENTERED YOUTUBE LATEST BROADCAST ────────────────── */
+.centeredYoutubeWrapper {
   width: 100%;
-  max-width: 1080px;
+  max-width: 860px;
   margin: 0 auto;
   position: relative;
   z-index: 10;
-  display: grid;
-  grid-template-columns: 1fr 340px;
-  gap: 1.5rem;
-  align-items: stretch;
 }
 
 .youtubeCard {
@@ -359,12 +355,6 @@
   height: 100%;
 }
 
-@media (max-width: 980px) {
-  .mediaShowcaseWrapper {
-    grid-template-columns: 1fr;
-    max-width: 680px;
-  }
-}
 
 @media (max-width: 768px) {
   .heroSection {

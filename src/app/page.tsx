@@ -2,6 +2,7 @@
 
 import TopBar from "@/components/TopBar";
 import Hero from "@/components/Hero";
+import OurWork from "@/components/OurWork";
 import Projects from "@/components/Projects";
 import Affiliates from "@/components/Affiliates";
 import Contact from "@/components/Contact";
@@ -17,7 +18,10 @@ export default function Home() {
       {/* 1. Hero: Title, 3D Constellation & Profile/About Showcase */}
       <Hero />
 
-      {/* 2. Standalone Full-Bleed Edge-to-Edge Modrinth Marquee Showcase */}
+      {/* 2. Our Works Showcase (Viral Shorts & TikToks - EnderClub Style) */}
+      <OurWork />
+
+      {/* 3. Standalone Full-Bleed Edge-to-Edge Modrinth Marquee Showcase */}
       <Projects />
 
       {/* 3. Official Partnerships & Services (Instant Gaming, BisectHosting, G2A, Amazon, Fiverr) */}

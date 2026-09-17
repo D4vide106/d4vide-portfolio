@@ -1,5 +1,5 @@
 {
-  "syncedAt": "2026-09-17T14:53:13.435Z",
+  "syncedAt": "2026-09-17T16:11:18.375Z",
   "groupId": 33742489,
   "games": {
     "data": [
@@ -63,8 +63,8 @@
         "allowedGearCategories": [],
         "isGenreEnforced": false,
         "copyingAllowed": false,
-        "playing": 1,
-        "visits": 434,
+        "playing": 0,
+        "visits": 437,
         "maxPlayers": 50,
         "created": "2025-07-02T17:00:22.737Z",
         "updated": "2026-09-17T04:17:14.8349172Z",
@@ -294,18 +294,6 @@
         "version": "TN3"
       },
       {
-        "targetId": 7330243159,
-        "state": "Completed",
-        "imageUrl": "https://tr.rbxcdn.com/180DAY-1114d0b564d34ba68d6946d1581098e8/512/512/Image/Png/noFilter",
-        "version": "TN3"
-      },
-      {
-        "targetId": 6963288939,
-        "state": "Completed",
-        "imageUrl": "https://tr.rbxcdn.com/180DAY-6dc8451d69e47d589f4791b327038a19/512/512/Image/Png/noFilter",
-        "version": "TN3"
-      },
-      {
         "targetId": 8054104811,
         "state": "Completed",
         "imageUrl": "https://tr.rbxcdn.com/180DAY-e1bfeff5f9b65b9b79559d56c1c8fbee/512/512/Image/Png/noFilter",
@@ -315,6 +303,18 @@
         "targetId": 3266189000,
         "state": "Completed",
         "imageUrl": "https://tr.rbxcdn.com/180DAY-83fb2d91121df9100add640107598e6d/512/512/Image/Png/noFilter",
+        "version": "TN3"
+      },
+      {
+        "targetId": 7330243159,
+        "state": "Completed",
+        "imageUrl": "https://tr.rbxcdn.com/180DAY-1114d0b564d34ba68d6946d1581098e8/512/512/Image/Png/noFilter",
+        "version": "TN3"
+      },
+      {
+        "targetId": 6963288939,
+        "state": "Completed",
+        "imageUrl": "https://tr.rbxcdn.com/180DAY-6dc8451d69e47d589f4791b327038a19/512/512/Image/Png/noFilter",
         "version": "TN3"
       },
       {
