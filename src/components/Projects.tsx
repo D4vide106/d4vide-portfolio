@@ -84,11 +84,8 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
     if (selectedCategory === "roblox") {
       return [
         { key: "All", label: modalDict?.all || "Tutti" },
-        { key: "Racing", label: modalDict?.robloxRacing || "Racing & Drift" },
-        { key: "Obby", label: modalDict?.robloxObby || "Obby & Platformer" },
-        { key: "Social", label: modalDict?.robloxSocial || "Social Hangout" },
-        { key: "Runner", label: modalDict?.robloxRunner || "Endless Runner" },
-        { key: "Climber", label: modalDict?.robloxClimber || "Climber" },
+        { key: "Roblox Map", label: modalDict?.robloxMap || "Roblox Map" },
+        { key: "Roblox Addon", label: modalDict?.robloxAddon || "Roblox Addon" },
       ];
     }
     // "all"
@@ -98,7 +95,8 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
       { key: "Roblox", label: "Roblox" },
       { key: "Modpack", label: modalDict?.modpack || "Modpack" },
       { key: "Mod", label: modalDict?.mod || "Mod & Datapack" },
-      { key: "Obby", label: modalDict?.robloxObby || "Obby" },
+      { key: "Roblox Map", label: modalDict?.robloxMap || "Roblox Map" },
+      { key: "Roblox Addon", label: modalDict?.robloxAddon || "Roblox Addon" },
     ];
   }, [selectedCategory, modalDict]);
 
@@ -133,27 +131,15 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
 
       if (fType === "minecraft") return p.category === "minecraft";
       if (fType === "roblox") return p.category === "roblox";
-      if (fType === "racing") {
-        return (
-          pType.includes("racing") ||
-          pType.includes("drift") ||
-          (p.tags && p.tags.some((t) => t.toLowerCase().includes("racing") || t.toLowerCase().includes("drift")))
-        );
-      }
+      if (fType === "modpack") return pType.includes("modpack");
       if (fType === "mod") {
         return pType.includes("mod") && !pType.includes("modpack");
       }
-      if (fType === "obby") {
-        return pType.includes("obby") || (p.tags && p.tags.some((t) => t.toLowerCase().includes("obby")));
+      if (fType === "roblox map") {
+        return p.category === "roblox" && !pType.includes("addon");
       }
-      if (fType === "social") {
-        return pType.includes("social") || (p.tags && p.tags.some((t) => t.toLowerCase().includes("social")));
-      }
-      if (fType === "runner") {
-        return pType.includes("runner");
-      }
-      if (fType === "climber") {
-        return pType.includes("climber");
+      if (fType === "roblox addon") {
+        return p.category === "roblox" && pType.includes("addon");
       }
       return pType.includes(fType);
     });

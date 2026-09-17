@@ -1,5 +1,5 @@
 {
-  "syncedAt": "2026-09-13T22:22:46.622Z",
+  "syncedAt": "2026-09-17T14:53:13.435Z",
   "groupId": 33742489,
   "games": {
     "data": [
@@ -28,7 +28,7 @@
         "visits": 83,
         "maxPlayers": 50,
         "created": "2025-10-12T19:56:47.673Z",
-        "updated": "2026-09-04T15:35:16.013Z",
+        "updated": "2026-09-15T01:09:39.164Z",
         "studioAccessToApisAllowed": false,
         "createVipServersAllowed": false,
         "universeAvatarType": "MorphToR15",
@@ -45,8 +45,8 @@
       {
         "id": 8054104811,
         "rootPlaceId": 83340091085271,
-        "name": "SLIP & DRIFT [OPENBETA]",
-        "description": "Feel every turn.\n\nDrive, race and master smooth drifting with responsive car physics. Push your car to the limit, take corners sideways and compete with other players in fast-paced races.\n\n🏎️ Smooth Car Physics\n🏁 Racing\n💨 Drifting\n🌎 Multiplayer\n🔥 Competitive Driving\n\nCan you master the perfect drift?\n\nTag;\ndrift · drifting · cars · racing · driving · car physics",
+        "name": "SLIP & DRIFT [NEW BETA] ",
+        "description": "Feel every turn.\n\nDrive, race and master smooth drifting with responsive car physics. Push your car to the limit, take corners sideways and compete with other players in fast-paced races.\n\n🏎️ Smooth Car Physics\n🏁 Racing\n💨 Drifting\n🌎 Multiplayer\n🔥 Competitive Driving\n\nCan you master the perfect drift?\n\nTag;\ndrift · drifting · cars · racing · race · driving · drive · car physics · slip · slipping · skidding · skid · stunt · stunting · jump · jumping · ramp · ramps · tunnels · tunnel",
         "sourceName": null,
         "sourceDescription": null,
         "creator": {
@@ -63,11 +63,11 @@
         "allowedGearCategories": [],
         "isGenreEnforced": false,
         "copyingAllowed": false,
-        "playing": 0,
-        "visits": 26,
+        "playing": 1,
+        "visits": 434,
         "maxPlayers": 50,
         "created": "2025-07-02T17:00:22.737Z",
-        "updated": "2026-09-13T22:22:00.8951706Z",
+        "updated": "2026-09-17T04:17:14.8349172Z",
         "studioAccessToApisAllowed": false,
         "createVipServersAllowed": false,
         "universeAvatarType": "MorphToR15",
@@ -77,7 +77,7 @@
         "untranslated_genre_l1": "sports_and_racing",
         "isAllGenre": true,
         "isFavoritedByUser": false,
-        "favoritedCount": 1,
+        "favoritedCount": 8,
         "canonicalUrlPath": "/games/83340091085271/SLIP-DRIFT",
         "isContentRestricted": false
       },
@@ -106,7 +106,7 @@
         "visits": 20,
         "maxPlayers": 50,
         "created": "2025-06-06T13:40:53.213Z",
-        "updated": "2026-09-13T21:02:41.6869045Z",
+        "updated": "2026-09-14T04:35:41.6Z",
         "studioAccessToApisAllowed": false,
         "createVipServersAllowed": false,
         "universeAvatarType": "MorphToR6",
@@ -184,7 +184,7 @@
         "visits": 773,
         "maxPlayers": 10,
         "created": "2025-02-13T22:30:55.98Z",
-        "updated": "2026-09-13T20:28:26.2102497Z",
+        "updated": "2026-09-13T20:28:26.21Z",
         "studioAccessToApisAllowed": false,
         "createVipServersAllowed": false,
         "universeAvatarType": "MorphToR6",
@@ -288,18 +288,6 @@
   "icons": {
     "data": [
       {
-        "targetId": 3266189000,
-        "state": "Completed",
-        "imageUrl": "https://tr.rbxcdn.com/180DAY-83fb2d91121df9100add640107598e6d/512/512/Image/Png/noFilter",
-        "version": "TN3"
-      },
-      {
-        "targetId": 6963288939,
-        "state": "Completed",
-        "imageUrl": "https://tr.rbxcdn.com/180DAY-6dc8451d69e47d589f4791b327038a19/512/512/Image/Png/noFilter",
-        "version": "TN3"
-      },
-      {
         "targetId": 7239022329,
         "state": "Completed",
         "imageUrl": "https://tr.rbxcdn.com/180DAY-345d28dab47057bb1973e17a7872c781/512/512/Image/Png/noFilter",
@@ -312,21 +300,33 @@
         "version": "TN3"
       },
       {
+        "targetId": 6963288939,
+        "state": "Completed",
+        "imageUrl": "https://tr.rbxcdn.com/180DAY-6dc8451d69e47d589f4791b327038a19/512/512/Image/Png/noFilter",
+        "version": "TN3"
+      },
+      {
         "targetId": 8054104811,
         "state": "Completed",
         "imageUrl": "https://tr.rbxcdn.com/180DAY-e1bfeff5f9b65b9b79559d56c1c8fbee/512/512/Image/Png/noFilter",
         "version": "TN3"
       },
       {
-        "targetId": 7853966833,
+        "targetId": 3266189000,
         "state": "Completed",
-        "imageUrl": "https://t4.rbxcdn.com/180DAY-dc729135d7789ab11a92a9d761648577",
+        "imageUrl": "https://tr.rbxcdn.com/180DAY-83fb2d91121df9100add640107598e6d/512/512/Image/Png/noFilter",
         "version": "TN3"
       },
       {
         "targetId": 8934658965,
         "state": "Completed",
         "imageUrl": "https://t6.rbxcdn.com/180DAY-007dc222a830b5992e1a04073454e980",
+        "version": "TN3"
+      },
+      {
+        "targetId": 7853966833,
+        "state": "Completed",
+        "imageUrl": "https://t4.rbxcdn.com/180DAY-dc729135d7789ab11a92a9d761648577",
         "version": "TN3"
       }
     ]
@@ -340,7 +340,7 @@
       },
       {
         "id": 8054104811,
-        "upVotes": 3,
+        "upVotes": 6,
         "downVotes": 0
       },
       {

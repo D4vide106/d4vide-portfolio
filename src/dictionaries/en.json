@@ -75,11 +75,8 @@
     "createdBy": "CREATED BY",
     "playOnRoblox": "PLAY ON ROBLOX",
     "visitGroup": "OFFICIAL GROUP",
-    "robloxRacing": "Racing & Drift",
-    "robloxObby": "Obby & Platformer",
-    "robloxSocial": "Social Hangout",
-    "robloxRunner": "Endless Runner",
-    "robloxClimber": "Climber"
+    "robloxMap": "Roblox Map",
+    "robloxAddon": "Roblox Addon"
   },
   "projectData": {
     "project-boss-rpg": {

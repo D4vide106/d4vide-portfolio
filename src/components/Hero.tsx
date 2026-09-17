@@ -23,6 +23,7 @@ import { useLiveStats } from "@/context/LiveStatsContext";
 import { UnifiedProject } from "@/data/projectsData";
 import AnimatedNumber from "./AnimatedNumber";
 import ProjectDetailModal from "./ProjectDetailModal";
+import TikTokVerticalFeed from "./TikTokVerticalFeed";
 
 const PLATFORM_NAMES: Record<string, string> = {
   curseforge: "CurseForge",
@@ -159,8 +160,9 @@ export default function Hero({ dict: propDict, aboutDict: propAboutDict }: { dic
             <TotalDownloads />
           </div>
 
-          {/* ── 4. CENTERED YOUTUBE LATEST BROADCAST ────────────────── */}
-          <div className={styles.centeredYoutubeWrapper} id="youtube">
+          {/* ── 4. CENTERED MEDIA SHOWCASE: YOUTUBE LATEST BROADCAST + VERTICAL TIKTOK FEED ── */}
+          <div className={styles.mediaShowcaseWrapper} id="youtube">
+            {/* Left: YouTube Broadcast */}
             <div className={styles.youtubeCard}>
               <div className={styles.ytHeader}>
                 <div className={styles.ytTitle}>
@@ -181,6 +183,9 @@ export default function Hero({ dict: propDict, aboutDict: propAboutDict }: { dic
                 />
               </div>
             </div>
+
+            {/* Right: Vertical TikTok Feed */}
+            <TikTokVerticalFeed dict={(contextDict as any)?.tiktok || {}} />
           </div>
 
         </div>

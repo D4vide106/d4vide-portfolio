@@ -166,7 +166,7 @@ export default function ProjectDetailModal({
             <span className={`${styles.modalCategoryBadge} ${isRoblox ? styles.robloxModalBadge : ""}`}>
               {isRoblox ? (
                 <>
-                  <SiRoblox size={11} /> ROBLOX MAP • {project.type.toUpperCase()}
+                  <SiRoblox size={11} /> ROBLOX MAP
                 </>
               ) : (
                 project.type.toUpperCase()

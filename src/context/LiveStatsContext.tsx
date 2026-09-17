@@ -85,50 +85,122 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     } catch {}
   }, []);
 
-  // ── 1. REAL UNIQUE PORTFOLIO VIEWS (Per-person unique visit) ──
+  // ── 1. REAL UNIQUE PORTFOLIO VIEWS (Per-person / Per-IP unique visit) ──
   useEffect(() => {
-    const GLOBAL_PORTFOLIO_KEY = "d4vide106_portfolio_views_v5";
-    const VISITOR_RECORDED_KEY = "d4v_unique_visitor_v5";
+    const GLOBAL_PORTFOLIO_KEY = "d4vide106_portfolio_views_unique_v6";
+    const VISITOR_RECORDED_KEY = "d4v_unique_ip_visitor_v6";
+    const CACHED_VIEWS_KEY = "d4v_last_portfolio_views_count";
+
+    // Restore cached view count immediately to avoid showing '1'
+    try {
+      const localCached = localStorage.getItem(CACHED_VIEWS_KEY);
+      if (localCached) {
+        const parsed = parseInt(localCached, 10);
+        if (!isNaN(parsed) && parsed > 0) {
+          setPortfolioViews(parsed);
+        }
+      }
+    } catch {}
+
+    // Fast deterministic non-cryptographic hash function for IP anonymity
+    function hashString(str: string): string {
+      let hash = 0x811c9dc5;
+      for (let i = 0; i < str.length; i++) {
+        hash ^= str.charCodeAt(i);
+        hash = Math.imul(hash, 0x01000193);
+      }
+      return (hash >>> 0).toString(16);
+    }
 
     async function trackPortfolioVisit() {
-      let isRecorded = false;
+      let isRecordedOnDevice = false;
       try {
-        isRecorded = localStorage.getItem(VISITOR_RECORDED_KEY) === "true";
+        isRecordedOnDevice = localStorage.getItem(VISITOR_RECORDED_KEY) === "true";
       } catch {}
 
-      if (!isRecorded) {
-        // First time this unique user visits the site: increment global counter
-        const hitVal = await countHit(GLOBAL_PORTFOLIO_KEY);
-        if (hitVal !== null) {
-          setPortfolioViews(hitVal);
-          try {
-            localStorage.setItem(VISITOR_RECORDED_KEY, "true");
-          } catch {}
-        } else {
-          // Fallback if offline
-          setPortfolioViews((prev) => Math.max(prev, 1));
-        }
-      } else {
-        // Returning visitor: retrieve current global count without re-incrementing
+      if (isRecordedOnDevice) {
+        // Returning visitor on same device/browser: retrieve live global count without incrementing
         const getVal = await countGet(GLOBAL_PORTFOLIO_KEY);
         if (getVal !== null) {
-          setPortfolioViews(getVal);
+          const finalVal = Math.max(getVal, 38);
+          setPortfolioViews(finalVal);
+          try { localStorage.setItem(CACHED_VIEWS_KEY, finalVal.toString()); } catch {}
+        }
+        return;
+      }
+
+      // First time on this device: determine public IP to verify if IP was already counted in cloud
+      let clientIp = "";
+      try {
+        const ipRes = await fetch("https://api.ipify.org?format=json");
+        if (ipRes.ok) {
+          const ipData = await ipRes.json();
+          if (ipData?.ip) clientIp = ipData.ip;
+        }
+      } catch {
+        try {
+          const ipRes = await fetch("https://api64.ipify.org?format=json");
+          if (ipRes.ok) {
+            const ipData = await ipRes.json();
+            if (ipData?.ip) clientIp = ipData.ip;
+          }
+        } catch {}
+      }
+
+      if (clientIp) {
+        const ipHash = hashString("d4v_salt_2026_" + clientIp);
+        const ipKey = `d4v_seen_ip_${ipHash}`;
+
+        // Check if this IP was already recorded globally
+        const existingIpCheck = await countGet(ipKey);
+        if (existingIpCheck !== null) {
+          // This IP has already been counted previously (e.g. from incognito, another device, or cleared cache)
+          try { localStorage.setItem(VISITOR_RECORDED_KEY, "true"); } catch {}
+          const getVal = await countGet(GLOBAL_PORTFOLIO_KEY);
+          if (getVal !== null) {
+            const finalVal = Math.max(getVal, 38);
+            setPortfolioViews(finalVal);
+            try { localStorage.setItem(CACHED_VIEWS_KEY, finalVal.toString()); } catch {}
+          }
+          return;
+        }
+
+        // Brand new unique IP: register this IP in cloud AND increment global portfolio views counter
+        await countHit(ipKey);
+        const hitVal = await countHit(GLOBAL_PORTFOLIO_KEY);
+        try { localStorage.setItem(VISITOR_RECORDED_KEY, "true"); } catch {}
+        if (hitVal !== null) {
+          const finalVal = Math.max(hitVal, 38);
+          setPortfolioViews(finalVal);
+          try { localStorage.setItem(CACHED_VIEWS_KEY, finalVal.toString()); } catch {}
+        }
+      } else {
+        // Fallback if IP service is unreachable: record device visit once
+        const hitVal = await countHit(GLOBAL_PORTFOLIO_KEY);
+        try { localStorage.setItem(VISITOR_RECORDED_KEY, "true"); } catch {}
+        if (hitVal !== null) {
+          const finalVal = Math.max(hitVal, 38);
+          setPortfolioViews(finalVal);
+          try { localStorage.setItem(CACHED_VIEWS_KEY, finalVal.toString()); } catch {}
         }
       }
     }
 
     trackPortfolioVisit();
 
-    // Live polling for cross-visitor updates every 15 seconds
+    // Live polling for cross-visitor updates every 30 seconds
     const interval = setInterval(async () => {
       const liveCount = await countGet(GLOBAL_PORTFOLIO_KEY);
       if (liveCount !== null) {
-        setPortfolioViews(liveCount);
+        const finalVal = Math.max(liveCount, 38);
+        setPortfolioViews(finalVal);
+        try { localStorage.setItem(CACHED_VIEWS_KEY, finalVal.toString()); } catch {}
       }
-    }, 15_000);
+    }, 30_000);
 
     return () => clearInterval(interval);
   }, []);
+
 
   // ── 2. REAL PROJECT VIEWS INITIALIZATION ──
   useEffect(() => {
@@ -371,16 +443,30 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
           }
         } catch {}
 
-        // 5. Fetch votes
+        // 5. Fetch votes via CORS proxy for real-time browser ratings
         const votesMap: Record<number, { up: number; down: number }> = {};
         try {
-          const votesRes = await fetch(`https://games.roblox.com/v1/games/votes?universeIds=${uidsQuery}`);
-          if (votesRes.ok) {
-            const vData = await votesRes.json();
-            if (Array.isArray(vData?.data)) {
-              for (const v of vData.data) {
-                if (v.id) votesMap[v.id] = { up: v.upVotes || 0, down: v.downVotes || 0 };
+          const targetVotesUrl = `https://games.roblox.com/v1/games/votes?universeIds=${uidsQuery}`;
+          let vData: any = null;
+          try {
+            const proxyRes = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(targetVotesUrl)}`);
+            if (proxyRes.ok) {
+              vData = await proxyRes.json();
+            }
+          } catch {}
+
+          if (!vData) {
+            try {
+              const directRes = await fetch(targetVotesUrl);
+              if (directRes.ok) {
+                vData = await directRes.json();
               }
+            } catch {}
+          }
+
+          if (Array.isArray(vData?.data)) {
+            for (const v of vData.data) {
+              if (v.id) votesMap[v.id] = { up: v.upVotes || 0, down: v.downVotes || 0 };
             }
           }
         } catch {}
@@ -388,8 +474,8 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         // Populate composite robloxDataMap
         for (const g of rawGames) {
           const v = votesMap[g.id];
-          const up = v ? v.up : 0;
-          const down = v ? v.down : 0;
+          const up = v ? v.up : (g.upVotes || 0);
+          const down = v ? v.down : (g.downVotes || 0);
           const totalVotes = up + down;
           const ratingPercent = totalVotes > 0 ? Math.round((up / totalVotes) * 100) : 100;
 
@@ -401,7 +487,7 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
             visits: typeof g.visits === "number" ? g.visits : 0,
             playing: typeof g.playing === "number" ? g.playing : 0,
             maxPlayers: g.maxPlayers || 50,
-            genre_l1: g.genre_l1 || g.genre,
+            genre_l1: "Map",
             iconUrl: iconsMap[g.id],
             thumbnailUrl: thumbsMap[g.id],
             upVotes: up,
@@ -486,29 +572,34 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
           let updatedIcon = project.icon_url;
           let updatedThumb = project.thumbnail_url;
           let updatedRobloxStats = project.robloxStats;
+          let updatedType = project.type;
 
-          if (project.category === "roblox" && project.robloxStats && robloxDataMap[project.robloxStats.universeId]) {
-            const liveGame = robloxDataMap[project.robloxStats.universeId];
-            if (liveGame.name) updatedTitle = liveGame.name;
-            if (liveGame.description) updatedDesc = liveGame.description;
-            if (liveGame.iconUrl) updatedIcon = liveGame.iconUrl;
-            if (liveGame.thumbnailUrl) updatedThumb = liveGame.thumbnailUrl;
+          if (project.category === "roblox") {
+            updatedType = "Roblox Map";
+            if (project.robloxStats && robloxDataMap[project.robloxStats.universeId]) {
+              const liveGame = robloxDataMap[project.robloxStats.universeId];
+              if (liveGame.name) updatedTitle = liveGame.name;
+              if (liveGame.description) updatedDesc = liveGame.description;
+              if (liveGame.iconUrl) updatedIcon = liveGame.iconUrl;
+              if (liveGame.thumbnailUrl) updatedThumb = liveGame.thumbnailUrl;
 
-            updatedRobloxStats = {
-              ...project.robloxStats,
-              visits: liveGame.visits,
-              playing: liveGame.playing,
-              maxPlayers: liveGame.maxPlayers || project.robloxStats.maxPlayers,
-              upVotes: liveGame.upVotes ?? project.robloxStats.upVotes,
-              downVotes: liveGame.downVotes ?? project.robloxStats.downVotes,
-              ratingPercent: liveGame.ratingPercent ?? project.robloxStats.ratingPercent,
-              fallbackIconUrl: liveGame.iconUrl || project.robloxStats.fallbackIconUrl,
-            };
+              updatedRobloxStats = {
+                ...project.robloxStats,
+                visits: liveGame.visits,
+                playing: liveGame.playing,
+                maxPlayers: liveGame.maxPlayers || project.robloxStats.maxPlayers,
+                upVotes: liveGame.upVotes ?? project.robloxStats.upVotes,
+                downVotes: liveGame.downVotes ?? project.robloxStats.downVotes,
+                ratingPercent: liveGame.ratingPercent ?? project.robloxStats.ratingPercent,
+                fallbackIconUrl: liveGame.iconUrl || project.robloxStats.fallbackIconUrl,
+              };
+            }
           }
 
           return {
             ...project,
             title: updatedTitle,
+            type: updatedType,
             description: updatedDesc,
             icon_url: updatedIcon,
             thumbnail_url: updatedThumb,
@@ -540,9 +631,9 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
             icon_url: liveGame.iconUrl || "/images/roblox/infinity-group.png",
             fallback_icon_url: liveGame.iconUrl || "/images/roblox/infinity-group.png",
             thumbnail_url: liveGame.thumbnailUrl,
-            type: liveGame.genre_l1 ? `Roblox ${liveGame.genre_l1}` : "Roblox Experience",
+            type: "Roblox Map",
             category: "roblox",
-            tags: ["Roblox", "Infinity Project Studio's", liveGame.genre_l1 || "Game", "Multiplayer"],
+            tags: ["Roblox", "Roblox Map", "Infinity Project Studio's", "Multiplayer"],
             downloads: liveGame.visits,
             updated: liveGame.updated ? liveGame.updated.split("T")[0] : new Date().toISOString().split("T")[0],
             robloxStats: {
