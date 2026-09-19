@@ -54,29 +54,36 @@
   },
   "projectsModal": {
     "totalDownloads": "DOWNLOADS TOTAIS",
-    "projectViews": "VISUALIZAÇÕES DO PROJETO",
-    "portfolioViews": "VISUALIZAÇÕES DO PORTFÓLIO",
+    "projectViews": "VISITAS DO PROJETO",
+    "portfolioViews": "VISITAS DO PORTFÓLIO",
     "tagsAndSpecs": "TAGS E ESPECIFICAÇÕES",
     "platformsAndDownloads": "PLATAFORMAS E DOWNLOADS",
     "searchPlaceholder": "PESQUISAR PROJETOS...",
     "all": "Todos",
     "modpack": "Modpack",
-    "mod": "Mod",
+    "mod": "Mod & Datapack",
     "resourcepack": "Pack de Recursos",
     "plugin": "Plugin",
     "server": "Servidor",
-    "allCategories": "All",
+    "allCategories": "Todos",
     "minecraftCategory": "Minecraft",
     "robloxCategory": "Roblox",
-    "totalVisits": "TOTAL VISITS",
-    "rating": "RATING",
-    "activePlayers": "ONLINE PLAYERS",
-    "serverCapacity": "SERVER CAPACITY",
-    "createdBy": "CREATED BY",
-    "playOnRoblox": "PLAY ON ROBLOX",
-    "visitGroup": "OFFICIAL GROUP",
-    "robloxMap": "Roblox Map",
-    "robloxAddon": "Roblox Addon"
+    "totalVisits": "VISITAS TOTAIS",
+    "rating": "AVALIAÇÃO",
+    "activePlayers": "JOGADORES ONLINE",
+    "serverCapacity": "Capacidade: máx {max} slots",
+    "createdBy": "CRIADO POR",
+    "by": "por",
+    "playOnRoblox": "JOGAR NO ROBLOX",
+    "playNowOnRoblox": "JOGAR AGORA NO ROBLOX",
+    "visitGroup": "GRUPO OFICIAL",
+    "robloxMap": "Mapa Roblox",
+    "robloxAddon": "Addon Roblox",
+    "gameplayPreview": "PRÉVIA DO MAPA",
+    "cumulativeVisits": "Partidas acumuladas",
+    "verifiedDownloads": "Downloads verificados",
+    "uniqueViews": "Visualizações únicas",
+    "globalTraffic": "Tráfego global do portfólio"
   },
   "projectData": {
     "project-boss-rpg": {
@@ -93,59 +100,59 @@
     },
     "project-horror": {
       "title": "PROJECT HORROR",
-      "description": "Aterrorizante experiência de survival horror repleta de entidades assustadoras, atmosfera e mecânicas personalizadas."
+      "description": "Experiência aterrorizante de survival horror repleta de entidades assustadoras, atmosfera e mecânicas únicas."
     },
     "project-the-rpg-reborn": {
       "title": "PROJECT THE RPG REBORN",
-      "description": "Incrível experiência de RPG sozinho ou com amigos com sistema de níveis, magia, masmorras e chefes."
+      "description": "Incrível experiência de RPG sozinho ou com amigos com níveis, magia, masmorras e chefes."
     },
     "project-realistic-rpg": {
       "title": "PROJECT REALISTIC RPG",
-      "description": "Experiência de sobrevivência realista com saúde, armas, kits médicos, temperatura e mecânicas imersivas."
+      "description": "Experiência de sobrevivência realista com vida, armas, kits médicos, temperatura e mecânicas imersivas."
     },
     "project-gunparty": {
       "title": "PROJECT GUNPARTY",
-      "description": "Experiência multijogador de combate com armas e deathmatch repleta de ação no Minecraft."
+      "description": "Experiência multiplayer cheia de ação com armas de fogo e mata-mata dentro do Minecraft."
     },
     "bosstweak-3d": {
       "title": "BOSSTWEAK 3D+",
-      "description": "Pack de recursos oficial do Boss RPG: corrige problemas visuais, melhora texturas e adiciona modelos 3D."
+      "description": "Resource pack oficial do Boss RPG: corrige falhas visuais, melhora texturas e adiciona modelos 3D."
     },
     "pmaintanceuniversal": {
       "title": "PROJECT MAINTENANCE UNIVERSAL",
-      "description": "Plugin universal de manutenção de servidor para Minecraft Java com MOTDs personalizáveis."
+      "description": "Plugin universal de manutenção de servidores para Minecraft Java com MOTDs personalizáveis."
     },
     "infinitysmart": {
       "title": "INFINITYSMART SERVER",
-      "description": "Rede europeia multiplicativa de Minecraft Java e Bedrock com InfinitySMP e minijogos."
+      "description": "Rede europeia multiplataforma de Minecraft Java e Bedrock com InfinitySMP e minijogos."
     },
     "extreme-obby": {
-      "title": "Extreme Obby! [UPD]",
-      "description": "Intense 50+ level parkour obstacle challenge! Complete levels with as few deaths as possible in open beta v3.0."
+      "title": "Extreme Obby! [ATUALIZADO]",
+      "description": "Desafio de parkour hardcore com mais de 50 níveis! Complete percursos com o menor número de mortes no beta aberto v3.0."
     },
     "stud-difficulty": {
       "title": "Stud Difficulty [ALPHA]",
-      "description": "Professional precision challenge pushing your skills to the limit. Features high jumps, long jumps, quests, and checkpoints."
+      "description": "Desafio de precisão que leva suas habilidades ao limite. Saltos altos, saltos longos, missões e pontos de controle."
     },
     "italian-hangout": {
-      "title": "ITALIAN HANGOUT [BETA NEW]",
-      "description": "The ultimate Italian social hangout hub. Relax, meet new friends, explore beaches, attend music events, and drive VIP vehicles."
+      "title": "ITALIAN HANGOUT [NOVO BETA]",
+      "description": "O melhor ponto de encontro social italiano. Relaxe, faça novos amigos, explore praias, eventos musicais e dirija veículos VIP."
     },
     "infinity-obby-record": {
-      "title": "Infinity Obby Record! [NEW]",
-      "description": "Endless jump challenge! Keep leaping forward, beat your previous high scores, race against the timer, and challenge friends globally."
+      "title": "Infinity Obby Record! [NOVO]",
+      "description": "Desafio de saltos infinitos! Salte para a frente, bata seus recordes anteriores, corra contra o tempo e desafie amigos globalmente."
     },
     "dodger-climber": {
       "title": "Dodger Climber",
-      "description": "Scale challenging vertical cliffs and mountain paths while dodging hazards and testing your timing and reflexes."
+      "description": "Escale montanhas e penhascos verticais desviando de perigos para testar seus reflexos e sincronização."
     },
     "nycron": {
-      "title": "Nycron [EARLY TESTING]",
-      "description": "Experimental platformer featuring custom momentum mechanics, unique physics challenges, and world progression."
+      "title": "Nycron [TESTE ANTECIPADO]",
+      "description": "Jogo de plataforma experimental com física de movimento única, desafios e progressão de mundos."
     },
     "slip-and-drift": {
-      "title": "SLIP & DRIFT [OPENBETA]",
-      "description": "Sinta cada curva. Dirija, corra e domine o drifting com fisica de veiculos responsiva em corridas velozes."
+      "title": "SLIP & DRIFT [NOVO BETA]",
+      "description": "Sinta cada curva. Dirija, dispute corridas e domine o drift com física veicular ágil. Leve seu carro ao limite contra outros jogadores."
     }
   },
   "terminal": {
@@ -171,6 +178,7 @@
   "stats": {
     "liveStatsHeader": "ESTATÍSTICAS E MÉTRICAS EM TEMPO REAL",
     "downloadsByPlatform": "DOWNLOADS POR PLATAFORMA",
+    "robloxVisits": "Roblox (Visitas)",
     "certificateBadge": "CERTIFICADO",
     "certificateTier": "CURSEFORGE LEGENDS · FORGEBORN",
     "certificateSubtitle": "Marco oficial de 100.000 downloads",

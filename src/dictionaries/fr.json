@@ -61,22 +61,29 @@
     "searchPlaceholder": "RECHERCHER DES PROJETS...",
     "all": "Tous",
     "modpack": "Modpack",
-    "mod": "Mod",
+    "mod": "Mod & Datapack",
     "resourcepack": "Pack de ressources",
     "plugin": "Plugin",
     "server": "Serveur",
-    "allCategories": "All",
+    "allCategories": "Tous",
     "minecraftCategory": "Minecraft",
     "robloxCategory": "Roblox",
-    "totalVisits": "TOTAL VISITS",
-    "rating": "RATING",
-    "activePlayers": "ONLINE PLAYERS",
-    "serverCapacity": "SERVER CAPACITY",
-    "createdBy": "CREATED BY",
-    "playOnRoblox": "PLAY ON ROBLOX",
-    "visitGroup": "OFFICIAL GROUP",
-    "robloxMap": "Roblox Map",
-    "robloxAddon": "Roblox Addon"
+    "totalVisits": "VISITES TOTALES",
+    "rating": "ÉVALUATION",
+    "activePlayers": "JOUEURS EN LIGNE",
+    "serverCapacity": "Capacité : max {max} slots",
+    "createdBy": "CRÉÉ PAR",
+    "by": "par",
+    "playOnRoblox": "JOUER SUR ROBLOX",
+    "playNowOnRoblox": "JOUER MAINTENANT SUR ROBLOX",
+    "visitGroup": "GROUPE OFFICIEL",
+    "robloxMap": "Carte Roblox",
+    "robloxAddon": "Addon Roblox",
+    "gameplayPreview": "APERÇU DU JEU",
+    "cumulativeVisits": "Parties cumulées",
+    "verifiedDownloads": "Téléchargements vérifiés",
+    "uniqueViews": "Vues uniques",
+    "globalTraffic": "Trafic global du portfolio"
   },
   "projectData": {
     "project-boss-rpg": {
@@ -120,32 +127,32 @@
       "description": "Réseau européen multiplateforme Minecraft Java & Bedrock proposant InfinitySMP et des mini-jeux."
     },
     "extreme-obby": {
-      "title": "Extreme Obby! [UPD]",
-      "description": "Intense 50+ level parkour obstacle challenge! Complete levels with as few deaths as possible in open beta v3.0."
+      "title": "Extreme Obby! [MAJ]",
+      "description": "Défi de parkour hardcore avec plus de 50 niveaux ! Terminez les parcours avec le moins de morts possible dans la bêta ouverte v3.0."
     },
     "stud-difficulty": {
       "title": "Stud Difficulty [ALPHA]",
-      "description": "Professional precision challenge pushing your skills to the limit. Features high jumps, long jumps, quests, and checkpoints."
+      "description": "Défi d'obstacles et de précision repoussant vos limites. Sauts en hauteur, sauts en longueur, quêtes et checkpoints."
     },
     "italian-hangout": {
-      "title": "ITALIAN HANGOUT [BETA NEW]",
-      "description": "The ultimate Italian social hangout hub. Relax, meet new friends, explore beaches, attend music events, and drive VIP vehicles."
+      "title": "ITALIAN HANGOUT [NOUVELLE BÊTA]",
+      "description": "Le hub social italien par excellence. Détendez-vous, faites des rencontres, explorez les plages, profitez des soirées musicales et conduisez des véhicules VIP."
     },
     "infinity-obby-record": {
-      "title": "Infinity Obby Record! [NEW]",
-      "description": "Endless jump challenge! Keep leaping forward, beat your previous high scores, race against the timer, and challenge friends globally."
+      "title": "Infinity Obby Record! [NOUVEAU]",
+      "description": "Défi de sauts infinis ! Sautez sans fin, battez vos records précédents, courez contre la montre et défiez vos amis dans les classements mondiaux."
     },
     "dodger-climber": {
       "title": "Dodger Climber",
-      "description": "Scale challenging vertical cliffs and mountain paths while dodging hazards and testing your timing and reflexes."
+      "description": "Escaladez des falaises abruptes et des sentiers de montagne verticaux en esquivant les pièges pour tester vos réflexes et votre timing."
     },
     "nycron": {
-      "title": "Nycron [EARLY TESTING]",
-      "description": "Experimental platformer featuring custom momentum mechanics, unique physics challenges, and world progression."
+      "title": "Nycron [TEST ANTICIPÉ]",
+      "description": "Jeu de plateforme expérimental doté d'une physique de mouvement unique, de défis mécaniques et d'une progression fluide."
     },
     "slip-and-drift": {
-      "title": "SLIP & DRIFT [OPENBETA]",
-      "description": "Ressentez chaque virage. Pilotez, faites la course et maitrisez le drift avec une physique de conduite reactive."
+      "title": "SLIP & DRIFT [NOUVELLE BÊTA]",
+      "description": "Ressentez chaque virage. Pilotez, faites la course et maîtrisez le drift avec une physique de conduite réactive. Poussez votre voiture à ses limites et défiez d'autres joueurs."
     }
   },
   "terminal": {
@@ -171,6 +178,7 @@
   "stats": {
     "liveStatsHeader": "STATISTIQUES & EN DIRECT",
     "downloadsByPlatform": "TÉLÉCHARGEMENTS PAR PLATEFORME",
+    "robloxVisits": "Roblox (Visites)",
     "certificateBadge": "CERTIFICAT",
     "certificateTier": "CURSEFORGE LEGENDS · FORGEBORN",
     "certificateSubtitle": "Étape officielle des 100 000 téléchargements",

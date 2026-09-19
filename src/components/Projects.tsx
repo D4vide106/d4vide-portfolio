@@ -52,12 +52,10 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
   };
 
   const getProjectTitle = (p: UnifiedProject) => {
-    if (p.category === "roblox") return p.title;
     return projectDataDict[p.id]?.title || p.title;
   };
 
   const getProjectDescription = (p: UnifiedProject) => {
-    if (p.category === "roblox" && p.description) return p.description;
     return projectDataDict[p.id]?.description || p.description;
   };
 
@@ -238,7 +236,7 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
             <h4 className={styles.cardTitle}>{pTitle}</h4>
             {isRoblox && project.robloxStats && (
               <span className={styles.cardAuthor}>
-                by {project.robloxStats.creatorName}
+                {modalDict?.by || "by"} {project.robloxStats.creatorName}
               </span>
             )}
           </div>
@@ -249,18 +247,18 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
         <div className={styles.cardFooter}>
           {isRoblox ? (
             <div className={styles.robloxCardStats}>
-              <div className={styles.visitStat} title="Visite totali">
+              <div className={styles.visitStat} title={modalDict?.totalVisits || "Visite totali"}>
                 <FiEye size={12} />
                 <span>{project.downloads.toLocaleString()}</span>
               </div>
               {project.robloxStats?.ratingPercent !== undefined && (
-                <span className={styles.ratingStat} title="Valutazione positiva">
+                <span className={styles.ratingStat} title={modalDict?.rating || "Valutazione positiva"}>
                   ⭐ {project.robloxStats.ratingPercent}%
                 </span>
               )}
             </div>
           ) : (
-            <div className={styles.downloadStat} title="Download totali">
+            <div className={styles.downloadStat} title={modalDict?.totalDownloads || "Download totali"}>
               <FiDownload size={13} />
               <span>{project.downloads.toLocaleString()}</span>
             </div>
@@ -394,7 +392,7 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
                   <h4 className={styles.cardTitle}>{pTitle}</h4>
                   {isRoblox && project.robloxStats && (
                     <span className={styles.cardAuthor}>
-                      by {project.robloxStats.creatorName}
+                      {modalDict?.by || "by"} {project.robloxStats.creatorName}
                     </span>
                   )}
                 </div>
@@ -405,18 +403,18 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
               <div className={styles.cardFooter}>
                 {isRoblox ? (
                   <div className={styles.robloxCardStats}>
-                    <div className={styles.visitStat} title="Visite totali">
+                    <div className={styles.visitStat} title={modalDict?.totalVisits || "Visite totali"}>
                       <FiEye size={12} />
                       <span>{project.downloads.toLocaleString()}</span>
                     </div>
                     {project.robloxStats?.ratingPercent !== undefined && (
-                      <span className={styles.ratingStat}>
+                      <span className={styles.ratingStat} title={modalDict?.rating || "Valutazione positiva"}>
                         ⭐ {project.robloxStats.ratingPercent}%
                       </span>
                     )}
                   </div>
                 ) : (
-                  <div className={styles.downloadStat}>
+                  <div className={styles.downloadStat} title={modalDict?.totalDownloads || "Download totali"}>
                     <FiDownload size={13} />
                     <span>{project.downloads.toLocaleString()}</span>
                   </div>

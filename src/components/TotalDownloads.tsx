@@ -10,7 +10,7 @@ import AnimatedNumber from "./AnimatedNumber";
 import styles from "./TotalDownloads.module.css";
 
 export default function TotalDownloads() {
-  const { totalDownloads, portfolioViews, platformTotals } = useLiveStats();
+  const { totalDownloads, totalRobloxVisits, portfolioViews, platformTotals } = useLiveStats();
   const { dict: contextDict } = useLanguage();
   const modalDict = contextDict.projectsModal || {};
   const statsDict = contextDict.stats || {};
@@ -138,14 +138,16 @@ export default function TotalDownloads() {
                     <AnimatedNumber value={platformTotals.itch || 0} />
                   </span>
                 </div>
-                <div className={styles.tooltipRow}>
-                  <span className={styles.platformLabel}>
-                    <SiRoblox color="#e2231a" size={13} /> Roblox
-                  </span>
-                  <span className={styles.platformVal}>
-                    <AnimatedNumber value={platformTotals.roblox || 0} />
-                  </span>
-                </div>
+                {totalRobloxVisits > 0 && (
+                  <div className={styles.tooltipRow} style={{ borderTop: "1px solid rgba(255,255,255,0.08)", marginTop: "4px", paddingTop: "5px" }}>
+                    <span className={styles.platformLabel}>
+                      <SiRoblox color="#e2231a" size={13} /> {statsDict.robloxVisits || "Roblox (Visite)"}
+                    </span>
+                    <span className={styles.platformVal}>
+                      <AnimatedNumber value={totalRobloxVisits} />
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
           )}

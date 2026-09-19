@@ -263,13 +263,33 @@
   text-transform: uppercase;
 }
 
-/* ── 4. CENTERED YOUTUBE LATEST BROADCAST ────────────────── */
+/* ── 4. DUAL MEDIA SHOWCASE: YOUTUBE + TIKTOK/SHORTS ────────── */
+.mediaShowcaseWrapper {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 1.5rem;
+  align-items: stretch;
+  scroll-margin-top: calc(85px + env(safe-area-inset-top, 0px));
+}
+
 .centeredYoutubeWrapper {
   width: 100%;
   max-width: 860px;
   margin: 0 auto;
   position: relative;
   z-index: 10;
+}
+
+@media (max-width: 960px) {
+  .mediaShowcaseWrapper {
+    grid-template-columns: 1fr;
+    max-width: 680px;
+  }
 }
 
 .youtubeCard {

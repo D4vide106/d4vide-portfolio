@@ -66,7 +66,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     type: "Modpack",
     category: "minecraft",
     tags: ["Modpack", "RPG", "Bosses", "Quests", "1.20.1", "Forge"],
-    downloads: 47705,
+    downloads: 48374,
     updated: "2025-06-12",
     links: [
       {
@@ -74,14 +74,14 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
         url: "https://www.curseforge.com/minecraft/modpacks/project-boss-rpg",
         platform: "curseforge",
         cfPath: "minecraft/modpacks/project-boss-rpg",
-        initialDownloads: 33934
+        initialDownloads: 34091
       },
       {
         label: "Modrinth (Modpack)",
         url: "https://modrinth.com/modpack/project-boss-rpg",
         platform: "modrinth",
         mrId: "6qXHHAYn",
-        initialDownloads: 13771
+        initialDownloads: 14283
       }
     ]
   },
@@ -94,7 +94,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     type: "Mod / Datapack / Addon",
     category: "minecraft",
     tags: ["Mod", "Datapack", "Bedrock Addon", "Java & Bedrock", "Dungeon", "Adventure", "Structures"],
-    downloads: 33501,
+    downloads: 34394,
     updated: "2026-07-18",
     links: [
       {
@@ -102,28 +102,28 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
         url: "https://www.curseforge.com/minecraft/mc-mods/sdob",
         platform: "curseforge",
         cfPath: "minecraft/mc-mods/sdob",
-        initialDownloads: 22380
+        initialDownloads: 22981
       },
       {
         label: "CurseForge (Datapack)",
         url: "https://www.curseforge.com/minecraft/texture-packs/spiral-dungeon-of-babel-sdob-datapack",
         platform: "curseforge",
         cfPath: "minecraft/texture-packs/spiral-dungeon-of-babel-sdob-datapack",
-        initialDownloads: 186
+        initialDownloads: 190
       },
       {
         label: "CurseForge (Bedrock Addon)",
         url: "https://www.curseforge.com/minecraft-bedrock/addons/spiral-dungeon-of-babel-sdob-bedrock",
         platform: "curseforge",
         cfPath: "minecraft-bedrock/addons/spiral-dungeon-of-babel-sdob-bedrock",
-        initialDownloads: 194
+        initialDownloads: 213
       },
       {
         label: "Modrinth (Mod)",
         url: "https://modrinth.com/mod/sdob",
         platform: "modrinth",
         mrId: "sdob",
-        initialDownloads: 10306
+        initialDownloads: 10575
       },
       {
         label: "GameJolt",
@@ -148,7 +148,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     type: "Mod / Datapack / Addon",
     category: "minecraft",
     tags: ["Mod", "Datapack", "Bedrock Addon", "Resourcepack", "Java & Bedrock", "Structures", "World Gen"],
-    downloads: 56175,
+    downloads: 93593,
     updated: "2026-07-17",
     links: [
       {
@@ -156,35 +156,42 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
         url: "https://www.curseforge.com/minecraft/mc-mods/structural-beyond",
         platform: "curseforge",
         cfPath: "minecraft/mc-mods/structural-beyond",
-        initialDownloads: 40034
+        initialDownloads: 73021
       },
       {
         label: "CurseForge (Datapack)",
         url: "https://www.curseforge.com/minecraft/data-packs/structural-beyond-sbd",
         platform: "curseforge",
         cfPath: "minecraft/data-packs/structural-beyond-sbd",
-        initialDownloads: 1542
+        initialDownloads: 1644
       },
       {
         label: "CurseForge (Resourcepack)",
         url: "https://www.curseforge.com/minecraft/texture-packs/structural-beyond-sbrd",
         platform: "curseforge",
         cfPath: "minecraft/texture-packs/structural-beyond-sbrd",
-        initialDownloads: 659
+        initialDownloads: 702
       },
       {
         label: "CurseForge (Bedrock Addon)",
         url: "https://www.curseforge.com/minecraft-bedrock/addons/structural-beyond-sb-bedrock",
         platform: "curseforge",
         cfPath: "minecraft-bedrock/addons/structural-beyond-sb-bedrock",
-        initialDownloads: 775
+        initialDownloads: 835
       },
       {
         label: "Modrinth (Mod)",
         url: "https://modrinth.com/mod/structural-beyond",
         platform: "modrinth",
         mrId: "structural-beyond",
-        initialDownloads: 12535
+        initialDownloads: 16747
+      },
+      {
+        label: "Modrinth (Datapack)",
+        url: "https://modrinth.com/datapack/structural-beyond-sbd",
+        platform: "modrinth",
+        mrId: "6fD46g8w",
+        initialDownloads: 475
       },
       {
         label: "GameJolt",
@@ -209,7 +216,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     type: "Modpack",
     category: "minecraft",
     tags: ["Modpack", "Horror", "Survival", "Entities", "Atmosphere", "Forge"],
-    downloads: 4994,
+    downloads: 5010,
     updated: "2023-11-11",
     links: [
       {
@@ -217,7 +224,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
         url: "https://www.curseforge.com/minecraft/modpacks/project-horror",
         platform: "curseforge",
         cfPath: "minecraft/modpacks/project-horror",
-        initialDownloads: 4994
+        initialDownloads: 5010
       }
     ]
   },
@@ -314,7 +321,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     type: "Plugin",
     category: "minecraft",
     tags: ["Plugin", "Server", "Paper", "Spigot", "MOTD", "Maintenance"],
-    downloads: 162,
+    downloads: 164,
     updated: "2025-02-10",
     links: [
       {
@@ -322,7 +329,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
         url: "https://modrinth.com/plugin/pmaintanceuniversal",
         platform: "modrinth",
         mrId: "pmaintanceuniversal",
-        initialDownloads: 162
+        initialDownloads: 164
       }
     ]
   },
@@ -641,7 +648,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
     type: "Roblox Map",
     category: "roblox",
     tags: ["Roblox", "Roblox Map", "Drifting", "Racing", "Cars", "Car Physics", "Multiplayer", "Competitive", "Beta"],
-    downloads: 434,
+    downloads: 509,
     updated: "2026-09-17",
     robloxStats: {
       universeId: 8054104811,
@@ -650,12 +657,12 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
       creatorType: "Group",
       creatorId: 33742489,
       creatorUrl: "https://www.roblox.com/communities/33742489/Infinity-Project-Studios",
-      visits: 434,
+      visits: 509,
       playing: 0,
       maxPlayers: 50,
-      upVotes: 6,
-      downVotes: 0,
-      ratingPercent: 100,
+      upVotes: 8,
+      downVotes: 1,
+      ratingPercent: 89,
       favorites: 8,
       groupLogo: "https://tr.rbxcdn.com/180DAY-4ed5652c6445287484e24e35b0ba6235/420/420/Image/Png/noFilter",
       fallbackIconUrl: "/images/roblox/slip-and-drift.png"
@@ -667,7 +674,7 @@ export const MAIN_PROJECTS: UnifiedProject[] = [
         platform: "roblox",
         robloxUniverseId: 8054104811,
         robloxPlaceId: 83340091085271,
-        initialDownloads: 434
+        initialDownloads: 509
       },
       {
         label: "Infinity Project Studio's",

@@ -22,6 +22,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { useLiveStats } from "@/context/LiveStatsContext";
 import { UnifiedProject } from "@/data/projectsData";
 import ProjectDetailModal from "./ProjectDetailModal";
+import TikTokVideoWidget from "./TikTokVideoWidget";
 
 const PLATFORM_NAMES: Record<string, string> = {
   curseforge: "CurseForge",
@@ -158,15 +159,15 @@ export default function Hero({ dict: propDict, aboutDict: propAboutDict }: { dic
             <TotalDownloads />
           </div>
 
-          {/* ── 4. CENTERED YOUTUBE LATEST BROADCAST ────────────────── */}
-          <div className={styles.centeredYoutubeWrapper} id="youtube">
+          {/* ── 4. DUAL MEDIA SHOWCASE: YOUTUBE LATEST BROADCAST + TIKTOK/SHORTS VIDEO PLAYER ── */}
+          <div className={styles.mediaShowcaseWrapper} id="media">
             <div className={styles.youtubeCard}>
               <div className={styles.ytHeader}>
                 <div className={styles.ytTitle}>
                   <FiPlayCircle className={styles.ytIcon} />
                   <span>{ytDict.latestBroadcast || "LATEST BROADCAST"}</span>
                 </div>
-                <a href="https://www.youtube.com/@d4vide106" target="_blank" rel="noreferrer" className={styles.ytBtn}>
+                <a href="https://youtube.com/@d4vide106" target="_blank" rel="noreferrer" className={styles.ytBtn}>
                   YOUTUBE <FiArrowUpRight size={13} />
                 </a>
               </div>
@@ -180,6 +181,8 @@ export default function Hero({ dict: propDict, aboutDict: propAboutDict }: { dic
                 />
               </div>
             </div>
+
+            <TikTokVideoWidget />
           </div>
 
         </div>

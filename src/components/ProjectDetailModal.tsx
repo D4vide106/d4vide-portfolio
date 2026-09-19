@@ -74,8 +74,8 @@ export default function ProjectDetailModal({
   if (!project) return null;
 
   const isRoblox = project.category === "roblox";
-  const pTitle = isRoblox ? project.title : (projectDataDict[project.id]?.title || project.title);
-  const pDesc = isRoblox && project.description ? project.description : (projectDataDict[project.id]?.description || project.description);
+  const pTitle = projectDataDict[project.id]?.title || project.title;
+  const pDesc = projectDataDict[project.id]?.description || project.description;
   const robloxStats = project.robloxStats;
   const robloxGameUrl =
     project.links.find((l) => l.url.includes("/games/"))?.url || project.links[0]?.url;
@@ -166,7 +166,7 @@ export default function ProjectDetailModal({
             <span className={`${styles.modalCategoryBadge} ${isRoblox ? styles.robloxModalBadge : ""}`}>
               {isRoblox ? (
                 <>
-                  <SiRoblox size={11} /> ROBLOX MAP
+                  <SiRoblox size={11} /> {(modalDict?.robloxMap || "Roblox Map").toUpperCase()}
                 </>
               ) : (
                 project.type.toUpperCase()
@@ -265,7 +265,7 @@ export default function ProjectDetailModal({
                 <div className={styles.statFooterChip}>
                   <span className={styles.serverCapacityChip}>
                     <FiServer size={10} />
-                    <span>Capienza: max {robloxStats?.maxPlayers ?? 50} slot</span>
+                    <span>{modalDict?.serverCapacity ? modalDict.serverCapacity.replace("{max}", String(robloxStats?.maxPlayers ?? 50)) : `Capienza: max ${robloxStats?.maxPlayers ?? 50} slot`}</span>
                   </span>
                 </div>
               </div>
@@ -286,7 +286,7 @@ export default function ProjectDetailModal({
                 <div className={styles.statFooterChip}>
                   <span className={styles.subPillGreen}>
                     <span className={styles.microDotLive} />
-                    <span>Download verificati</span>
+                    <span>{modalDict?.verifiedDownloads || "Download verificati"}</span>
                   </span>
                 </div>
               </div>
@@ -303,7 +303,7 @@ export default function ProjectDetailModal({
                   <AnimatedNumber value={getProjectViews(project.id)} />
                 </div>
                 <div className={styles.statFooterChip}>
-                  <span>Visualizzazioni uniche</span>
+                  <span>{modalDict?.uniqueViews || "Visualizzazioni uniche"}</span>
                 </div>
               </div>
 
@@ -319,7 +319,7 @@ export default function ProjectDetailModal({
                   <AnimatedNumber value={portfolioViews} />
                 </div>
                 <div className={styles.statFooterChip}>
-                  <span>Traffico globale portfolio</span>
+                  <span>{modalDict?.globalTraffic || "Traffico globale portfolio"}</span>
                 </div>
               </div>
             </>
@@ -355,7 +355,7 @@ export default function ProjectDetailModal({
                 onClick={() => incrementDownloadLink(project.id, robloxGameUrl)}
               >
                 <SiRoblox size={22} />
-                <span>{modalDict?.playOnRoblox || "GIOCA ORA SU ROBLOX"}</span>
+                <span>{modalDict?.playNowOnRoblox || modalDict?.playOnRoblox || "GIOCA ORA SU ROBLOX"}</span>
                 <FiExternalLink size={16} />
               </a>
 

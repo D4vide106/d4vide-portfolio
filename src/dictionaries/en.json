@@ -61,7 +61,7 @@
     "searchPlaceholder": "SEARCH PROJECTS...",
     "all": "All",
     "modpack": "Modpack",
-    "mod": "Mod",
+    "mod": "Mod & Datapack",
     "resourcepack": "Resource Pack",
     "plugin": "Plugin",
     "server": "Server",
@@ -71,12 +71,19 @@
     "totalVisits": "TOTAL VISITS",
     "rating": "RATING",
     "activePlayers": "ONLINE PLAYERS",
-    "serverCapacity": "SERVER CAPACITY",
+    "serverCapacity": "Capacity: max {max} slots",
     "createdBy": "CREATED BY",
+    "by": "by",
     "playOnRoblox": "PLAY ON ROBLOX",
+    "playNowOnRoblox": "PLAY NOW ON ROBLOX",
     "visitGroup": "OFFICIAL GROUP",
     "robloxMap": "Roblox Map",
-    "robloxAddon": "Roblox Addon"
+    "robloxAddon": "Roblox Addon",
+    "gameplayPreview": "GAMEPLAY PREVIEW",
+    "cumulativeVisits": "Cumulative plays",
+    "verifiedDownloads": "Verified downloads",
+    "uniqueViews": "Unique views",
+    "globalTraffic": "Global portfolio traffic"
   },
   "projectData": {
     "project-boss-rpg": {
@@ -171,6 +178,7 @@
   "stats": {
     "liveStatsHeader": "LIVE STATS & METRICS",
     "downloadsByPlatform": "DOWNLOADS BY PLATFORM",
+    "robloxVisits": "Roblox (Visits)",
     "certificateBadge": "CERTIFICATE",
     "certificateTier": "CURSEFORGE LEGENDS · FORGEBORN",
     "certificateSubtitle": "Official 100,000 Downloads Milestone",

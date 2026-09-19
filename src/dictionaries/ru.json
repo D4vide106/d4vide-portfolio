@@ -61,22 +61,29 @@
     "searchPlaceholder": "ПОИСК ПРОЕКТОВ...",
     "all": "Все",
     "modpack": "Модпак",
-    "mod": "Мод",
+    "mod": "Мод и Датапак",
     "resourcepack": "Ресурспак",
     "plugin": "Плагин",
     "server": "Сервер",
-    "allCategories": "All",
+    "allCategories": "Все",
     "minecraftCategory": "Minecraft",
     "robloxCategory": "Roblox",
-    "totalVisits": "TOTAL VISITS",
-    "rating": "RATING",
-    "activePlayers": "ONLINE PLAYERS",
-    "serverCapacity": "SERVER CAPACITY",
-    "createdBy": "CREATED BY",
-    "playOnRoblox": "PLAY ON ROBLOX",
-    "visitGroup": "OFFICIAL GROUP",
-    "robloxMap": "Roblox Map",
-    "robloxAddon": "Roblox Addon"
+    "totalVisits": "ВСЕГО ПОСЕЩЕНИЙ",
+    "rating": "РЕЙТИНГ",
+    "activePlayers": "ИГРОКОВ ОНЛАЙН",
+    "serverCapacity": "Вместимость: макс. {max} мест",
+    "createdBy": "СОЗДАНО",
+    "by": "от",
+    "playOnRoblox": "ИГРАТЬ В ROBLOX",
+    "playNowOnRoblox": "ИГРАТЬ СЕЙЧАС В ROBLOX",
+    "visitGroup": "ОФИЦИАЛЬНАЯ ГРУППА",
+    "robloxMap": "Карта Roblox",
+    "robloxAddon": "Аддон Roblox",
+    "gameplayPreview": "ПРЕВЬЮ КАРТЫ",
+    "cumulativeVisits": "Суммарно сыграно",
+    "verifiedDownloads": "Проверенные загрузки",
+    "uniqueViews": "Уникальные просмотры",
+    "globalTraffic": "Общий трафик портфолио"
   },
   "projectData": {
     "project-boss-rpg": {
@@ -89,39 +96,39 @@
     },
     "structural-beyond": {
       "title": "STRUCTURAL BEYOND",
-      "description": "Добавляет десятки уникальных захватывающих построек в ваш мир для Java, Bedrock и датапаков!"
+      "description": "Добавляет десятки потрясающих структур в ваш мир на Java, Bedrock и Датапаках!"
     },
     "project-horror": {
       "title": "PROJECT HORROR",
-      "description": "Ужасающий survival horror с самыми пугающими существами, атмосферными механиками и кастомными функциями."
+      "description": "Ужасающий survival horror с пугающими сущностями, жуткой атмосферой и уникальными механиками."
     },
     "project-the-rpg-reborn": {
       "title": "PROJECT THE RPG REBORN",
-      "description": "Невероятный RPG-опыт в одиночку или с друзьями с прокачкой, магией, подземельями и боссами."
+      "description": "Невероятное RPG-приключение в одиночку или с друзьями: прокачка, магия, подземелья и боссы."
     },
     "project-realistic-rpg": {
       "title": "PROJECT REALISTIC RPG",
-      "description": "Реалистичное выживание со здоровьем, оружием, аптечками, температурой и иммерсивными механиками."
+      "description": "Реалистичное выживание: здоровье, оружие, аптечки, температура и атмосферные механики."
     },
     "project-gunparty": {
       "title": "PROJECT GUNPARTY",
-      "description": "Динамичные многопользовательские сражения на огнестрельном оружии и режим дезматча в Minecraft."
+      "description": "Динамичные многопользовательские перестрелки и режим deathmatch прямо в Minecraft."
     },
     "bosstweak-3d": {
       "title": "BOSSTWEAK 3D+",
-      "description": "Официальный ресурспак для Boss RPG: исправляет графику, улучшает текстуры и добавляет 3D-модели."
+      "description": "Официальный ресурспак для Boss RPG: устраняет визуальные баги, улучшает текстуры и добавляет 3D-модели."
     },
     "pmaintanceuniversal": {
       "title": "PROJECT MAINTENANCE UNIVERSAL",
-      "description": "Универсальный плагин технического обслуживания для серверов Minecraft Java с настраиваемыми MOTD."
+      "description": "Универсальный плагин техобслуживания для серверов Minecraft Java с настраиваемыми MOTD."
     },
     "infinitysmart": {
       "title": "INFINITYSMART SERVER",
-      "description": "Кроссплатформенная европейская сеть серверов Minecraft Java и Bedrock с InfinitySMP и мини-играми."
+      "description": "Европейская кроссплатформенная сеть Minecraft Java и Bedrock с InfinitySMP и мини-играми."
     },
     "extreme-obby": {
-      "title": "Extreme Obby! [UPD]",
-      "description": "Intense 50+ level parkour obstacle challenge! Complete levels with as few deaths as possible in open beta v3.0."
+      "title": "Extreme Obby! [ОБН]",
+      "description": "Хардкорный паркур с более чем 50 уровнями! Пройдите препятствия с минимальным количеством смертей в ОБТ v3.0."
     },
     "stud-difficulty": {
       "title": "Stud Difficulty [ALPHA]",
@@ -170,7 +177,8 @@
   },
   "stats": {
     "liveStatsHeader": "СТАТИСТИКА И МЕТРИКИ В РЕАЛЬНОМ ВРЕМЕНИ",
-    "downloadsByPlatform": "СКАЧИВАНИЯ ПО ПЛАТФОРМАМ",
+    "downloadsByPlatform": "ЗАГРУЗКИ ПО ПЛАТФОРМАМ",
+    "robloxVisits": "Roblox (Посещения)",
     "certificateBadge": "СЕРТИФИКАТ",
     "certificateTier": "CURSEFORGE LEGENDS · FORGEBORN",
     "certificateSubtitle": "Официальный рубеж в 100 000 загрузок",

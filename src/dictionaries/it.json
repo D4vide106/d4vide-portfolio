@@ -54,14 +54,14 @@
   },
   "projectsModal": {
     "totalDownloads": "DOWNLOAD TOTALI",
-    "projectViews": "VISUALIZZAZIONI PROGETTO",
-    "portfolioViews": "VISUALIZZAZIONI PORTFOLIO",
+    "projectViews": "VISITE PROGETTO",
+    "portfolioViews": "VISITE PORTFOLIO",
     "tagsAndSpecs": "TAG & SPECIFICHE",
     "platformsAndDownloads": "PIATTAFORME & DOWNLOAD",
     "searchPlaceholder": "CERCA PROGETTI...",
     "all": "Tutti",
     "modpack": "Modpack",
-    "mod": "Mod",
+    "mod": "Mod & Datapack",
     "resourcepack": "Resource Pack",
     "plugin": "Plugin",
     "server": "Server",
@@ -71,12 +71,19 @@
     "totalVisits": "VISITE TOTALI",
     "rating": "VALUTAZIONE",
     "activePlayers": "GIOCATORI ONLINE",
-    "serverCapacity": "CAPIENZA SERVER",
+    "serverCapacity": "Capienza: max {max} slot",
     "createdBy": "CREATO DA",
+    "by": "di",
     "playOnRoblox": "GIOCA SU ROBLOX",
+    "playNowOnRoblox": "GIOCA ORA SU ROBLOX",
     "visitGroup": "GRUPPO UFFICIALE",
     "robloxMap": "Roblox Map",
-    "robloxAddon": "Roblox Addon"
+    "robloxAddon": "Roblox Addon",
+    "gameplayPreview": "ANTEPRIMA MAPPA",
+    "cumulativeVisits": "Giocate cumulative",
+    "verifiedDownloads": "Download verificati",
+    "uniqueViews": "Visualizzazioni uniche",
+    "globalTraffic": "Traffico globale portfolio"
   },
   "projectData": {
     "project-boss-rpg": {
@@ -171,6 +178,7 @@
   "stats": {
     "liveStatsHeader": "STATISTICHE & METRICHE IN TEMPO REALE",
     "downloadsByPlatform": "DOWNLOAD PER PIATTAFORMA",
+    "robloxVisits": "Roblox (Visite)",
     "certificateBadge": "CERTIFICATO",
     "certificateTier": "CURSEFORGE LEGENDS · FORGEBORN",
     "certificateSubtitle": "Traguardo ufficiale 100.000 download",

@@ -61,22 +61,29 @@
     "searchPlaceholder": "プロジェクトを検索...",
     "all": "すべて",
     "modpack": "Modパック",
-    "mod": "Mod",
+    "mod": "Mod & データパック",
     "resourcepack": "リソースパック",
     "plugin": "プラグイン",
     "server": "サーバー",
-    "allCategories": "All",
+    "allCategories": "すべて",
     "minecraftCategory": "Minecraft",
     "robloxCategory": "Roblox",
-    "totalVisits": "TOTAL VISITS",
-    "rating": "RATING",
-    "activePlayers": "ONLINE PLAYERS",
-    "serverCapacity": "SERVER CAPACITY",
-    "createdBy": "CREATED BY",
-    "playOnRoblox": "PLAY ON ROBLOX",
-    "visitGroup": "OFFICIAL GROUP",
-    "robloxMap": "Roblox Map",
-    "robloxAddon": "Roblox Addon"
+    "totalVisits": "総訪問回数",
+    "rating": "評価",
+    "activePlayers": "オンラインプレイヤー",
+    "serverCapacity": "定員: 最大 {max} 枠",
+    "createdBy": "制作者",
+    "by": "作成者:",
+    "playOnRoblox": "ROBLOXでプレイ",
+    "playNowOnRoblox": "今すぐROBLOXでプレイ",
+    "visitGroup": "公式グループ",
+    "robloxMap": "Robloxマップ",
+    "robloxAddon": "Robloxアドオン",
+    "gameplayPreview": "マッププレビュー",
+    "cumulativeVisits": "累計プレイ回数",
+    "verifiedDownloads": "認証済みダウンロード",
+    "uniqueViews": "ユニーク閲覧数",
+    "globalTraffic": "ポートフォリオ全体のトラフィック"
   },
   "projectData": {
     "project-boss-rpg": {
@@ -120,31 +127,31 @@
       "description": "InfinitySMPやミニゲームを楽しめる、クロスプレイ対応の欧州Minecraft Java＆Bedrockネットワーク。"
     },
     "extreme-obby": {
-      "title": "Extreme Obby! [UPD]",
-      "description": "Intense 50+ level parkour obstacle challenge! Complete levels with as few deaths as possible in open beta v3.0."
+      "title": "Extreme Obby! [更新]",
+      "description": "50ステージ以上の超高難易度パルクール！オープンベータv3.0で最少デス数を目指そう。"
     },
     "stud-difficulty": {
       "title": "Stud Difficulty [ALPHA]",
-      "description": "Professional precision challenge pushing your skills to the limit. Features high jumps, long jumps, quests, and checkpoints."
+      "description": "プレイヤーの限界を試す精密アスレチック。大ジャンプ、クエスト、チェックポイントを完備。"
     },
     "italian-hangout": {
-      "title": "ITALIAN HANGOUT [BETA NEW]",
-      "description": "The ultimate Italian social hangout hub. Relax, meet new friends, explore beaches, attend music events, and drive VIP vehicles."
+      "title": "ITALIAN HANGOUT [新ベータ]",
+      "description": "最高のイタリアン・ソーシャルハブ。ビーチ散策、音楽イベント、VIP車両の運転で友達を作ろう。"
     },
     "infinity-obby-record": {
-      "title": "Infinity Obby Record! [NEW]",
-      "description": "Endless jump challenge! Keep leaping forward, beat your previous high scores, race against the timer, and challenge friends globally."
+      "title": "Infinity Obby Record! [新作]",
+      "description": "エンドレスジャンプ！前へ跳び続け、自己ベストを更新し、世界中のプレイヤーと競い合おう。"
     },
     "dodger-climber": {
       "title": "Dodger Climber",
-      "description": "Scale challenging vertical cliffs and mountain paths while dodging hazards and testing your timing and reflexes."
+      "description": "険しい崖や山道を登り、障害物をかわしながらタイミングと反射神経を研ぎ澄まそう。"
     },
     "nycron": {
-      "title": "Nycron [EARLY TESTING]",
-      "description": "Experimental platformer featuring custom momentum mechanics, unique physics challenges, and world progression."
+      "title": "Nycron [早期テスト]",
+      "description": "独自慣性物理とギミック、世界攻略要素を備えた実験的アクションプラットフォーマー。"
     },
     "slip-and-drift": {
-      "title": "SLIP & DRIFT [OPENBETA]",
+      "title": "SLIP & DRIFT [新ベータ]",
       "description": "すべてのカーブを体感。レスポンシブな車の挙動でドリフトを極め、ハイスピードレースで競い合おう。"
     }
   },
@@ -171,6 +178,7 @@
   "stats": {
     "liveStatsHeader": "ライブ統計＆メトリクス",
     "downloadsByPlatform": "プラットフォーム別ダウンロード数",
+    "robloxVisits": "Roblox (訪問数)",
     "certificateBadge": "認定証",
     "certificateTier": "CURSEFORGE LEGENDS · FORGEBORN",
     "certificateSubtitle": "公式100,000ダウンロード達成記念",

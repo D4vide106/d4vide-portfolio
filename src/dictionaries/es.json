@@ -54,29 +54,36 @@
   },
   "projectsModal": {
     "totalDownloads": "DESCARGAS TOTALES",
-    "projectViews": "VISUALIZACIONES DEL PROYECTO",
-    "portfolioViews": "VISUALIZACIONES DEL PORTFOLIO",
+    "projectViews": "VISITAS DEL PROYECTO",
+    "portfolioViews": "VISITAS DEL PORTFOLIO",
     "tagsAndSpecs": "ETIQUETAS Y ESPECIFICACIONES",
     "platformsAndDownloads": "PLATAFORMAS Y DESCARGAS",
     "searchPlaceholder": "BUSCAR PROYECTOS...",
     "all": "Todos",
     "modpack": "Modpack",
-    "mod": "Mod",
+    "mod": "Mod & Datapack",
     "resourcepack": "Pack de Recursos",
     "plugin": "Plugin",
     "server": "Servidor",
-    "allCategories": "All",
+    "allCategories": "Todos",
     "minecraftCategory": "Minecraft",
     "robloxCategory": "Roblox",
-    "totalVisits": "TOTAL VISITS",
-    "rating": "RATING",
-    "activePlayers": "ONLINE PLAYERS",
-    "serverCapacity": "SERVER CAPACITY",
-    "createdBy": "CREATED BY",
-    "playOnRoblox": "PLAY ON ROBLOX",
-    "visitGroup": "OFFICIAL GROUP",
-    "robloxMap": "Roblox Map",
-    "robloxAddon": "Roblox Addon"
+    "totalVisits": "VISITAS TOTALES",
+    "rating": "VALORACIÓN",
+    "activePlayers": "JUGADORES EN LÍNEA",
+    "serverCapacity": "Capacidad: máx {max} slots",
+    "createdBy": "CREADO POR",
+    "by": "por",
+    "playOnRoblox": "JUGAR EN ROBLOX",
+    "playNowOnRoblox": "JUGAR AHORA EN ROBLOX",
+    "visitGroup": "GRUPO OFICIAL",
+    "robloxMap": "Mapa de Roblox",
+    "robloxAddon": "Addon de Roblox",
+    "gameplayPreview": "VISTA PREVIA DEL MAPA",
+    "cumulativeVisits": "Partidas acumuladas",
+    "verifiedDownloads": "Descargas verificadas",
+    "uniqueViews": "Visualizaciones únicas",
+    "globalTraffic": "Tráfico global del portfolio"
   },
   "projectData": {
     "project-boss-rpg": {
@@ -85,7 +92,7 @@
     },
     "sdob": {
       "title": "SPIRAL DUNGEON OF BABEL",
-      "description": "¡Explora la torre de mazmorra más alta jamás creada! Disponible para Minecraft Java, Bedrock y Datapack."
+      "description": "¡Explora la torre mazmorra más alta jamás creada! Disponible para Minecraft Java, Bedrock y Datapack."
     },
     "structural-beyond": {
       "title": "STRUCTURAL BEYOND",
@@ -93,11 +100,11 @@
     },
     "project-horror": {
       "title": "PROJECT HORROR",
-      "description": "Terrorífica experiencia de survival horror repleta de entidades aterradoras, atmósfera y mecánicas personalizadas."
+      "description": "Aterradora experiencia de supervivencia y horror llena de entidades espeluznantes, atmósfera y mecánicas únicas."
     },
     "project-the-rpg-reborn": {
       "title": "PROJECT THE RPG REBORN",
-      "description": "Increíble experiencia de RPG solo o con amigos con nivelación, magia, mazmorras y jefes."
+      "description": "Increíble experiencia de RPG en solitario o con amigos con subida de nivel, magia, mazmorras y jefes."
     },
     "project-realistic-rpg": {
       "title": "PROJECT REALISTIC RPG",
@@ -105,47 +112,47 @@
     },
     "project-gunparty": {
       "title": "PROJECT GUNPARTY",
-      "description": "Experiencia multijugador de guerra de armas y combate a muerte repleta de acción en Minecraft."
+      "description": "Experiencia multijugador llena de acción con armas de fuego y partidas a muerte dentro de Minecraft."
     },
     "bosstweak-3d": {
       "title": "BOSSTWEAK 3D+",
-      "description": "Pack de recursos oficial de Boss RPG: corrige problemas visuales, mejora texturas y añade modelos 3D."
+      "description": "Resource pack oficial de Boss RPG: corrige fallos visuales, mejora texturas y añade modelos 3D."
     },
     "pmaintanceuniversal": {
       "title": "PROJECT MAINTENANCE UNIVERSAL",
-      "description": "Plugin universal de mantenimiento de servidor para Minecraft Java con MOTD personalizables."
+      "description": "Plugin universal de mantenimiento para servidores Minecraft Java con MOTD personalizable."
     },
     "infinitysmart": {
       "title": "INFINITYSMART SERVER",
       "description": "Red europea multiplataforma de Minecraft Java y Bedrock con InfinitySMP y minijuegos."
     },
     "extreme-obby": {
-      "title": "Extreme Obby! [UPD]",
-      "description": "Intense 50+ level parkour obstacle challenge! Complete levels with as few deaths as possible in open beta v3.0."
+      "title": "Extreme Obby! [ACT]",
+      "description": "¡Desafío de parkour extremo con más de 50 niveles! Supera obstáculos con el menor número de muertes en beta abierta v3.0."
     },
     "stud-difficulty": {
       "title": "Stud Difficulty [ALPHA]",
-      "description": "Professional precision challenge pushing your skills to the limit. Features high jumps, long jumps, quests, and checkpoints."
+      "description": "Desafío de precisión que pondrá a prueba tus habilidades. Saltos altos, saltos largos, misiones y puntos de control."
     },
     "italian-hangout": {
-      "title": "ITALIAN HANGOUT [BETA NEW]",
-      "description": "The ultimate Italian social hangout hub. Relax, meet new friends, explore beaches, attend music events, and drive VIP vehicles."
+      "title": "ITALIAN HANGOUT [NUEVA BETA]",
+      "description": "El punto de encuentro social italiano definitivo. Relájate, haz amigos, explora playas, eventos musicales y conduce vehículos VIP."
     },
     "infinity-obby-record": {
-      "title": "Infinity Obby Record! [NEW]",
-      "description": "Endless jump challenge! Keep leaping forward, beat your previous high scores, race against the timer, and challenge friends globally."
+      "title": "Infinity Obby Record! [NUEVO]",
+      "description": "¡Desafío de saltos infinitos! Salta hacia adelante, bate tus récords anteriores, compite contra el reloj y desafía a tus amigos."
     },
     "dodger-climber": {
       "title": "Dodger Climber",
-      "description": "Scale challenging vertical cliffs and mountain paths while dodging hazards and testing your timing and reflexes."
+      "description": "Escala acantilados y montañas desafiantes esquivando peligros para poner a prueba tus reflejos y tu sincronización."
     },
     "nycron": {
-      "title": "Nycron [EARLY TESTING]",
-      "description": "Experimental platformer featuring custom momentum mechanics, unique physics challenges, and world progression."
+      "title": "Nycron [PRUEBA TEMPRANA]",
+      "description": "Juego de plataformas experimental con mecánicas de movimiento únicas, desafíos de física y progresión de mundos."
     },
     "slip-and-drift": {
-      "title": "SLIP & DRIFT [OPENBETA]",
-      "description": "Siente cada curva. Conduce, compite y domina el drifting con fisica de conduccion receptiva en carreras de alta velocidad."
+      "title": "SLIP & DRIFT [NUEVA BETA]",
+      "description": "Siente cada curva. Conduce, compite y domina el drift con físicas de coche ultra reactivas. Lleva tu coche al límite contra otros jugadores."
     }
   },
   "terminal": {
@@ -171,6 +178,7 @@
   "stats": {
     "liveStatsHeader": "ESTADÍSTICAS Y MÉTRICAS EN VIVO",
     "downloadsByPlatform": "DESCARGAS POR PLATAFORMA",
+    "robloxVisits": "Roblox (Visitas)",
     "certificateBadge": "CERTIFICADO",
     "certificateTier": "CURSEFORGE LEGENDS · FORGEBORN",
     "certificateSubtitle": "Hito oficial de 100.000 descargas",
