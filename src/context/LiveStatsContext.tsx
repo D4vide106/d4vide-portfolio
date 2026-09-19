@@ -18,7 +18,7 @@ interface LiveStatsContextType {
 
 const LiveStatsContext = createContext<LiveStatsContextType>({
   projects: MAIN_PROJECTS,
-  totalDownloads: MAIN_PROJECTS.filter((p) => p.category !== "roblox").reduce((acc, p) => acc + p.downloads, 0),
+  totalDownloads: MAIN_PROJECTS.reduce((acc, p) => acc + (p.category === "roblox" ? (p.robloxStats?.visits || p.downloads || 0) : p.downloads), 0),
   totalRobloxVisits: MAIN_PROJECTS.filter((p) => p.category === "roblox").reduce((acc, p) => acc + (p.robloxStats?.visits || p.downloads || 0), 0),
   portfolioViews: 1,
   platformTotals: {},
@@ -708,9 +708,7 @@ export const LiveStatsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
   const totalDownloads = useMemo(
     () =>
-      projects
-        .filter((p) => p.category !== "roblox")
-        .reduce((acc, p) => acc + p.downloads, 0),
+      projects.reduce((acc, p) => acc + (p.category === "roblox" ? (p.robloxStats?.visits || p.downloads || 0) : p.downloads), 0),
     [projects]
   );
 

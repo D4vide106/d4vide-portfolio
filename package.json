@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "npm run sync:roblox",
+    "prebuild": "npm run sync:roblox && npm run sync:media",
     "build": "next build",
     "sync:roblox": "node scripts/sync-roblox.mjs",
+    "sync:media": "node scripts/sync-media.mjs",
     "start": "next start",
     "lint": "eslint"
   },

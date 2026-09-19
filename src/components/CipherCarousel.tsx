@@ -55,11 +55,17 @@ export default function CipherCarousel({
     return () => window.removeEventListener("resize", updateDimensions);
   }, []);
 
-  // Smooth 2D Constellation Rotation Loop with Momentum Physics
+  // Smooth 2D Constellation Rotation Loop with Momentum Physics (Paused when offscreen)
   useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    let isVisible = true;
     let lastTime = performance.now();
 
     const animate = (now: number) => {
+      if (!isVisible) return;
+
       const delta = (now - lastTime) / 16;
       lastTime = now;
 
@@ -76,9 +82,45 @@ export default function CipherCarousel({
       reqIdRef.current = requestAnimationFrame(animate);
     };
 
-    reqIdRef.current = requestAnimationFrame(animate);
-    return () => {
+    const startLoop = () => {
       if (reqIdRef.current) cancelAnimationFrame(reqIdRef.current);
+      lastTime = performance.now();
+      reqIdRef.current = requestAnimationFrame(animate);
+    };
+
+    const stopLoop = () => {
+      if (reqIdRef.current) {
+        cancelAnimationFrame(reqIdRef.current);
+        reqIdRef.current = null;
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting && entry.intersectionRatio > 0;
+        if (isVisible && !document.hidden) {
+          startLoop();
+        } else {
+          stopLoop();
+        }
+      },
+      { threshold: 0 }
+    );
+    observer.observe(container);
+
+    const handleVisibility = () => {
+      if (document.hidden) {
+        stopLoop();
+      } else if (isVisible) {
+        startLoop();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+
+    return () => {
+      stopLoop();
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", handleVisibility);
     };
   }, []);
 

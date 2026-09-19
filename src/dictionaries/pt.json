@@ -45,7 +45,8 @@
   },
   "projects": {
     "title": "Meus",
-    "highlight": "Proyectos",
+    "highlight": "Projetos",
+    "subtitle": "Uma coleção de todos os meus modpacks, mods, datapacks e criações no Roblox.",
     "viewProject": "Ver Projeto",
     "all": "Todos",
     "mods": "Mods",

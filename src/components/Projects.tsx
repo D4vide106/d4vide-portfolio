@@ -285,47 +285,77 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
       {/* Centered Controls Bar Container */}
       <div className={styles.controlsWrapper}>
         
-        {/* 1. Macro Ecosystem Switch: Tutti | Minecraft | Roblox */}
-        <div className={styles.categoryPillsContainer}>
-          <button
-            className={`${styles.categoryPill} ${selectedCategory === "all" ? styles.activeCategoryPill : ""}`}
-            onClick={() => {
-              setSelectedCategory("all");
-              setFilterType("All");
-            }}
-          >
-            <FiGlobe size={13} />
-            <span>{modalDict?.allCategories || "Tutti"}</span>
-            <span className={styles.countBubble}>{counts.all}</span>
-          </button>
-
-          <button
-            className={`${styles.categoryPill} ${selectedCategory === "minecraft" ? styles.activeCategoryPillMinecraft : ""}`}
-            onClick={() => {
-              setSelectedCategory("minecraft");
-              setFilterType("All");
-            }}
-          >
-            <FaCube size={12} color="#30d158" />
-            <span>{modalDict?.minecraftCategory || "Minecraft"}</span>
-            <span className={styles.countBubble}>{counts.minecraft}</span>
-          </button>
-
-          <button
-            className={`${styles.categoryPill} ${selectedCategory === "roblox" ? styles.activeCategoryPillRoblox : ""}`}
-            onClick={() => {
-              setSelectedCategory("roblox");
-              setFilterType("All");
-            }}
-          >
-            <SiRoblox size={12} color="#ff3b30" />
-            <span>{modalDict?.robloxCategory || "Roblox"}</span>
-            <span className={styles.countBubble}>{counts.roblox}</span>
-          </button>
+        {/* Section Header */}
+        <div className={styles.headerWrapper}>
+          <h2 className={styles.sectionTitle}>
+            {dict?.title || "I miei"}{" "}
+            <span className={styles.titleHighlight}>
+              {dict?.highlight || "Progetti"}
+            </span>
+          </h2>
+          {dict?.subtitle && (
+            <p className={styles.sectionSubtitle}>{dict.subtitle}</p>
+          )}
         </div>
 
-        {/* 2. Sub-filters & Search Bar */}
-        <div className={styles.controlsBar}>
+        {/* 1. Top Row: Centered Category Switcher + Search Bar on the Right */}
+        <div className={styles.topControlsRow}>
+          <div className={styles.topControlsSpacer} aria-hidden="true" />
+
+          {/* Macro Ecosystem Switch: Tutti | Minecraft | Roblox (Centered) */}
+          <div className={styles.categoryPillsContainer}>
+            <button
+              className={`${styles.categoryPill} ${selectedCategory === "all" ? styles.activeCategoryPill : ""}`}
+              onClick={() => {
+                setSelectedCategory("all");
+                setFilterType("All");
+              }}
+            >
+              <FiGlobe size={13} />
+              <span>{modalDict?.allCategories || "Tutti"}</span>
+              <span className={styles.countBubble}>{counts.all}</span>
+            </button>
+
+            <button
+              className={`${styles.categoryPill} ${selectedCategory === "minecraft" ? styles.activeCategoryPillMinecraft : ""}`}
+              onClick={() => {
+                setSelectedCategory("minecraft");
+                setFilterType("All");
+              }}
+            >
+              <FaCube size={12} color="#30d158" />
+              <span>{modalDict?.minecraftCategory || "Minecraft"}</span>
+              <span className={styles.countBubble}>{counts.minecraft}</span>
+            </button>
+
+            <button
+              className={`${styles.categoryPill} ${selectedCategory === "roblox" ? styles.activeCategoryPillRoblox : ""}`}
+              onClick={() => {
+                setSelectedCategory("roblox");
+                setFilterType("All");
+              }}
+            >
+              <SiRoblox size={12} color="#ff3b30" />
+              <span>{modalDict?.robloxCategory || "Roblox"}</span>
+              <span className={styles.countBubble}>{counts.roblox}</span>
+            </button>
+          </div>
+
+          {/* Search Bar on the same line */}
+          <div className={styles.searchBox}>
+            <FiSearch className={styles.searchIcon} />
+            <input
+              type="text"
+              placeholder={modalDict?.searchPlaceholder || "CERCA PROGETTI..."}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className={styles.searchInput}
+            />
+          </div>
+        </div>
+
+        {/* 2. Sub-filters Line (Centered) */}
+        <div className={styles.subFiltersRow}>
           <div className={styles.filtersGroup}>
             {subFilterOptions.map((typeItem) => (
               <button
@@ -336,17 +366,6 @@ export default function Projects({ dict: propDict }: { dict?: any }) {
                 {typeItem.label}
               </button>
             ))}
-          </div>
-
-          <div className={styles.searchBox}>
-            <FiSearch className={styles.searchIcon} />
-            <input
-              type="text"
-              placeholder={modalDict?.searchPlaceholder || "SEARCH PROJECTS..."}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className={styles.searchInput}
-            />
           </div>
         </div>
       </div>

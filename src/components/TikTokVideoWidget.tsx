@@ -1,46 +1,45 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { SiTiktok } from "react-icons/si";
+import { SiTiktok, SiYoutube } from "react-icons/si";
 import {
   FiArrowUpRight,
-  FiVolume2,
-  FiVolume1,
-  FiVolumeX,
-  FiPlay,
-  FiPause,
   FiChevronUp,
   FiChevronDown,
   FiCheckCircle,
   FiEye,
 } from "react-icons/fi";
 import { resolveAssetUrl } from "@/data/projectsData";
+import mediaStatsJson from "@/data/mediaStats.json";
 import styles from "./TikTokVideoWidget.module.css";
 
 export interface VideoItem {
   id: string;
+  statsKey: string;
   title: string;
-  views: string;
+  defaultViews: string;
   url: string;
   videoUrl: string;
   posterUrl: string;
   isLandscape?: boolean;
 }
 
-// Exactly and ONLY the 4 TikTok videos requested by the user
+// Exactly and ONLY the 4 videos requested by the user
 const VIDEOS: VideoItem[] = [
   {
     id: "v-slip-and-drift",
+    statsKey: "slip-and-drift",
     title: "SLIP & DRIFT • Drift Physics",
-    views: "16.5K",
+    defaultViews: "20.6K",
     url: "https://www.tiktok.com/@d4vide106/video/7685559777451101472",
     videoUrl: "/videos/tiktok/slip-and-drift.mp4",
     posterUrl: "/videos/tiktok/slip-and-drift.jpg",
   },
   {
     id: "v-boss-rpg-ignis",
+    statsKey: "boss-rpg-ignis",
     title: "Project Boss RPG • Ignis Boss 🔥",
-    views: "26.1K",
+    defaultViews: "26.1K",
     url: "https://www.tiktok.com/@d4vide106/video/7438210380779752736",
     videoUrl: "/videos/tiktok/boss-rpg-ignis.mp4",
     posterUrl: "/videos/tiktok/boss-rpg-ignis.jpg",
@@ -48,16 +47,18 @@ const VIDEOS: VideoItem[] = [
   },
   {
     id: "v-sdob",
+    statsKey: "sdob",
     title: "Spiral Dungeon of Babel • Backrooms?",
-    views: "34.5K",
+    defaultViews: "2.7K",
     url: "https://www.tiktok.com/@d4vide106/video/7667237797316807958",
     videoUrl: "/videos/tiktok/sdob.mp4",
     posterUrl: "/videos/tiktok/sdob.jpg",
   },
   {
     id: "v-minecraft-ai",
+    statsKey: "minecraft-ai-house",
     title: "Minecraft House WITH AI??",
-    views: "14.2K",
+    defaultViews: "2.3K",
     url: "https://www.tiktok.com/@d4vide106/video/7609025952693226774",
     videoUrl: "/videos/tiktok/minecraft-ai-house.mp4",
     posterUrl: "/videos/tiktok/minecraft-ai-house.jpg",
@@ -66,12 +67,11 @@ const VIDEOS: VideoItem[] = [
 
 export default function TikTokVideoWidget() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
-  const [isMuted, setIsMuted] = useState(true);
-  // Default unmuted volume at comfortable 35% to prevent audio from exploding
-  const [volume, setVolume] = useState(0.35);
-  const [showPlayBadge, setShowPlayBadge] = useState(false);
   const [isInView, setIsInView] = useState(false);
+  const [playProgress, setPlayProgress] = useState(0); // 0 to 100%
+  const [liveStats, setLiveStats] = useState<Record<string, { formattedViews: string; totalViews: number }>>(
+    mediaStatsJson.items || {}
+  );
 
   const containerRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -81,39 +81,86 @@ export default function TikTokVideoWidget() {
 
   const currentVideo = VIDEOS[currentIndex];
 
-  // Observe visibility in viewport
+  // Observe visibility in viewport (strictly pause when offscreen)
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsInView(entry.isIntersecting);
+        const inView = entry.isIntersecting && entry.intersectionRatio > 0;
+        setIsInView(inView);
+        if (!inView) {
+          videoRefs.current.forEach((v) => {
+            if (v && !v.paused) v.pause();
+          });
+        }
       },
-      { threshold: 0.25 }
+      { threshold: 0 }
     );
 
     observer.observe(el);
-    return () => observer.disconnect();
+
+    const handleVisibility = () => {
+      if (document.hidden) {
+        videoRefs.current.forEach((v) => {
+          if (v && !v.paused) v.pause();
+        });
+      } else if (isInView) {
+        const active = videoRefs.current[currentIndex];
+        if (active && active.paused) active.play().catch(() => {});
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", handleVisibility);
+    };
+  }, [currentIndex, isInView]);
+
+  // Fetch dynamic live views update from public media_stats or TikTok API
+  useEffect(() => {
+    async function updateViews() {
+      try {
+        const res = await fetch("/media_stats.json");
+        if (res.ok) {
+          const data = await res.json();
+          if (data?.items) {
+            setLiveStats(data.items);
+          }
+        }
+      } catch {}
+    }
+    updateViews();
+    // Periodically re-check views every 60s
+    const interval = setInterval(updateViews, 60000);
+    return () => clearInterval(interval);
   }, []);
 
-  // Update active video playback and audio
+  const goToNext = useCallback(() => {
+    setCurrentIndex((prev) => (prev < VIDEOS.length - 1 ? prev + 1 : 0));
+    setPlayProgress(0);
+  }, []);
+
+  const goToPrev = useCallback(() => {
+    setCurrentIndex((prev) => (prev > 0 ? prev - 1 : VIDEOS.length - 1));
+    setPlayProgress(0);
+  }, []);
+
+  // When currentIndex changes, prepare new video
   useEffect(() => {
+    setPlayProgress(0);
     videoRefs.current.forEach((video, idx) => {
       if (!video) return;
 
       if (idx === currentIndex) {
-        video.muted = isMuted;
-        video.volume = volume;
-        if (isInView && isPlaying) {
+        video.muted = true;
+        video.currentTime = 0;
+        if (isInView) {
           const playPromise = video.play();
           if (playPromise !== undefined) {
-            playPromise.catch(() => {
-              // If browser restricts unmuted autoplay, fallback to muted
-              video.muted = true;
-              setIsMuted(true);
-              video.play().catch(() => {});
-            });
+            playPromise.catch(() => {});
           }
         } else {
           video.pause();
@@ -123,19 +170,38 @@ export default function TikTokVideoWidget() {
         video.currentTime = 0;
       }
     });
-  }, [currentIndex, isInView, isPlaying, isMuted, volume]);
+  }, [currentIndex]);
 
-  const goToNext = useCallback(() => {
-    setCurrentIndex((prev) => (prev < VIDEOS.length - 1 ? prev + 1 : 0));
-    setIsPlaying(true);
-  }, []);
+  // When isInView changes, immediately play or pause without resetting progress
+  useEffect(() => {
+    const activeVideo = videoRefs.current[currentIndex];
+    if (!activeVideo) return;
 
-  const goToPrev = useCallback(() => {
-    setCurrentIndex((prev) => (prev > 0 ? prev - 1 : VIDEOS.length - 1));
-    setIsPlaying(true);
-  }, []);
+    if (isInView) {
+      activeVideo.muted = true;
+      activeVideo.play().catch(() => {});
+    } else {
+      videoRefs.current.forEach((v) => {
+        if (v && !v.paused) v.pause();
+      });
+    }
+  }, [isInView, currentIndex]);
 
-  // Real vertical wheel scrolling on video stage (like TikTok vertical feed)
+  // Track progress of active playing video for stories bar & automatic advance
+  const handleTimeUpdate = (e: React.SyntheticEvent<HTMLVideoElement>) => {
+    const video = e.currentTarget;
+    if (video.duration && !isNaN(video.duration)) {
+      const pct = (video.currentTime / video.duration) * 100;
+      setPlayProgress(pct);
+    }
+  };
+
+  // Automatic advance to next video when current video ends
+  const handleVideoEnded = () => {
+    goToNext();
+  };
+
+  // Real vertical wheel scrolling (TikTok feed style)
   useEffect(() => {
     const stage = stageRef.current;
     if (!stage) return;
@@ -178,155 +244,84 @@ export default function TikTokVideoWidget() {
     }
   };
 
-  // Toggle play/pause
-  const togglePlay = (e: React.MouseEvent) => {
-    // Only toggle if not clicking interactive controls
+  const handleStageClick = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
-    if (target.closest("button") || target.closest("input") || target.closest("a")) {
+    if (target.closest("button") || target.closest("a") || target.closest(`.${styles.progressBarTrack}`)) {
       return;
     }
-
-    const activeVideo = videoRefs.current[currentIndex];
-    if (!activeVideo) return;
-
-    if (activeVideo.paused) {
-      activeVideo.play().catch(() => {});
-      setIsPlaying(true);
-    } else {
-      activeVideo.pause();
-      setIsPlaying(false);
-    }
-
-    setShowPlayBadge(true);
-    setTimeout(() => setShowPlayBadge(false), 700);
-  };
-
-  // Toggle mute / unmute with safe volume level
-  const toggleMute = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    const nextMuted = !isMuted;
-    setIsMuted(nextMuted);
-
-    const activeVideo = videoRefs.current[currentIndex];
-    if (activeVideo) {
-      activeVideo.muted = nextMuted;
-      if (!nextMuted) {
-        const safeVol = volume > 0 ? volume : 0.35;
-        activeVideo.volume = safeVol;
-        if (volume === 0) setVolume(0.35);
-        if (activeVideo.paused) {
-          activeVideo.play().catch(() => {});
-          setIsPlaying(true);
-        }
-      }
+    if (currentVideo?.url) {
+      window.open(currentVideo.url, "_blank", "noopener,noreferrer");
     }
   };
 
-  // Adjustable volume slider
-  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.stopPropagation();
-    const newVol = parseFloat(e.target.value);
-    setVolume(newVol);
-
-    const activeVideo = videoRefs.current[currentIndex];
-    if (newVol > 0) {
-      setIsMuted(false);
-      if (activeVideo) {
-        activeVideo.muted = false;
-        activeVideo.volume = newVol;
-      }
-    } else {
-      setIsMuted(true);
-      if (activeVideo) {
-        activeVideo.muted = true;
-      }
-    }
-  };
+  const currentViews = liveStats[currentVideo.statsKey]?.formattedViews || currentVideo.defaultViews;
 
   return (
     <div className={styles.widgetCard} ref={containerRef}>
-      {/* Widget Header */}
+      {/* Widget Header with Direct Links */}
       <div className={styles.widgetHeader}>
         <div className={styles.widgetTitle}>
           <SiTiktok className={styles.ttIcon} />
-          <span>TIKTOK & SHORTS</span>
+          <span>SHORTS</span>
         </div>
-        <a
-          href="https://www.tiktok.com/@d4vide106"
-          target="_blank"
-          rel="noreferrer"
-          className={styles.profileLinkBtn}
-          title="Apri profilo TikTok @d4vide106"
-        >
-          <span>@d4vide106</span>
-          <FiArrowUpRight size={13} />
-        </a>
+        <div className={styles.headerRightLinks}>
+          <a
+            href="https://www.youtube.com/@D4vide106/shorts"
+            target="_blank"
+            rel="noreferrer"
+            className={styles.ytShortsLinkBtn}
+            title="Apri YouTube Shorts @D4vide106"
+          >
+            <SiYoutube size={12} color="#ff0033" />
+            <span>Shorts</span>
+          </a>
+          <a
+            href="https://www.tiktok.com/@d4vide106"
+            target="_blank"
+            rel="noreferrer"
+            className={styles.profileLinkBtn}
+            title="Apri profilo TikTok @d4vide106"
+          >
+            <span>@d4vide106</span>
+            <FiArrowUpRight size={13} />
+          </a>
+        </div>
       </div>
 
-      {/* Video Player Stage: Real Vertical TikTok Feed */}
+      {/* Video Player Stage: Real Vertical TikTok Feed (Always playing, clean, click opens video page) */}
       <div
         ref={stageRef}
         className={styles.videoStage}
-        onClick={togglePlay}
+        onClick={handleStageClick}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
+        title={`Apri ${currentVideo.title} su TikTok`}
       >
-        {/* Story Progress Indicators at Top */}
+        {/* Story Progress Indicators at Top (Fills up smoothly as video plays) */}
         <div className={styles.progressBars}>
-          {VIDEOS.map((v, idx) => (
-            <div
-              key={v.id}
-              className={`${styles.progressBarTrack} ${idx === currentIndex ? styles.activeTrack : ""}`}
-              onClick={(e) => {
-                e.stopPropagation();
-                setCurrentIndex(idx);
-                setIsPlaying(true);
-              }}
-              title={v.title}
-            >
+          {VIDEOS.map((v, idx) => {
+            const fillWidth =
+              idx < currentIndex ? "100%" : idx === currentIndex ? `${playProgress}%` : "0%";
+            return (
               <div
-                className={styles.progressBarFill}
-                style={{
-                  width: idx < currentIndex ? "100%" : idx === currentIndex ? "100%" : "0%",
+                key={v.id}
+                className={`${styles.progressBarTrack} ${idx === currentIndex ? styles.activeTrack : ""}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setCurrentIndex(idx);
+                  setPlayProgress(0);
                 }}
-              />
-            </div>
-          ))}
-        </div>
-
-        {/* Clean, Adjustable Volume Control (Prevents Audio Explosion) */}
-        <div className={styles.volumeControlWrap} onClick={(e) => e.stopPropagation()}>
-          <button
-            type="button"
-            className={styles.volumeBtn}
-            onClick={toggleMute}
-            title={isMuted ? "Attiva audio" : "Silenzia audio"}
-            aria-label={isMuted ? "Attiva audio" : "Silenzia audio"}
-          >
-            {isMuted || volume === 0 ? (
-              <FiVolumeX size={15} />
-            ) : volume < 0.5 ? (
-              <FiVolume1 size={15} />
-            ) : (
-              <FiVolume2 size={15} />
-            )}
-          </button>
-          <div className={styles.volumeSliderContainer}>
-            <input
-              type="range"
-              min="0"
-              max="1"
-              step="0.05"
-              value={isMuted ? 0 : volume}
-              onChange={handleVolumeChange}
-              className={styles.volumeSlider}
-              title={`Volume: ${Math.round((isMuted ? 0 : volume) * 100)}%`}
-              aria-label="Regola volume"
-            />
-            <span className={styles.volumePercentText}>
-              {Math.round((isMuted ? 0 : volume) * 100)}%
-            </span>
-          </div>
+                title={v.title}
+              >
+                <div
+                  className={styles.progressBarFill}
+                  style={{
+                    width: fillWidth,
+                  }}
+                />
+              </div>
+            );
+          })}
         </div>
 
         {/* Vertical Reel Track (Transitions Up & Down like real TikTok) */}
@@ -344,9 +339,10 @@ export default function TikTokVideoWidget() {
                 poster={resolveAssetUrl(video.posterUrl)}
                 className={`${styles.videoElement} ${video.isLandscape ? styles.landscapeVideo : ""}`}
                 playsInline
-                muted={isMuted}
-                loop
+                muted
                 preload="metadata"
+                onTimeUpdate={idx === currentIndex ? handleTimeUpdate : undefined}
+                onEnded={handleVideoEnded}
               />
             </div>
           ))}
@@ -355,13 +351,6 @@ export default function TikTokVideoWidget() {
         {/* Dark Vignette Gradients */}
         <div className={styles.vignetteTop} />
         <div className={styles.vignetteBottom} />
-
-        {/* Central Play/Pause Pulse Icon */}
-        <div
-          className={`${styles.centerPlayBadge} ${showPlayBadge || !isPlaying ? styles.visiblePlayBadge : ""}`}
-        >
-          {isPlaying ? <FiPause size={28} /> : <FiPlay size={28} style={{ marginLeft: 3 }} />}
-        </div>
 
         {/* Vertical Navigation Arrows (TikTok Style Up / Down) */}
         <div className={styles.verticalNavGroup}>
@@ -392,13 +381,13 @@ export default function TikTokVideoWidget() {
           </button>
         </div>
 
-        {/* Clean Bottom Metadata (No Hashtags, No Watch Button) */}
+        {/* Clean Bottom Metadata with Real Combined Views */}
         <div className={styles.bottomMeta}>
           <div className={styles.creatorRow}>
             <span className={styles.creatorHandle}>@d4vide106</span>
             <FiCheckCircle size={12} className={styles.verifiedIcon} />
             <span className={styles.viewsBadge}>
-              <FiEye size={11} /> {currentVideo.views}
+              <FiEye size={11} /> {currentViews}
             </span>
           </div>
 

@@ -1,5 +1,5 @@
 {
-  "syncedAt": "2026-09-19T22:22:32.142Z",
+  "syncedAt": "2026-09-19T22:36:03.227Z",
   "groupId": 33742489,
   "games": {
     "data": [
@@ -64,10 +64,10 @@
         "isGenreEnforced": true,
         "copyingAllowed": false,
         "playing": 0,
-        "visits": 509,
+        "visits": 511,
         "maxPlayers": 32,
         "created": "2025-07-02T17:00:22.737Z",
-        "updated": "2026-09-19T22:20:37.3318896Z",
+        "updated": "2026-09-19T22:32:47.7572755Z",
         "studioAccessToApisAllowed": false,
         "createVipServersAllowed": false,
         "universeAvatarType": "MorphToR15",
@@ -288,12 +288,6 @@
   "icons": {
     "data": [
       {
-        "targetId": 6963288939,
-        "state": "Completed",
-        "imageUrl": "https://tr.rbxcdn.com/180DAY-6dc8451d69e47d589f4791b327038a19/512/512/Image/Png/noFilter",
-        "version": "TN3"
-      },
-      {
         "targetId": 7330243159,
         "state": "Completed",
         "imageUrl": "https://tr.rbxcdn.com/180DAY-1114d0b564d34ba68d6946d1581098e8/512/512/Image/Png/noFilter",
@@ -312,21 +306,27 @@
         "version": "TN3"
       },
       {
+        "targetId": 6963288939,
+        "state": "Completed",
+        "imageUrl": "https://tr.rbxcdn.com/180DAY-6dc8451d69e47d589f4791b327038a19/512/512/Image/Png/noFilter",
+        "version": "TN3"
+      },
+      {
         "targetId": 7239022329,
         "state": "Completed",
         "imageUrl": "https://tr.rbxcdn.com/180DAY-345d28dab47057bb1973e17a7872c781/512/512/Image/Png/noFilter",
         "version": "TN3"
       },
       {
-        "targetId": 8934658965,
+        "targetId": 7853966833,
         "state": "Completed",
-        "imageUrl": "https://t6.rbxcdn.com/180DAY-007dc222a830b5992e1a04073454e980",
+        "imageUrl": "https://t6.rbxcdn.com/180DAY-161a79f97bb1d232ce9e58d24385706d",
         "version": "TN3"
       },
       {
-        "targetId": 7853966833,
+        "targetId": 8934658965,
         "state": "Completed",
-        "imageUrl": "https://t4.rbxcdn.com/180DAY-dc729135d7789ab11a92a9d761648577",
+        "imageUrl": "https://t6.rbxcdn.com/180DAY-007dc222a830b5992e1a04073454e980",
         "version": "TN3"
       }
     ]

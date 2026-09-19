@@ -1,0 +1,45 @@
+{
+  "updatedAt": "2026-09-19T22:36:05.147Z",
+  "grandTotalCombined": 51776,
+  "grandTotalFormatted": "51.8K",
+  "grandTotalTikTok": 44776,
+  "grandTotalYT": 7000,
+  "items": {
+    "slip-and-drift": {
+      "id": "slip-and-drift",
+      "tiktokViews": 16632,
+      "youtubeViews": 4000,
+      "totalViews": 20632,
+      "formattedViews": "20.6K",
+      "tiktokFormatted": "16.6K",
+      "youtubeFormatted": "4.0K"
+    },
+    "boss-rpg-ignis": {
+      "id": "boss-rpg-ignis",
+      "tiktokViews": 26098,
+      "youtubeViews": 0,
+      "totalViews": 26098,
+      "formattedViews": "26.1K",
+      "tiktokFormatted": "26.1K",
+      "youtubeFormatted": "0"
+    },
+    "sdob": {
+      "id": "sdob",
+      "tiktokViews": 1241,
+      "youtubeViews": 1500,
+      "totalViews": 2741,
+      "formattedViews": "2.7K",
+      "tiktokFormatted": "1.2K",
+      "youtubeFormatted": "1.5K"
+    },
+    "minecraft-ai-house": {
+      "id": "minecraft-ai-house",
+      "tiktokViews": 805,
+      "youtubeViews": 1500,
+      "totalViews": 2305,
+      "formattedViews": "2.3K",
+      "tiktokFormatted": "805",
+      "youtubeFormatted": "1.5K"
+    }
+  }
+}
