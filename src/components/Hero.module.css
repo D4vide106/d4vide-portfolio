@@ -266,14 +266,14 @@
 /* ── 4. DUAL MEDIA SHOWCASE: YOUTUBE + TIKTOK/SHORTS ────────── */
 .mediaShowcaseWrapper {
   width: 100%;
-  max-width: 1120px;
+  max-width: 1140px;
   margin: 0 auto;
   position: relative;
   z-index: 10;
   display: grid;
-  grid-template-columns: 1fr 350px;
+  grid-template-columns: 1fr 340px;
   gap: 1.5rem;
-  align-items: stretch;
+  align-items: start;
   scroll-margin-top: calc(85px + env(safe-area-inset-top, 0px));
 }
 

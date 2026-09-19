@@ -1,15 +1,16 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { SiTiktok } from "react-icons/si";
 import {
   FiArrowUpRight,
   FiVolume2,
+  FiVolume1,
   FiVolumeX,
   FiPlay,
   FiPause,
-  FiChevronLeft,
-  FiChevronRight,
+  FiChevronUp,
+  FiChevronDown,
   FiCheckCircle,
   FiEye,
 } from "react-icons/fi";
@@ -23,9 +24,10 @@ export interface VideoItem {
   url: string;
   videoUrl: string;
   posterUrl: string;
-  hashtags: string[];
+  isLandscape?: boolean;
 }
 
+// Exactly and ONLY the 4 TikTok videos requested by the user
 const VIDEOS: VideoItem[] = [
   {
     id: "v-slip-and-drift",
@@ -34,52 +36,31 @@ const VIDEOS: VideoItem[] = [
     url: "https://www.tiktok.com/@d4vide106/video/7685559777451101472",
     videoUrl: "/videos/tiktok/slip-and-drift.mp4",
     posterUrl: "/videos/tiktok/slip-and-drift.jpg",
-    hashtags: ["#Roblox", "#Drifting", "#SlipAndDrift"],
-  },
-  {
-    id: "v-sdob",
-    title: "Spiral Dungeon of Babel • SDoB",
-    views: "34.5K",
-    url: "https://modrinth.com/modpack/spiral-dungeon-of-babel",
-    videoUrl: "/videos/my-work/sdob.mp4",
-    posterUrl: "/videos/my-work/sdob.jpg",
-    hashtags: ["#Minecraft", "#Mod", "#SDoB"],
   },
   {
     id: "v-boss-rpg-ignis",
-    title: "Project: Boss RPG • Ignis Boss 🔥",
+    title: "Project Boss RPG • Ignis Boss 🔥",
     views: "26.1K",
     url: "https://www.tiktok.com/@d4vide106/video/7438210380779752736",
     videoUrl: "/videos/tiktok/boss-rpg-ignis.mp4",
     posterUrl: "/videos/tiktok/boss-rpg-ignis.jpg",
-    hashtags: ["#BossRPG", "#MinecraftModpack", "#RPG"],
+    isLandscape: true,
   },
   {
-    id: "v-infinitysmart",
-    title: "InfinitySmart Survival SMP",
-    views: "52.3K",
-    url: "https://discord.gg/f8kP4WsVSW",
-    videoUrl: "/videos/my-work/infinitysmart.mp4",
-    posterUrl: "/videos/my-work/infinitysmart.jpg",
-    hashtags: ["#MinecraftServer", "#SMP", "#Crossplay"],
+    id: "v-sdob",
+    title: "Spiral Dungeon of Babel • Backrooms?",
+    views: "34.5K",
+    url: "https://www.tiktok.com/@d4vide106/video/7667237797316807958",
+    videoUrl: "/videos/tiktok/sdob.mp4",
+    posterUrl: "/videos/tiktok/sdob.jpg",
   },
   {
     id: "v-minecraft-ai",
-    title: "Minecraft House WITH AI",
+    title: "Minecraft House WITH AI??",
     views: "14.2K",
     url: "https://www.tiktok.com/@d4vide106/video/7609025952693226774",
     videoUrl: "/videos/tiktok/minecraft-ai-house.mp4",
     posterUrl: "/videos/tiktok/minecraft-ai-house.jpg",
-    hashtags: ["#MinecraftAI", "#Building", "#Viral"],
-  },
-  {
-    id: "v-stiamo-tornando",
-    title: "Stiamo Tornando! • Official",
-    views: "28.4K",
-    url: "https://youtube.com/@d4vide106",
-    videoUrl: "/videos/my-work/stiamo-tornando.mp4",
-    posterUrl: "/videos/my-work/stiamo-tornando.jpg",
-    hashtags: ["#D4vide106", "#ContentCreator", "#Teaser"],
   },
 ];
 
@@ -87,15 +68,20 @@ export default function TikTokVideoWidget() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
-  const [showPlayIcon, setShowPlayIcon] = useState(false);
+  // Default unmuted volume at comfortable 35% to prevent audio from exploding
+  const [volume, setVolume] = useState(0.35);
+  const [showPlayBadge, setShowPlayBadge] = useState(false);
   const [isInView, setIsInView] = useState(false);
 
-  const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const isWheelingRef = useRef(false);
+  const touchStartYRef = useRef(0);
 
   const currentVideo = VIDEOS[currentIndex];
 
-  // Viewport intersection observer to play/pause when in view
+  // Observe visibility in viewport
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -104,70 +90,157 @@ export default function TikTokVideoWidget() {
       ([entry]) => {
         setIsInView(entry.isIntersecting);
       },
-      { threshold: 0.3 }
+      { threshold: 0.25 }
     );
 
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
-  // Handle video playback
+  // Update active video playback and audio
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
+    videoRefs.current.forEach((video, idx) => {
+      if (!video) return;
 
-    if (isInView && isPlaying) {
-      video.play().catch(() => {
-        // Fallback to muted autoplay if browser blocks audio
-        video.muted = true;
-        setIsMuted(true);
-        video.play().catch(() => {});
-      });
-    } else {
-      video.pause();
+      if (idx === currentIndex) {
+        video.muted = isMuted;
+        video.volume = volume;
+        if (isInView && isPlaying) {
+          const playPromise = video.play();
+          if (playPromise !== undefined) {
+            playPromise.catch(() => {
+              // If browser restricts unmuted autoplay, fallback to muted
+              video.muted = true;
+              setIsMuted(true);
+              video.play().catch(() => {});
+            });
+          }
+        } else {
+          video.pause();
+        }
+      } else {
+        video.pause();
+        video.currentTime = 0;
+      }
+    });
+  }, [currentIndex, isInView, isPlaying, isMuted, volume]);
+
+  const goToNext = useCallback(() => {
+    setCurrentIndex((prev) => (prev < VIDEOS.length - 1 ? prev + 1 : 0));
+    setIsPlaying(true);
+  }, []);
+
+  const goToPrev = useCallback(() => {
+    setCurrentIndex((prev) => (prev > 0 ? prev - 1 : VIDEOS.length - 1));
+    setIsPlaying(true);
+  }, []);
+
+  // Real vertical wheel scrolling on video stage (like TikTok vertical feed)
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      if (isWheelingRef.current) return;
+      if (Math.abs(e.deltaY) < 18) return;
+
+      if (e.deltaY > 0) {
+        goToNext();
+      } else {
+        goToPrev();
+      }
+
+      isWheelingRef.current = true;
+      setTimeout(() => {
+        isWheelingRef.current = false;
+      }, 420);
+    };
+
+    stage.addEventListener("wheel", handleWheel, { passive: false });
+    return () => stage.removeEventListener("wheel", handleWheel);
+  }, [goToNext, goToPrev]);
+
+  // Touch swipe handling for mobile
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartYRef.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const touchEndY = e.changedTouches[0].clientY;
+    const deltaY = touchStartYRef.current - touchEndY;
+    if (Math.abs(deltaY) > 35) {
+      if (deltaY > 0) {
+        goToNext();
+      } else {
+        goToPrev();
+      }
     }
-  }, [isInView, isPlaying, currentIndex]);
+  };
 
+  // Toggle play/pause
   const togglePlay = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    const video = videoRef.current;
-    if (!video) return;
+    // Only toggle if not clicking interactive controls
+    const target = e.target as HTMLElement;
+    if (target.closest("button") || target.closest("input") || target.closest("a")) {
+      return;
+    }
 
-    if (video.paused) {
-      video.play().catch(() => {});
+    const activeVideo = videoRefs.current[currentIndex];
+    if (!activeVideo) return;
+
+    if (activeVideo.paused) {
+      activeVideo.play().catch(() => {});
       setIsPlaying(true);
     } else {
-      video.pause();
+      activeVideo.pause();
       setIsPlaying(false);
     }
 
-    setShowPlayIcon(true);
-    setTimeout(() => setShowPlayIcon(false), 800);
+    setShowPlayBadge(true);
+    setTimeout(() => setShowPlayBadge(false), 700);
   };
 
+  // Toggle mute / unmute with safe volume level
   const toggleMute = (e: React.MouseEvent) => {
     e.stopPropagation();
-    const video = videoRef.current;
-    if (!video) return;
     const nextMuted = !isMuted;
-    video.muted = nextMuted;
     setIsMuted(nextMuted);
-    if (!nextMuted && video.paused) {
-      video.play().catch(() => {});
-      setIsPlaying(true);
+
+    const activeVideo = videoRefs.current[currentIndex];
+    if (activeVideo) {
+      activeVideo.muted = nextMuted;
+      if (!nextMuted) {
+        const safeVol = volume > 0 ? volume : 0.35;
+        activeVideo.volume = safeVol;
+        if (volume === 0) setVolume(0.35);
+        if (activeVideo.paused) {
+          activeVideo.play().catch(() => {});
+          setIsPlaying(true);
+        }
+      }
     }
   };
 
-  const prevVideo = (e?: React.MouseEvent) => {
-    if (e) e.stopPropagation();
-    setCurrentIndex((prev) => (prev === 0 ? VIDEOS.length - 1 : prev - 1));
-    setIsPlaying(true);
-  };
+  // Adjustable volume slider
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.stopPropagation();
+    const newVol = parseFloat(e.target.value);
+    setVolume(newVol);
 
-  const nextVideo = (e?: React.MouseEvent) => {
-    if (e) e.stopPropagation();
-    setCurrentIndex((prev) => (prev === VIDEOS.length - 1 ? 0 : prev + 1));
-    setIsPlaying(true);
+    const activeVideo = videoRefs.current[currentIndex];
+    if (newVol > 0) {
+      setIsMuted(false);
+      if (activeVideo) {
+        activeVideo.muted = false;
+        activeVideo.volume = newVol;
+      }
+    } else {
+      setIsMuted(true);
+      if (activeVideo) {
+        activeVideo.muted = true;
+      }
+    }
   };
 
   return (
@@ -190,8 +263,14 @@ export default function TikTokVideoWidget() {
         </a>
       </div>
 
-      {/* Video Player Stage */}
-      <div className={styles.videoStage} onClick={togglePlay}>
+      {/* Video Player Stage: Real Vertical TikTok Feed */}
+      <div
+        ref={stageRef}
+        className={styles.videoStage}
+        onClick={togglePlay}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
         {/* Story Progress Indicators at Top */}
         <div className={styles.progressBars}>
           {VIDEOS.map((v, idx) => (
@@ -203,6 +282,7 @@ export default function TikTokVideoWidget() {
                 setCurrentIndex(idx);
                 setIsPlaying(true);
               }}
+              title={v.title}
             >
               <div
                 className={styles.progressBarFill}
@@ -214,18 +294,63 @@ export default function TikTokVideoWidget() {
           ))}
         </div>
 
-        {/* Real HTML5 Video Element */}
-        <video
-          ref={videoRef}
-          key={currentVideo.id}
-          src={resolveAssetUrl(currentVideo.videoUrl)}
-          poster={resolveAssetUrl(currentVideo.posterUrl)}
-          className={styles.videoElement}
-          playsInline
-          muted={isMuted}
-          loop
-          preload="auto"
-        />
+        {/* Clean, Adjustable Volume Control (Prevents Audio Explosion) */}
+        <div className={styles.volumeControlWrap} onClick={(e) => e.stopPropagation()}>
+          <button
+            type="button"
+            className={styles.volumeBtn}
+            onClick={toggleMute}
+            title={isMuted ? "Attiva audio" : "Silenzia audio"}
+            aria-label={isMuted ? "Attiva audio" : "Silenzia audio"}
+          >
+            {isMuted || volume === 0 ? (
+              <FiVolumeX size={15} />
+            ) : volume < 0.5 ? (
+              <FiVolume1 size={15} />
+            ) : (
+              <FiVolume2 size={15} />
+            )}
+          </button>
+          <div className={styles.volumeSliderContainer}>
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.05"
+              value={isMuted ? 0 : volume}
+              onChange={handleVolumeChange}
+              className={styles.volumeSlider}
+              title={`Volume: ${Math.round((isMuted ? 0 : volume) * 100)}%`}
+              aria-label="Regola volume"
+            />
+            <span className={styles.volumePercentText}>
+              {Math.round((isMuted ? 0 : volume) * 100)}%
+            </span>
+          </div>
+        </div>
+
+        {/* Vertical Reel Track (Transitions Up & Down like real TikTok) */}
+        <div
+          className={styles.videoReelTrack}
+          style={{ transform: `translateY(-${currentIndex * 100}%)` }}
+        >
+          {VIDEOS.map((video, idx) => (
+            <div key={video.id} className={styles.videoSlide}>
+              <video
+                ref={(el) => {
+                  videoRefs.current[idx] = el;
+                }}
+                src={resolveAssetUrl(video.videoUrl)}
+                poster={resolveAssetUrl(video.posterUrl)}
+                className={`${styles.videoElement} ${video.isLandscape ? styles.landscapeVideo : ""}`}
+                playsInline
+                muted={isMuted}
+                loop
+                preload="metadata"
+              />
+            </div>
+          ))}
+        </div>
 
         {/* Dark Vignette Gradients */}
         <div className={styles.vignetteTop} />
@@ -233,41 +358,41 @@ export default function TikTokVideoWidget() {
 
         {/* Central Play/Pause Pulse Icon */}
         <div
-          className={`${styles.centerPlayBadge} ${showPlayIcon || !isPlaying ? styles.visiblePlayBadge : ""}`}
+          className={`${styles.centerPlayBadge} ${showPlayBadge || !isPlaying ? styles.visiblePlayBadge : ""}`}
         >
           {isPlaying ? <FiPause size={28} /> : <FiPlay size={28} style={{ marginLeft: 3 }} />}
         </div>
 
-        {/* Navigation Arrows */}
-        <button
-          className={styles.navArrowLeft}
-          onClick={prevVideo}
-          aria-label="Video precedente"
-          title="Precedente"
-        >
-          <FiChevronLeft size={20} />
-        </button>
+        {/* Vertical Navigation Arrows (TikTok Style Up / Down) */}
+        <div className={styles.verticalNavGroup}>
+          <button
+            type="button"
+            className={styles.navArrowBtn}
+            onClick={(e) => {
+              e.stopPropagation();
+              goToPrev();
+            }}
+            aria-label="Video precedente"
+            title="Video precedente (Scorri su)"
+          >
+            <FiChevronUp size={18} />
+          </button>
 
-        <button
-          className={styles.navArrowRight}
-          onClick={nextVideo}
-          aria-label="Video successivo"
-          title="Successivo"
-        >
-          <FiChevronRight size={20} />
-        </button>
+          <button
+            type="button"
+            className={styles.navArrowBtn}
+            onClick={(e) => {
+              e.stopPropagation();
+              goToNext();
+            }}
+            aria-label="Video successivo"
+            title="Video successivo (Scorri giù)"
+          >
+            <FiChevronDown size={18} />
+          </button>
+        </div>
 
-        {/* Compact Mute / Unmute Button */}
-        <button
-          className={styles.muteButton}
-          onClick={toggleMute}
-          title={isMuted ? "Attiva audio" : "Silenzia audio"}
-          aria-label={isMuted ? "Attiva audio" : "Silenzia audio"}
-        >
-          {isMuted ? <FiVolumeX size={15} /> : <FiVolume2 size={15} />}
-        </button>
-
-        {/* Bottom Metadata Overlay */}
+        {/* Clean Bottom Metadata (No Hashtags, No Watch Button) */}
         <div className={styles.bottomMeta}>
           <div className={styles.creatorRow}>
             <span className={styles.creatorHandle}>@d4vide106</span>
@@ -278,25 +403,6 @@ export default function TikTokVideoWidget() {
           </div>
 
           <h4 className={styles.videoTitle}>{currentVideo.title}</h4>
-
-          <div className={styles.hashtagsRow}>
-            {currentVideo.hashtags.map((tag, i) => (
-              <span key={i} className={styles.hashtagPill}>
-                {tag}
-              </span>
-            ))}
-          </div>
-
-          <a
-            href={currentVideo.url}
-            target="_blank"
-            rel="noreferrer"
-            className={styles.watchOnTikTokBtn}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <span>Guarda su TikTok</span>
-            <FiArrowUpRight size={12} />
-          </a>
         </div>
       </div>
     </div>
